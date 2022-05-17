@@ -1,33 +1,38 @@
 New Light
 -----------
 Created By JaWarrior & Tomatoboyeet
-Version: 1.5.0
+Version: 1.6.0
 
 Documentation
 ---------------
+This is the OFFICIAL version of NEW LIGHT
+----------
 Commands:
 -------------
-n! logloot "username" "item" "amount" - logloot is a leadership command that updates a member's balance.
-n! reset "username" - reset is a leadership command that resets the balance of a member, used after distribution.
+n! logloot "server (NLC,SCP)" "username" "item" "amount" - logloot is a leadership command that updates a member's balance.
 
-n! balance "username" - balance allows a member to get a memeber's balance.
+n! reset "server (NLC,SCP)" "username" - reset is a leadership command that resets the balance of a member, used after distribution.
 
-n! rel "clan name*" - rel (relations) allows you to get a clan's relations with NLC. *You Must use the full name (No Spaces, Ex: SoaringEagles), or it will result as an error.
+n! balance "server (NLC,SCP)" "username" - balance allows a member to get a memeber's balance.
+
+n! rel "Server (NLC,SCP)" "Server (Same As Previous)" "clan name*" - rel (relations) allows you to get a clan's relations with NLC. *You Must use the full name (No Spaces, Ex: SoaringEagles), or it will result as an error.
 
 n! qp "ship name" - qp is the Quick Ping system for NLC, any members with @QuickPing can use this command. To add a ship to the system DM JaWarrior with the ship name and a PERMANENT link. Use n!qp List for a list of available quickping ships. Run this command when calling a ship link in #ship-invites.
 
-n! balall - balall is a leadership command that prints the contents of the distribution database. It is used to get everyone's balance at once.
+n! balall "Server (NLC,SCP)"- balall is a leadership command that prints the contents of the distribution database. It is used to get everyone's balance at once.
 
-n! changerel "clan" "relation" - changerel is a leadership command allowing a relation to be changed.
+n! changerel "server (NLC,SCP)" "clan" "relation" - changerel is a leadership command allowing a relation to be changed.
 
-n! calldes "call (category or all)" "category (only with n!calldes category (Ex. Slug, Punch/Flak, Mix))" - calldes is used to call a design from the database, using n!calldes all will list the entire database while n!calldes category "category" will give you the ships in a certain ammo type category.
-
-n!addes "category (Slug, Punch/Flak, Mix)" "size (Small, Medium, Large)" "name (Name:Message Link to #ship-designs post, yes you only link it right now)" - addes allows a member to add a link to a design posted in #ship-designs, the database will be upgraded to hold all the ship information eventually. Role Reqs.: OfficialMember
-
+Broken Commands: DO NOT ATTEMPT TO USE!
+n! adddes "Type (Slug, Punch/Flak, Mix)" "Name" - adddes allows you to add a design to the data base. This command creates the dict for the design, use n!editdes to add values such as image link, flux, cost, and designer.
 ---------------------------------------------------
 Other:
 ----------
 -ClanStorage is the clan storage, ClanStorage's balance contains etxra items such as, bursts, autos, metal, rubber, silica, and exp along with the regular items. Using n!getloot ClanStorage allows you to see what is in the ClanStorage.
+
+-Every member's balance will contain the following items: flux, pusher, loader, rc, rubber.
+
+-Most commands now require "server" after the command name, this is to distinguish between databases.
 
 -Every member's balance will contain the following items: flux, pusher, loader, rc, rubber
 

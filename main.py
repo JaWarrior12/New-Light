@@ -1,3 +1,4 @@
+#Before Multiserver Setup
 import os, discord
 from keep_alive import keep_alive
 from discord.ext import commands
@@ -23,7 +24,8 @@ bot.help_command = MyHelp()
 
 @bot.event
 async def on_ready():  # When the bot is ready
-    print("I'm in")
+    print("I'm in") #I'm in!
+    print("Ready To Go! I'm")
     print(bot.user)  # Prints the bot's username and identifier
     activity = discord.Game(name="JaWarrior.py & n!help", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)

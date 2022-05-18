@@ -41,70 +41,35 @@ def setdata(data):
         f.write(dumps(data))
 
 
-def readdataB():
-    return loads(open("relations.json","r").read())
-
 
 def setdataB(dataB):
     with open("relations.json", "w") as g:
         g.write(dumps(dataB))
 
-def readdataC():
-    return loads(open('quickping.json', 'r').read())
 
-def readdataD():
-    return loads(open('designs.json', 'r').read())
 
 def setdataD(dataD):
     with open("designs.json", "w") as h:
         h.write(dumps(dataD))
-
-def readdataE():
-    return loads(open('distribution.json', 'r').read())
 
 def setdataE(dataE):
     with open("distribution.json", "w") as i:
         i.write(dumps(dataE))
 
 def getguild(ctx):
-  id = ctx.message.guild.id
-  print(id)
-  return id
+  return ctx.message.guild.id
 
 @bot.command(name="logloot")
 async def returnpaymentdata(ctx, *, msg):
     if ctx.message.author.id in authorized:
-      msgparts, data = msg.split(" "), readdataE()
-      a = "NLC"
-      b = "SCP"
-      c = "TestServer"
-      if getguild(ctx) == NLC:
-        if msgparts[0] == a:
-          data[msgparts[0]][msgparts[1]][msgparts[2]] = int(msgparts[3])
-          setdataE(data)
-          await ctx.send(f'now {msgparts[1]} has {msgparts[3]} {msgparts[2]} in {msgparts[0]}')
-        else:
-         await ctx.send('Error! Please use n!logloot NLC "username" "item" "new value"! You can only run NLC update commands in the NLC server')
-      elif getguild(ctx) == SCP:
-        if msgparts[0] == b:
-          print(1)
-          data[msgparts[0]][msgparts[1]][msgparts[2]] = int(msgparts[3])
-          setdataE(data)
-          await ctx.send(f'now {msgparts[1]} has {msgparts[3]} {msgparts[2]} in {msgparts[0]}')
-        else:
-         await ctx.send('Error! Please use n!logloot SCP "username" "item" "new value"! You can only run SCP update commands in the SCP server!')
-      elif getguild(ctx) == TestSrvr:
-        print(2)
-        if msgparts[0] == c:
-          data[msgparts[0]][msgparts[1]][msgparts[2]] = int(msgparts[3])
-          setdataE(data)
-          await ctx.send(f'now {msgparts[1]} has {msgparts[3]} {msgparts[2]} in {msgparts[0]}')
-        else:
-          await ctx.send('Error! Please use n!logloot TestServer "username" "item" "new value"! You can only run TestServer update commands in the TestServer server!')
-      else:
-          await ctx.send('Error! Server Not In Approved List For This Command! If You Believe This Is An Error Please DM JaWarrior#6752.')
-    else:
-        await ctx.send('Unapproved Operator.')
+    	msgparts,data=msg.split(" "),readdata()
+    	try:
+         data[msgparts[0]][msgparts[1]][msgparts[2]]=int(msgparts[3])
+         msgtosend=f"now {msgparts[1]} has {msgparts[3]} {msgparts[2]} in {msgparts[0]}"
+         setdata(data)
+         await ctx.send(msgtosend)
+	    except:await ctx.send('Invalid data given')
+    else:await ctx.send('Unapproved Operator.')
 
 
 @bot.command(name='reset')
@@ -156,13 +121,13 @@ async def getuserloot(ctx, *, msg):
       a = "NLC"
       b = "SCP"
       c = "TestServer"
-      mesg = data[msgparts[0]]=str(msgparts[1])
+      mesg = str(msgparts[1]) #data[msgparts[0]]=str(msgparts[1])
       if getguild(ctx) == NLC:
-        if msgparts[0] == a:
+        #if msgparts[0] == a:
           print(1)
           await ctx.send(dumps(readdataE()[msgparts[0]]).replace(':','=').replace('{','').replace('}','').replace('"',''))
-        else:
-         await ctx.send('Error! Please use n!balance NLC "username"! You can only run NLC commands in the NLC server')
+        #else:
+         #await ctx.send('Error! Please use n!balance NLC "username"! You can only run NLC commands in the NLC server')
       elif getguild(ctx) == SCP:
         if msgparts[0] == b:
           print(2)
@@ -219,8 +184,9 @@ async def quickping_error(ctx, error):
         await ctx.send('Error, Required Role: QuickPing, Not Found')
 
 @bot.command(name='balall')
+@commands.has_role('OfficialMember')
 async def balanceall(ctx,*,msg):
-  if ctx.message.author.id in authorized:
+  #if ctx.message.author.id in authorized:
       msgparts, data = msg.split(" "), readdata()
       a = "NLC"
       b = "SCP"
@@ -252,8 +218,8 @@ async def balanceall(ctx,*,msg):
     #await ctx.send(  dumps(readdata()).replace(':','=').replace('{','').replace('}','').replace('"',''))
     #await ctx.send('Balances Of All Members')
     #await ctx.send(dumps(readdata()[mesg]).replace(': "',' = ').replace('{','').replace('}, ','\n').replace('}','').replace('"',''))
-  else:
-     await ctx.send('Unapproved Operator.')
+  #else:
+     #await ctx.send('Unapproved Operator.')
 
 @bot.command(name="changerel")
 async def changerel(ctx, *, msg):

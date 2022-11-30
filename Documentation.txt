@@ -1,7 +1,12 @@
 New Light
 -----------
+<<<<<<< HEAD
 Created By JaWarrior
 Version: 2.0.0
+=======
+Created By JaWarrior & Tomatoboyeet
+Version: 1.7.1
+>>>>>>> origin/main
 
 Documentation
 ---------------
@@ -11,6 +16,7 @@ Commands:
 -------------
 UnRestricted Commands:
 
+<<<<<<< HEAD
 n!help - Sends Documentation, file must be downloaded.
 
 n!invite - invite will DM you information about inviting New Light to your server.
@@ -26,6 +32,13 @@ n! adddes "design name (NO SPACES)" <Attach Design Image, NOT LINK. This Is The 
 n! editdes "design name" "new/current data point (flux, designer, image)" "new value" - editdes allows a user to edit a design they have in the database, you can add new values and update current ones.
 
 n! deldes "design name" - deldes allows a user to delete one of their designs from the design database.
+=======
+n! balance "server (NLC,BOC)" "username" - balance allows a member to get a memeber's balance.
+
+n! rel "Server (NLC,BOC)" "clan name*" - rel (relations) allows you to get a clan's relations with NLC. *You Must use the full name (No Spaces, Ex: SoaringEagles), or it will result as an error.
+
+n!calldes "all,category" "ammo type ((ONLY FOR USE WITH) n!calldes category! Slug, Mix, Punch/Flak)" - calldes allows anyone to call a design from the bot's database.
+>>>>>>> origin/main
 - - - - - - - - - - -
 Role Restricted Commands:
 
@@ -34,6 +47,7 @@ n! qp "ship name" - qp is the Quick Ping system for NLC, any members with @Quick
 n!qpadd "@here Link" "name (NO SPACES)" - qpadd allows users with the QuickPing role to add a ship to the database, allowing it to be called anytime.
 - - - - - - - - - - -
 Leadership Commands:
+<<<<<<< HEAD
 n! logloot "server tag" "username" "item" "amount to add/subtract" - logloot is a leadership command that updates a member's balance. Ex. n!logloot NLC JaWarrior flux -5 will subtract 5 flux from JaWarrior's balance.
 
 n! reset "server tag" "username" - reset is a leadership command that resets the balance of a member, used after distribution.
@@ -57,11 +71,35 @@ n! banuser "User's ID" - banuser allows a developer (JaWarrior) to ban a user fr
 n! shutdown - shutdown allows a developer to restart and update New Light. Only Developers can run this command.
 
 n! backup - backup allows the developers to backup all the databases in the bot.
+=======
+n! logloot "server (NLC,BOC)" "username" "item" "amount" - logloot is a leadership command that updates a member's balance.
+
+n! reset "server (NLC,BOC)" "username" - reset is a leadership command that resets the balance of a member, used after distribution.
+
+n! balall "Server (NLC,BOC)"- balall is a leadership command that prints the contents of the distribution database. It is used to get everyone's balance at once.
+
+n! changerel "server (NLC,BOC)" "clan" "relation" - changerel is a leadership command allowing a relation to be changed.
+
+n!addrel "Server (NLC,BOC)" "Relation" "Clan Name (NO SPACES)" - addrel allows clan leaders to add a relation to their relations list.
+
+n!relall "Server" - relall allows a leader to get all the relations of their clan.
+- - - - - - - - - - - - - - 
+Developer Commands:
+
+n! banuser "User's ID" - banuser allows a developer (JaWarrior or Tomatoboyeet) to ban a user from using New Light commands.
+>>>>>>> origin/main
 ---------------------------------------------------
 Other:
 ----------
 -Every member's balance will contain the following default items: flux, pusher, loader, rc, rubber.
+<<<<<<< HEAD
 
 -Most commands now require "server tag" after the command name, this is to distinguish between databases.
 
 -Test Server: https://discord.gg/pNYbteXyHd
+=======
+
+-Most commands now require "server" after the command name, this is to distinguish between databases.
+
+-Test Server: https://discord.gg/pNYbteXyHd
+>>>>>>> origin/main

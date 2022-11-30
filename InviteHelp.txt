@@ -1,0 +1,6 @@
+New Light Invite Guide:
+
+Step 1- Invite me through the button in my profile.
+Step 2- You MUST have Administrator Permissions to complete setup; Run n!setupserver. ONLY EVER RUN THIS ONCE!!!!! The person who runs the setup command is automatically added to the authorized users list for leadership commands.
+Step 3- For all users that you want to have access to leadership commands, run n!authuser <USER ID>, if you do not know how it get a USER ID, google it. To authorize a user, you must have Administrator Permissions and already be authorized yourself.
+Step 4- You have completed New Light Setup, use n!help to get a list of commands.

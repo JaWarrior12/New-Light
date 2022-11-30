@@ -2,6 +2,7 @@
 from flask import Flask
 from threading import Thread
 import random
+import os
 
 
 app = Flask('')
@@ -12,7 +13,7 @@ def home():
 
 def run():
   app.run(
-		host='0.0.0.0',
+    host='0.0.0.0',
 		port=8080
 	)
 

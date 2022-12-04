@@ -106,11 +106,19 @@ class RelCmds(commands.Cog, name="Relations Commands"):
 
   @commands.command(name="reltest",hidden=True)
   @commands.has_role("Developer")
-  async def reltest(self,ctx,keya,keyb):
-    await ctx.send("hi")
-    datab=dumps(lists.readdataB())
+  async def reltest(self,ctx,*,arg):
+    st=None
+    if len(keya) >= 5:
+      st="name"
+    elif len(keya) == 1:
+      st="emoji"
+    elif len(keya) <= 4:
+      st="abrv"
+    else:
+      st="name"
+    datab = lists.readdataB()[str(ctx.message.guild.id)]
     def find_route(data, route_no):
-      return list(filter(lambda x: x.get(str(keyb)) == route_no, data))
+      return list(filter(lambda x:x.get(st)==keya,datab))
     route = find_route(datab,keya)
     await ctx.send(route)
 

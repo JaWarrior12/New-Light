@@ -88,7 +88,7 @@ async def on_disconnect():
     o.write('\n')
     o.write(f'New Light Test disconnected from the DISCORD platform at {ct}.')
     o.write('\n')
-  
+    
 #Load Cogs (My Way)
 bot.load_extension("cogs.errorhand")
 bot.load_extension("cogs.relcmds")

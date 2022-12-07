@@ -78,5 +78,29 @@ class QPCmds(commands.Cog, name="QuickPing Commands"):
       if isinstance(error, commands.CheckFailure):
           await ctx.send('Error, Required Role: QuickPing, Not Found')
 
+  @commands.command(name='qpdel')
+  @commands.has_role('QuickPing')
+  async def qpdelete(self,ctx,ship):
+    if str(ctx.message.author.id) in banned:
+      await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
+    elif str(ctx.message.author.id) not in banned:
+      lists.logback(ctx,ship)
+      gid = str(ctx.message.guild.id)
+      name=str(ship).lower()
+      data=lists.readdataC()
+      del data[gid][name]
+      try:
+        lists.setdataC(data)
+        await ctx.send(f'Removed {ship} from the QuickPing list in {ctx.message.guild.name}')
+      except KeyError:
+        await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
+    else:
+      await ctx.send("Error, I hit a wall checking your ID against my banned users list. Please try running the command again.")
+
+  @qpdelete.error
+  async def qpdelete_error(self, ctx, error):
+      if isinstance(error, commands.CheckFailure):
+          await ctx.send('Error, Required Role: QuickPing, Not Found')
+
 def setup(bot: commands.Bot):
     bot.add_cog(QPCmds(bot))

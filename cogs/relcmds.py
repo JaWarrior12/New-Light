@@ -86,15 +86,15 @@ class RelCmds(commands.Cog, name="Relations Commands"):
             def find_route(data, route_no):
               return list(filter(lambda x:x.get(st)==clan,datab))
             route = find_route(datab,clan)
-            datab.index(route)
+            datab.index(route[0])
             datab.copy()
             #datab.count(clan)
             #await ctx.send(datab.count(clan))
             #await ctx.send(route)
-            datab[datab.index(route)]['relation']=relation
-            datac[str(ctx.message.guild.id)][route]['relation']=relation
-            await ctx.send(datab)
-            await ctx.send(datac)
+            datab[datab.index(route[0])]['relation']=relation
+            datac[str(ctx.message.guild.id)][datab.index(route[0])]['relation']=relation
+            #await ctx.send(datab)
+            #await ctx.send(datac)
             lists.setdataB(datac)
             await ctx.send(f'{clan} now has a relation of {relation}!')
           except KeyError:
@@ -142,7 +142,7 @@ class RelCmds(commands.Cog, name="Relations Commands"):
         else:
           return False
 
-  @commands.command(name="reltest",hidden=True)
+  @commands.command(name="reltest",hidden=True,disabled=True)
   @commands.has_role("Developer")
   async def reltest(self,ctx,*,arg):
     st=None

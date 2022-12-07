@@ -1,1 +1,1 @@
-Command run at 2022-12-05 10:13:38.448116-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: changerel, Command Contents: Hellenic League Enemy
+Command run at 2022-12-07 11:41:29.814115-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: qpadd, Command Contents: hi TEst

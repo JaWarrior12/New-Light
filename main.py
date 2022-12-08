@@ -52,7 +52,7 @@ bot.help_command = MyHelp()
 
 #bot.help_command = commands.DefaultHelpCommand() #MyHelp()
 
-version = "3.2.0"
+version = "3.3.0"
 
 @bot.event
 async def on_ready():  # When the bot is ready
@@ -98,6 +98,7 @@ bot.load_extension("cogs.qpcmds")
 bot.load_extension("cogs.othercmds")
 bot.load_extension("cogs.econcmds")
 bot.load_extension("cogs.devcmds")
+bot.load_extension("cogs.adcmds")
 
 #Load Cogs Other Way
 #extensions = ['DevCmds']

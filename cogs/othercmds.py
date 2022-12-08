@@ -124,41 +124,26 @@ class OtherCmds(commands.Cog, name="Other Commands"):
       chk = lists.checkperms(ctx)
       if chk == True:
         #await lists.logmajor(ctx,user)
-        lists.logback(self,ctx,user)
+        #lists.logmajor(self,ctx,user)
         gid=str(ctx.message.guild.id)
         key="auth"
         data = dumps(lists.readdataE()[gid][key])
         if str(user) in data:
           await ctx.send(f'The User With An ID Of {user} Is Already Authorized')
         else:
-          print(data)
-          ##await ctx.send("----")
-          #await ctx.send(data)
-          #await ctx.send("----")
-          data=data.replace("[","").replace("]","").replace('"','')
-          #await ctx.send(data)
-          #await ctx.send(data.split(","))
-          mylist = data#.split(",")#.split(",") #[data.replace("'","").replace('"','')]
-          #await ctx.send(type(mylist))
-          #await ctx.send(mylist)
-          if "[]" in mylist:
-            mylist.remove("[]")
-          #await ctx.send("----")
-          #await ctx.send(mylist)
-          #await ctx.send("----")
-          usr = str(user).replace("'","").replace('"','')
-          use = [mylist+","+usr]
-          #await ctx.send(use)
-          #mylist.append(use)#.replace("'","").replace('"',''))
-          #await ctx.send(mylist)
-          datab=lists.readdataE()
-          datab[gid][key]=use
-          lists.setdataE(datab)
+          data = lists.readdataE()
+          banlt=data
+          #await ctx.send(banlt)
+          banlt[gid]["auth"].append(str(user))
+          #await ctx.send(banlt)
+          lists.setdataE(banlt)
           await ctx.send(f'The User With A User Id Of {user} has been authorized to use Leadership Commands in the server {ctx.message.guild.name} by {ctx.message.author.name}')
       else:
         await ctx.send("You are not authorized and CANNOT authorize users.")
     elif str(ctx.messsage.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
+    else:
+      await ctx.send("I Hit a Wall, Try Running The Command Again")
     
 
 def setup(bot: commands.Bot):

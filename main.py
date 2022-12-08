@@ -21,7 +21,7 @@ intents.members = True
 
 client = discord.Client()
 
-bot = commands.Bot(command_prefix='t!',intents=intents)
+bot = commands.Bot(command_prefix='n!',intents=intents)
 
 #SAVE THIS CODE \/!!!
 #class MyHelp(commands.HelpCommand): 

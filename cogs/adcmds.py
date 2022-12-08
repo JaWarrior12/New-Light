@@ -113,7 +113,7 @@ class AdCmds(commands.Cog, name="Admin Tools"):
       await ctx.send(names)
       await ctx.send(ids)
     else:
-      await ctx.send("Youa re not a developer and cannot use this command.")
+      await ctx.send("You are not a developer and cannot use this command.")
 
   @commands.command(name="leaveserver",hidden=True)
   async def leave(self, ctx, *, guild_name):
@@ -124,6 +124,62 @@ class AdCmds(commands.Cog, name="Admin Tools"):
           return
       await self.bot.leave_guild(guild)
       await ctx.send(f":ok_hand: Left guild: {guild.name} ({guild.id})")
+    else:
+      await ctx.send("You are not a developer and cannot use this command.")
+
+  @commands.command(name="clearserver",hidden=True)
+  async def clearserver(self,ctx,id):
+    if ctx.message.author.id in developers:
+      gid=str(id)
+      data=lists.readdata()
+      data.pop(gid)
+      lists.setdata(data)
+      gid=str(id)
+      data=lists.readdataB()
+      data.pop(gid)
+      lists.setdataB(data)
+      gid=str(id)
+      data=lists.readdataC()
+      data.pop(gid)
+      lists.setdataC(data)
+      gid=str(id)
+      data=lists.readdataD()
+      data.pop(gid)
+      lists.setdataD(data)
+      gid=str(id)
+      data=lists.readdataE()
+      data.pop(gid)
+      lists.setdataE(data)
+      await ctx.send(f'The server with an ID of {gid} has been removed from my databases.')
+    else:
+      await ctx.send("You are not a developer and cannot use this command.")
+
+  @commands.command(name="authedus",hidden=True)
+  async def authedus(self,ctx,guild=None):
+    if ctx.message.author.id in developers:
+      data=lists.readdataE()
+      if guild==None:
+        await ctx.send(data)
+      elif guild!=None:
+        gid=str(guild)
+        await ctx.send(data[gid]["auth"])
+    else:
+      await ctx.send("You are not a developer and cannot use this command.")
+
+  @commands.command(name="logdat",hidden=True)
+  async def logdat(self,ctx,function,min=None,max=None):
+    if ctx.message.author.id in developers:
+      if function=="clear":
+        with open("Backups/log.txt", "w") as g:
+          g.write(' ')
+          await ctx.send("Cleared Command Log")
+      elif function=="read":
+        with open("Backups/log.txt", "r") as g:
+          lines = g.readlines()
+        await ctx.send(lines[min:max])
+      else:
+        await ctx.send("Error")
+        return False
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 

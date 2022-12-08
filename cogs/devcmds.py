@@ -221,12 +221,10 @@ class DevCmds(commands.Cog, name="Developer Commands"):
         data = lists.readdataE()
         data[gid]=dict(default)
         lists.setdataE(data)
-        keyb = "auth"
-        defaultb=[]
-        datab = lists.readdataE()
-        defaultb.append(uid)
-        datab[str(gid)][str(keyb)]=defaultb
-        lists.setdataE(datab)
+        data = lists.readdataE()
+        banlt=data
+        banlt[gid]["auth"].append(str(uid))
+        lists.setdataE(banlt)
         server = ctx.message.guild
         await server.create_role(name="QuickPing")
         await server.create_role(name="OfficialMember")
@@ -249,7 +247,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
     else:
       await ctx.send("You are not a developer and CAN NOT use developer commands!")
 
-  @commands.command(name="ban")
+  @commands.command(name="banb",hidden=True,disabled=True)
   @commands.has_role('Developer')
   async def banuser(self,ctx,user):
     if ctx.message.author.id in developers:

@@ -152,14 +152,14 @@ def checkperms(ctx):
   uid = str(ctx.message.author.id)
   keya="auth"
   autho = dumps(readdataE()[gid][keya])
-  if uid not in banned:
-    if uid in autho:
+  if str(uid) not in banned:
+    if str(uid) in autho:
       return True
-    elif uid not in autho:
+    elif str(uid) not in autho:
       return False
     else:
       return False
-  elif uid in banned:
+  elif str(uid) in banned:
     return False
   else:
     return False

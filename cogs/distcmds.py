@@ -115,7 +115,7 @@ class DistCmds(commands.Cog, name="Distribution Commands"):
         if chk == True:
           try:
             lists.setdata(data)
-            await ctx.send(f'Removed {member} from the distribution list in {msgparts[ctx.message.guild.name]}')
+            await ctx.send(f'Removed {member} from the distribution list in {ctx.message.guild.name}')
           except KeyError:
             await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
         else:

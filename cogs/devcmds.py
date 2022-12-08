@@ -71,7 +71,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
       print(ctx.message.author.id)
       await ctx.send('ONLY DEVELOPERS ARE ALLOWED TO BACKUP THE BOT!!! YOU ARE NOT A DEVELOPER')
 
-  @commands.command(name='setup', brief='Sets Up A Server To Work With New Light.', help="Sets up a server to work with New Light. Args: None",hidden=True)
+  @commands.command(name='setuproles', brief='Sets Up A Server To Work With New Light.', help="Sets up a server to work with New Light. Args: None",hidden=True,disabled=True)
   async def setserv(self, ctx, msg):
     if ctx.message.author.id in developers:
       guild = ctx.guild
@@ -205,6 +205,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
         uid = ctx.message.author.id
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
+        defaultb=[]
         data = lists.readdata()
         data[gid]=dict(default)
         lists.setdata(data)
@@ -212,7 +213,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
         data[gid]=dict(default)
         lists.setdataB(data)
         data = lists.readdataC()
-        data[gid]=dict(default)
+        data[gid]=defaultb
         lists.setdataC(data)
         data = lists.readdataD()
         data[gid]=dict(default)

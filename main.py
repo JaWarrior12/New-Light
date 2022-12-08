@@ -21,7 +21,7 @@ intents.members = True
 
 client = discord.Client()
 
-bot = commands.Bot(command_prefix='n!',intents=intents)
+bot = commands.Bot(command_prefix='t!',intents=intents)
 
 #SAVE THIS CODE \/!!!
 #class MyHelp(commands.HelpCommand): 
@@ -58,7 +58,7 @@ version = "3.2.0"
 async def on_ready():  # When the bot is ready
     print("I'm in")
     print(bot.user)  # Prints the bot's username and identifier
-    activity = discord.Game(name=f"JaWarrior.py & n!help. Version: {version}", type=3)
+    activity = discord.Game(name=f"JaWarrior.py & t!help. Version: {version}", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     #channel = client.get_channel(974078794065403924)
     #await channel.send("I'm Logged In")
@@ -86,9 +86,9 @@ async def on_disconnect():
   #print(data)
   with open("Backups/disconnectlogs.txt", "a+") as o:
     o.write('\n')
-    o.write(f'New Light disconnected from the DISCORD platform at {ct}.')
+    o.write(f'New Light Test disconnected from the DISCORD platform at {ct}.')
     o.write('\n')
-  
+    
 #Load Cogs (My Way)
 bot.load_extension("cogs.errorhand")
 bot.load_extension("cogs.relcmds")

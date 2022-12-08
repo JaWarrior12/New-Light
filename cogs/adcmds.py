@@ -177,6 +177,20 @@ class AdCmds(commands.Cog, name="Admin Tools"):
         with open("Backups/log.txt", "r") as g:
           lines = g.readlines()
         await ctx.send(lines[min:max])
+      elif function=="backclr":
+        with open("Backups/bcklog.txt", "w") as g:
+          g.write(' ')
+      elif function=="disclr":
+        with open("Backups/bcklog.txt", "w") as g:
+          g.write(' ')
+      elif function=="disr":
+        with open("Backups/bcklog.txt", "r") as g:
+          lines = g.readlines()
+        await ctx.send(lines[min:max])
+      elif function=="bckr":
+        with open("Backups/disconnectlogs.txt", "r") as g:
+          lines = g.readlines()
+        await ctx.send(lines[min:max])
       else:
         await ctx.send("Error")
         return False

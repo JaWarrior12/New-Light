@@ -21,7 +21,7 @@ intents.members = True
 
 client = discord.Client()
 
-bot = commands.Bot(command_prefix='t!',intents=intents)
+bot = commands.Bot(command_prefix='n!',intents=intents)
 
 #SAVE THIS CODE \/!!!
 #class MyHelp(commands.HelpCommand): 
@@ -52,7 +52,7 @@ bot.help_command = MyHelp()
 
 #bot.help_command = commands.DefaultHelpCommand() #MyHelp()
 
-version = "3.3.0"
+version = "3.4.0"
 
 @bot.event
 async def on_ready():  # When the bot is ready

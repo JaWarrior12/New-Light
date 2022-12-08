@@ -140,6 +140,7 @@ class RelCmds(commands.Cog, name="Relations Commands"):
               await ctx.send('List of All Relations')
               await ctx.send(dumps(lists.readdataB()[mesg]).replace(': "',' = ').replace('{','').replace(',','\n').replace('}','').replace('"',''))
         else:
+          await ctx.send('Error')
           return False
 
   @commands.command(name="reltest",hidden=True,disabled=True)

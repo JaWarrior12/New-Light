@@ -116,20 +116,27 @@ class AdCmds(commands.Cog, name="Admin Tools"):
       await ctx.send("You are not a developer and cannot use this command.")
 
   @commands.command(name="leaveserver",hidden=True)
-  async def leave(self, ctx, *, guild_name):
+  async def leave(self, ctx,id, *, reason=None):
     if ctx.message.author.id in developers:
-      guild = discord.utils.get(self.bot.guilds, name=guild_name)
-      if guild is None:
-          await ctx.send("I don't recognize that guild.")
-          return
+      #guild = discord.utils.get(self.bot.guilds, name=guild_name)
+      #if guild is None:
+          #await ctx.send("I don't recognize that guild.")
+          #return
+      guild = ctx.get_guild(int(id))
+      channel = discord.utils.get(guild.channels, name="general")
+      await channel.send(f'My Developer Has Ordered Me To Leave Your Server. Reason My Developer Gave: {reason}. Please DM JaMinecrafter13#1305 if you have any questions or would like to add me back. You can also join my development server: https://discord.gg/zcGYBcfhwX')
       await self.bot.leave_guild(guild)
       await ctx.send(f":ok_hand: Left guild: {guild.name} ({guild.id})")
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
   @commands.command(name="clearserver",hidden=True)
-  async def clearserver(self,ctx,id):
+  async def clearserver(self,ctx,id,*,reason=None):
     if ctx.message.author.id in developers:
+      guild = ctx.get_guild(int(id))
+      channel = discord.utils.get(guild.channels, name="general")
+      await channel.send(f'My Developer Has Ordered Me To Clear The Data For Your Server. Reason My Developer Gave: {reason}. Please DM JaMinecrafter13#1305 if you have any questions. You can also join my development server: https://discord.gg/zcGYBcfhwX')
+      channel_id = channel.id
       gid=str(id)
       data=lists.readdata()
       data.pop(gid)
@@ -180,9 +187,11 @@ class AdCmds(commands.Cog, name="Admin Tools"):
       elif function=="backclr":
         with open("Backups/bcklog.txt", "w") as g:
           g.write(' ')
+          await ctx.send("Cleared Backup Log")
       elif function=="disclr":
-        with open("Backups/bcklog.txt", "w") as g:
+        with open("Backups/disconnectlogs.txt", "w") as g:
           g.write(' ')
+          await ctx.send("Cleared Disconnect Log")
       elif function=="disr":
         with open("Backups/bcklog.txt", "r") as g:
           lines = g.readlines()

@@ -1,53 +1,6 @@
-Command run at 2022-12-07 11:41:29.814115-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: qpadd, Command Contents: hi TEst
+ 
+Command run at 2022-12-08 15:41:47.817005-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.as
 
-Command run at 2022-12-07 11:58:59.646615-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.qpcmds
+Command run at 2022-12-08 15:43:21.381002-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adverse
 
-Command run at 2022-12-07 11:59:06.945108-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: qpadd, Command Contents: hi Test
-
-Command run at 2022-12-07 11:59:21.131235-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: qpdel, Command Contents: test
-
-Command run at 2022-12-07 16:43:08.490166-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 16:48:56.931707-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 16:49:52.862286-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 16:50:45.602602-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 16:51:29.140896-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 16:52:46.951233-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 16:53:44.251775-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rel, Command Contents: NLC
-
-Command run at 2022-12-07 16:54:22.073347-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rel, Command Contents: NLC
-
-Command run at 2022-12-07 16:55:53.590619-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 16:57:52.079921-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 16:59:17.028022-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 17:13:56.943877-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
-
-Command run at 2022-12-07 17:16:05.285590-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
-
-Command run at 2022-12-07 17:24:48.298163-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
-
-Command run at 2022-12-07 17:25:59.239895-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-07 17:32:57.359718-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-08 08:16:45.488551-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rel, Command Contents: 🌐
-
-Command run at 2022-12-08 08:30:44.428686-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-08 08:41:55.674019-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-08 08:44:31.184099-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: backup, Command Contents: None
-
-Command run at 2022-12-08 10:08:41.909925-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-08 10:25:52.112821-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
-
-Command run at 2022-12-08 10:28:19.554391-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
+Command run at 2022-12-08 15:43:26.248848-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds

@@ -97,6 +97,8 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands"):
       #else:
         #await ctx.send("Target_key error")
       route = find_route(response,int(target_item))
+      #embed=discord.Embed(title=f'{}', description=f'Clan Full Name: {route[0]["name"]}\nClan Abbreviation: {route[0]["abrv"]}\nClan Emoji: {route[0]["emoji"]}\nClan Relation: {route[0]["relation"]}', color=0xFF5733)
+      #await ctx.send(embed=embed)
       await ctx.send(route)
     else:
       await ctx.send("I Had An Error Checking My Banned User List, Please Try Running The Command Again.")
@@ -182,5 +184,5 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands"):
       await ctx.send("Error")
   
 
-def setup(bot: commands.Bot):
-    bot.add_cog(EconCmds(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(EconCmds(bot))

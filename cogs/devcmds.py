@@ -13,7 +13,7 @@ from startup import startup
 
 #Lists
 import lists
-import main
+#import main
 #Auth For Leadership Commands
 #authorized = lists.authorized
 banned = lists.banned
@@ -143,12 +143,12 @@ class DevCmds(commands.Cog, name="Developer Commands"):
       extensions = self.bot.extensions
       if cog == 'all':
         for extension in extensions:
-          self.bot.unload_extension(cog)
-          self.bot.load_extension(cog)
+          await self.bot.unload_extension(cog)
+          await self.bot.load_extension(cog)
           await ctx.send('Done')
       if cog in extensions:
-        self.bot.unload_extension(cog)  # Unloads the cog
-        self.bot.load_extension(cog)  # Loads the cog
+        await self.bot.unload_extension(cog)  # Unloads the cog
+        await self.bot.load_extension(cog)  # Loads the cog
         await ctx.send('Done')  # Sends a message where content='Done'
       else:
         await ctx.send('Unknown Cog')  # If the cog isn't found/loaded.
@@ -163,7 +163,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
       if cog not in extensions:
         await ctx.send("Cog is not loaded!")
         return
-      self.bot.unload_extension(cog)
+      await self.bot.unload_extension(cog)
       await ctx.send(f"`{cog}` has successfully been unloaded.")
     else:
       ctx.send("Not A Dev")
@@ -174,7 +174,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
     lists.logback(ctx,cog)
     if ctx.message.author.id in developers:
       try:
-        self.bot.load_extension(cog)
+        await self.bot.load_extension(cog)
         await ctx.send(f"`{cog}` has successfully been loaded.")
       except commands.errors.ExtensionNotFound:
         await ctx.send(f"`{cog}` does not exist!")
@@ -289,5 +289,5 @@ class DevCmds(commands.Cog, name="Developer Commands"):
     else:
       await ctx.send("You are not a developer and cannot use this command")
 
-def setup(bot: commands.Bot):
-    bot.add_cog(DevCmds(bot))
+async def setup(bot: commands.Bot):
+  await bot.add_cog(DevCmds(bot))

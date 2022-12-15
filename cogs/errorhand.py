@@ -115,5 +115,5 @@ class ErrorHandling(commands.Cog):
             print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
-def setup(bot: commands.Bot):
-  bot.add_cog(ErrorHandling(bot))
+async def setup(bot: commands.Bot):
+  await bot.add_cog(ErrorHandling(bot))

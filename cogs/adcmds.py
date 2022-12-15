@@ -118,22 +118,19 @@ class AdCmds(commands.Cog, name="Admin Tools"):
   @commands.command(name="leaveserver",hidden=True)
   async def leave(self, ctx,id, *, reason=None):
     if ctx.message.author.id in developers:
-      #guild = discord.utils.get(self.bot.guilds, name=guild_name)
-      #if guild is None:
-          #await ctx.send("I don't recognize that guild.")
-          #return
-      guild = ctx.get_guild(int(id))
+      guild = self.bot.get_guild(int(id))
+      await ctx.send(guild.name)
       channel = discord.utils.get(guild.channels, name="general")
       await channel.send(f'My Developer Has Ordered Me To Leave Your Server. Reason My Developer Gave: {reason}. Please DM JaMinecrafter13#1305 if you have any questions or would like to add me back. You can also join my development server: https://discord.gg/zcGYBcfhwX')
-      await self.bot.leave_guild(guild)
-      await ctx.send(f":ok_hand: Left guild: {guild.name} ({guild.id})")
+      await guild.leave()
+      await ctx.send(f':ok_hand: Left guild: {guild.name} ({guild.id})')
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
   @commands.command(name="clearserver",hidden=True)
   async def clearserver(self,ctx,id,*,reason=None):
     if ctx.message.author.id in developers:
-      guild = ctx.get_guild(int(id))
+      guild = self.bot.get_guild(int(id))
       channel = discord.utils.get(guild.channels, name="general")
       await channel.send(f'My Developer Has Ordered Me To Clear The Data For Your Server. Reason My Developer Gave: {reason}. Please DM JaMinecrafter13#1305 if you have any questions. You can also join my development server: https://discord.gg/zcGYBcfhwX')
       channel_id = channel.id
@@ -183,7 +180,7 @@ class AdCmds(commands.Cog, name="Admin Tools"):
       elif function=="read":
         with open("Backups/log.txt", "r") as g:
           lines = g.readlines()
-        await ctx.send(lines[min:max])
+        await ctx.send(lines[int(min):int(max)])
       elif function=="backclr":
         with open("Backups/bcklog.txt", "w") as g:
           g.write(' ')
@@ -195,16 +192,16 @@ class AdCmds(commands.Cog, name="Admin Tools"):
       elif function=="disr":
         with open("Backups/bcklog.txt", "r") as g:
           lines = g.readlines()
-        await ctx.send(lines[min:max])
+        await ctx.send(lines[int(min):int(max)])
       elif function=="bckr":
         with open("Backups/disconnectlogs.txt", "r") as g:
           lines = g.readlines()
-        await ctx.send(lines[min:max])
+        await ctx.send(lines[int(min):int(max)])
       else:
         await ctx.send("Error")
         return False
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
-def setup(bot: commands.Bot):
-    bot.add_cog(AdCmds(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(AdCmds(bot))

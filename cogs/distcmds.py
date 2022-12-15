@@ -140,5 +140,5 @@ class DistCmds(commands.Cog, name="Distribution Commands"):
     #msgparts, s1 = msg.split("\n")
     #print(s1)
     
-def setup(bot: commands.Bot):
-    bot.add_cog(DistCmds(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(DistCmds(bot))

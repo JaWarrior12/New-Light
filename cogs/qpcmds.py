@@ -102,5 +102,5 @@ class QPCmds(commands.Cog, name="QuickPing Commands"):
       if isinstance(error, commands.CheckFailure):
           await ctx.send('Error, Required Role: QuickPing, Not Found')
 
-def setup(bot: commands.Bot):
-    bot.add_cog(QPCmds(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(QPCmds(bot))

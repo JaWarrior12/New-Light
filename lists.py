@@ -163,31 +163,3 @@ def checkperms(ctx):
     return False
   else:
     return False
-  #for x in autho:
-    #print(x)
-    #if x == ",":
-      #autho.remove(x)
-      #continue
-  
-  #if uid not in banned:
-    #if uid in developers:
-      #return True
-    #elif uid in authorized:
-      #if gid == NLC and uid in nlcauth:
-        #return True
-      #if gid == BOC and uid in bocauth:
-        #return True
-      #if gid == TestSrvr and uid in tsauth:
-        #return True
-      #if gid == DSR and uid in dsrauth:
-        #return True
-      #if gid == FRF and uid in ffauth:
-        #return True
-    #else:
-      #return False
-  #elif uid in banned:
-    #await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
-    #return False
-  #else:
-    #await ctx.send('Error Code 103: Permission Check Failure. New Light hit a wall when attempting to check your permissions to use commands.')
-    #return False

@@ -122,5 +122,5 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands"):
       if isinstance(error, commands.CheckFailure):
         await ctx.send('Your input does not match any command, for n!calldes please use n!calldes <shipname> or n!calldes all to call specific design groups.')
 
-def setup(bot: commands.Bot):
-    bot.add_cog(DesCmds(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(DesCmds(bot))

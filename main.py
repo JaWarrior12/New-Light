@@ -1,5 +1,6 @@
 import os, discord
 from os import system
+import asyncio
 import time
 import pytz
 import datetime 
@@ -19,7 +20,7 @@ lists.bannedlist()
 intents = discord.Intents.default()
 intents.members = True
 
-client = discord.Client()
+#client = discord.Client()
 
 bot = commands.Bot(command_prefix='t!',intents=intents)
 
@@ -82,25 +83,39 @@ async def on_guild_join(guild):
 
 @bot.event
 async def on_disconnect():
-  tz = pytz.timezone('America/New_York')
-  ct = datetime.datetime.now(tz)
-  print("Disconnected")
-  #print(data)
-  with open("Backups/disconnectlogs.txt", "a+") as o:
-    o.write('\n')
-    o.write(f'New Light Test disconnected from the DISCORD platform at {ct}.')
-    o.write('\n')
+  #if bot.is_closed() == True:
+    tz = pytz.timezone('America/New_York')
+    ct = datetime.datetime.now(tz)
+    print("Disconnected")
+    #print(data)
+    with open("Backups/disconnectlogs.txt", "a+") as o:
+      o.write(f'New Light Test disconnected from the DISCORD platform at {ct}.')
+      o.write('\n\n')
+  #elif bot.is_ws_ratelimited() == True:
+    #tz = pytz.timezone('America/New_York')
+    #ct = datetime.datetime.now(tz)
+    #print("Disconnected")
+    #print(data)
+    #with open("Backups/disconnectlogs.txt", "a+") as o:
+      #o.write(f'New Light Test disconnected from the DISCORD platform at {ct}.')
+      #o.write('\n\n')
+
+
     
 #Load Cogs (My Way)
-bot.load_extension("cogs.errorhand")
-bot.load_extension("cogs.relcmds")
-bot.load_extension("cogs.distcmds")
-bot.load_extension("cogs.descmds")
-bot.load_extension("cogs.qpcmds")
-bot.load_extension("cogs.othercmds")
-bot.load_extension("cogs.econcmds")
-bot.load_extension("cogs.devcmds")
-bot.load_extension("cogs.adcmds")
+async def main():
+  async with bot:
+    await bot.load_extension("cogs.errorhand")
+    await bot.load_extension("cogs.relcmds")
+    await bot.load_extension("cogs.distcmds")
+    await bot.load_extension("cogs.descmds")
+    await bot.load_extension("cogs.qpcmds")
+    await bot.load_extension("cogs.othercmds")
+    await bot.load_extension("cogs.econcmds")
+    await bot.load_extension("cogs.devcmds")
+    await bot.load_extension("cogs.adcmds")
+    await bot.start(os.environ['token'])
+
 
 #Load Cogs Other Way
 #extensions = ['DevCmds']
@@ -111,4 +126,4 @@ bot.load_extension("cogs.adcmds")
 
 #web socket for Uptimerobot to ping, keeps bot online
 keep_alive()
-bot.run(os.environ['token'])
+asyncio.run(main())

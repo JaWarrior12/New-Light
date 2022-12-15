@@ -146,5 +146,5 @@ class OtherCmds(commands.Cog, name="Other Commands"):
       await ctx.send("I Hit a Wall, Try Running The Command Again")
     
 
-def setup(bot: commands.Bot):
-    bot.add_cog(OtherCmds(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(OtherCmds(bot))

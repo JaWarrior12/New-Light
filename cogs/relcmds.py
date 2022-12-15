@@ -51,7 +51,8 @@ class RelCmds(commands.Cog, name="Relations Commands"):
             def find_route(data, route_no):
               return list(filter(lambda x:x.get(st)==clan,datab))
             route = find_route(datab,clan)
-            await ctx.send(route)
+            embed=discord.Embed(title=f'{route[0]["name"]}', description=f'Clan Full Name: {route[0]["name"]}\nClan Abbreviation: {route[0]["abrv"]}\nClan Emoji: {route[0]["emoji"]}\nClan Relation: {route[0]["relation"]}', color=0xFF5733)
+            await ctx.send(embed=embed)
           except KeyError:
             await ctx.send(f'KeyError: {clan} Is not in the relations database. Either {clan} has not been entered into the list by a clan leader or it is listed under a different key.')
         else:
@@ -137,8 +138,8 @@ class RelCmds(commands.Cog, name="Relations Commands"):
         lists.logback(ctx,clan)
         mesg = str(gid)
         if chk == True:
-              await ctx.send('List of All Relations')
-              await ctx.send(dumps(lists.readdataB()[mesg]).replace(': "',' = ').replace('{','').replace(',','\n').replace('}','').replace('"',''))
+          await ctx.send('List of All Relations')
+          await ctx.send(dumps(lists.readdataB()[mesg]).replace(': "',' = ').replace('{','').replace(',','\n').replace('}','').replace('"',''))
         else:
           await ctx.send('Error')
           return False
@@ -161,5 +162,5 @@ class RelCmds(commands.Cog, name="Relations Commands"):
     route = find_route(datab,arg)
     await ctx.send(route)
 
-def setup(bot: commands.Bot):
-    bot.add_cog(RelCmds(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(RelCmds(bot))

@@ -2,7 +2,7 @@ import os, discord
 import time
 import pytz
 import datetime 
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
@@ -29,7 +29,7 @@ TestSrvr = lists.TestSrvr
 DSR = lists.DSR
 FRF = lists.FRF
 
-class RelCmds(commands.Cog, name="Relations Commands"):
+class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relations Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 

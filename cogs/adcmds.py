@@ -2,7 +2,7 @@ import os, discord
 import time
 import pytz
 import datetime 
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
@@ -31,7 +31,7 @@ TestSrvr = lists.TestSrvr
 DSR = lists.DSR
 FRF = lists.FRF
 
-class AdCmds(commands.Cog, name="Admin Tools"):
+class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tools"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     
@@ -41,16 +41,16 @@ class AdCmds(commands.Cog, name="Admin Tools"):
     if ctx.message.author.id in developers:
       keya = "all"
       keyb = "ban"
-      gid = str(ctx.message.guild.id)
+      gid=str(ctx.message.guild.id)
       data = dumps(lists.readdataE()[keyb])
       if str(user) in banned:
         await ctx.send(f'The User With An Id Of {user} Is Already In The Ban List')
       else:
         data = lists.readdataE()
         banlt=data
-        await ctx.send(banlt)
+        #await ctx.send(banlt)
         banlt["ban"].append(str(user))
-        await ctx.send(banlt)
+        #await ctx.send(banlt)
         lists.setdataE(banlt)
         await ctx.send(f'The User With A User Id Of {user} has been BANNED from using New Light')
         lists.bannedlist()
@@ -92,13 +92,18 @@ class AdCmds(commands.Cog, name="Admin Tools"):
   @commands.command(name="authus",hidden=True)
   async def authus(self,ctx,guild,user):
     if ctx.message.author.id in developers:
-      data=lists.readdataE()
-      authlt=data#[str(guild)]["auth"]
-      #await ctx.send(authlt)
-      authlt[str(guild)]["auth"].extend(str(user))
-      #await ctx.send(authlt)
-      lists.setdataE(authlt)
-      await ctx.send(f'User With An ID Of {user} has been deauthorized in the guild with an id of {guild}.')
+      gid =str(guild)
+      data = dumps(lists.readdataE()[gid]["auth"])
+      if str(user) in data:
+        await ctx.send(f'The User With An Id Of {user} Is Already In The Ban List')
+      else:
+        data = lists.readdataE()
+        banlt=data
+        #await ctx.send(banlt)
+        banlt[gid]["auth"].append(str(user))
+        #await ctx.send(banlt)
+        lists.setdataE(banlt)
+        await ctx.send(f'The User With A User Id Of {user} has been Authorized.')
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 

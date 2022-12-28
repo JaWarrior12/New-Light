@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NL Ping Page</title>
+     <base target="_top">
+     <style>
+       .base {
+         width: 200px;
+         height: 250px;
+         padding: 10px;
+         border: 6px dotted black;
+         margin: 0;
+         color: black;
+         text-align: center;
+         background-color: lightBlue;
+         float: right;
+       }
+       .head {
+         color: goldenrod;
+         font-size: 200%;
+         text-align: center;
+       }
+       hr.solid {
+         border-top: 5px solid #40F110;
+       }
+       hr.dashed {
+         border-top: 3px dashed black;
+       }
+       a:link {
+        color: darkblue;
+        background-color: transparent;
+        text-decoration: none;
+       }
+      
+       a:visited {
+        color: grey;
+        background-color: transparent;
+        text-decoration: none;
+       }
+      
+       a:hover {
+        color: goldenrod;
+        background-color: transparent;
+        text-decoration: none;
+       }
+      
+       a:active {
+        color: yellow;
+        background-color: transparent;
+        text-decoration: none;
+     </style>
+    <div class="head">
+      <h1>New Light Ping Page</h1>
+    </div>
+  </head>
+  <body style="background-color:lightblue;">
+    <hr class=solid>
+    <p style="text-align:center; word-wrap:normal;" name="caller" value="submit">Welcome! This is the latest update to New Light! You can now remotely ping a server without having access to the Discord site. Simply input the link in the textbox, select the clan you wish to ping, and click Ping Server! You will be redirected right back here, so you can ping multiple servers if you wish.</p>
+    <h3>Thank You For Using New Light, Your Ping Has Been Sent To The Server!</h3>
+  </br>
+    <p>Click the button to return to the Ping Page!</p>
+    <form method = 'POST'>
+      <button name="btn" value="submit" onclick="myFunction()">Return To Ping Page</button>
+    </form>
+    <script>
+      function myFunction() {
+        document.forms[0].submit();
+      }
+    </script>
+  </body>
+  <footer style="text-align:center">
+    <a href="https://discord.gg/WGmCS7pJ48" style="text-align:center">New Light Development Discord Server</a>
+    <a href="https://drednot.io" style="text-align:center; padding:15px;">Drednot.io</a>
+  </footer>
+</html>

@@ -2,9 +2,10 @@ import os, discord
 import time
 import pytz
 import datetime 
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
+from discord import app_commands
 from discord import Member
 from discord import Permissions
 from json import loads, dumps
@@ -31,7 +32,9 @@ TestSrvr = lists.TestSrvr
 DSR = lists.DSR
 FRF = lists.FRF
 
-class DevCmds(commands.Cog, name="Developer Commands"):
+#client = discord.Client()
+
+class DevCmds(commands.Cog, name="Developer Commands",description="Developer Commands + Setupserver command"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
@@ -54,7 +57,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
       print('Shutting Down')
       await ctx.send('Shutting Down New Light')
       startup()
-      await main.bot.close()
+      await self.bot.close()
       #await main.bot.logout()
     else:
       print(ctx.message.author.id)
@@ -190,14 +193,15 @@ class DevCmds(commands.Cog, name="Developer Commands"):
       base_string += "\n```"
       await ctx.send(base_string)
     else:
-      ctx.send("Not A Dev")
+      await ctx.send("Not A Dev")
 
-  @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list.")
+  @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.")
   @commands.has_permissions(administrator=True)
-  async def setupsrvr(self,ctx):
+  async def setupsrvr(self,ctx,pingchannel):
         msg = None
         lists.logback(ctx,msg)
         msgb = "a b"
+        pc=int(pingchannel)
     #if ctx.message.author.id in developers:
       # check if all elements in ls are integers
       #if all([isinstance(item, int) for item in authUs]) == True:
@@ -206,6 +210,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
+        defaultc={"auth":[],"pingchannel":pc}
         data = lists.readdata()
         data[gid]=dict(default)
         lists.setdata(data)
@@ -219,7 +224,7 @@ class DevCmds(commands.Cog, name="Developer Commands"):
         data[gid]=dict(default)
         lists.setdataD(data)
         data = lists.readdataE()
-        data[gid]=dict(default)
+        data[gid]=dict(defaultc)
         lists.setdataE(data)
         data = lists.readdataE()
         banlt=data
@@ -288,6 +293,21 @@ class DevCmds(commands.Cog, name="Developer Commands"):
         lists.bannedlist()
     else:
       await ctx.send("You are not a developer and cannot use this command")
+
+  #@commands.Cog.listener()
+  #async def on_message(self,msg):
+   # print(msg.content)
+    #mes = msg.content
+    #if "https://" in mes:
+      #await msg.delete()
+
+  @commands.command(name='sync', description='Owner only')
+  async def sync(self,ctx):
+    if ctx.message.author.id in developers:
+        await self.bot.tree.sync()
+        print('Command tree synced.')
+    else:
+        await ctx.send('You must be the owner to use this command!')
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(DevCmds(bot))

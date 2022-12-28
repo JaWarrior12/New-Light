@@ -10,3 +10,23 @@ Command run at 2022-12-13 14:09:22.958211-05:00, by JaMinecrafter13 (User ID: 93
 Command run at 2022-12-13 14:11:02.823351-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
 
 Command run at 2022-12-13 14:11:39.740895-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
+
+Command run at 2022-12-16 13:19:45.256032-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2022-12-16 13:20:27.235007-05:00, by JaMinecrafter13 (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2022-12-27 10:17:50.564319-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: backup, Command Contents: None
+
+Command run at 2022-12-27 20:09:56.107386-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.help
+
+Command run at 2022-12-27 20:12:16.920588-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.help
+
+Command run at 2022-12-27 20:13:33.673102-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.help
+
+Command run at 2022-12-27 20:20:26.203020-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.help
+
+Command run at 2022-12-27 20:21:26.016284-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2022-12-27 20:22:34.129173-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.help
+
+Command run at 2022-12-28 15:06:15.516231-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: backup, Command Contents: None

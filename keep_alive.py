@@ -8,7 +8,10 @@ import lists
 
 
 app = Flask(__name__)
-
+app.config.update(
+    #TESTING=True,
+    TEMPLATES_AUTO_RELOAD=True
+)
 
 @app.route('/')
 def home():

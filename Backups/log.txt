@@ -1,0 +1,2 @@
+
+Command run at 2023-01-04 07:54:06.825053-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: shutdown, Command Contents: None

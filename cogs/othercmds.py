@@ -3,17 +3,22 @@ from os import system
 import time
 import pytz
 import datetime 
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
+from discord import app_commands
 from discord.ext.commands import has_permissions, MissingPermissions
 from json import loads, dumps
-from backup import backup
-from startup import startup
+#from backup import backup
+#from startup import startup
 
 #Lists
 import lists
+
+#import tk
+
+#tk.window()
 #Auth For Leadership Commands
 #authorized = lists.authorized
 banned = lists.banned
@@ -31,9 +36,13 @@ TestSrvr = lists.TestSrvr
 DSR = lists.DSR
 FRF = lists.FRF
 
-class OtherCmds(commands.Cog, name="Other Commands"):
+bots=0
+
+class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands + AuthUser + Invitehelp + Pingpage"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+    global bots
+    bots=self.bot
 
   @commands.command(name='test',brief='Test Command for devs.',hidden=True)
   @commands.has_role('Developer')
@@ -144,7 +153,23 @@ class OtherCmds(commands.Cog, name="Other Commands"):
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     else:
       await ctx.send("I Hit a Wall, Try Running The Command Again")
-    
 
+  @commands.hybrid_command()
+  async def slash(self,ctx):
+    await ctx.send("Hi! I can use slash commands now!")
+
+  @commands.command(name="pingpage",aliases=["pinger","ppage","p"])
+  async def pingpage(self,ctx):
+    await ctx.send("New Light Ping Page: https://new-light-test.jawarrior.repl.co")
+
+    
 async def setup(bot: commands.Bot):
     await bot.add_cog(OtherCmds(bot))
+
+
+async def hey(link):
+  myguild = bots.get_guild(1031900634741473280)
+  channel = myguild.get_channel(1037788623015268444)
+  await channel.send(f'{link}')
+
+  

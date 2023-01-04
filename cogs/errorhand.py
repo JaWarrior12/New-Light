@@ -4,7 +4,7 @@ import pytz
 import datetime
 import traceback
 import sys
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
@@ -12,7 +12,7 @@ from json import loads, dumps
 from backup import backup
 from startup import startup
 
-class ErrorHandling(commands.Cog):
+class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 

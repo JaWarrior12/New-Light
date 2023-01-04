@@ -7,7 +7,7 @@ import datetime
 import urllib.request
 import requests
 import gzip
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
@@ -35,7 +35,7 @@ TestSrvr = lists.TestSrvr
 DSR = lists.DSR
 FRF = lists.FRF
 
-class EconCmds(commands.Cog, name="Dredark Economy Dump Commands"):
+class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 

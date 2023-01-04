@@ -4,7 +4,7 @@ import pytz
 import datetime
 import gzip
 import requests
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member

@@ -2,7 +2,7 @@ import os, discord
 import time
 import datetime
 import pytz
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 from discord.ext import commands
 from json import loads, dumps
 from startup import startup

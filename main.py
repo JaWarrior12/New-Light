@@ -26,7 +26,7 @@ intents.members = True
 
 
 
-bot = commands.Bot(command_prefix='t!',intents=intents)
+bot = commands.Bot(command_prefix='n!',intents=intents)
 
 value = bot
 
@@ -67,7 +67,7 @@ version = "3.4.0"
 async def on_ready():  # When the bot is ready
     print("I'm in")
     print(bot.user)  # Prints the bot's username and identifier
-    activity = discord.Game(name=f"JaWarrior.py & t!help. Version: {version}", type=3)
+    activity = discord.Game(name=f"JaWarrior.py & n!help. Version: {version}", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     await asyncio.sleep(5)
     await my_task.start()
@@ -97,10 +97,10 @@ async def on_disconnect():
     print("Disconnected")
     #print(data)
     with open("Backups/disconnectlogs.txt", "a+") as o:
-      o.write(f'New Light Test disconnected from the DISCORD platform at {ct}.')
+      o.write(f'New Light disconnected from the DISCORD platform at {ct}.')
       o.write('\n\n')
 
-@tasks.loop(minutes=5)
+@tasks.loop(seconds=30)
 async def my_task():
   #print(my_task.next_iteration)
   data = lists.readother()
@@ -119,7 +119,9 @@ async def my_task():
       link=x[1]
       pc=chan[str(clan)]["pingchan"]
       myguild = bot.get_guild(int(clan))
+      print(int(clan))
       channel = myguild.get_channel(int(pc))
+      print(channel)
       await channel.send(f'@here {link}')
       data["pinglinks"].remove(x)
       lists.setother(data)

@@ -210,7 +210,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[],"pingchannel":pc}
+        defaultc={"auth":[],"pingchan":pc}
         data = lists.readdata()
         data[gid]=dict(default)
         lists.setdata(data)

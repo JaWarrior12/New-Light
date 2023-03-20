@@ -26,7 +26,7 @@ intents.members = True
 
 
 
-bot = commands.Bot(command_prefix='t!',intents=intents)
+bot = commands.Bot(command_prefix='n!',intents=intents)
 
 value = bot
 
@@ -60,14 +60,14 @@ bot.help_command = MyHelp()
 
 #bot.remove_command('help')
 
-version = "3.4.0"
+version = "3.4.2"
 
 
 @bot.event
 async def on_ready():  # When the bot is ready
     print("I'm in")
     print(bot.user)  # Prints the bot's username and identifier
-    activity = discord.Game(name=f"JaWarrior.py & t!help. Version: {version}", type=3)
+    activity = discord.Game(name=f"JaWarrior.py & n!help. Version: {version}", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     await asyncio.sleep(5)
     await my_task.start()
@@ -78,16 +78,18 @@ async def on_ready():  # When the bot is ready
 async def on_guild_join(guild):
     #guild=before
     myguild = bot.get_guild(1031900634741473280)
-    channel = myguild.get_channel(1037788623015268444)
+    mychannel = myguild.get_channel(1037788623015268444)
     invite = await guild.system_channel.create_invite(reason="Inviting My Developer To Your Amazing Server!")
 
     e = discord.Embed(title="I've joined a server.")
     e.add_field(name="Server Name", value=guild.name, inline=False)
     e.add_field(name="Invite Link", value=invite, inline=False)
     e.set_thumbnail(url=guild.icon_url)
-    await channel.send(embed=e)
-    await channel.send(f'Guild Name: {guild}')
-    await channel.send(f'Guild Id: {guild.id}')
+    tz = pytz.timezone('America/New_York')
+    e.timestamp=datetime.datetime.now(tz)
+    await mychannel.send(embed=e)
+    await mychannel.send(f'Guild Name: {guild}')
+    await mychannel.send(f'Guild Id: {guild.id}')
 
 @bot.event
 async def on_disconnect():
@@ -97,10 +99,10 @@ async def on_disconnect():
     print("Disconnected")
     #print(data)
     with open("Backups/disconnectlogs.txt", "a+") as o:
-      o.write(f'New Light Test disconnected from the DISCORD platform at {ct}.')
+      o.write(f'New Light disconnected from the DISCORD platform at {ct}.')
       o.write('\n\n')
 
-@tasks.loop(minutes=5)
+@tasks.loop(seconds=30)
 async def my_task():
   #print(my_task.next_iteration)
   data = lists.readother()
@@ -119,7 +121,9 @@ async def my_task():
       link=x[1]
       pc=chan[str(clan)]["pingchan"]
       myguild = bot.get_guild(int(clan))
+      print(int(clan))
       channel = myguild.get_channel(int(pc))
+      print(channel)
       await channel.send(f'@here {link}')
       data["pinglinks"].remove(x)
       lists.setother(data)

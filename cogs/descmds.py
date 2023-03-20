@@ -52,7 +52,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
   @commands.command(name='adddes', brief="Adds A Design To The Ship Design Database", help="Adds a design to the ship design database. Args: <ShipName (NO SPACES)> {Design Image (First and Only Attachment)}")
   async def savedesigns(self,ctx, *, design):
     msg="a b"
-    if ctx.message.author.id not in banned:
+    if str(ctx.message.author.id) not in banned:
       try:
         gid = str(ctx.message.guild.id)
         msgparts, data = msg.split(" "), lists.readdataD()

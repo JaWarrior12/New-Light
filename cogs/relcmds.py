@@ -108,7 +108,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
           
   
   @commands.command(name="addrel",help="Adds a relation to a clan's relation database. Format: n!addrel relation emoji clan_abbreviation clan_full_name; \n-The abbreviation must be 4 letters or less, the full name can have spaces.")
-  async def addrel(self,ctx,relation,emoji,abrv,*,full_name):
+  async def addrel(self,ctx,relation,emoji=None,abrv=None,*,full_name):
         msg="a b"
         #msgparts, data = msg.split(" "), lists.readdataB()
         msgb = str(emoji+" "+relation+" "+abrv+" "+full_name)

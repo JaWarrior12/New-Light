@@ -76,6 +76,7 @@ async def on_ready():  # When the bot is ready
 
 @bot.event
 async def on_guild_join(guild):
+  if lists.checkguild(bot,guild) == False:
     #guild=before
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)
@@ -90,6 +91,8 @@ async def on_guild_join(guild):
     await mychannel.send(embed=e)
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
+  else:
+    print("Left Banned Guild")
 
 @bot.event
 async def on_disconnect():

@@ -16,6 +16,7 @@ from startup import startup
 authorized = [949451462151376948, 722703947638505556, 445763770799620097, 907899780561272842, 872718294023569408,930806975950909451]
 banned = 0 #[948934984088035408,975761604975153233]
 developers = [949451462151376948,722703947638505556,930284432634556496]
+bannedGuilds=[]
 
 #Authorized Based On Clan
 #Self ID=974045822167679087
@@ -162,5 +163,24 @@ def checkperms(ctx):
       return False
   elif str(uid) in banned:
     return False
+  else:
+    return False
+
+async def checkguild(bot,guild):
+  if int(guild.id) in bannedGuilds:
+    await guild.leave()
+    myguild = bot.get_guild(1031900634741473280)
+    mychannel = myguild.get_channel(1037788623015268444)
+    invite = await guild.system_channel.create_invite(reason="Notifying My Developer That I Have Been Invited To A Server That Has Been Banned From Using Me")
+    e = discord.Embed(title="Invited To Banned Server")
+    e.add_field(name="Server Name", value=guild.name, inline=False)
+    e.add_field(name="Invite Link", value=invite, inline=False)
+    e.set_thumbnail(url=guild.icon_url)
+    tz = pytz.timezone('America/New_York')
+    e.timestamp=datetime.datetime.now(tz)
+    await mychannel.send(embed=e)
+    await mychannel.send(f'Guild Name: {guild}')
+    await mychannel.send(f'Guild Id: {guild.id}')
+    return True
   else:
     return False

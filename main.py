@@ -60,7 +60,7 @@ bot.help_command = MyHelp()
 
 #bot.remove_command('help')
 
-version = "3.4.0"
+version = "3.4.2"
 
 
 @bot.event
@@ -78,16 +78,18 @@ async def on_ready():  # When the bot is ready
 async def on_guild_join(guild):
     #guild=before
     myguild = bot.get_guild(1031900634741473280)
-    channel = myguild.get_channel(1037788623015268444)
+    mychannel = myguild.get_channel(1037788623015268444)
     invite = await guild.system_channel.create_invite(reason="Inviting My Developer To Your Amazing Server!")
 
     e = discord.Embed(title="I've joined a server.")
     e.add_field(name="Server Name", value=guild.name, inline=False)
     e.add_field(name="Invite Link", value=invite, inline=False)
     e.set_thumbnail(url=guild.icon_url)
-    await channel.send(embed=e)
-    await channel.send(f'Guild Name: {guild}')
-    await channel.send(f'Guild Id: {guild.id}')
+    tz = pytz.timezone('America/New_York')
+    e.timestamp=datetime.datetime.now(tz)
+    await mychannel.send(embed=e)
+    await mychannel.send(f'Guild Name: {guild}')
+    await mychannel.send(f'Guild Id: {guild.id}')
 
 @bot.event
 async def on_disconnect():

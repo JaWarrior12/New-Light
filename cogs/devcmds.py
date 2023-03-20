@@ -198,6 +198,8 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
   @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.")
   @commands.has_permissions(administrator=True)
   async def setupsrvr(self,ctx,pingchannel):
+      servers=lists.readdata()
+      if str(ctx.message.guild.id) not in servers.keys():
         msg = None
         lists.logback(ctx,msg)
         msgb = "a b"
@@ -232,7 +234,10 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
         lists.setdataE(banlt)
         server = ctx.message.guild
         await server.create_role(name="QuickPing")
-        await server.create_role(name="OfficialMember")
+      else:
+        await ctx.send("Server already setup.")
+
+        #await server.create_role(name="OfficialMember")
         #datac = dumps(lists.readdataE())
       #else:
         #await ctx.send("The AuthorizedUsers list can only be User Id's, only integers are allowed in the list.")
@@ -308,6 +313,16 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
         print('Command tree synced.')
     else:
         await ctx.send('You must be the owner to use this command!')
+
+  @commands.command(name='joindate', description='Checks Join Date Of New Light', hidden=True)
+  async def joindata(self,ctx):
+    if ctx.message.author.id in developers:
+      me=ctx.message.guild.get_member(974045822167679087)
+      date=me.joined_at
+      converteddate=date.astimezone(pytz.timezone('US/Eastern'))
+      await ctx.message.author.send(f'I joined {ctx.message.guild.name} at {converteddate} (EST).')
+    else:
+      await ctx.send('You must be the owner to use this command!')
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(DevCmds(bot))

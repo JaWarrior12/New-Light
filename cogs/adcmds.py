@@ -113,10 +113,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
       names=[]
       ids=[]
       for guild in self.bot.guilds:
-        names.append(guild.name)
-        ids.append(guild.id)
-      await ctx.send(names)
-      await ctx.send(ids)
+        await ctx.send(f'Name:{guild.name}; ID:{guild.id}')
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
@@ -194,11 +191,11 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
         with open("Backups/disconnectlogs.txt", "w") as g:
           g.write(' ')
           await ctx.send("Cleared Disconnect Log")
-      elif function=="disr":
+      elif function=="bckr":
         with open("Backups/bcklog.txt", "r") as g:
           lines = g.readlines()
         await ctx.send(lines[int(min):int(max)])
-      elif function=="bckr":
+      elif function=="disr":
         with open("Backups/disconnectlogs.txt", "r") as g:
           lines = g.readlines()
         await ctx.send(lines[int(min):int(max)])

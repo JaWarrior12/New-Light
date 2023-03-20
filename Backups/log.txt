@@ -1,46 +1,140 @@
+ 
+Command run at 2023-03-17 14:56:54.756507-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
 
-Command run at 2023-01-04 07:54:06.825053-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: shutdown, Command Contents: None
+Command run at 2023-03-17 15:00:41.314576-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
 
-Command run at 2023-01-06 09:59:55.870951-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.descmds
+Command run at 2023-03-17 15:11:34.638841-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: shutdown, Command Contents: None
 
-Command run at 2023-01-06 10:00:07.162124-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: adddes, Command Contents: hong
+Command run at 2023-03-17 15:23:26.575064-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: addmember, Command Contents: Gameking1happy#4559
 
-Command run at 2023-01-06 10:00:18.805571-05:00, by JaWarrior (User ID: 930284432634556496), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: calldes, Command Contents: hong
+Command run at 2023-03-17 15:42:50.700982-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: addmember, Command Contents: Gameking1happy#4559
 
-Command run at 2023-01-06 10:00:42.203512-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: adddes, Command Contents: hong
+Command run at 2023-03-17 15:47:37.551178-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: setupserver, Command Contents: None
 
-Command run at 2023-01-07 16:12:56.727696-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: 🔰 Enemy GA Guardian Angels
+Command run at 2023-03-17 15:48:27.494374-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: setupserver, Command Contents: None
 
-Command run at 2023-01-07 16:13:06.098310-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: rel, Command Contents: 🔰
+Command run at 2023-03-17 15:52:53.556659-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: setupserver, Command Contents: None
 
-Command run at 2023-01-07 16:14:11.042723-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: ☯️ Ally God God
+Command run at 2023-03-17 15:56:09.100377-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: addmember, Command Contents: Gameking1happy#4559
 
-Command run at 2023-01-07 16:14:15.671382-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: rel, Command Contents: god
+Command run at 2023-03-17 15:56:37.724871-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: addmember, Command Contents: Gameking1happy#4559
 
-Command run at 2023-01-07 16:14:19.683358-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: rel, Command Contents: God
+Command run at 2023-03-17 15:56:57.390984-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: balall, Command Contents: GK1H/Gamekings Everything
 
-Command run at 2023-01-07 16:15:08.047239-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: 🍀 Ally clover Chaos
+Command run at 2023-03-17 16:09:21.531548-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: qp, Command Contents: test
 
-Command run at 2023-01-07 16:15:27.680818-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: 🏛️ Neutral HL Hellenic League
+Command run at 2023-03-17 16:09:53.287754-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: qp, Command Contents: https://drednot.io/invite/LW4hB2MOZ-wl8qYjLZGGJALQ
 
-Command run at 2023-01-07 16:15:52.105263-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: 🥔 Neutral PH Potato Hub
+Command run at 2023-03-17 16:10:13.784383-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: qp, Command Contents: https://drednot.io/invite/LW4hB2MOZ-wl8qYjLZGGJALQ TEST
 
-Command run at 2023-01-07 16:16:08.672334-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: 💣 Neutral Reg Regulators
+Command run at 2023-03-17 16:10:32.504198-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: qp, Command Contents: https://drednot.io/invite/LW4hB2MOZ-wl8qYjLZGGJALQ
 
-Command run at 2023-01-07 16:16:28.689004-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: 🐅 Neutral Coug Cougar
+Command run at 2023-03-17 16:10:48.854189-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: qp, Command Contents: TEST
 
-Command run at 2023-01-07 16:17:33.735143-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: 👑 Neutral Clown Crown
+Command run at 2023-03-17 16:11:15.336062-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: qpdel, Command Contents: TEST
 
-Command run at 2023-01-07 16:17:40.294820-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: rel, Command Contents: Clown
+Command run at 2023-03-17 16:40:13.226211-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: addmember, Command Contents: Gameking1happy#4559
 
-Command run at 2023-01-07 16:17:48.897595-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: rel, Command Contents: clown
+Command run at 2023-03-17 16:40:42.448319-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: balall, Command Contents: GK1H/Gamekings Everything
 
-Command run at 2023-01-07 16:17:52.883815-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: rel, Command Contents: Crown
+Command run at 2023-03-17 16:41:08.935363-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: logloot, Command Contents: Gameking1happy#4559 test 1
 
-Command run at 2023-01-07 16:18:30.897470-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: 👻 Neutral RG Russian Ghosts
+Command run at 2023-03-17 16:41:17.964757-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: logloot, Command Contents: Gameking1happy#4559 flux 1
 
-Command run at 2023-01-07 16:18:39.492599-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: relall, Command Contents: None
+Command run at 2023-03-17 16:41:44.241794-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: logloot, Command Contents: Gameking1happy#4559 flux -1
 
-Command run at 2023-01-07 16:20:47.723053-05:00, by JaWarrior (User ID: 930284432634556496), in server Bounty Hunters | Dredark & Minecraft (Server ID: 972737966411763722). Command Run: addrel, Command Contents: ⏰ Neutral OOT Out Of Time
+Command run at 2023-03-17 16:42:05.414287-04:00, by Gameking1happy (User ID: 709872464926212197), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: rel, Command Contents: 🌐
 
-Command run at 2023-01-09 17:44:17.122150-05:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: backup, Command Contents: None
+Command run at 2023-03-17 16:42:25.387500-04:00, by Gameking1happy (User ID: 709872464926212197), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: rel, Command Contents: New Light
+
+Command run at 2023-03-17 16:43:06.452605-04:00, by Gameking1happy (User ID: 709872464926212197), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: rel, Command Contents: e
+
+Command run at 2023-03-17 16:44:18.073369-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: rel, Command Contents: t
+
+Command run at 2023-03-17 16:44:31.049110-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: rel, Command Contents: GKs
+
+Command run at 2023-03-17 16:44:37.163406-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: relall, Command Contents: None
+
+Command run at 2023-03-17 18:21:39.867535-04:00, by Gameking1happy (User ID: 709872464926212197), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: rel, Command Contents: 🌐
+
+Command run at 2023-03-17 18:21:55.119027-04:00, by Gameking1happy (User ID: 709872464926212197), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: rel, Command Contents: 🌐
+
+Command run at 2023-03-17 19:49:49.277508-04:00, by Gameking1happy (User ID: 709872464926212197), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: rel, Command Contents: 🌐
+
+Command run at 2023-03-17 19:49:59.468023-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: rel, Command Contents: 🌐
+
+Command run at 2023-03-17 19:50:05.199632-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: rel, Command Contents: .
+
+Command run at 2023-03-17 19:50:18.382553-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: rel, Command Contents: 🎮
+
+Command run at 2023-03-17 19:50:29.799039-04:00, by Gameking1happy (User ID: 709872464926212197), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: relall, Command Contents: None
+
+Command run at 2023-03-17 19:50:43.981423-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: relall, Command Contents: None
+
+Command run at 2023-03-17 19:51:17.617632-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: reset, Command Contents: Gameking1happy#4559 flux
+
+Command run at 2023-03-17 19:51:31.532420-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: balance, Command Contents: Gameking1happy#4559
+
+Command run at 2023-03-17 19:51:43.783650-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: logloot, Command Contents: Gameking1happy#4559 flux 1000
+
+Command run at 2023-03-17 19:51:57.601243-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: reset, Command Contents: Gameking1happy#4559 flux
+
+Command run at 2023-03-17 19:52:04.559522-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: balance, Command Contents: Gameking1happy#4559
+
+Command run at 2023-03-17 20:29:00.765137-04:00, by JaWarrior (User ID: 930284432634556496), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: relall, Command Contents: None
+
+Command run at 2023-03-17 20:29:30.876494-04:00, by Gameking1happy (User ID: 709872464926212197), in server 🌐New Light Clan🌐 (Server ID: 754778020639932516). Command Run: rel, Command Contents: 🌐
+
+Command run at 2023-03-20 08:48:46.610070-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
+
+Command run at 2023-03-20 08:49:07.886772-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.adcmds
+
+Command run at 2023-03-20 08:55:41.331094-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
+
+Command run at 2023-03-20 08:56:54.009192-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: authlist, Command Contents: none
+
+Command run at 2023-03-20 08:57:18.916131-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
+
+Command run at 2023-03-20 08:57:27.943074-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: authlist, Command Contents: none
+
+Command run at 2023-03-20 09:20:10.568668-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-03-20 09:20:58.986865-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-03-20 09:22:17.059922-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-03-20 09:23:50.194042-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-03-20 09:24:11.976907-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-03-20 09:24:26.190494-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-03-20 09:24:39.776285-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-03-20 09:28:25.677108-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-03-20 14:04:16.421979-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: defaultbal, Command Contents: flux
+
+Command run at 2023-03-20 14:04:30.956270-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Contents: New Light Development Server
+
+Command run at 2023-03-20 14:04:37.383524-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: addmember, Command Contents: JaWarrior#1305
+
+Command run at 2023-03-20 14:05:34.806103-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Contents: New Light Development Server
+
+Command run at 2023-03-20 14:07:28.571549-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.distcmds
+
+Command run at 2023-03-20 14:07:36.601166-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: defaultbal, Command Contents: flux
+
+Command run at 2023-03-20 14:07:46.485089-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: addmember, Command Contents: JaWarrior#1305
+
+Command run at 2023-03-20 14:08:49.093265-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.distcmds
+
+Command run at 2023-03-20 14:08:59.997006-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: addmember, Command Contents: JaWarrior#1305
+
+Command run at 2023-03-20 14:09:59.459441-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.distcmds
+
+Command run at 2023-03-20 14:10:04.424383-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: addmember, Command Contents: JaWarrior#1305
+
+Command run at 2023-03-20 14:11:30.761375-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.distcmds
+
+Command run at 2023-03-20 14:11:32.912780-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: addmember, Command Contents: JaWarrior#1305

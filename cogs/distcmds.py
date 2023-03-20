@@ -93,10 +93,18 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
         lists.logback(ctx,member)
-        inputv = {"flux":0,"loaders":0,"rcs":0,"pushers":0}
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
         if chk == True:
+          inputv={}
+          keylist=lists.readother()["defaultdist"].keys
+          
+          if str(ctx.message.author.id) in keylosi:
+            items=lists.readother()["defaultdist"][str(ctx.message.guild.id)]
+            for x in items:
+              inputv.update({str(x):0})
+          else:
+            inputv = {"flux":0,"loaders":0,"rcs":0,"pushers":0}
           data[gid][str(member)]=dict(inputv)
           lists.setdata(data)
           await ctx.send(f'Added {member} to the distribution list in {ctx.message.guild.name}')
@@ -135,10 +143,20 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         else:
           return False
 
-  #@commands.Cog.listener()
-  #async def on_message(self, ctx, msg):
-    #msgparts, s1 = msg.split("\n")
-    #print(s1)
-    
+  @commands.command(name="defaultbal",description="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs")
+  async def defaultbal(self,ctx,*,items):
+    if str(ctx.message.author.id) not in banned:
+      chk = lists.checkperms(ctx)
+      lists.logback(ctx,items)
+      if chk == True:
+        list=items.split(";")
+        data=lists.readother()
+        data["defaultdist"][str(ctx.message.guild.id)]=list
+        lists.setother(data)
+        await ctx.send("Updated Default Balance")
+      else:
+        await ctx.send("Unauhtorized To Use Leadership Commands")
+    else:
+      await ctx.send("Your ID Is In The Banned List.")
 async def setup(bot: commands.Bot):
     await bot.add_cog(DistCmds(bot))

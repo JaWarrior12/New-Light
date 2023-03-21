@@ -76,7 +76,9 @@ async def on_ready():  # When the bot is ready
 
 @bot.event
 async def on_guild_join(guild):
-  if lists.checkguild(bot,guild) == False:
+  if int(guild.id) in lists.bannedGuild:
+    await lists.checkguild(bot,guild)
+  else:
     #guild=before
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)
@@ -85,7 +87,7 @@ async def on_guild_join(guild):
     e = discord.Embed(title="I've joined a server.")
     e.add_field(name="Server Name", value=guild.name, inline=False)
     e.add_field(name="Invite Link", value=invite, inline=False)
-    e.set_thumbnail(url=guild.icon_url)
+    e.set_thumbnail(url=guild.icon)
     tz = pytz.timezone('America/New_York')
     e.timestamp=datetime.datetime.now(tz)
     await mychannel.send(embed=e)

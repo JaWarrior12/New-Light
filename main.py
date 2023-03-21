@@ -144,6 +144,7 @@ async def main():
     await bot.load_extension("cogs.devcmds")
     await bot.load_extension("cogs.adcmds")
     await bot.load_extension("cogs.slashcmds")
+    await bot.load_extension("cogs.setupcmds")
     #await tree.sync()
     my_console.start()
     await bot.start(os.environ['token'])

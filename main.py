@@ -93,8 +93,6 @@ async def on_guild_join(guild):
     await mychannel.send(embed=e)
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
-  else:
-    print("Left Banned Guild")
 
 @bot.event
 async def on_disconnect():

@@ -20,9 +20,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
-  @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.")
+  @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan.")
   @commands.has_permissions(administrator=True)
-  async def setupsrvr(self,ctx,pingChannel=None,distroChannel=None):
+  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None):
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
         msg = None
@@ -34,9 +34,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel)}
+        defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":int(clanPercent),"distship":str(distShip)}
+        defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0}}
         data = lists.readdata()
-        data[gid]=dict(default)
+        data[gid]=dict(defaultd)
         lists.setdata(data)
         data = lists.readdataB()
         data[gid]=dict(default)
@@ -160,5 +161,17 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
 
+  @app_commands.command(name="serverconfig",description="Server Config Command\nSetting is e")
+  @app_commands.choices(option=[
+      app_commands.Choice(name="Ping Channel", value="pingchan"),
+      app_commands.Choice(name="Distribution Channel", value="distchan"),
+      app_commands.Choice(name="Clan Percent",value="clanPercent")
+    ])
+  async def servconfig(self,ctx,option: app_commands.Choice[str]):
+    data=lists.readdataE()
+    data[str(ctx.message.guild.id)][str(option)]=int(value)
+    lists.setdataE(data)
+    await ctx.send(f'Changed {str(option)} to {int(value)}')
+    
 async def setup(bot: commands.Bot):
     await bot.add_cog(SetupCmds(bot))

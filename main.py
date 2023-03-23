@@ -60,7 +60,7 @@ bot.help_command = MyHelp()
 
 #bot.remove_command('help')
 
-version = "3.4.2"
+version = "3.4.3"
 
 
 @bot.event
@@ -107,6 +107,7 @@ async def on_disconnect():
 
 @tasks.loop(seconds=30)
 async def my_task():
+  #print("loop")
   #print(my_task.next_iteration)
   data = lists.readother()
   chan=lists.readdataE()
@@ -116,7 +117,7 @@ async def my_task():
   #print(channel)
   #print(data)
   if len(data["pinglinks"]) == 0:
-    return False
+    pass
   else:
     #print(data["pinglinks"])
     for x in data["pinglinks"]:

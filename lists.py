@@ -180,3 +180,82 @@ async def checkguild(bot,guild):
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
     await guild.leave
+
+def formatClanBal(ship,bal):
+  formedbal={"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0}
+  url = "https://pub.drednot.io/test/econ/item_schema.json"
+  keys=list(ship[0].keys())
+  for x in keys:
+    response = loads(requests.get(url).content)
+    def find_route(data, route_no):
+      return list(filter(lambda x: x.get('id') == route_no, data))
+    route = find_route(response,int(x))
+    name="a"
+    #FLux,Iron,Exp,Rubber,Ice,RC,Burst,Auto,Loader,Pusher,Scanner,Ball,HH
+    if int(x)==1:
+      name="metal"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==2:
+      name="exp"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==4:
+      name="rubber"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==5:
+      name="flux"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==104:
+      name="hh"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==115 or int(x)==116 or int(x)==120:
+      name="scanners"
+      old=formedbal[name]
+      oldbal=ship[name]
+      newbal=int(oldbal)+int(bal[name])
+      formedbal.update({str(name):newbal})
+    elif int(x)==242:
+      name="pusher"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==243:
+      name="launcher"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==227:
+      name="rcs"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==228:
+      name="bursts"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==229:
+      name="autos"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==252:
+      name="loaders"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==234:
+      name="ice"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==51 or int(x)==53 or int(x)==55 or int(x)==56:
+      name="balls"
+      old=formedbal[name]
+      oldbal=ship[name]
+      newbal=int(oldbal)+int(bal[name])
+      formedbal.update({str(name):newbal})
+    elif int(x)==122:
+      name="rcd"
+      oldbal=ship[name]
+      formedbal.update({str(name):oldbal})
+    else:
+      pass
+  return formedbal

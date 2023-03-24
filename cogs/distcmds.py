@@ -1,5 +1,6 @@
 import os, discord
 import time
+import asyncio
 import pytz
 import datetime
 from datetime import datetime, timedelta
@@ -268,9 +269,12 @@ async def verifyschedule(bot):
         remain=list(filter(lambda x: x.get("dst") == distship, route))
         for x in route:
           if x["dst"]==str(distship) and x["src"]==str(hex):
-            cbal=str(filter(lambda x: x.get(str(hex)) == distship, strgnew))
-            if str(endbal) == str(cbal):
-              print(1)
+            cbal=list(filter(lambda x: x.get(str(hex)) == distship, strgnew))
+            formbal=lists.formatClanBal(cbal,endbal)
+            if str(endbal) == str(formbal):
+              await mesg.add_reaction("white_check_mark")
+            else:
+              await mesg.add_reaction("x")
               
       else:
         pass
@@ -287,5 +291,5 @@ delta_t=y-x
 
 secs=delta_t.total_seconds()
 client=commands.Bot
-t = Timer(secs, asyncio.run(verifyschedule(client)))
+t = Timer(secs, verifyschedule(client))
 t.start()

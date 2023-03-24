@@ -35,7 +35,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         default = {}
         defaultb=[]
         defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":int(clanPercent),"distship":str(distShip)}
-        defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0}}
+        defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0,"rcd":0}}
         data = lists.readdata()
         data[gid]=dict(defaultd)
         lists.setdata(data)
@@ -161,17 +161,23 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
 
-  @app_commands.command(name="serverconfig",description="Server Config Command\nSetting is e")
+  @app_commands.command(name="serverconfig",description="Server Config Command")
   @app_commands.choices(option=[
       app_commands.Choice(name="Ping Channel", value="pingchan"),
       app_commands.Choice(name="Distribution Channel", value="distchan"),
-      app_commands.Choice(name="Clan Percent",value="clanPercent")
+      app_commands.Choice(name="Clan Percent",value="clanPercent"),
+      app_commands.Choice(name="Clan Storage (Hexcode)",value="clanStrg")
     ])
-  async def servconfig(self,ctx,option: app_commands.Choice[str]):
+  async def servconfig(self,ctx,option: app_commands.Choice[str],value:str):
+    val = 0
+    if option == "clansStrg":
+      val=str(value)
+    else:
+      val=int(value)
     data=lists.readdataE()
-    data[str(ctx.message.guild.id)][str(option)]=int(value)
+    data[str(ctx.message.guild.id)][str(option)]=val
     lists.setdataE(data)
-    await ctx.send(f'Changed {str(option)} to {int(value)}')
+    await ctx.send(f'Changed {str(option)} to {val}')
     
 async def setup(bot: commands.Bot):
     await bot.add_cog(SetupCmds(bot))

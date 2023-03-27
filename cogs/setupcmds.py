@@ -168,17 +168,19 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Clan Percent",value="clanPercent"),
       app_commands.Choice(name="Clan Storage (Hexcode)",value="clanStrg")
     ])
-  async def servconfig(self,ctx,option: app_commands.Choice[str],input:str):
+  async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     val = 0
+    val=input
     print(option.value)
-    if option.value == "clansStrg":
+    if option.value == "clanStrg":
       val=str(input)
     else:
       val=int(input)
     data=lists.readdataE()
-    data[str(ctx.message.guild.id)][str(option.value)]=val
+    data[str(interaction.guild_id)][str(option.value)]=val
+    #print(data)
     lists.setdataE(data)
-    await ctx.send(f'Changed {str(option.name)} to {val}')
+    await interaction.response.send_message(f'Changed {str(option.name)} to {val}')
     
 async def setup(bot: commands.Bot):
     await bot.add_cog(SetupCmds(bot))

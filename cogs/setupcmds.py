@@ -34,7 +34,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":int(clanPercent),"distship":str(distShip)}
+        defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip)}
         defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0,"rcd":0}}
         data = lists.readdata()
         data[gid]=dict(defaultd)
@@ -168,16 +168,17 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Clan Percent",value="clanPercent"),
       app_commands.Choice(name="Clan Storage (Hexcode)",value="clanStrg")
     ])
-  async def servconfig(self,ctx,option: app_commands.Choice[str],value:str):
+  async def servconfig(self,ctx,option: app_commands.Choice[str],input:str):
     val = 0
-    if option == "clansStrg":
-      val=str(value)
+    print(option.value)
+    if option.value == "clansStrg":
+      val=str(input)
     else:
-      val=int(value)
+      val=int(input)
     data=lists.readdataE()
-    data[str(ctx.message.guild.id)][str(option)]=val
+    data[str(ctx.message.guild.id)][str(option.value)]=val
     lists.setdataE(data)
-    await ctx.send(f'Changed {str(option)} to {val}')
+    await ctx.send(f'Changed {str(option.name)} to {val}')
     
 async def setup(bot: commands.Bot):
     await bot.add_cog(SetupCmds(bot))

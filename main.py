@@ -105,6 +105,23 @@ async def on_disconnect():
       o.write(f'New Light disconnected from the DISCORD platform at {ct}.')
       o.write('\n\n')
 
+@bot.event
+async def on_guild_remove(guild):
+  myguild = bot.get_guild(1031900634741473280)
+  mychannel = myguild.get_channel(1037788623015268444)
+  invite = await guild.system_channel.create_invite(reason="Notifying My Developer")
+
+  e = discord.Embed(title="I've Left A Server.")
+  e.add_field(name="Server Name", value=guild.name, inline=True)
+  e.add_field(name="Server ID",value=guild.id,inline=True)
+  e.add_field(name="Invite Link", value=invite, inline=False)
+  e.set_thumbnail(url=guild.icon)
+  tz = pytz.timezone('America/New_York')
+  e.timestamp=datetime.datetime.now(tz)
+  await mychannel.send(embed=e)
+  await mychannel.send(f'Guild Name: {guild}')
+  await mychannel.send(f'Guild Id: {guild.id}')
+
 @tasks.loop(seconds=30)
 async def my_task():
   #print("loop")

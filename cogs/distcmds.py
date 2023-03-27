@@ -165,74 +165,111 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     else:
       await ctx.send("Your ID Is In The Banned List.")
 
+  @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY")
+  async def verifytimer(self,ctx,hrs=0,mins=5,secs=0,micsecs=0,dys=1):
+    if ctx.message.author.id in developers:
+      x=datetime.today()
+      tz = pytz.timezone('America/New_York')
+      x=datetime.today()
+      y = x.replace(day=x.day, hour=hrs, minute=mins, second=secs, microsecond=micsecs) + timedelta(days=dys)
+      delta_t=y-x
+      
+      secs=delta_t.total_seconds()
+      client=commands.Bot
+      t = Timer(secs, verifyschedule(client))
+      t.start()
+      await ctx.send("Started Distribution Verification Timer")
+    else:
+      await ctx.send("Only The Developer Can Use This Command.")
+
   @commands.Cog.listener()
   async def on_message(self,msg):
     condat=lists.readdataE()
-    if int(msg.id)==condat[str(msg.guild.id)]["distchan"]:
+    if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:
       cnt=msg.content
       pts=cnt.split("\n")
       u=pts[1]
-      users=u.split(";")
+      users=u.split(" ")
       #print(users)
       l=pts[2]
       loot=l.split(";")
       data=lists.readdata()
       prebal=data[str(msg.guild.id)]["clan"]
+      #print(loot)
       for x in loot:
         loc=loot.index(x)
         w=x.split(":")
         item=str(w[0])
         amount=int(w[1])
-        #print(amount)
-        if item == "flux":
-          percent=4 #Percent The Clan Gets
-          whole=amount
-          pw= percent * whole
-          #pw=round(pa/100)
-          #print(pw)
-          div=round(pw/100)
-          cbala=data[str(msg.guild.id)]["clan"][item]
-          cbala=cbala+div
-          #print(div)
-          #print(cbala)
-          data[str(msg.guild.id)]["clan"][item]=cbala
+        #print(item)
+        percent=float(condat[str(msg.guild.id)]["clanPercent"]) #Percent The Clan Gets
+        whole=amount
+        pw= percent * whole
+        #pw=round(pa/100)
+        #print(pw)
+        div=round(pw/100)
+        cbala=data[str(msg.guild.id)]["clan"][str(item)]
+        cbala=cbala+div
+        #print(div)
+        #print(cbala)
+        data[str(msg.guild.id)]["clan"][item]=cbala
+        lists.setdata(data)
+        rem=amount-div
+        #print(whole)
+        #print(rem)
+        mem=round(rem/int(len(users)))
+        #print(mem)
+        memtot=mem*len(users)
+        #Code To Give The "Lost" Flux To The Clan
+        if div+memtot != whole:
+          dim=div+memtot
+          missing=whole-dim
+          cbalb=cbala+missing
+          data[str(msg.guild.id)]["clan"][item]=cbalb
+          #print("clanbalance")
+          #print(div+missing)
           lists.setdata(data)
-          rem=amount-div
-          #print(whole)
-          #print(rem)
-          mem=round(rem/int(len(users)))
-          #print(mem)
-          memtot=mem*len(users)
-          #Code To Give The "Lost" Flux To The Clan
-          if div+memtot != whole:
-            dim=div+memtot
-            missing=whole-dim
-            cbalb=cbala+missing
-            data[str(msg.guild.id)]["clan"][item]=cbalb
-            #print("clanbalance")
-            #print(div+missing)
+        #print(users)
+        for i in users:
+          #print(i)
+          i=i.replace("<","").replace("@","").replace(">","")
+          #print(i)
+          i=msg.guild.get_member(int(i)).id
+          #print(i)
+          keys=list(data[str(msg.guild.id)][str(i)].keys())
+          if str(item) in keys:
+            bal=data[str(msg.guild.id)][str(i)][str(item)]
+            #print(bal)
+            #keys=list(data[str(msg.guild.id)][str(i)].keys())
+            #print(keys)
+            #print(item)
+            #print(mem)
+          #if str(item) in keys:
+            #print("True")
+            bal=bal+mem
+            #print(bal)
+            data[str(msg.guild.id)][str(i)][str(item)]=bal
+            #print(data[str(msg.guild.id)][str(i)][str(item)])
             lists.setdata(data)
-          for i in users:
-            if i=="clan":
-              bal=data[str(msg.guild.id)]["clan"]["flux"]
-              bal=bal+whole
-              data[str(msg.guild.id)]["clan"]["flux"]=bal
-              lists.setdata(data)
-            else:
-              bal=data[i]
-              bal=bal+mem
-              data[i]=bal
-              lists.setdata(data)
-        else:
-          cbal=data[str(msg.guild.id)]["clan"][str(item)]
-          am=cbal+amount
-          data[str(msg.guild.id)]["clan"].update({item:am})
-          #data["clan"][item]=int(am)
-          lists.setdata(data)
-        other=list.readother()
-        endbal=data[str(msg.guild.id)]["clan"]
-
-        other["verifydist"].append([msg.guild.id,msg.id,prebal,endbal])
+          else:
+            #print("False")
+            bala=data[str(msg.guild.id)]["clan"][str(item)]
+            #print(bala)
+            bala=bala+mem
+            #print(bala)
+            data[str(msg.guild.id)]["clan"][str(item)]=bala
+            #print(data[str(msg.guild.id)]["clan"][str(item)])
+            lists.setdata(data)
+      other=lists.readother()
+      #print(other)
+      endbal=data[str(msg.guild.id)]["clan"]
+      #print(endbal)
+      apit=[msg.guild.id,msg.id,prebal,endbal]
+      other["verifydist"].append(apit)
+      #print(other)
+      lists.setother(other)
+      await msg.add_reaction("⬆")
+    else:
       pass
 
 
@@ -252,34 +289,37 @@ async def verifyschedule(bot):
     endbal=x[3]
     guild=bot.get_guild(int(gid))
     mesg=bot.get_message(int(msgid))
-    if str(mesg.guild.id) in list(data.keys()):
-      distro=int(data[str(mesg.guild.id)]["distchan"])
-      if int(mesg.channel.id)==distro:
-        print(1)
-        pts=mesg.split("\n")
-        date=pts[3].split("/")
-        hex=str("{"+str(pts[2])+"}")
-        distship=str("{"+data[str(mesg.guild.id)]["distship"]+"}")
-        strgnew=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/ships.json.gz')
-        strgold=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(int(date[2])-1)}_{int(int(date[0])-1)}_{int(int(date[1])-1)}/ships.json.gz')
-        jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/log.json.gz')
-        def find_routea(data, route_no):
-          return list(filter(lambda x: x.get("src") == route_no, data))
-        route = find_routea(jsondata,hex)
-        remain=list(filter(lambda x: x.get("dst") == distship, route))
-        for x in route:
-          if x["dst"]==str(distship) and x["src"]==str(hex):
-            cbal=list(filter(lambda x: x.get(str(hex)) == distship, strgnew))
-            formbal=lists.formatClanBal(cbal,endbal)
-            if str(endbal) == str(formbal):
-              await mesg.add_reaction("white_check_mark")
-            else:
-              await mesg.add_reaction("x")
-              
+    try:
+      if str(mesg.guild.id) in list(data.keys()):
+        distro=int(data[str(mesg.guild.id)]["distchan"])
+        if int(mesg.channel.id)==distro:
+          print(1)
+          pts=mesg.split("\n")
+          date=pts[3].split("/")
+          hex=str("{"+str(pts[2])+"}")
+          distship=str("{"+data[str(mesg.guild.id)]["distship"]+"}")
+          strgnew=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/ships.json.gz')
+          strgold=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(int(date[2])-1)}_{int(int(date[0])-1)}_{int(int(date[1])-1)}/ships.json.gz')
+          jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/log.json.gz')
+          def find_routea(data, route_no):
+            return list(filter(lambda x: x.get("src") == route_no, data))
+          route = find_routea(jsondata,hex)
+          remain=list(filter(lambda x: x.get("dst") == distship, route))
+          for x in route:
+            if x["dst"]==str(distship) and x["src"]==str(hex):
+              cbal=list(filter(lambda x: x.get(str(hex)) == distship, strgnew))
+              formbal=lists.formatClanBal(cbal,endbal)
+              if str(endbal) == str(formbal):
+                await mesg.add_reaction("✅")
+              else:
+                await mesg.add_reaction("❌")   
+        else:
+          pass
       else:
         pass
-    else:
-      pass
+      oth["verifydist"].remove(x)
+    except:
+      await mesg.add_reaction("🙅")
 
     
       

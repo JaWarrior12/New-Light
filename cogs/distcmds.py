@@ -103,9 +103,9 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         gid = str(ctx.message.guild.id)
         if chk == True:
           inputv={}
-          keylist=lists.readother()["defaultdist"].keys
+          keylist=lists.readother()["defaultdist"].keys()
           await ctx.send(keylist)
-          if str(ctx.message.author.id) in keylist:
+          if str(ctx.message.guild.id) in keylist:
             items=lists.readother()["defaultdist"][str(ctx.message.guild.id)]
             for x in items:
               inputv.update({str(x):0})

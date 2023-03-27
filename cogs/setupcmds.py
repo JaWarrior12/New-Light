@@ -166,13 +166,13 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Ping Channel", value="pingchan"),
       app_commands.Choice(name="Distribution Channel", value="distchan"),
       app_commands.Choice(name="Clan Percent",value="clanPercent"),
-      app_commands.Choice(name="Clan Storage (Hexcode)",value="clanStrg")
+      app_commands.Choice(name="Clan Storage (Hexcode)",value="distship")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     val = 0
     val=input
     print(option.value)
-    if option.value == "clanStrg":
+    if option.value == "distship":
       val=str(input)
     else:
       val=int(input)

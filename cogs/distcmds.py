@@ -336,5 +336,11 @@ delta_t=y-x
 
 secs=delta_t.total_seconds()
 client=commands.Bot
-t = Timer(secs, verifyschedule(client))
-t.start()
+#t = Timer(secs, verifyschedule(client))
+#t.start()
+
+#schedule.every().day.at("01:00").do(job,'It is 01:00')
+
+#while True:
+    #schedule.run_pending()
+    #time.sleep(60) # wait one minute

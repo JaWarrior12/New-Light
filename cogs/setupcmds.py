@@ -162,6 +162,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
 
   @app_commands.command(name="serverconfig",description="Server Config Command")
+  @commands.has_permissions(administrator=True)
   @app_commands.choices(option=[
       app_commands.Choice(name="Ping Channel", value="pingchan"),
       app_commands.Choice(name="Distribution Channel", value="distchan"),
@@ -169,11 +170,15 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Clan Storage (Hexcode)",value="distship")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
+    #chk = lists.slashcheckperms(interaction.guild_id,interaction.author.id)
+    #if chk == True:
     val = 0
     val=input
     print(option.value)
     if option.value == "distship":
       val=str(input)
+    elif option.value=="clanPercent":
+      val=float(input)
     else:
       val=int(input)
     data=lists.readdataE()

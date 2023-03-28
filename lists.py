@@ -166,6 +166,23 @@ def checkperms(ctx):
   else:
     return False
 
+def slashcheckperms(gidd,uidd):
+  gid=str(gidd)
+  uid=str(uidd)
+  keya="auth"
+  autho = dumps(readdataE()[gid][keya])
+  if str(uid) not in banned:
+    if str(uid) in autho:
+      return True
+    elif str(uid) not in autho:
+      return False
+    else:
+      return False
+  elif str(uid) in banned:
+    return False
+  else:
+    return False
+
 async def checkguild(bot,guild):
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)

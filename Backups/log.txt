@@ -230,3 +230,11 @@ Command run at 2023-03-27 15:43:03.144206-04:00, by JaWarrior (User ID: 93028443
 Command run at 2023-03-27 15:46:48.199262-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logloot, Command Contents: clan flux -60
 
 Command run at 2023-03-27 15:46:58.353629-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logloot, Command Contents: <@930284432634556496> flux 500
+
+Command run at 2023-03-28 09:53:10.629392-04:00, by Gameking1happy (User ID: 709872464926212197), in server Gaming Destroyers 🕹 (Server ID: 967920996382306346). Command Run: setupserver, Command Contents: None
+
+Command run at 2023-03-28 10:01:53.451574-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: authlist, Command Contents: none
+
+Command run at 2023-03-28 10:05:50.469438-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: relall, Command Contents: None
+
+Command run at 2023-03-28 10:15:36.019039-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: authlist, Command Contents: none

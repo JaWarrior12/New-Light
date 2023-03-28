@@ -185,11 +185,14 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         t = Timer(secs, verifyschedule(client))
         t.start()
       else:
+        await verifyschedule(self)
+        print('run func')
         sched = BackgroundScheduler()
         sched.start()
         dt = datetime.datetime
-        Future = dt.now() + datetime.timedelta(milliseconds=2000)
-        job = sched.add_job(verifyschedule(self.bot), 'date', run_date=Future)
+        Future = dt.now() + datetime.timedelta(seconds=10)
+        func=await verifyschedule(self.bot)
+        job = sched.add_job(func, 'date', run_date=Future)
       await ctx.send("Started Distribution Verification Timer")
     else:
       await ctx.send("Only The Developer Can Use This Command.")
@@ -289,6 +292,7 @@ async def setup(bot: commands.Bot):
     await bot.add_cog(DistCmds(bot))
   
 async def verifyschedule(bot):
+  print("started vft")
   a=0
   data =lists.readdataE()
   oth=lists.readother()

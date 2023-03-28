@@ -220,3 +220,13 @@ Command run at 2023-03-27 14:42:31.698597-04:00, by JaWarrior (User ID: 93028443
 Command run at 2023-03-27 15:03:57.871226-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.distcmds
 
 Command run at 2023-03-27 15:05:16.615624-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Contents: New Light Development Server
+
+Command run at 2023-03-27 15:42:45.844490-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balance, Command Contents: JaWarrior#1305
+
+Command run at 2023-03-27 15:42:57.125623-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balance, Command Contents: JaWarrior#6752
+
+Command run at 2023-03-27 15:43:03.144206-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Contents: New Light Development Server
+
+Command run at 2023-03-27 15:46:48.199262-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logloot, Command Contents: clan flux -60
+
+Command run at 2023-03-27 15:46:58.353629-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logloot, Command Contents: <@930284432634556496> flux 500

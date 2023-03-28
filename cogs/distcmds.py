@@ -40,19 +40,24 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     self.bot = bot
 
   @commands.command(name="logloot",brief="Adds/Subtracts loot from a user's balance.",help="Adds/Subtracts from a user's balance. The format is: n!logloot @User item amount. If you are subtracting make the amount negative.")
-  async def returnpaymentdata(self, ctx, member: discord.Member, item, amount):
+  async def returnpaymentdata(self, ctx, member, item, amount):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
         msgb = str(member)+" "+item+" "+amount
         lists.logback(ctx,msgb)
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
+        if member=="clan":
+          pass
+        else:
+          member=int(member.replace("<","").replace("@","").replace(">",""))
+          member=ctx.message.guild.get_member(member).id
         try:
-          nf = int(dumps(lists.readdata()[gid][str(member.id)][str(item)]).replace(':','=').replace('{','').replace('}','').replace('"',''))
+          nf = int(dumps(lists.readdata()[gid][str(member)][str(item)]).replace(':','=').replace('{','').replace('}','').replace('"',''))
           ns = int(amount)
           added = ns + nf
           if chk == True:
-                data[gid][str(member.id)][str(item)] = int(added)
+                data[gid][str(member)][str(item)] = int(added)
                 lists.setdata(data)
                 await ctx.send(f'Now {member} has {added} {item} in {ctx.message.guild.name}')
         except KeyError:

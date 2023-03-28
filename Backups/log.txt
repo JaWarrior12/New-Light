@@ -238,3 +238,5 @@ Command run at 2023-03-28 10:01:53.451574-04:00, by Gameking1happy (User ID: 709
 Command run at 2023-03-28 10:05:50.469438-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: relall, Command Contents: None
 
 Command run at 2023-03-28 10:15:36.019039-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: authlist, Command Contents: none
+
+Command run at 2023-03-28 10:18:54.640352-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds

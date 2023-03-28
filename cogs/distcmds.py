@@ -171,18 +171,21 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       await ctx.send("Your ID Is In The Banned List.")
 
   @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY")
-  async def verifytimer(self,ctx,hrs=0,mins=5,secs=0,micsecs=0,dys=1):
+  async def verifytimer(self,ctx,opt="now",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
-      x=datetime.today()
-      tz = pytz.timezone('America/New_York')
-      x=datetime.today()
-      y = x.replace(day=x.day, hour=hrs, minute=mins, second=secs, microsecond=micsecs) + timedelta(days=dys)
-      delta_t=y-x
-      
-      secs=delta_t.total_seconds()
-      client=commands.Bot
-      t = Timer(secs, verifyschedule(client))
-      t.start()
+      if opt=="timer":
+        x=datetime.today()
+        tz = pytz.timezone('America/New_York')
+        x=datetime.today()
+        y = x.replace(day=x.day, hour=hrs, minute=mins, second=secs, microsecond=micsecs) + timedelta(days=dys)
+        delta_t=y-x
+        secs=delta_t.total_seconds()
+        client=commands.Bot
+        t = Timer(secs, verifyschedule(client))
+        t.start()
+      else:
+        client=self.bot
+        await verifyschedule(client)
       await ctx.send("Started Distribution Verification Timer")
     else:
       await ctx.send("Only The Developer Can Use This Command.")
@@ -312,7 +315,7 @@ async def verifyschedule(bot):
           remain=list(filter(lambda x: x.get("dst") == distship, route))
           for x in route:
             if x["dst"]==str(distship) and x["src"]==str(hex):
-              cbal=list(filter(lambda x: x.get(str(hex)) == distship, strgnew))
+              cbal=list(filter(lambda x: x.get(str(hex)) == distship, strgold))
               formbal=lists.formatClanBal(cbal,endbal)
               if str(endbal) == str(formbal):
                 await mesg.add_reaction("✅")

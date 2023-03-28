@@ -4,6 +4,7 @@ import asyncio
 import pytz
 import datetime
 from datetime import datetime, timedelta
+from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Timer
 import urllib.request
 import requests
@@ -184,8 +185,11 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         t = Timer(secs, verifyschedule(client))
         t.start()
       else:
-        client=self.bot
-        await verifyschedule(client)
+        sched = BackgroundScheduler()
+        sched.start()
+        dt = datetime.datetime
+        Future = dt.now() + datetime.timedelta(milliseconds=2000)
+        job = sched.add_job(verifyschedule(self.bot), 'date', run_date=Future)
       await ctx.send("Started Distribution Verification Timer")
     else:
       await ctx.send("Only The Developer Can Use This Command.")

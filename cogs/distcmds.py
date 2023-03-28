@@ -171,7 +171,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       await ctx.send("Your ID Is In The Banned List.")
 
   @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY")
-  async def verifytimer(self,ctx,opt="now",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
+  async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
       if opt=="timer":
         x=datetime.today()

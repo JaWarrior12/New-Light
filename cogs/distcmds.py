@@ -1,16 +1,17 @@
 import os, discord
-import time
+import time as timea
 import asyncio
 import pytz
 import datetime
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from datetime import time as tme
 from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Timer
 import urllib.request
 import requests
 import gzip
 #from keep_alive import keep_alive
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
 from discord import Member
 from json import loads, dumps
@@ -36,13 +37,28 @@ TestSrvr = lists.TestSrvr
 DSR = lists.DSR
 FRF = lists.FRF
 
+#tz = pytz.timezone('America/New_York')
+utc=timezone.utc
+tmes=tme(hour=18,minute=20,tzinfo=utc)
+
 class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Distribution Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+    self.verifyscheduled.start()
+  def cog_unload(self):
+    print(1)
+    #self.verifyscheduled.cancel()
+    
+  #def workaround(self):
+    #asyncio.run(self.verifyscheduled())
+    #loop = asyncio.new_event_loop()
+    #asyncio.set_event_loop(loop)
+    #loop.run_until_complete(self.verifyscheduled())
+    #loop.close()
 
-  async def setup_hook(self) -> None:
+  #async def setup_hook(self) -> None:
     # create the background task and run it in the background
-    self.bg_task = self.loop.create_task(self.verifyscheduled())
+    #self.bg_task = self.loop.create_task(self.verifyscheduled())
 
   @commands.command(name="logloot",brief="Adds/Subtracts loot from a user's balance.",help="Adds/Subtracts from a user's balance. The format is: n!logloot @User item amount. If you are subtracting make the amount negative.")
   async def returnpaymentdata(self, ctx, member, item, amount):
@@ -175,6 +191,22 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     else:
       await ctx.send("Your ID Is In The Banned List.")
 
+  #def workaround():
+    #asyncio.run(verifyschedule("a"))
+
+  async def restarttimer(self):
+    x=datetime.today()
+    tz = pytz.timezone('America/New_York')
+    x=datetime.today()
+    y = x.replace(day=x.day, hour=0, minute=5, second=0, microsecond=0) + timedelta(days=1)
+    delta_t=y-x
+    secs=delta_t.total_seconds()
+    #client=commands.Bot
+    #t = Timer(secs, self.workaround)
+    #t.start()
+    print("Restarted Timer")
+    
+  @tasks.loop(seconds=10)
   async def verifyscheduled(self):
     a=0
     data =lists.readdataE()
@@ -183,11 +215,16 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     for x in oth["verifydist"]:
       loc = oth["verifydist"].index(x)
       gid=x[0]
-      msgid=x[1]
-      prebal=x[2]
-      endbal=x[3]
+      chanid=int(x[1])
+      msgid=x[2]
+      prebal=x[3]
+      endbal=x[4]
       guild=self.bot.get_guild(int(gid))
-      mesg=self.bot.get_message(int(msgid))
+      channel=guild.get_channel(chanid)
+      #task = asyncio.create_task(channel.fetch_message(int(msgid)))
+      #mesg=await asyncio.shield(task)
+      mesg=await channel.fetch_message(int(msgid))
+      print(mesg)
       try:
         if str(mesg.guild.id) in list(data.keys()):
           distro=int(data[str(mesg.guild.id)]["distchan"])
@@ -218,33 +255,16 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           pass
       except:
         await mesg.add_reaction("🙅")
-    await restarttimer()
-    oth["verifydist"].remove(x)
+    #await self.restarttimer()
+      oth["verifydist"].remove(x)
+    lists.setother(oth)
 
-  async def restarttimer(self):
-    x=datetime.today()
-    tz = pytz.timezone('America/New_York')
-    x=datetime.today()
-    y = x.replace(day=x.day, hour=0, minute=5, second=0, microsecond=0) + timedelta(days=1)
-    delta_t=y-x
-    secs=delta_t.total_seconds()
-    #client=commands.Bot
-    t = Timer(secs, verifyschedule)
-    t.start()
-    print("Restarted Timer")
 
   @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY")
   async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
-      if opt=="timer":
-        await restarttimer()
-      else:
-        print('run func')
-        sched = BackgroundScheduler()
-        sched.start()
-        dt = datetime.datetime
-        Future = dt.now() + datetime.timedelta(seconds=10)
-        job = sched.add_job(verifyscheduled, 'date', run_date=Future)
+      #await self.verifyscheduled()
+      self.verifyscheduled.start()
       await ctx.send("Started Distribution Verification Timer")
     else:
       await ctx.send("Only The Developer Can Use This Command.")
@@ -350,71 +370,22 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     secs=delta_t.total_seconds()
     print(secs)
     #client=commands.Bot
-    t = Timer(secs, verifyschedule)
+    t = Timer(10, self.workaround)
     t.start()
     print("Started Timer")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(DistCmds(bot))
   
-async def verifyschedule(bot):
-  print("started vft")
-  a=0
-  data =lists.readdataE()
-  oth=lists.readother()
-  distdat=lists.readdata()
-  for x in oth["verifydist"]:
-    loc = oth["verifydist"].index(x)
-    gid=x[0]
-    msgid=x[1]
-    prebal=x[2]
-    endbal=x[3]
-    guild=bot.get_guild(int(gid))
-    mesg=bot.get_message(int(msgid))
-    try:
-      if str(mesg.guild.id) in list(data.keys()):
-        distro=int(data[str(mesg.guild.id)]["distchan"])
-        if int(mesg.channel.id)==distro:
-          print(1)
-          pts=mesg.split("\n")
-          date=pts[3].split("/")
-          hex=str("{"+str(pts[2])+"}")
-          distship=str("{"+data[str(mesg.guild.id)]["distship"]+"}")
-          strgnew=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/ships.json.gz')
-          strgold=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(int(date[2])-1)}_{int(int(date[0])-1)}_{int(int(date[1])-1)}/ships.json.gz')
-          jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/log.json.gz')
-          def find_routea(data, route_no):
-            return list(filter(lambda x: x.get("src") == route_no, data))
-          route = find_routea(jsondata,hex)
-          remain=list(filter(lambda x: x.get("dst") == distship, route))
-          for x in route:
-            if x["dst"]==str(distship) and x["src"]==str(hex):
-              cbal=list(filter(lambda x: x.get(str(hex)) == distship, strgold))
-              formbal=lists.formatClanBal(cbal,endbal)
-              if str(endbal) == str(formbal):
-                await mesg.add_reaction("✅")
-              else:
-                await mesg.add_reaction("❌")   
-        else:
-          pass
-      else:
-        pass
-      oth["verifydist"].remove(x)
-    except:
-      await mesg.add_reaction("🙅")
+#def workaround():
+  #loop = asyncio.new_event_loop()
+  #asyncio.set_event_loop(loop)
+  #loop.run_until_complete(DistCmds.verifyscheduled(DistCmds))
+  #loop.close()
+  #asyncio.run(DistCmds.self.verifyscheduled())
 
     
-      
-x=datetime.today()
-tz = pytz.timezone('America/New_York')
-x=datetime.today()
-y = x.replace(day=x.day, hour=0, minute=5, second=0, microsecond=0) + timedelta(days=1)
-delta_t=y-x
-
-secs=delta_t.total_seconds()
-client=commands.Bot
-t = Timer(secs, verifyschedule(client))
-t.start()
+    
 
 #schedule.every().day.at("01:00").do(job,'It is 01:00')
 

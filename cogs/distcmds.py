@@ -218,10 +218,10 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           pass
       except:
         await mesg.add_reaction("🙅")
-    restarttimer()
+    await restarttimer()
     oth["verifydist"].remove(x)
 
-  def restarttimer():
+  async def restarttimer(self):
     x=datetime.today()
     tz = pytz.timezone('America/New_York')
     x=datetime.today()
@@ -231,20 +231,13 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     #client=commands.Bot
     t = Timer(secs, verifyschedule)
     t.start()
+    print("Restarted Timer")
 
   @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY")
   async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
       if opt=="timer":
-        x=datetime.today()
-        tz = pytz.timezone('America/New_York')
-        x=datetime.today()
-        y = x.replace(day=x.day, hour=hrs, minute=mins, second=secs, microsecond=micsecs) + timedelta(days=dys)
-        delta_t=y-x
-        secs=delta_t.total_seconds()
-        #client=commands.Bot
-        t = Timer(secs, verifyschedule)
-        t.start()
+        await restarttimer()
       else:
         print('run func')
         sched = BackgroundScheduler()
@@ -348,16 +341,18 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
 
 
   @commands.Cog.listener()
-  async def on_ready():
+  async def on_ready(self):
     x=datetime.today()
     tz = pytz.timezone('America/New_York')
     x=datetime.today()
-    y = x.replace(day=x.day, hour=0, minute=5, second=0, microsecond=0) + timedelta(days=1)
+    y = x.replace(day=x.day, hour=16, minute=15, second=0, microsecond=0) + timedelta(days=0)
     delta_t=y-x
     secs=delta_t.total_seconds()
+    print(secs)
     #client=commands.Bot
     t = Timer(secs, verifyschedule)
     t.start()
+    print("Started Timer")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(DistCmds(bot))

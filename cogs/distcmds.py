@@ -40,6 +40,10 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
+  async def setup_hook(self) -> None:
+    # create the background task and run it in the background
+    self.bg_task = self.loop.create_task(self.verifyscheduled())
+
   @commands.command(name="logloot",brief="Adds/Subtracts loot from a user's balance.",help="Adds/Subtracts from a user's balance. The format is: n!logloot @User item amount. If you are subtracting make the amount negative.")
   async def returnpaymentdata(self, ctx, member, item, amount):
         msg="a b"
@@ -171,6 +175,63 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     else:
       await ctx.send("Your ID Is In The Banned List.")
 
+  async def verifyscheduled(self):
+    a=0
+    data =lists.readdataE()
+    oth=lists.readother()
+    distdat=lists.readdata()
+    for x in oth["verifydist"]:
+      loc = oth["verifydist"].index(x)
+      gid=x[0]
+      msgid=x[1]
+      prebal=x[2]
+      endbal=x[3]
+      guild=self.bot.get_guild(int(gid))
+      mesg=self.bot.get_message(int(msgid))
+      try:
+        if str(mesg.guild.id) in list(data.keys()):
+          distro=int(data[str(mesg.guild.id)]["distchan"])
+          if int(mesg.channel.id)==distro:
+            print(1)
+            pts=mesg.split("\n")
+            date=pts[3].split("/")
+            hex=str("{"+str(pts[2])+"}")
+            distship=str("{"+data[str(mesg.guild.id)]["distship"]+"}")
+            strgnew=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/ships.json.gz')
+            strgold=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(int(date[2])-1)}_{int(int(date[0])-1)}_{int(int(date[1])-1)}/ships.json.gz')
+            jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/log.json.gz')
+            def find_routea(data, route_no):
+              return list(filter(lambda x: x.get("src") == route_no, data))
+            route = find_routea(jsondata,hex)
+            remain=list(filter(lambda x: x.get("dst") == distship, route))
+            for x in route:
+              if x["dst"]==str(distship) and x["src"]==str(hex):
+                cbal=list(filter(lambda x: x.get(str(hex)) == distship, strgold))
+                formbal=lists.formatClanBal(cbal,endbal)
+                if str(endbal) == str(formbal):
+                  await mesg.add_reaction("✅")
+                else:
+                  await mesg.add_reaction("❌")   
+          else:
+            pass
+        else:
+          pass
+      except:
+        await mesg.add_reaction("🙅")
+    restarttimer()
+    oth["verifydist"].remove(x)
+
+  def restarttimer():
+    x=datetime.today()
+    tz = pytz.timezone('America/New_York')
+    x=datetime.today()
+    y = x.replace(day=x.day, hour=0, minute=5, second=0, microsecond=0) + timedelta(days=1)
+    delta_t=y-x
+    secs=delta_t.total_seconds()
+    #client=commands.Bot
+    t = Timer(secs, verifyschedule)
+    t.start()
+
   @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY")
   async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
@@ -181,18 +242,16 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         y = x.replace(day=x.day, hour=hrs, minute=mins, second=secs, microsecond=micsecs) + timedelta(days=dys)
         delta_t=y-x
         secs=delta_t.total_seconds()
-        client=commands.Bot
-        t = Timer(secs, verifyschedule(client))
+        #client=commands.Bot
+        t = Timer(secs, verifyschedule)
         t.start()
       else:
-        await verifyschedule(self)
         print('run func')
         sched = BackgroundScheduler()
         sched.start()
         dt = datetime.datetime
         Future = dt.now() + datetime.timedelta(seconds=10)
-        func=await verifyschedule(self.bot)
-        job = sched.add_job(func, 'date', run_date=Future)
+        job = sched.add_job(verifyscheduled, 'date', run_date=Future)
       await ctx.send("Started Distribution Verification Timer")
     else:
       await ctx.send("Only The Developer Can Use This Command.")
@@ -279,7 +338,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       #print(other)
       endbal=data[str(msg.guild.id)]["clan"]
       #print(endbal)
-      apit=[msg.guild.id,msg.id,prebal,endbal]
+      apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal]
       other["verifydist"].append(apit)
       #print(other)
       lists.setother(other)
@@ -287,6 +346,18 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     else:
       pass
 
+
+  @commands.Cog.listener()
+  async def on_ready():
+    x=datetime.today()
+    tz = pytz.timezone('America/New_York')
+    x=datetime.today()
+    y = x.replace(day=x.day, hour=0, minute=5, second=0, microsecond=0) + timedelta(days=1)
+    delta_t=y-x
+    secs=delta_t.total_seconds()
+    #client=commands.Bot
+    t = Timer(secs, verifyschedule)
+    t.start()
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(DistCmds(bot))
@@ -347,8 +418,8 @@ delta_t=y-x
 
 secs=delta_t.total_seconds()
 client=commands.Bot
-#t = Timer(secs, verifyschedule(client))
-#t.start()
+t = Timer(secs, verifyschedule(client))
+t.start()
 
 #schedule.every().day.at("01:00").do(job,'It is 01:00')
 

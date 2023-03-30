@@ -300,6 +300,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await mesg.add_reaction("✅")
               oth["verifydist"].remove(x)
               lists.setother(oth)
+              distdat[str(mesg.guild.id)]=x[6]
+              lists.setdata(distdat)
             else:
               await mesg.add_reaction("❌")
               oth["verifydist"].remove(x)

@@ -275,4 +275,6 @@ def formatClanBal(ship,bal):
       formedbal.update({str(name):oldbal})
     else:
       pass
+    print(formedbal)
+  print(formedbal)
   return formedbal

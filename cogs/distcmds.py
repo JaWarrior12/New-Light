@@ -46,8 +46,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     self.bot = bot
     self.verifyscheduled.start()
   def cog_unload(self):
-    print(1)
-    #self.verifyscheduled.cancel()
+    #print(1)
+    self.verifyscheduled.cancel()
     
   #def workaround(self):
     #asyncio.run(self.verifyscheduled())
@@ -209,7 +209,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
   @tasks.loop(seconds=10)
   async def verifyscheduled(self):
     a=0
-    data =lists.readdataE()
+    data=lists.readdataE()
     oth=lists.readother()
     distdat=lists.readdata()
     for x in oth["verifydist"]:
@@ -219,6 +219,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       msgid=x[2]
       prebal=x[3]
       endbal=x[4]
+      ctxt=x[5]
       guild=self.bot.get_guild(int(gid))
       channel=guild.get_channel(chanid)
       #task = asyncio.create_task(channel.fetch_message(int(msgid)))
@@ -226,37 +227,94 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       mesg=await channel.fetch_message(int(msgid))
       print(mesg)
       try:
+        print(7)
         if str(mesg.guild.id) in list(data.keys()):
           distro=int(data[str(mesg.guild.id)]["distchan"])
+          print(distro)
           if int(mesg.channel.id)==distro:
             print(1)
-            pts=mesg.split("\n")
-            date=pts[3].split("/")
-            hex=str("{"+str(pts[2])+"}")
-            distship=str("{"+data[str(mesg.guild.id)]["distship"]+"}")
+            pts=ctxt.split("\n")
+            pts=list(pts)
+            print(pts)
+            for q in pts:
+              loc=pts.index(q)
+              print(loc)
+              print(f'Index:{loc}; Item:{q}')
+            date=pts[4].split("/")
+            print(date)
+            hex=str("{"+str(pts[3])+"}")
+            print(hex)
+            ds=data[str(mesg.guild.id)]["distship"]
+            distship=str("{"+ds+"}")
+            distshipb=ds
+            print(distship)
             strgnew=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/ships.json.gz')
-            strgold=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(int(date[2])-1)}_{int(int(date[0])-1)}_{int(int(date[1])-1)}/ships.json.gz')
+            print(4)
+            #strgold=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(int(date[2])-1)}_{int(int(date[0])-1)}_{int(int(date[1])-1)}/ships.json.gz')
+            print(2)
             jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/log.json.gz')
+            print(6)
             def find_routea(data, route_no):
               return list(filter(lambda x: x.get("src") == route_no, data))
             route = find_routea(jsondata,hex)
             remain=list(filter(lambda x: x.get("dst") == distship, route))
-            for x in route:
-              if x["dst"]==str(distship) and x["src"]==str(hex):
-                cbal=list(filter(lambda x: x.get(str(hex)) == distship, strgold))
-                formbal=lists.formatClanBal(cbal,endbal)
+            print(9)
+            print(remain)
+            count=0
+            result=0
+            for f in remain:
+              print(f)
+              print(f['src'])
+              print(f['dst'])
+              hexa=hex
+              distshipa=distship
+              print(hexa)
+              print(distshipa)
+              if f['dst']==distshipa and f['src']==hexa:
+                cbal=list(filter(lambda f: f.get('hex_code') == ds, strgnew))
+                print(cbal)
+                print(10)
+                print(cbal['items'])
+                formbal=lists.formatClanBal(cbal['items'],endbal)
+                print(formbal)
+                print(8)
                 if str(endbal) == str(formbal):
-                  await mesg.add_reaction("✅")
+                  result=1
+                  #await mesg.add_reaction("✅")
+                  #oth["verifydist"].remove(x)
+                  #lists.setother(oth)
                 else:
-                  await mesg.add_reaction("❌")   
+                  result=2
+                  #await mesg.add_reaction("❌")
+                  #print(oth)
+                  #oth["verifydist"].remove(x)
+                  #lists.setother(oth)
+                  #distdat[str(mesg.guild.id)]=x[6]
+                  #lists.setdata(distdat)
+              else:
+                await mesg.add_reaction("❌")
+                print(oth)
+                oth["verifydist"].remove(x)
+                lists.setother(oth)
+            if result==1:
+              await mesg.add_reaction("✅")
+              oth["verifydist"].remove(x)
+              lists.setother(oth)
+            else:
+              await mesg.add_reaction("❌")
+              oth["verifydist"].remove(x)
+              lists.setother(oth)
           else:
             pass
         else:
           pass
+        oth["verifydist"].remove(x)
       except:
-        await mesg.add_reaction("🙅")
-    #await self.restarttimer()
-      oth["verifydist"].remove(x)
+        await mesg.add_reaction("🤷")
+        print(1)
+      
+    oth["verifydist"]=[]
+    #print(oth)
     lists.setother(oth)
 
 
@@ -300,7 +358,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         #print(div)
         #print(cbala)
         data[str(msg.guild.id)]["clan"][item]=cbala
-        lists.setdata(data)
+        #lists.setdata(data)
         rem=amount-div
         #print(whole)
         #print(rem)
@@ -315,7 +373,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           data[str(msg.guild.id)]["clan"][item]=cbalb
           #print("clanbalance")
           #print(div+missing)
-          lists.setdata(data)
+          #lists.setdata(data)
         #print(users)
         for i in users:
           #print(i)
@@ -337,7 +395,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             #print(bal)
             data[str(msg.guild.id)][str(i)][str(item)]=bal
             #print(data[str(msg.guild.id)][str(i)][str(item)])
-            lists.setdata(data)
+            #lists.setdata(data)
           else:
             #print("False")
             bala=data[str(msg.guild.id)]["clan"][str(item)]
@@ -346,12 +404,12 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             #print(bala)
             data[str(msg.guild.id)]["clan"][str(item)]=bala
             #print(data[str(msg.guild.id)]["clan"][str(item)])
-            lists.setdata(data)
+            #lists.setdata(data)
       other=lists.readother()
       #print(other)
       endbal=data[str(msg.guild.id)]["clan"]
       #print(endbal)
-      apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal]
+      apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal,msg.content,data[str(msg.guild.id)]]
       other["verifydist"].append(apit)
       #print(other)
       lists.setother(other)

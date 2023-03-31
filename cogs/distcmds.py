@@ -343,6 +343,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       data=lists.readdata()
       prebal=data[str(msg.guild.id)]["clan"]
       #print(loot)
+      thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets")
       for x in loot:
         loc=loot.index(x)
         w=x.split(":")
@@ -357,6 +358,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         div=round(pw/100)
         cbala=data[str(msg.guild.id)]["clan"][str(item)]
         cbala=cbala+div
+        await thrd.send(f"Clan Gets {div} {item}")
         #print(div)
         #print(cbala)
         data[str(msg.guild.id)]["clan"][item]=cbala
@@ -365,6 +367,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         #print(whole)
         #print(rem)
         mem=round(rem/int(len(users)))
+        await thrd.send(f'The Listed Members Get {mem} {item} each.')
         #print(mem)
         memtot=mem*len(users)
         #Code To Give The "Lost" Flux To The Clan

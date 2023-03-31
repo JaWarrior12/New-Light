@@ -1,7 +1,7 @@
 import os, discord
 import time
 import pytz
-import datetime 
+import datetime
 #from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
@@ -195,15 +195,15 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
     else:
       await ctx.send("Not A Dev")
 
-  @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.")
+  @commands.command(name="setupserverold",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.",hidden=True,disabled=True)
   @commands.has_permissions(administrator=True)
-  async def setupsrvr(self,ctx,pingchannel):
+  async def setupsrvrold(self,ctx,pingChannel=None,distroChannel=None):
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
         msg = None
         lists.logback(ctx,msg)
         msgb = "a b"
-        pc=int(pingchannel)
+        pc=int(pingChannel)
     #if ctx.message.author.id in developers:
       # check if all elements in ls are integers
       #if all([isinstance(item, int) for item in authUs]) == True:
@@ -212,7 +212,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[],"pingchan":pc}
+        defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel)}
         data = lists.readdata()
         data[gid]=dict(default)
         lists.setdata(data)

@@ -60,7 +60,7 @@ bot.help_command = MyHelp()
 
 #bot.remove_command('help')
 
-version = "3.4.2"
+version = "3.5.0"
 
 
 @bot.event
@@ -76,23 +76,25 @@ async def on_ready():  # When the bot is ready
 
 @bot.event
 async def on_guild_join(guild):
-  if lists.checkguild(bot,guild) == False:
+  if int(guild.id) in lists.bannedGuild:
+    await lists.checkguild(bot,guild)
+  else:
     #guild=before
+    tz = pytz.timezone('America/New_York')
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)
-    invite = await guild.system_channel.create_invite(reason="Inviting My Developer To Your Amazing Server!")
+    await mychannel.send(f'Joined Server: {guild.name}; ID: {guild.id}; Time:{datetime.dateime.now(tz)}')
+    #invite = await guild.system_channel.create_invite(reason="Inviting My Developer To Your Amazing Server!")
 
     e = discord.Embed(title="I've joined a server.")
     e.add_field(name="Server Name", value=guild.name, inline=False)
-    e.add_field(name="Invite Link", value=invite, inline=False)
-    e.set_thumbnail(url=guild.icon_url)
-    tz = pytz.timezone('America/New_York')
+    #e.add_field(name="Invite Link", value=invite, inline=False)
+    e.set_thumbnail(url=guild.icon)
+    #tz = pytz.timezone('America/New_York')
     e.timestamp=datetime.datetime.now(tz)
     await mychannel.send(embed=e)
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
-  else:
-    print("Left Banned Guild")
 
 @bot.event
 async def on_disconnect():
@@ -105,8 +107,28 @@ async def on_disconnect():
       o.write(f'New Light disconnected from the DISCORD platform at {ct}.')
       o.write('\n\n')
 
+@bot.event
+async def on_guild_remove(guild):
+  myguild = bot.get_guild(1031900634741473280)
+  mychannel = myguild.get_channel(1037788623015268444)
+  tz = pytz.timezone('America/New_York')
+  await mychannel.send(f'Left Server: {guild.name}; ID: {guild.id}; Time:{datetime.dateime.now(tz)}')
+  #invite = await guild.system_channel.create_invite(reason="Notifying My Developer")
+
+  e = discord.Embed(title="I've Left A Server.")
+  e.add_field(name="Server Name", value=guild.name, inline=True)
+  e.add_field(name="Server ID",value=guild.id,inline=True)
+  #e.add_field(name="Invite Link", value=invite, inline=False)
+  e.set_thumbnail(url=guild.icon)
+  #tz = pytz.timezone('America/New_York')
+  e.timestamp=datetime.datetime.now(tz)
+  await mychannel.send(embed=e)
+  await mychannel.send(f'Guild Name: {guild}')
+  await mychannel.send(f'Guild Id: {guild.id}')
+
 @tasks.loop(seconds=30)
 async def my_task():
+  #print("loop")
   #print(my_task.next_iteration)
   data = lists.readother()
   chan=lists.readdataE()
@@ -116,7 +138,7 @@ async def my_task():
   #print(channel)
   #print(data)
   if len(data["pinglinks"]) == 0:
-    return False
+    pass
   else:
     #print(data["pinglinks"])
     for x in data["pinglinks"]:
@@ -144,6 +166,7 @@ async def main():
     await bot.load_extension("cogs.devcmds")
     await bot.load_extension("cogs.adcmds")
     await bot.load_extension("cogs.slashcmds")
+    await bot.load_extension("cogs.setupcmds")
     #await tree.sync()
     my_console.start()
     await bot.start(os.environ['token'])

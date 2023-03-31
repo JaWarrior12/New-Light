@@ -166,21 +166,119 @@ def checkperms(ctx):
   else:
     return False
 
+def slashcheckperms(gidd,uidd):
+  gid=str(gidd)
+  uid=str(uidd)
+  keya="auth"
+  autho = dumps(readdataE()[gid][keya])
+  if str(uid) not in banned:
+    if str(uid) in autho:
+      return True
+    elif str(uid) not in autho:
+      return False
+    else:
+      return False
+  elif str(uid) in banned:
+    return False
+  else:
+    return False
+
 async def checkguild(bot,guild):
-  if int(guild.id) in bannedGuilds:
-    await guild.leave()
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)
     invite = await guild.system_channel.create_invite(reason="Notifying My Developer That I Have Been Invited To A Server That Has Been Banned From Using Me")
     e = discord.Embed(title="Invited To Banned Server")
     e.add_field(name="Server Name", value=guild.name, inline=False)
     e.add_field(name="Invite Link", value=invite, inline=False)
-    e.set_thumbnail(url=guild.icon_url)
+    e.set_thumbnail(url=guild.icon)
     tz = pytz.timezone('America/New_York')
     e.timestamp=datetime.datetime.now(tz)
     await mychannel.send(embed=e)
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
-    return True
-  else:
-    return False
+    await guild.leave
+
+def formatClanBal(ship,bal):
+  formedbal={"flux": 0, "iron": 0, "explosive": 0, "rcs": 0, "bursts": 0, "autos": 0, "loaders": 0, "pushers": 0, "rubber": 0, "scanners": 0, "balls": 0, "hh": 0, "ice": 0, "launchers": 0, "rcd": 0}
+  #print(ship)
+  #print(bal)
+  url = "https://pub.drednot.io/test/econ/item_schema.json"
+  keys=list(ship.keys())
+  #print(keys)
+  for x in keys:
+    response = loads(requests.get(url).content)
+    def find_route(data, route_no):
+      return list(filter(lambda x: x.get('id') == route_no, data))
+    #route = find_route(response,int(x))
+    name="a"
+    #print(x)
+    #FLux,Iron,Exp,Rubber,Ice,RC,Burst,Auto,Loader,Pusher,Scanner,Ball,HH
+    if int(x)==1:
+      name="iron"
+      oldbal=ship["1"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==2:
+      name="explosive"
+      oldbal=ship["2"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==4:
+      name="rubber"
+      oldbal=ship["4"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==5:
+      name="flux"
+      oldbal=ship["5"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==104:
+      name="hh"
+      oldbal=ship["104"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==115 or int(x)==116 or int(x)==120:
+      name="scanners"
+      old=formedbal[name]
+      oldbal=ship[x]
+      newbal=int(oldbal)+int(old)
+      formedbal.update({str(name):newbal})
+    elif int(x)==242:
+      name="pushers"
+      oldbal=ship["242"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==243:
+      name="launchers"
+      oldbal=ship["243"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==227:
+      name="rcs"
+      oldbal=ship["227"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==228:
+      name="bursts"
+      oldbal=ship["228"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==229:
+      name="autos"
+      oldbal=ship["229"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==252:
+      name="loaders"
+      oldbal=ship["252"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==234:
+      name="ice"
+      oldbal=ship["234"]
+      formedbal.update({str(name):oldbal})
+    elif int(x)==51 or int(x)==53 or int(x)==55 or int(x)==56:
+      name="balls"
+      old=formedbal[name]
+      oldbal=ship[x]
+      newbal=int(oldbal)+int(old)
+      formedbal.update({str(name):newbal})
+    elif int(x)==122:
+      name="rcd"
+      oldbal=ship["122"]
+      formedbal.update({str(name):oldbal})
+    else:
+      asn=0
+    #print(formedbal)
+  #print(formedbal)
+  return dict(formedbal)

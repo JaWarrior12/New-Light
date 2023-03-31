@@ -342,6 +342,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       loot=l.split(";")
       data=lists.readdata()
       prebal=data[str(msg.guild.id)]["clan"]
+      allbal=data[str(msg.guild.id)]["clan"]
       #print(loot)
       thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets")
       for x in loot:
@@ -359,6 +360,12 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         cbala=data[str(msg.guild.id)]["clan"][str(item)]
         cbala=cbala+div
         await thrd.send(f"Clan Gets {div} {item}")
+        if condat[str(msg.guild.id)]["auth"]["storebal"].lower()=="yes":
+          cbala=data[str(msg.guild.id)]["clan"][str(item)]
+          cbala=cbala+whole
+        else:
+          cbala=data[str(msg.guild.id)]["clan"][str(item)]
+          cbala=cbala+div
         #print(div)
         #print(cbala)
         data[str(msg.guild.id)]["clan"][item]=cbala

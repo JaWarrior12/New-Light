@@ -22,7 +22,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan.")
   @commands.has_permissions(administrator=True)
-  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None):
+  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0):
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
         msg = None
@@ -34,7 +34,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip)}
+        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole}
         defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0,"rcd":0}}
         data = lists.readdata()
         data[gid]=dict(defaultd)
@@ -167,7 +167,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Ping Channel", value="pingchan"),
       app_commands.Choice(name="Distribution Channel", value="distchan"),
       app_commands.Choice(name="Clan Percent",value="clanPercent"),
-      app_commands.Choice(name="Clan Storage (Hexcode)",value="distship")
+      app_commands.Choice(name="Clan Storage (Hexcode)",value="distship"),
+      app_commands.Choice(name="Member Role",value="memrole")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     #chk = lists.slashcheckperms(interaction.guild_id,interaction.author.id)

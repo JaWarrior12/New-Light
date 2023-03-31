@@ -60,7 +60,7 @@ bot.help_command = MyHelp()
 
 #bot.remove_command('help')
 
-version = "3.4.3"
+version = "3.5.0"
 
 
 @bot.event

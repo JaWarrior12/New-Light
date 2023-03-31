@@ -434,6 +434,27 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     t.start()
     print("Started Timer")
 
+  @commands.Cog.listener()
+  async def on_member_update(self,before, after):
+    if len(before.roles) < len(after.roles):
+      gid = before.guild.id
+      data=lists.readdata()
+      condat=lists.readdataE()
+      newRole = next(role for role in after.roles if role not in before.roles)
+      if int(newRole.name) == condat[str(gid)]["memrole"]:
+        inputv={}
+        keylist=lists.readother()["defaultdist"].keys()
+        if str(gid) in keylist:
+          items=lists.readother()["defaultdist"][str(gid)]
+          for x in items:
+            inputv.update({str(x):0})
+        else:
+          inputv = {"flux":0,"loaders":0,"rcs":0,"pushers":0}
+        data[gid][str(before.id)]=dict(inputv)
+        lists.setdata(data)
+      else:
+        pass
+
 async def setup(bot: commands.Bot):
     await bot.add_cog(DistCmds(bot))
   

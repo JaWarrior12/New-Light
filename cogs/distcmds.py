@@ -208,7 +208,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     #t.start()
     print("Restarted Timer")
     
-  @tasks.loop(seconds=10)
+  @tasks.loop(time=tmes)
   #@self.my_console.command()
   async def verifyscheduled(self):
     a=0

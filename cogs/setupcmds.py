@@ -161,7 +161,11 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
 
-  @app_commands.command(name="serverconfig",description="Server Config Command",help="Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)")
+  @commands.command(name="confighelp")
+  async def conhelp(self,ctx):
+    await ctx.send("Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)")
+
+  @app_commands.command(name="serverconfig",description="Server Config Command")
   @commands.has_permissions(administrator=True)
   @app_commands.choices(option=[
       app_commands.Choice(name="Ping Channel", value="pingchan"),

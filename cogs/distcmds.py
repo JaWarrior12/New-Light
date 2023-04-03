@@ -40,7 +40,7 @@ FRF = lists.FRF
 
 #tz = pytz.timezone('America/New_York')
 utc=timezone.utc
-tmes=tme(hour=18,minute=20,tzinfo=utc)
+tmes=tme(hour=0,minute=20,tzinfo=utc)
 
 class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Distribution Commands"):
   def __init__(self, bot: commands.Bot):
@@ -82,7 +82,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           if chk == True:
                 data[gid][str(member)][str(item)] = int(added)
                 lists.setdata(data)
-                await ctx.send(f'Now {member} has {added} {item} in {ctx.message.guild.name}')
+                await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
         except KeyError:
           await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
           
@@ -342,7 +342,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       loot=l.split(";")
       data=lists.readdata()
       prebal=data[str(msg.guild.id)]["clan"]
-      allbal=data[str(msg.guild.id)]["clan"]
+      #allbal=data[str(msg.guild.id)]["clan"]
       #print(loot)
       thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets")
       for x in loot:
@@ -360,7 +360,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         cbala=data[str(msg.guild.id)]["clan"][str(item)]
         cbala=cbala+div
         await thrd.send(f"Clan Gets {div} {item}")
-        if condat[str(msg.guild.id)]["auth"]["storebal"].lower()=="yes":
+        if condat[str(msg.guild.id)]["storebal"].lower()=="yes":
           cbala=data[str(msg.guild.id)]["clan"][str(item)]
           cbala=cbala+whole
         else:
@@ -374,9 +374,9 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         #print(whole)
         #print(rem)
         mem=round(rem/int(len(users)))
-        await thrd.send(f'The Listed Members Get {mem} {item} each.')
         #print(mem)
         memtot=mem*len(users)
+        await thrd.send(f'The Listed Members Get {mem} {item} each.')
         #Code To Give The "Lost" Flux To The Clan
         if div+memtot != whole:
           dim=div+memtot

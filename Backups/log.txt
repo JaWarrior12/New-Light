@@ -280,3 +280,17 @@ Command run at 2023-03-29 14:43:45.048105-04:00, by JaWarrior (User ID: 93028443
 Command run at 2023-03-29 14:44:17.319394-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.distcmds
 
 Command run at 2023-03-29 15:42:17.657927-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.distcmds
+
+Command run at 2023-03-31 10:16:06.572798-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: shutdown, Command Contents: None
+
+Command run at 2023-03-31 11:03:11.027499-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: addmember, Command Contents: Gameking1happy#4559
+
+Command run at 2023-03-31 11:03:26.770182-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: addmember, Command Contents: GamingKing2436#7962
+
+Command run at 2023-03-31 11:03:37.544330-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: addmember, Command Contents: Zerker#0355
+
+Command run at 2023-03-31 11:04:14.893107-04:00, by Gameking1happy (User ID: 709872464926212197), in server GK1H/Gamekings Everything (Server ID: 747166369635631267). Command Run: logloot, Command Contents: <@709872464926212197> -2704 flux
+
+Command run at 2023-04-03 08:53:46.057647-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logloot, Command Contents: <@930284432634556496> flux 50
+
+Command run at 2023-04-03 08:54:22.003951-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Contents: New Light Development Server

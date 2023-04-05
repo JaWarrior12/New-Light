@@ -1,7 +1,7 @@
 import os, discord
 import time
 import pytz
-import datetime 
+import datetime
 #from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
@@ -194,6 +194,6 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     #print(data)
     lists.setdataE(data)
     await interaction.response.send_message(f'Changed {str(option.name)} to {val}')
-    
+
 async def setup(bot: commands.Bot):
     await bot.add_cog(SetupCmds(bot))

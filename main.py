@@ -125,6 +125,7 @@ async def on_guild_remove(guild):
   await mychannel.send(embed=e)
   await mychannel.send(f'Guild Name: {guild}')
   await mychannel.send(f'Guild Id: {guild.id}')
+  lists.clrserver(guild.id)
 
 @tasks.loop(seconds=30)
 async def my_task():

@@ -173,14 +173,20 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         mesg = str(gid)
         if chk == True:
           await ctx.send('Balances Of All Members')
-          memlist=list(dumps(lists.readdata()[mesg]).keys())
+          memlist=list(lists.readdata()[mesg].keys())
           cntntlist=[]
           for x in memlist:
-            usid=x
-            name=await clan.get_member(int(usid)).name
-            usbal=lists.readdata()[mesg][str(x)]
-            cntntlist.append(f'{name} : {usbal}')
-          await ctx.send(cntntlist).replace("[","").replace("]","").replace(",","\n")
+            if x == "clan":
+              cntntlist.append(f'{x} : {lists.readdata()[mesg][str(x)]}')
+            else:
+              usid=x
+              guild=self.bot.get_guild(int(ctx.message.guild.id))
+              uname=guild.get_member(int(usid))
+              usbal=lists.readdata()[mesg][str(x)]
+              cntntlist.append(f'{uname.name} : {usbal};')
+            a=0
+          for i in cntntlist:
+            await ctx.send(i)
         else:
           return False
 

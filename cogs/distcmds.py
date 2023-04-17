@@ -176,8 +176,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           memlist=list(dumps(lists.readdata()[mesg]).keys())
           cntntlist=[]
           for x in memlist:
-            id=x
-            name=await clan.get_member(int(id)).name
+            usid=x
+            name=await clan.get_member(int(usid)).name
             usbal=lists.readdata()[mesg][str(x)]
             cntntlist.append(f'{name} : {usbal}')
           await ctx.send(cntntlist).replace("[","").replace("]","").replace(",","\n")

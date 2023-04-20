@@ -5,6 +5,7 @@ import time
 import pytz
 import datetime 
 from discord.ext import commands, tasks
+from pretty_help import EmojiMenu, PrettyHelp
 from discord.utils import get
 from keep_alive import keep_alives
 from discord import app_commands
@@ -13,17 +14,20 @@ from json import loads, dumps
 from backup import backup
 from startup import startup
 from dpyConsole import Console
+import logging
 
 #Import Lists
 import lists
 
 lists.bannedlist()
 
+handler=logging.basicConfig(filename='Backups/errorlog.log',format='%(asctime)s - %(levelname)s - %(message)s',filemode='a',level=logging.CRITICAL)
+#logger = logging.getLogger()
+
 intents = discord.Intents.all()
 intents.members = True
 
 #client = discord.Client()
-
 
 
 bot = commands.Bot(command_prefix='n!',intents=intents)
@@ -32,6 +36,9 @@ value = bot
 
 my_console = Console(bot)
 
+nav = EmojiMenu("◀️", "▶️", "❌")
+bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green())
+
 class MyHelp(commands.MinimalHelpCommand):
     async def send_pages(self):
         destination = self.get_destination()
@@ -39,26 +46,7 @@ class MyHelp(commands.MinimalHelpCommand):
         for page in self.paginator.pages:
             e.description += page
         await destination.send(embed=e)
-
-
-#class MyHelp(commands.MinimalHelpCommand):
-    #async def send_bot_help(self, mapping):
-        #embed = discord.Embed(title="Help")
-        #for cog, commands in mapping.items():
-           #filtered = await self.filter_commands(commands, sort=True)
-           #command_signatures = [self.get_command_signature(c) for c in filtered]
-           #if command_signatures:
-                #cog_name = getattr(cog, "qualified_name", "No Category")
-                #embed.add_field(name=cog_name, value="\n".join(command_signatures), inline=False)
-
-        #channel = self.get_destination()
-        #await channel.send(embed=embed)
-
-bot.help_command = MyHelp()
-
-#bot.help_command = commands.DefaultHelpCommand() #MyHelp()
-
-#bot.remove_command('help')
+#bot.help_command = MyHelp()
 
 version = "3.5.0"
 
@@ -98,6 +86,20 @@ async def on_guild_join(guild):
     await mychannel.send(embed=e)
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
+
+@bot.event
+async def on_connect():
+  await bot.load_extension("cogs.errorhand")
+  await bot.load_extension("cogs.relcmds")
+  await bot.load_extension("cogs.distcmds")
+  await bot.load_extension("cogs.descmds")
+  await bot.load_extension("cogs.qpcmds")
+  await bot.load_extension("cogs.othercmds")
+  await bot.load_extension("cogs.econcmds")
+  await bot.load_extension("cogs.devcmds")
+  await bot.load_extension("cogs.adcmds")
+  await bot.load_extension("cogs.slashcmds")
+  await bot.load_extension("cogs.setupcmds")
 
 @bot.event
 async def on_disconnect():
@@ -176,7 +178,7 @@ async def main():
     await bot.load_extension("cogs.setupcmds")
     #await tree.sync()
     my_console.start()
-    await bot.start(os.environ['token'])
+    #await bot.start(os.environ['token'])
     #await my_task.start()
 
 
@@ -190,6 +192,6 @@ async def main():
 #web socket for Uptimerobot to ping, keeps bot online
 #tree = app_commands.CommandTree(bot)
 keep_alives()
+bot.run(os.environ['token'],log_handler=handler)
 asyncio.run(main())
-
 #@my_console.command()

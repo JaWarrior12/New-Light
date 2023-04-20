@@ -2,7 +2,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
-class MyCog(commands.Cog,description="Slash Commands, Nothing Here Right Now"):
+class SlashCmds(commands.Cog,name="Slash Commands",description="Slash Commands, Nothing Here Right Now"):
   def __init__(self, bot: commands.Bot) -> None:
     self.bot = bot
     
@@ -12,4 +12,4 @@ class MyCog(commands.Cog,description="Slash Commands, Nothing Here Right Now"):
     await ctx.send("Hello from command 1!")
 
 async def setup(bot: commands.Bot) -> None:
-  await bot.add_cog(MyCog(bot))
+  await bot.add_cog(SlashCmds(bot))

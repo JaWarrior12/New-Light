@@ -1,0 +1,6 @@
+
+2023-04-20 19:00:45,287 - INFO -  * Running on all addresses (0.0.0.0)
+   WARNING: This is a development server. Do not use it in a production deployment.
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.128.71:8080 (Press CTRL+C to quit)
+2023-04-20 19:00:46,724 - INFO - 172.31.128.1 - - [20/Apr/2023 19:00:46] "GET / HTTP/1.1" 200 -

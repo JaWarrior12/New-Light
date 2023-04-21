@@ -59,7 +59,7 @@ class QPCmds(commands.Cog, name="QuickPing Commands",description="QuickPing Syst
     if str(ctx.message.author.id) not in banned:
       gid = str(ctx.message.guild.id)
       msgparts, data = msg.split(" "), lists.readdataC()
-      ping = "@here <@BattlePing> "
+      ping = "@here"
       link=msgparts[1]
       linkb=link.lower()
       print(linkb)

@@ -20,8 +20,14 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
+  def is_guild_owner():
+    def predicate(ctx):
+        return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id
+    return commands.check(predicate)
+
   @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan.")
   @commands.has_permissions(administrator=True)
+  @commands.check_any(is_guild_owner())
   async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no"):
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
@@ -62,6 +68,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @commands.command(name="authuser",help="Authorizes A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!authuser <USERID>")
   @commands.has_permissions(administrator=True)
+  @commands.check_any(is_guild_owner())
   async def authorizeuser(self,ctx,user):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
@@ -100,10 +107,6 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send("I Hit a Wall, Try Running The Command Again")
 
-  def is_guild_owner():
-    def predicate(ctx):
-        return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id
-    return commands.check(predicate)
   
   @commands.command(name="deauthuser",help="Removes Authorization From A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!deauthuser <USERID>")
   @commands.check_any(is_guild_owner())
@@ -146,6 +149,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       await ctx.send("I Hit a Wall, Try Running The Command Again")
 
   @commands.command(name="authlist",help="Lists all users authorized to use leadership commands in the server.")
+  @commands.check_any(is_guild_owner())
   async def authlist(self,ctx):
     if str(ctx.message.author.id) not in banned:
       msg="none"

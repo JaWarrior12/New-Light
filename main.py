@@ -87,19 +87,19 @@ async def on_guild_join(guild):
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
 
-@bot.event
-async def on_connect():
-  await bot.load_extension("cogs.errorhand")
-  await bot.load_extension("cogs.relcmds")
-  await bot.load_extension("cogs.distcmds")
-  await bot.load_extension("cogs.descmds")
-  await bot.load_extension("cogs.qpcmds")
-  await bot.load_extension("cogs.othercmds")
-  await bot.load_extension("cogs.econcmds")
-  await bot.load_extension("cogs.devcmds")
-  await bot.load_extension("cogs.adcmds")
-  await bot.load_extension("cogs.slashcmds")
-  await bot.load_extension("cogs.setupcmds")
+#@bot.event
+#async def on_connect():
+  #await bot.load_extension("cogs.errorhand")
+  #await bot.load_extension("cogs.relcmds")
+  #await bot.load_extension("cogs.distcmds")
+  #await bot.load_extension("cogs.descmds")
+  #await bot.load_extension("cogs.qpcmds")
+  #await bot.load_extension("cogs.othercmds")
+  #await bot.load_extension("cogs.econcmds")
+  #await bot.load_extension("cogs.devcmds")
+  #await bot.load_extension("cogs.adcmds")
+  #await bot.load_extension("cogs.slashcmds")
+  #await bot.load_extension("cogs.setupcmds")
 
 @bot.event
 async def on_disconnect():
@@ -178,7 +178,7 @@ async def main():
     await bot.load_extension("cogs.setupcmds")
     #await tree.sync()
     my_console.start()
-    #await bot.start(os.environ['token'])
+    await bot.start(os.environ['token'])
     #await my_task.start()
 
 
@@ -192,6 +192,6 @@ async def main():
 #web socket for Uptimerobot to ping, keeps bot online
 #tree = app_commands.CommandTree(bot)
 keep_alives()
-bot.run(os.environ['token'],log_handler=handler)
+#bot.run(os.environ['token'],log_handler=handler)
 asyncio.run(main())
 #@my_console.command()

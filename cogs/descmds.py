@@ -50,7 +50,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
   
   @commands.command(name='adddes', brief="Adds A Design To The Ship Design Database", help="Adds a design to the ship design database. Args: <ShipName (NO SPACES)> {Design Image (First and Only Attachment)}")
-  async def savedesigns(self,ctx, *, design):
+  async def savedesigns(self,ctx,public="no",*,design):
     msg="a b"
     if str(ctx.message.author.id) not in banned:
       try:
@@ -61,7 +61,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         img = ctx.message.attachments[0]
         img2 = img.url
         #print(img2)
-        default = {"Designer":auth2,"Image":img2}
+        default = {"Designer":auth2,"Image":img2,"Public?":public}
         data[gid][design]=dict(default)
         #print(data)
         lists.setdataD(data)

@@ -1,12 +1,14 @@
 import os, discord
 import time
 import pytz
-import datetime 
+import datetime
+from typing import List
 #from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
 from discord import Permissions
+from discord import app_commands
 from json import loads, dumps
 from backup import backup
 from startup import startup
@@ -34,6 +36,7 @@ FRF = lists.FRF
 class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tools"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+    
     
   @commands.command(name="ban",hidden=True)
   @commands.has_role('Developer')
@@ -207,6 +210,17 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
         return False
     else:
       await ctx.send("You are not a developer and cannot use this command.")
+
+  #@app_commands.command(hidden=True)
+  #async def fruits(self,interaction: discord.Interaction, fruits: str):
+      #await interaction.response.send_message(f'Your favourite fruit seems to be {fruits}')
+  #@fruits.autocomplete("fruits")
+  #async def language_autocomp(self,inter: discord.Interaction, string: str):
+    #LANGUAGES = ["python", "javascript", "typescript", "java", "rust", "lisp", "elixir"]
+    #string = string.lower()
+    #return [app_commands.choice(name=lang,value=lang)
+            #for lang in LANGUAGES if string in lang.lower()]
+  
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(AdCmds(bot))

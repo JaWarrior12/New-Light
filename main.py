@@ -48,7 +48,7 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.5.0"
+version = "3.5.1"
 
 
 @bot.event
@@ -59,6 +59,7 @@ async def on_ready():  # When the bot is ready
     await bot.change_presence(status=discord.Status.online, activity=activity)
     await asyncio.sleep(5)
     await my_task.start()
+    #lists.gidlist(bot)
     #channel = client.get_channel(974078794065403924)
     #await channel.send("I'm Logged In")
 
@@ -122,6 +123,7 @@ async def on_guild_remove(guild):
     invite="No System Channel Found, Unable To Create Invite"
   else:
     invite = await guild.system_channel.create_invite(reason="Notifying My Developer")
+  lists.clearserver(str(guild.id))
 
   e = discord.Embed(title="I've Left A Server.")
   e.add_field(name="Server Name", value=guild.name, inline=True)

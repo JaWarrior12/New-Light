@@ -120,24 +120,30 @@ def logdown():
     o.write(f'New Light disconnected from the DISCORD platform at {ct}.')
     o.write('\n')
     
-async def updatemsg(gid):
-  #readother()
-  role = "OfficialMember" #"OfficialMember"
-  #guild = Member.guild
-  loc = "MemChn"
-  guild = ctx.get_guild(7547780206399325) 
-  role_name = role
-  await guild.fetch_roles()
-  msg = await guild.fetch_message(int(1033752202356981801))
-  #bot.get_guild(754778020639932516)
-  key = "MemChn"
-  print(guild)
-  channel = guild.get_channel(754778311573635213)
-  for member in guild.members:
-    if role_name in member.roles:
-      await ctx.send(f"{member.display_name} - {member.id}")
-  #await msg.edit(content="")
-  print(channel)
+def clearserver(id):
+  gid=str(id)
+  data=readdata()
+  data.pop(gid)
+  setdata(data)
+  gid=str(id)
+  data=readdataB()
+  data.pop(gid)
+  setdataB(data)
+  gid=str(id)
+  data=readdataC()
+  data.pop(gid)
+  setdataC(data)
+  gid=str(id)
+  data=readdataD()
+  data.pop(gid)
+  setdataD(data)
+  gid=str(id)
+  data=readdataE()
+  data.pop(gid)
+  setdataE(data)
+  data=lists.readother()
+  data["defaultdist"].pop(gid)
+  setother(data)
 
 async def logmajor(bot,ctx,msg):
   #Major Event Logging (To Channel In Developmnt Server)(Events Logged Are: Authorizing Users, Bans, Joins)
@@ -146,7 +152,16 @@ async def logmajor(bot,ctx,msg):
   myguild = bot.get_guild(1031900634741473280)
   channel = myguild.get_channel(1037788623015268444)
   await channel.send(f'<@{930284432634556496}> !MAJOR EVENT! Command Run: {ctx.invoked_With}. Command Run At {ct} by {ctx.message.author.name} (User Id: {ctx.message.author.id}) in server {ctx.message.guild.name} (Server ID:{ctx.message.guild.id}. The Command Contained The Following Data: {msg}.')
-  
+
+def gidlist(self):
+  data=readother()
+  for server in self.guilds:
+    gn=str(server.name)
+    gid=int(server.id)
+    data["guild"].append({"name":gn,"id":gid})
+  setother(data)
+    
+    
     
 def checkperms(ctx):
   #bannedlist()

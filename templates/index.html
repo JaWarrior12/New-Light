@@ -58,7 +58,7 @@
     <p style="text-align:center; word-wrap:normal;">Welcome! This is the latest update to New Light! You can now remotely ping a server without having access to the Discord site. Simply input the link in the textbox, select the clan you wish to ping, and click Ping Server! You will be redirected right back here, so you can ping multiple servers if you wish.</p>
     <p style="text-align:center;"><small>This runs on a 30 Second Loop. Every 30 Seconds this program sends every link it has been given to the proper server with the @here ping.</small></p>
   </br>
-    <form method="POST" name="myform">
+    <form method="POST" name="myform" id="frm">
       <label> Ship Link:</label>
       <input name ="provider"  type="text"">
       <!---<label> Clan Server ID:</label>
@@ -69,9 +69,6 @@
       <label for="html">New Light Development Server</label><br>
       <input type="radio" name="clan" value="754778020639932516" id="css">
       <label for="css">New Light Clan</label>
-    </br>
-      <input type="radio" name="clan" value="972737966411763722" id="bh">
-      <label for="bh">Bounty Hunters</label>
     </br>
       <input type="radio" name="clan" value="967920996382306346" id="gk">
       <label for="gk">Gaming Destroyers</label>
@@ -95,7 +92,28 @@
     <script>
       function myFunction() {
         document.forms[0].submit();
-      }
+      };
+      function setopts() {
+        const opts = document.getElementsByTagName("select");
+        let nOpt = new Option('test','hi')
+        opts.add(nOpt)
+        const file=readFile("../other.json");
+        const data=JSON.parse(file);
+        var name=0;
+        var id=0;
+        function removeAll(selectBox) {
+          while (selectBox.options.length > 0) {
+            select.remove(0);
+          };
+        };
+        removeAll(opts)
+        for (let x in data["guilds"]) {
+          name= data["guilds"][x]["name"];
+          id = data["guilds"][x]["id"];
+          let newOption = new Option(name,id);
+          opts.add(newOption,undefined);
+        };
+      };
     </script>
   </body>
   <footer style="text-align:center">

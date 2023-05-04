@@ -17,10 +17,12 @@ app.config.update(
 def home():
   return render_template('index.html')
 
-@app.route('/datafiles/<string:file>')
-def jsondat(file):
-  #return loads(open(f'{file}.json', 'r').read())
-  return "File Hosting Not Open At This Time"
+@app.route('/datafiles/<string:file>/<string:passkey>')
+def jsondat(file,passkey=0):
+  if passkey==str(os.environ['WEBPASS']):
+    return loads(open(f'{file}.json', 'r').read())
+  else:
+    return "Access to NEW LIGHT DATA FILES is restricted."
 
 @app.route("/", methods=["POST"])
 def get_provider():

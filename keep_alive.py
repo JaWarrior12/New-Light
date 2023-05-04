@@ -2,6 +2,7 @@
 from flask import Flask, render_template, request
 from threading import Thread
 import random
+from json import loads, dumps
 import os
 import asyncio
 import lists
@@ -16,10 +17,10 @@ app.config.update(
 def home():
   return render_template('index.html')
 
-@app.route('/userdata')
-def jsondat():
-  #return lists.readdata()
-  return "This Page Is A Work In Progress"
+@app.route('/datafiles/<string:file>')
+def jsondat(file):
+  #return loads(open(f'{file}.json', 'r').read())
+  return "File Hosting Not Open At This Time"
 
 @app.route("/", methods=["POST"])
 def get_provider():

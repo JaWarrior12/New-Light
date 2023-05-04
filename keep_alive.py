@@ -16,6 +16,11 @@ app.config.update(
 def home():
   return render_template('index.html')
 
+@app.route('/userdata')
+def jsondat():
+  #return lists.readdata()
+  return "This Page Is A Work In Progress"
+
 @app.route("/", methods=["POST"])
 def get_provider():
   rf = request.form['btn']

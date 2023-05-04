@@ -21,7 +21,7 @@ import lists
 
 lists.bannedlist()
 
-handler=logging.basicConfig(filename='Backups/errorlog.log',format='%(asctime)s - %(levelname)s - %(message)s',filemode='a',level=logging.CRITICAL)
+#handler=logging.basicConfig(filename='Backups/errorlog.log',format='%(asctime)s - %(levelname)s - %(message)s',filemode='a',level=logging.CRITICAL)
 #logger = logging.getLogger()
 
 intents = discord.Intents.all()

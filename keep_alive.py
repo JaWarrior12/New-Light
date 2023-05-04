@@ -6,7 +6,6 @@ import os
 import asyncio
 import lists
 
-
 app = Flask(__name__)
 app.config.update(
     #TESTING=True,

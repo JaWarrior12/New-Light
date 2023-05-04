@@ -108,7 +108,7 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
     else:
       await ctx.send("You are not a developer and cannot use this command")
 
-  @commands.command(name="invitehelp",help="This command DMs you information on inviting New Light to your server. Format: n!invitehelp @Yourself")
+  @commands.command(name="invitehelp",help="This command DMs you information on inviting New Light to your server. Format: n!invitehelp @Yourself",disabled=True)
   async def invitehelp(self,ctx,user:discord.User):
     with open('InviteHelp.txt', 'rb') as fp:
         await user.send(file=discord.File(fp, 'New Light Documentation'))
@@ -126,9 +126,9 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
       lists.logdown()
 
 
-  @commands.command(name="authuser",help="Authorizes A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!authuser <USERID>")
+  @commands.command(name="authuserold",help="Authorizes A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!authuser <USERID>",hidden=True,disabled=True)
   @commands.has_permissions(administrator=True)
-  async def authorizeuser(self,ctx,user):
+  async def authorizeuserold(self,ctx,user):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
       if chk == True:
@@ -171,9 +171,9 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
         return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id
     return commands.check(predicate)
   
-  @commands.command(name="deauthuser",help="Removes Authorization From A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!deauthuser <USERID>")
+  @commands.command(name="deauthuserold",help="Removes Authorization From A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!deauthuser <USERID>",hidden=True,disabled=True)
   @commands.check_any(is_guild_owner())
-  async def deathuser(self,ctx,user):
+  async def deathuserold(self,ctx,user):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
       if chk == True:
@@ -219,7 +219,7 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
   async def pingpage(self,ctx):
     await ctx.send("New Light Ping Page: https://new-light-test.jawarrior.repl.co")
 
-  @commands.command(name="authlist")
+  @commands.command(name="authlistold",hidden=True,disabled=True)
   async def authlist(self,ctx):
     if str(ctx.message.author.id) not in banned:
       msg="none"

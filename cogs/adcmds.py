@@ -156,6 +156,9 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
       data=lists.readdataE()
       data.pop(gid)
       lists.setdataE(data)
+      data=lists.readother()
+      data["defaultdist"].pop(gid)
+      lists.setother(data)
       await ctx.send(f'The server with an ID of {gid} has been removed from my databases.')
     else:
       await ctx.send("You are not a developer and cannot use this command.")

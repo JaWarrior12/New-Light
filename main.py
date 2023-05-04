@@ -37,7 +37,8 @@ value = bot
 my_console = Console(bot)
 
 nav = EmojiMenu("◀️", "▶️", "❌")
-bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green())
+ending_note="New Light"
+bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green(),ending_note=ending_note)
 
 class MyHelp(commands.MinimalHelpCommand):
     async def send_pages(self):
@@ -58,6 +59,9 @@ async def on_ready():  # When the bot is ready
     activity = discord.Game(name=f"JaWarrior.py & n!help. Version: {version}", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     await asyncio.sleep(5)
+    #with open("images/bdaypic.png", "rb") as file:
+      #image=file.read()
+    #await bot.user.edit(avatar=image)
     await my_task.start()
     #lists.gidlist(bot)
     #channel = client.get_channel(974078794065403924)

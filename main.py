@@ -37,7 +37,7 @@ value = bot
 my_console = Console(bot)
 
 nav = EmojiMenu("◀️", "▶️", "❌")
-ending_note="New Light"
+ending_note="New Light (LR=Command Restricted To Clan/Server Leadership)"
 bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green(),ending_note=ending_note)
 
 class MyHelp(commands.MinimalHelpCommand):
@@ -59,9 +59,6 @@ async def on_ready():  # When the bot is ready
     activity = discord.Game(name=f"JaWarrior.py & n!help. Version: {version}", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     await asyncio.sleep(5)
-    #with open("images/bdaypic.png", "rb") as file:
-      #image=file.read()
-    #await bot.user.edit(avatar=image)
     await my_task.start()
     #lists.gidlist(bot)
     #channel = client.get_channel(974078794065403924)
@@ -83,7 +80,9 @@ async def on_guild_join(guild):
       invite = await guild.system_channel.create_invite(reason="Inviting My Developer Incase You Need Support.")
 
     e = discord.Embed(title="I've joined a server.")
-    e.add_field(name="Server Name", value=guild.name, inline=False)
+    e.add_field(name="Server Name", value=guild.name, inline=True)
+    e.add_field(name="Server ID",value=guild.id,inline=True)
+    e.add_field(name="Server Owner",value=guild.owner.name,inline=True)
     e.add_field(name="Invite Link", value=invite, inline=False)
     e.set_thumbnail(url=guild.icon)
     #tz = pytz.timezone('America/New_York')
@@ -122,7 +121,7 @@ async def on_guild_remove(guild):
   myguild = bot.get_guild(1031900634741473280)
   mychannel = myguild.get_channel(1037788623015268444)
   tz = pytz.timezone('America/New_York')
-  await mychannel.send(f'Left Server: {guild.name}; ID: {guild.id}; Time:{datetime.dateime.now(tz)}')
+  await mychannel.send(f'Left Server: {guild.name}; ID: {guild.id}; Time:{datetime.dateime.now(tz)}; Server Owner:{guild.owner.name}')
   if guild.system_channel==None:
     invite="No System Channel Found, Unable To Create Invite"
   else:
@@ -132,6 +131,7 @@ async def on_guild_remove(guild):
   e = discord.Embed(title="I've Left A Server.")
   e.add_field(name="Server Name", value=guild.name, inline=True)
   e.add_field(name="Server ID",value=guild.id,inline=True)
+  e.add_field(name="Server Owner",value=guild.owner.name,inline=True)
   e.add_field(name="Invite Link", value=invite, inline=False)
   e.set_thumbnail(url=guild.icon)
   #tz = pytz.timezone('America/New_York')

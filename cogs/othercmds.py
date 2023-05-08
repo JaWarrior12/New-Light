@@ -215,7 +215,7 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
   async def slash(self,ctx):
     await ctx.send("Hi! I can use slash commands now!")
 
-  @commands.command(name="pingpage",aliases=["pinger","ppage","p"])
+  @commands.command(name="pingpage",aliases=["pinger","ppage","p"],brief="Link to WebPing Page",help="Sends the link to New Light Remote WebPing Page")
   async def pingpage(self,ctx):
     await ctx.send("New Light Ping Page: https://new-light-test.jawarrior.repl.co")
 
@@ -234,6 +234,13 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
           await ctx.send(f'Name:{member.display_name}; ID:{member.id}')
     else:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
+
+  @commands.command(name="whois",help="Gets Clans A Member Is In")
+  async def whois(self,ctx,member:discord.Member):
+    print(1)
+    #shargids=member.mutual_guilds
+    #for x in shargids:
+      #pass
     
 async def setup(bot: commands.Bot):
     await bot.add_cog(OtherCmds(bot))

@@ -33,7 +33,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
-  @commands.command(name='rel',help="Calls a relation from a clan's relation database. Format: n!rel clan; Clan can be a clan's name, emoji, or abbreviation.")
+  @commands.command(name='rel',brief="Gets a clan's relation.",help="Calls a relation from a clan's relation database. Format: n!rel clan; Clan can be a clan's name, emoji, or abbreviation.")
   async def relations(self,ctx, *, clan):
         lists.logback(ctx,clan)
         if str(ctx.message.author.id) not in banned:
@@ -63,7 +63,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
           await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
           return False
          
-  @commands.command(name="changerel",help="Changes a clan's relation in their relations database. Format: n!changerel relation clan; Clan can be the emoji, name, or abreviation")
+  @commands.command(name="changerel",brief="Changes clan relations. (LR)",help="Changes a clan's relation in their relations database. Format: n!changerel relation clan; Clan can be the emoji, name, or abreviation")
   async def changerel(self,ctx, relation,*, clan):
       if str(ctx.message.author.id) not in banned:
         msg="a b"
@@ -118,7 +118,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
           return False
           
   
-  @commands.command(name="addrel",help="Adds a relation to a clan's relation database. Format: n!addrel relation emoji clan_abbreviation clan_full_name; \n-The abbreviation must be 4 letters or less, the full name can have spaces.")
+  @commands.command(name="addrel",brief="Adds a clan to relations (LR)",help="Adds a relation to a clan's relation database. Format: n!addrel relation emoji clan_abbreviation clan_full_name; \n-The abbreviation must be 4 letters or less, the full name can have spaces.")
   async def addrel(self,ctx,relation=None,emoji=None,abrv=None,*,full_name=None):
         msg="a b"
         #msgparts, data = msg.split(" "), lists.readdataB()
@@ -147,7 +147,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
         else:
           return False
   
-  @commands.command(name='relall',help="Calls all of a clan's relations in their relations database. Format: n!relall")
+  @commands.command(name='relall',brief="Fetches the server's complete relations list. (LR)",help="Calls all of a clan's relations in their relations database. Format: n!relall")
   async def relall(self,ctx,*,clan=None):
         #msgparts, data = msg.split(" "), lists.readdataB()
         chk = lists.checkperms(ctx)

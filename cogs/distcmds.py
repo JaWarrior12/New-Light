@@ -62,7 +62,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     # create the background task and run it in the background
     #self.bg_task = self.loop.create_task(self.verifyscheduled())
 
-  @commands.command(name="logloot",brief="Adds/Subtracts loot from a user's balance.",help="Adds/Subtracts from a user's balance. The format is: n!logloot @User item amount. If you are subtracting make the amount negative.")
+  @commands.command(name="logloot",brief="Adds/Subtracts loot from a user's balance. (LR)",help="Adds/Subtracts from a user's balance. The format is: n!logloot @User item amount. If you are subtracting make the amount negative.")
   async def returnpaymentdata(self, ctx, member: discord.Member, item, amount):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
@@ -96,7 +96,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         except KeyError:
           await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
           
-  @commands.command(name='reset',help="Resets one loot value in a user's balance. Format: n!reset @User item")
+  @commands.command(name='reset',brief="Resets a member's balance. (LR)",help="Resets one loot value in a user's balance. Format: n!reset @User item")
   async def resetalldata(self, ctx, member: discord.Member, item):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
@@ -149,7 +149,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     else:
       await ctx.send("Error")
 
-  @commands.command(name="addmember",brief="Adds a member to the clan's distribution database.", help="Adds a member to the distribution database. Just ping the user in the command. Format: n!addmember @User")
+  @commands.command(name="addmember",brief="Adds a member to the clan's distribution database. (LR)", help="Adds a member to the distribution database. Just ping the user in the command. Format: n!addmember @User")
   async def addmember(self,ctx, member: discord.Member):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
@@ -180,7 +180,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         else:
           return False
 
-  @commands.command(name="removemember",brief="Removes a member from a clan's distribution database.", help="Removes a member from the distribution database. Just ping the user in the command and it will remove them. Format: n!removemember @User")
+  @commands.command(name="removemember",brief="Removes a member from a clan's distribution database. (LR)", help="Removes a member from the distribution database. Just ping the user in the command and it will remove them. Format: n!removemember @User")
   async def remmem(self,ctx,member: discord.Member,*,reason=None):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
@@ -206,7 +206,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         else:
           return False
 
-  @commands.command(name='balall',help="Calls all balances in a clan's distribution database. Format: n!balall")
+  @commands.command(name='balall',brief="Calls All Clan Balances (LR)",help="Calls all balances in a clan's distribution database. Format: n!balall")
   async def balanceall(self,ctx):
         clan = ctx.message.guild
         #msgparts, data = msg.split(" "), lists.readdata()
@@ -231,9 +231,9 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           for i in cntntlist:
             await ctx.send(i)
         else:
-          return False
+          await ctx.send("Leadership Restricted Command")
 
-  @commands.command(name="defaultbal",description="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs")
+  @commands.command(name="defaultbal",brief="Sets a clan's default balance (LR)",help="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs",description="Hi")
   async def defaultbal(self,ctx,*,items):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
@@ -248,7 +248,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         e.add_field(name="Default Balance",value=list,inline=True)
         e.set_thumbnail(url=ctx.message.author.display_avatar)
         #tz = pytz.timezone('America/New_York')
-        e.timestamp=atetime.now()
+        e.timestamp=datetime.now()
         await ctx.send(embed=e)
       else:
         await ctx.send("Unauhtorized To Use Leadership Commands")
@@ -382,7 +382,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         print("Error Occured")
 
 
-  @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY")
+  @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY",hidden=True)
   async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
       #await self.verifyscheduled()

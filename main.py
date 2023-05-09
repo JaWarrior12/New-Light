@@ -90,6 +90,9 @@ async def on_guild_join(guild):
     await mychannel.send(embed=e)
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
+    data=lists.readother()
+    data["guilds"].update({guild.name:int(guild.id)})
+    lists.setother(data)
 
 #@bot.event
 #async def on_connect():
@@ -140,7 +143,10 @@ async def on_guild_remove(guild):
   await mychannel.send(f'Guild Name: {guild}')
   await mychannel.send(f'Guild Id: {guild.id}')
   lists.clrserver(guild.id)
-
+  data=lists.readother()
+  data["guilds"].pop(guild.name)
+  lists.setother(data)
+  
 @tasks.loop(seconds=30)
 async def my_task():
   #print("loop")

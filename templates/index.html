@@ -55,7 +55,7 @@
   </head>
   <body style="background-color:lightblue;">
     <hr class=solid>
-    <p style="text-align:center; word-wrap:normal;">Welcome! This is the latest update to New Light! You can now remotely ping a server without having access to the Discord site. Simply input the link in the textbox, select the clan you wish to ping, and click Ping Server! You will be redirected right back here, so you can ping multiple servers if you wish.</p>
+    <p style="text-align:center; word-wrap:normal;">Welcome! This is New Light's WebPing System! You can now remotely ping a server without having access to the Discord site. Simply input the link in the textbox, select the clan you wish to ping, and click Ping Server! You will be redirected right back here, so you can ping multiple servers if you wish.</p>
     <p style="text-align:center;"><small>This runs on a 30 Second Loop. Every 30 Seconds this program sends every link it has been given to the proper server with the @here ping.</small></p>
   </br>
     <form method="POST" name="myform" id="frm">
@@ -65,14 +65,7 @@
       <input name ="clan"  type="text"">--->
     </br>
       <p>Clan Selection:</p>
-      <input type="radio" name="clan" id="html" value="1031900634741473280">
-      <label for="html">New Light Development Server</label><br>
-      <input type="radio" name="clan" value="754778020639932516" id="css">
-      <label for="css">New Light Clan</label>
-    </br>
-      <input type="radio" name="clan" value="967920996382306346" id="gk">
-      <label for="gk">Gaming Destroyers</label>
-    </br>
+      {{ form.clan }}
       <button name="btn" value="index" onclick="return myFunction()">Ping Server</button>
       <!--<input type="radio" id="javascript" name="fav_language" value="JavaScript">
       <label for="javascript">JavaScript</label>-->
@@ -80,15 +73,7 @@
       <!--<button onclick="return myFunction()">Ping Server</button>
       <input type="submit" value="Ping Server" onclick="myFunction()">-->
     </form>
-  </br>
-    <h4>Supported Clans & Servers:</h4>
-    <ul>
-      <li>New Light Development Server</li>
-      <li>New Light Clan</li>
-      <li>Bounty Hunters</li>
-      <li>Gaming Destroyers</li>
-    </ul>
-    <p><small>The list of clans is maintained by the developer. If you wish to have your clan added, DM JaWarrior#1305 and ask about your clan getting supported here.</small></p>
+  </br
     <script>
       function myFunction() {
         document.forms[0].submit();

@@ -1,5 +1,7 @@
 #websocket for uptimerobot to ping, keeps bot online
 from flask import Flask, render_template, request
+from flask_wtf import FlaskForm
+from wtforms import RadioField
 from threading import Thread
 import random
 from json import loads, dumps
@@ -8,14 +10,34 @@ import asyncio
 import lists
 
 app = Flask(__name__)
+seckey = os.urandom(32)
 app.config.update(
     #TESTING=True,
-    TEMPLATES_AUTO_RELOAD=True
+    TEMPLATES_AUTO_RELOAD=True,
+    SECRET_KEY=seckey
 )
+
+class SimpleForm(FlaskForm):
+  def setchoices():
+    opts=[]
+    data=lists.readdataE()
+    for x in data:
+      if x=="ban":
+        continue
+      else:
+        #print(x)
+        name=str(data[x]["name"])
+        pingchan=str(x)
+        obj=tuple((pingchan,name))
+        opts.append(obj)
+        #print(opts)
+    return opts
+  clan = RadioField('btn', choices=setchoices(),default=1, coerce=int)
 
 @app.route('/')
 def home():
-  return render_template('index.html')
+  form = SimpleForm()
+  return render_template('index.html',form=form)
 
 @app.route('/datafiles/<string:file>/<string:passkey>')
 def jsondat(file,passkey=0):
@@ -26,6 +48,7 @@ def jsondat(file,passkey=0):
 
 @app.route("/", methods=["POST"])
 def get_provider():
+  #print(form.clan.data)
   rf = request.form['btn']
   if rf =="index":
     dp = request.form["provider"]
@@ -40,9 +63,11 @@ def get_provider():
     lists.setother(data)
     return render_template('submit.html')
   elif rf=="submit":
-    return render_template('index.html')
+    form = SimpleForm()
+    return render_template('index.html',form=form)
   else:
-    return render_template('index.html')
+    form = SimpleForm()
+    return render_template('index.html',form=form)
   
 def run():
   app.run(

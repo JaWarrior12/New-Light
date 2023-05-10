@@ -48,10 +48,10 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
     #print(1)
     self.backupdaily.cancel()
 
-  @commands.command(name='ping')
+  @commands.command(name='ping',brief="Latency Command",help="Latency Command")
   @commands.cooldown(1, 10, commands.BucketType.user)
   async def ping(self,ctx):
-    await ctx.send("Pong")
+    await ctx.send(f"Pong 🏓! Latency: {round(int(self.bot.latency)*1000)}ms")
 
   @commands.command(name='shutdown',brief="Shuts down and restarts New Light", help="Shuts Down and Restarts New Light. Args: None")
   async def shutdown(self,ctx,msg=None):

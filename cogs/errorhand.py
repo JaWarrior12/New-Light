@@ -71,9 +71,6 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
         elif isinstance(error,commands.MissingRequiredAttachment):
           await ctx.send(f"A required attachment is missing. Missing Attachment: {error.param}")
 
-        elif isinstance(error,commands.ExtensionError):
-          await ctx.send("The requested Extension ran into an error.")
-
         elif isinstance(error,commands.ExtensionAlreadyLoaded):
           await ctx.send(f"Extension {error.name} is already loaded.")
 
@@ -85,6 +82,9 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
 
         elif isinstance(error,commands.ExtensionNotFound):
           await ctx.send(f"Extension {error.name} was not found.")
+
+        elif isinstance(error,commands.ExtensionError):
+          await ctx.send("The requested Extension ran into an error.")
 
         elif isinstance(error,commands.ConversionError):
           await ctx.send(f"A Conversion has failed! COnverter:{error.converter}; Original:{error.original}")

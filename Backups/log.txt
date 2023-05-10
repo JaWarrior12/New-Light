@@ -42,3 +42,17 @@ Command run at 2023-05-10 12:29:26.912580-04:00, by JaWarrior (User ID: 93028443
 Command run at 2023-05-10 12:30:51.608716-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
 
 Command run at 2023-05-10 12:32:53.996066-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-05-10 12:39:40.936758-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
+
+Command run at 2023-05-10 12:40:26.151541-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
+
+Command run at 2023-05-10 12:42:15.351852-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
+
+Command run at 2023-05-10 12:42:31.101194-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
+
+Command run at 2023-05-10 12:44:50.523433-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
+
+Command run at 2023-05-10 12:45:11.582963-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds
+
+Command run at 2023-05-10 12:45:22.726699-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.othercmds

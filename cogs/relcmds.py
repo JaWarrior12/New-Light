@@ -57,8 +57,8 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
             e.add_field(name="Clan Emoji",value=route[0]["emoji"],inline=True)
             e.add_field(name="Relation",value=route[0]["relation"],inline=True)
             await ctx.send(embed=e)
-          except KeyError:
-            await ctx.send(f'KeyError: {clan} Is not in the relations database. Either {clan} has not been entered into the list by a clan leader or it is listed under a different key.')
+          except:
+            await ctx.send(f'Error: {clan} is not in the relations database. Either {clan} has not been entered into the list by a clan leader or it is listed under a different key.')
         else:
           await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
           return False

@@ -61,12 +61,13 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
 
         # For this error example we check to see where it came from...
         elif isinstance(error, commands.BadArgument):
-            if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
-                await ctx.send('I could not find that member. Please try again.')
+            #if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
+            await ctx.send(f'Bad Argument: {error.param}')
 
         elif isinstance(error, commands.MissingRequiredArgument):
-            if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
-                await ctx.send(f'You are missing a required argument. Missing Argument: {error.param}')
+            #if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
+              #pass
+            await ctx.send(f'You are missing a required argument. Missing Argument: {error.param}')
               
         elif isinstance(error,commands.MissingRequiredAttachment):
           await ctx.send(f"A required attachment is missing. Missing Attachment: {error.param}")

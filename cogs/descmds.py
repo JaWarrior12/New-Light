@@ -36,6 +36,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
   @commands.command(name='editdes', brief="Edits A Design In The Ship Design Database",help="Edits A Design In The Ship Design Database. Args: <ShipName (NO SPACES)> <DataPoint> <NewValue>")
   async def fetchdesign(self,ctx, design,item,value):
     msg="a b"
+    design=design.lower()
     if str(ctx.message.author.id) not in banned:
       gid = str(ctx.message.guild.id)
       data=lists.readdataD()
@@ -55,6 +56,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
   @commands.command(name='adddes', brief="Adds A Design To The Ship Design Database", help="Adds a design to the ship design database. Args: <ShipName (NO SPACES)> {Design Image (First and Only Attachment)}")
   async def savedesigns(self,ctx,*,design):
     msg="a b"
+    design=design.lower()
     if str(ctx.message.author.id) not in banned:
       try:
         gid = str(ctx.message.guild.id)
@@ -79,6 +81,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
   async def deldes(self,ctx, *, design):
     data = lists.readdataD()
     gid = str(ctx.message.guild.id)
+    design=design.lower()
     if str(ctx.message.author.id) not in banned:
       if int(ctx.message.author.id) == data[gid][str(design)]["Designer"]:
         try:
@@ -93,32 +96,46 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
     else:
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
   
-  @commands.command(name='design', brief="Calls A Design From The Ship Design Database", help="Calls a design from the database. Input a ship name, or all to get one or all the ships in the database.")
+  @commands.command(name='design', brief="Calls A Design From The Ship Design Database", help="Calls a design from the database. Input a ship name, or all to get one or all the ships in the database. n!design all calls all designs.")
   async def calldes(self,ctx,*,design):
     if str(ctx.message.author.id) not in banned:
       try:
-        gid = str(ctx.message.guild.id)
-        data=lists.readdataD()
-        lists.logback(ctx,design)
-        e = discord.Embed(title=design)
-        e.set_image(url=str(data[gid][design]["Image"]))
-        e.add_field(name="Designer",value=f'<@{data[gid][design]["Designer"]}>',inline=True)
-        keylist=list(data[gid][design].keys())
-        keylist.remove("Designer")
-        keylist.remove("Image")
-        for key in keylist:
-          e.add_field(name=str(key),value=data[gid][design][str(key)],inline=True)
+        design=str(design.lower())
+        print(design)
+        if design=="all":
+          gid = str(ctx.message.guild.id)
+          data=lists.readdataD()
+          for x in data[gid]:
+            x=str(x)
+            f = discord.Embed(title=x)
+            print("double")
+            f.set_image(url=str(data[gid][x]["Image"]))
+            f.add_field(name="Designer",value=f'<@{data[gid][x]["Designer"]}>',inline=True)
+            keylist=list(data[gid][x].keys())
+            keylist.remove("Designer")
+            keylist.remove("Image")
+            for key in keylist:
+              f.add_field(name=str(key),value=data[gid][x][str(key)],inline=True)
+            await ctx.send(embed=f)
+        else:
+          print("single")
+          gid = str(ctx.message.guild.id)
+          data=lists.readdataD()
+          lists.logback(ctx,design)
+          e = discord.Embed(title=design)
+          e.set_image(url=str(data[gid][design]["Image"]))
+          e.add_field(name="Designer",value=f'<@{data[gid][design]["Designer"]}>',inline=True)
+          keylist=list(data[gid][design].keys())
+          keylist.remove("Designer")
+          keylist.remove("Image")
+          for key in keylist:
+            e.add_field(name=str(key),value=data[gid][design][str(key)],inline=True)
         #tz = pytz.timezone('America/New_York')
-        await ctx.send(embed=e)
+          await ctx.send(embed=e)
       except KeyError:
         await ctx.send(f'KeyError: The Key {design} is not found in the database. There might have been an error entering the key. Fixes: Capitialization (bruh -> Bruh), Spaces (Pls Join -> PlsJoin), Abbreviation (Distribution -> Distri). The solution to this error may be a mix of the 3 fixes provided.')
     else:
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
-
-  @calldes.error
-  async def calldes_error(self, ctx, error):
-      if isinstance(error, commands.CheckFailure):
-        await ctx.send('Your input does not match any command, for n!calldes please use n!calldes <shipname> or n!calldes all to call specific design groups.')
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(DesCmds(bot))

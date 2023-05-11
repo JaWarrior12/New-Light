@@ -90,13 +90,13 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
           lists.logback(ctx,design)
           await ctx.send(f'Deleted {design} from the Database')
         except KeyError:
-          await ctx.send(f'KeyError: The Key {design} is not found in the database. There might have been an error entering the key. Fixes: Capitialization (bruh -> Bruh), Spaces (Pls Join -> PlsJoin), Abbreviation (Distribution -> Distri). The solution to this error may be a mix of the 3 fixes provided.')
+          await ctx.send(f'KeyError! {design} does not exist in my database! Please use n!design all if you would like to call all designs or n!design list for a list of design names.')
       else:
         await ctx.send(f'You are not the Designer of {design} and cannot delete it')
     else:
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
   
-  @commands.command(name='design', brief="Calls A Design From The Ship Design Database", help="Calls a design from the database. Input a ship name, or all to get one or all the ships in the database. n!design all calls all designs.")
+  @commands.command(name='design', brief="Calls A Design From The Ship Design Database", help="Calls a design from the database. Input a ship name, or all to get one or all the ships in the database. n!design all calls all designs. n!design list lists all design names.")
   async def calldes(self,ctx,*,design):
     if str(ctx.message.author.id) not in banned:
       try:
@@ -117,6 +117,13 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
             for key in keylist:
               f.add_field(name=str(key),value=data[gid][x][str(key)],inline=True)
             await ctx.send(embed=f)
+        elif design=="list":
+          gid = str(ctx.message.guild.id)
+          data=lists.readdataD()
+          k=discord.Embed(title="Design List")
+          for x in data[gid]:
+            k.add_field(name="",value=x)
+          await ctx.send(embed=k)
         else:
           print("single")
           gid = str(ctx.message.guild.id)
@@ -133,7 +140,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         #tz = pytz.timezone('America/New_York')
           await ctx.send(embed=e)
       except KeyError:
-        await ctx.send(f'KeyError: The Key {design} is not found in the database. There might have been an error entering the key. Fixes: Capitialization (bruh -> Bruh), Spaces (Pls Join -> PlsJoin), Abbreviation (Distribution -> Distri). The solution to this error may be a mix of the 3 fixes provided.')
+        await ctx.send(f'KeyError! {design} does not exist in my database! Please use n!design all if you would like to call all designs or n!design list for a list of design names.')
     else:
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
 

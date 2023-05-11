@@ -37,7 +37,7 @@ value = bot
 my_console = Console(bot)
 
 nav = EmojiMenu("◀️", "▶️", "❌")
-ending_note="New Light (LR=Command Restricted To Clan/Server Leadership)"
+ending_note="New Light (LR=Command Restricted To Clan/Server Leadership)\nWiki:https://github.com/JaWarrior12/New-Light/wiki"
 bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green(),ending_note=ending_note)
 
 class MyHelp(commands.MinimalHelpCommand):

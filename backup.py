@@ -78,6 +78,6 @@ def backup(ctx):
   backqp()
   backoth()
   backconfig()
-  logback(ctx)
+  #logback(ctx)
   #ct = datetime.datetime.now()
   #f = open(name, "w")

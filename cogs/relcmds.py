@@ -33,7 +33,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
-  @commands.command(name='rel',help="Calls a relation from a clan's relation database. Format: n!rel clan; Clan can be a clan's name, emoji, or abbreviation.")
+  @commands.command(name='rel',brief="Gets a clan's relation.",help="Calls a relation from a clan's relation database. Format: n!rel clan; Clan can be a clan's name, emoji, or abbreviation.")
   async def relations(self,ctx, *, clan):
         lists.logback(ctx,clan)
         if str(ctx.message.author.id) not in banned:
@@ -51,15 +51,19 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
             def find_route(data, route_no):
               return list(filter(lambda x:x.get(st)==clan,datab))
             route = find_route(datab,clan)
-            embed=discord.Embed(title=f'{route[0]["name"]}', description=f'Clan Full Name: {route[0]["name"]}\nClan Abbreviation: {route[0]["abrv"]}\nClan Emoji: {route[0]["emoji"]}\nClan Relation: {route[0]["relation"]}', color=0xFF5733)
-            await ctx.send(embed=embed)
-          except KeyError:
-            await ctx.send(f'KeyError: {clan} Is not in the relations database. Either {clan} has not been entered into the list by a clan leader or it is listed under a different key.')
+            e=discord.Embed(title="Clan Relations")
+            e.add_field(name="Clan Name",value=route[0]["name"],inline=True)
+            e.add_field(name="Clan Abbreviation",value=route[0]["abrv"],inline=True)
+            e.add_field(name="Clan Emoji",value=route[0]["emoji"],inline=True)
+            e.add_field(name="Relation",value=route[0]["relation"],inline=True)
+            await ctx.send(embed=e)
+          except:
+            await ctx.send(f'Error: {clan} is not in the relations database. Either {clan} has not been entered into the list by a clan leader or it is listed under a different key.')
         else:
           await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
           return False
          
-  @commands.command(name="changerel",help="Changes a clan's relation in their relations database. Format: n!changerel relation clan; Clan can be the emoji, name, or abreviation")
+  @commands.command(name="changerel",brief="Changes clan relations. (LR)",help="Changes a clan's relation in their relations database. Format: n!changerel relation clan; Clan can be the emoji, name, or abreviation")
   async def changerel(self,ctx, relation,*, clan):
       if str(ctx.message.author.id) not in banned:
         msg="a b"
@@ -97,7 +101,14 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
             #await ctx.send(datab)
             #await ctx.send(datac)
             lists.setdataB(datac)
-            await ctx.send(f'{clan} now has a relation of {relation}!')
+            e=discord.Embed(title="Clan Relation Changed")
+            e.add_field(name="Changed By",value=ctx.message.author.display_name,inline=True)
+            e.add_field(name="Clan Name",value=datac[str(ctx.message.guild.id)][datab.index(route[0])]['name'],inline=True)
+            e.add_field(name="Clan Abbreviation",value=datac[str(ctx.message.guild.id)][datab.index(route[0])]['abrv'],inline=True)
+            e.add_field(name="Clan Emoji",value=datac[str(ctx.message.guild.id)][datab.index(route[0])]['emoji'],inline=True)
+            e.add_field(name="Relation",value=datac[str(ctx.message.guild.id)][datab.index(route[0])]['relation'],inline=True)
+            e.timestamp=datetime.now()
+            await ctx.send(embed=e)
           except KeyError:
             await ctx.send(f'KeyError: {clan} Is not in the relations database. Either {clan} has not been entered into the list by a clan leader or it is listed under a different key. Fixes: Capitalize the first letter (cougar -> Cougar), Use an abbreviation (Swiss Armed Forces -> SAF), or remove spaces in the name (Hellenic League -> HellenicLeague). The solution could be a mix of the provided fixes.')
         else:
@@ -107,8 +118,8 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
           return False
           
   
-  @commands.command(name="addrel",help="Adds a relation to a clan's relation database. Format: n!addrel relation emoji clan_abbreviation clan_full_name; \n-The abbreviation must be 4 letters or less, the full name can have spaces.")
-  async def addrel(self,ctx,relation,emoji=None,abrv=None,*,full_name):
+  @commands.command(name="addrel",brief="Adds a clan to relations (LR)",help="Adds a relation to a clan's relation database. Format: n!addrel relation emoji clan_abbreviation clan_full_name; \n-The abbreviation must be 4 letters or less, the full name can have spaces.")
+  async def addrel(self,ctx,relation=None,emoji=None,abrv=None,*,full_name=None):
         msg="a b"
         #msgparts, data = msg.split(" "), lists.readdataB()
         msgb = str(emoji+" "+relation+" "+abrv+" "+full_name)
@@ -124,13 +135,19 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
             newcon=[{'name':str(full_name),'emoji':emoji,'abrv':str(abrv),'relation':str(relation)}]
             data[str(ctx.message.guild.id)].extend(newcon)
             lists.setdataB(data)
-            await ctx.send(f'{full_name} hae been added to the relations with a relation of {relation}, emoji of {emoji}, and abbreviation of {abrv}!')
+            e=discord.Embed(title="Clan Relation Added")
+            e.add_field(name="Clan Name",value=full_name,inline=True)
+            e.add_field(name="Clan Abbreviation",value=abrv,inline=True)
+            e.add_field(name="Clan Emoji",value=emoji,inline=True)
+            e.add_field(name="Relation",value=relation,inline=True)
+            e.timestamp=datetime.now()
+            await ctx.send(embed=e)
           except KeyError:
             await ctx.send(f'KeyError: {full_name} Is not in the relations database. Either {full_name} has not been entered into the list by a clan leader or it is listed under a different key. Fixes: Capitalize the first letter (cougar -> Cougar), Use an abbreviation (Swiss Armed Forces -> SAF), or remove spaces in the name (Hellenic League -> HellenicLeague). The solution could be a mix of the provided fixes.')
         else:
           return False
   
-  @commands.command(name='relall',help="Calls all of a clan's relations in their relations database. Format: n!relall")
+  @commands.command(name='relall',brief="Fetches the server's complete relations list. (LR)",help="Calls all of a clan's relations in their relations database. Format: n!relall")
   async def relall(self,ctx,*,clan=None):
         #msgparts, data = msg.split(" "), lists.readdataB()
         chk = lists.checkperms(ctx)
@@ -146,21 +163,29 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
 
   @commands.command(name="reltest",hidden=True,disabled=True)
   @commands.has_role("Developer")
-  async def reltest(self,ctx,*,arg):
-    st=None
-    if len(arg) >= 5:
-      st="name"
-    elif len(arg) == 1:
-      st="emoji"
-    elif len(arg) <= 4:
-      st="abrv"
+  async def reltest(self,ctx,*,clan):
+    if int(ctx.message.author.id) in lists.developers:
+      st=None
+      if len(clan) >= 5:
+        st="name"
+      elif len(clan) == 1:
+        st="emoji"
+      elif len(clan) <= 4:
+        st="abrv"
+      else:
+        st="name"
+      datab = lists.readdataB()[str(ctx.message.guild.id)]
+      def find_route(data, route_no):
+        return list(filter(lambda x:x.get(st)==clan,datab))
+      route = find_route(datab,clan)
+      e=discord.Embed(title="Clan Relations")
+      e.add_field(name="Clan Name",value=route["name"],inline=True)
+      e.add_field(name="Clan Abbreviation",value=route["abrv"],inline=True)
+      e.add_field(name="Clan Emoji",value=route["emoji"],inline=True)
+      e.add_field(name="Relation",value=route["relation"],inline=True)
+      await ctx.send(embed=e)
     else:
-      st="name"
-    datab = lists.readdataB()[str(ctx.message.guild.id)]
-    def find_route(data, route_no):
-      return list(filter(lambda x:x.get(st)==arg,datab))
-    route = find_route(datab,arg)
-    await ctx.send(route)
+      await ctx.send("This is a developer only command.")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(RelCmds(bot))

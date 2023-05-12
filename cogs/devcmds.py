@@ -2,8 +2,10 @@ import os, discord
 import time
 import pytz
 import datetime
+from datetime import time
+from datetime import timezone
 #from keep_alive import keep_alive
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
 from discord import app_commands
 from discord import Member
@@ -34,14 +36,22 @@ FRF = lists.FRF
 
 #client = discord.Client()
 
+utc=timezone.utc
+times=time(hour=0,minute=20,tzinfo=utc)
+
 class DevCmds(commands.Cog, name="Developer Commands",description="Developer Commands + Setupserver command"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+    self.backupdaily.start()
+    #self.my_console=Console(bot)
+  def cog_unload(self):
+    #print(1)
+    self.backupdaily.cancel()
 
-  @commands.command(name='ping')
+  @commands.command(name='ping',brief="Latency Command",help="Latency Command")
   @commands.cooldown(1, 10, commands.BucketType.user)
   async def ping(self,ctx):
-    await ctx.send("Pong")
+    await ctx.send(f"Pong 🏓! Latency: {round(int(self.bot.latency)*1000)}ms")
 
   @commands.command(name='shutdown',brief="Shuts down and restarts New Light", help="Shuts Down and Restarts New Light. Args: None")
   async def shutdown(self,ctx,msg=None):
@@ -212,7 +222,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel)}
+        defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel),"name":ctx.message.guild.name}
         data = lists.readdata()
         data[gid]=dict(default)
         lists.setdata(data)
@@ -323,6 +333,10 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
       await ctx.message.author.send(f'I joined {ctx.message.guild.name} at {converteddate} (EST).')
     else:
       await ctx.send('You must be the owner to use this command!')
+
+  @tasks.loop(time=times)
+  async def backupdaily(self):
+    backup(self)
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(DevCmds(bot))

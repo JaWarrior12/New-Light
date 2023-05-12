@@ -21,7 +21,7 @@ import lists
 
 lists.bannedlist()
 
-handler=logging.basicConfig(filename='Backups/errorlog.log',format='%(asctime)s - %(levelname)s - %(message)s',filemode='a',level=logging.CRITICAL)
+#handler=logging.basicConfig(filename='Backups/errorlog.log',format='%(asctime)s - %(levelname)s - %(message)s',filemode='a',level=logging.CRITICAL)
 #logger = logging.getLogger()
 
 intents = discord.Intents.all()
@@ -37,7 +37,8 @@ value = bot
 my_console = Console(bot)
 
 nav = EmojiMenu("◀️", "▶️", "❌")
-bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green())
+ending_note="New Light (LR=Command Restricted To Clan/Server Leadership)\nWiki:https://github.com/JaWarrior12/New-Light/wiki"
+bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green(),ending_note=ending_note)
 
 class MyHelp(commands.MinimalHelpCommand):
     async def send_pages(self):
@@ -48,7 +49,7 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.5.0"
+version = "3.6.0"
 
 
 @bot.event
@@ -59,6 +60,7 @@ async def on_ready():  # When the bot is ready
     await bot.change_presence(status=discord.Status.online, activity=activity)
     await asyncio.sleep(5)
     await my_task.start()
+    #lists.gidlist(bot)
     #channel = client.get_channel(974078794065403924)
     #await channel.send("I'm Logged In")
 
@@ -78,7 +80,9 @@ async def on_guild_join(guild):
       invite = await guild.system_channel.create_invite(reason="Inviting My Developer Incase You Need Support.")
 
     e = discord.Embed(title="I've joined a server.")
-    e.add_field(name="Server Name", value=guild.name, inline=False)
+    e.add_field(name="Server Name", value=guild.name, inline=True)
+    e.add_field(name="Server ID",value=guild.id,inline=True)
+    e.add_field(name="Server Owner",value=guild.owner.name,inline=True)
     e.add_field(name="Invite Link", value=invite, inline=False)
     e.set_thumbnail(url=guild.icon)
     #tz = pytz.timezone('America/New_York')
@@ -86,20 +90,23 @@ async def on_guild_join(guild):
     await mychannel.send(embed=e)
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
+    data=lists.readother()
+    data["guilds"].update({guild.name:int(guild.id)})
+    lists.setother(data)
 
-@bot.event
-async def on_connect():
-  await bot.load_extension("cogs.errorhand")
-  await bot.load_extension("cogs.relcmds")
-  await bot.load_extension("cogs.distcmds")
-  await bot.load_extension("cogs.descmds")
-  await bot.load_extension("cogs.qpcmds")
-  await bot.load_extension("cogs.othercmds")
-  await bot.load_extension("cogs.econcmds")
-  await bot.load_extension("cogs.devcmds")
-  await bot.load_extension("cogs.adcmds")
-  await bot.load_extension("cogs.slashcmds")
-  await bot.load_extension("cogs.setupcmds")
+#@bot.event
+#async def on_connect():
+  #await bot.load_extension("cogs.errorhand")
+  #await bot.load_extension("cogs.relcmds")
+  #await bot.load_extension("cogs.distcmds")
+  #await bot.load_extension("cogs.descmds")
+  #await bot.load_extension("cogs.qpcmds")
+  #await bot.load_extension("cogs.othercmds")
+  #await bot.load_extension("cogs.econcmds")
+  #await bot.load_extension("cogs.devcmds")
+  #await bot.load_extension("cogs.adcmds")
+  #await bot.load_extension("cogs.slashcmds")
+  #await bot.load_extension("cogs.setupcmds")
 
 @bot.event
 async def on_disconnect():
@@ -117,15 +124,17 @@ async def on_guild_remove(guild):
   myguild = bot.get_guild(1031900634741473280)
   mychannel = myguild.get_channel(1037788623015268444)
   tz = pytz.timezone('America/New_York')
-  await mychannel.send(f'Left Server: {guild.name}; ID: {guild.id}; Time:{datetime.dateime.now(tz)}')
+  await mychannel.send(f'Left Server: {guild.name}; ID: {guild.id}; Time:{datetime.dateime.now(tz)}; Server Owner:{guild.owner.name}')
   if guild.system_channel==None:
     invite="No System Channel Found, Unable To Create Invite"
   else:
     invite = await guild.system_channel.create_invite(reason="Notifying My Developer")
+  lists.clearserver(str(guild.id))
 
   e = discord.Embed(title="I've Left A Server.")
   e.add_field(name="Server Name", value=guild.name, inline=True)
   e.add_field(name="Server ID",value=guild.id,inline=True)
+  e.add_field(name="Server Owner",value=guild.owner.name,inline=True)
   e.add_field(name="Invite Link", value=invite, inline=False)
   e.set_thumbnail(url=guild.icon)
   #tz = pytz.timezone('America/New_York')
@@ -134,7 +143,10 @@ async def on_guild_remove(guild):
   await mychannel.send(f'Guild Name: {guild}')
   await mychannel.send(f'Guild Id: {guild.id}')
   lists.clrserver(guild.id)
-
+  data=lists.readother()
+  data["guilds"].pop(guild.name)
+  lists.setother(data)
+  
 @tasks.loop(seconds=30)
 async def my_task():
   #print("loop")
@@ -178,7 +190,7 @@ async def main():
     await bot.load_extension("cogs.setupcmds")
     #await tree.sync()
     my_console.start()
-    #await bot.start(os.environ['token'])
+    await bot.start(os.environ['token'])
     #await my_task.start()
 
 
@@ -192,6 +204,6 @@ async def main():
 #web socket for Uptimerobot to ping, keeps bot online
 #tree = app_commands.CommandTree(bot)
 keep_alives()
-bot.run(os.environ['token'],log_handler=handler)
+#bot.run(os.environ['token'],log_handler=handler)
 asyncio.run(main())
 #@my_console.command()

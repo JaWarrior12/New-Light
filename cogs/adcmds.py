@@ -1,12 +1,14 @@
 import os, discord
 import time
 import pytz
-import datetime 
+import datetime
+from typing import List
 #from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
 from discord import Permissions
+from discord import app_commands
 from json import loads, dumps
 from backup import backup
 from startup import startup
@@ -31,9 +33,11 @@ TestSrvr = lists.TestSrvr
 DSR = lists.DSR
 FRF = lists.FRF
 
+
 class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tools"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+    
     
   @commands.command(name="ban",hidden=True)
   @commands.has_role('Developer')
@@ -113,7 +117,8 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
       names=[]
       ids=[]
       for guild in self.bot.guilds:
-        await ctx.send(f'Name:{guild.name}; ID:{guild.id}')
+        await ctx.send(f'Name:{guild.name}')
+        await ctx.send(f'ID:{guild.id}\n')
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
@@ -123,7 +128,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
       guild = self.bot.get_guild(int(id))
       await ctx.send(guild.name)
       channel = discord.utils.get(guild.channels, name="general")
-      await channel.send(f'My Developer Has Ordered Me To Leave Your Server. Reason My Developer Gave: {reason}. Please DM JaMinecrafter13#1305 if you have any questions or would like to add me back. You can also join my development server: https://discord.gg/zcGYBcfhwX')
+      await channel.send(f'My Developer Has Ordered Me To Leave Your Server. Reason: {reason}. Please DM JaWarrior#1305 if you have any questions or would like to add me back. You can also join my development server: https://discord.gg/zcGYBcfhwX')
       await guild.leave()
       await ctx.send(f':ok_hand: Left guild: {guild.name} ({guild.id})')
     else:
@@ -134,7 +139,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     if ctx.message.author.id in developers:
       guild = self.bot.get_guild(int(id))
       channel = discord.utils.get(guild.channels, name="general")
-      await channel.send(f'My Developer Has Ordered Me To Clear The Data For Your Server. Reason My Developer Gave: {reason}. Please DM JaMinecrafter13#1305 if you have any questions. You can also join my development server: https://discord.gg/zcGYBcfhwX')
+      await channel.send(f'My Developer Has Ordered Me To Clear The Data For Your Server. Reason: {reason}. Please DM JaWarrior#1305 if you have any questions. You can also join my development server: https://discord.gg/zcGYBcfhwX')
       channel_id = channel.id
       gid=str(id)
       data=lists.readdata()
@@ -207,6 +212,20 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
         return False
     else:
       await ctx.send("You are not a developer and cannot use this command.")
+      pass
 
+  @commands.command(name="createinvite",hidden=True)
+  async def createinvite(self,ctx,gid):
+    if int(ctx.message.author.id) in developers:
+      guild = self.bot.get_guild(int(gid))
+      invite=None
+      if guild.system_channel==None:
+        invite="No System Channel Found, Unable To Create Invite"
+      else:
+        invite = await guild.system_channel.create_invite(reason="My Developer Has Requested An Invite")
+      await ctx.send(invite)
+    else:
+      await ctx.send("You are not a developer and cannot use this command.")
+      
 async def setup(bot: commands.Bot):
     await bot.add_cog(AdCmds(bot))

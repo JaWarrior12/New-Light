@@ -56,17 +56,39 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
             except discord.HTTPException:
                 pass
 
+        elif isinstance(error,commands.NoPrivateMessage):
+          await ctx.send(f"{ctx.command} can only be used in a private message.")
+
         # For this error example we check to see where it came from...
         elif isinstance(error, commands.BadArgument):
-            if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
-                await ctx.send('I could not find that member. Please try again.')
+            #if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
+            await ctx.send(f'Bad Argument: {error.param}')
 
         elif isinstance(error, commands.MissingRequiredArgument):
-            if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
-                await ctx.send(f'You are missing a required argument. Missing Argument: {error.param}')
+            #if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
+              #pass
+            await ctx.send(f'You are missing a required argument. Missing Argument: {error.param}')
+              
+        elif isinstance(error,commands.MissingRequiredAttachment):
+          await ctx.send(f"A required attachment is missing. Missing Attachment: {error.param}")
+
+        elif isinstance(error,commands.ExtensionAlreadyLoaded):
+          await ctx.send(f"Extension {error.name} is already loaded.")
+
+        elif isinstance(error,commands.ExtensionNotLoaded):
+          await ctx.send(f"Extension {error.name} is not loaded.")
+
+        elif isinstance(error,commands.ExtensionFailed):
+          await ctx.send(f"Extension {error.name} failed. Original Exception: {error.original}")
+
+        elif isinstance(error,commands.ExtensionNotFound):
+          await ctx.send(f"Extension {error.name} was not found.")
 
         elif isinstance(error,commands.ExtensionError):
-          await ctx.send("The request Extension ran into an error.")
+          await ctx.send("The requested Extension ran into an error.")
+
+        elif isinstance(error,commands.ConversionError):
+          await ctx.send(f"A Conversion has failed! COnverter:{error.converter}; Original:{error.original}")
 
         elif isinstance(error,commands.UserInputError):
           await ctx.send("The entered Key may not exist in that database. Please try another key.")
@@ -106,6 +128,15 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
 
         elif isinstance(error,commands.CommandOnCooldown):
           await ctx.send(f'The requested Command is on cooldown. Please Retry After {round(error.retry_after)} Seconds.')
+
+        elif isinstance(error,commands.UnexpectedQuoteError):
+          await ctx.send(f"A quote mark is missing! Quote: {error.quote}")
+
+        elif isinstance(error,commands.InvalidEndOfQuoteStringError):
+          await ctx.send(f"A quote has been closed incorrectly! Incorrect Character: {error.char}")
+
+        elif isinstance(error,commands.ExpectedClosingQuoteError):
+          await ctx.send(f"A quote mark is missing! Quote: {error.close_quote}")
 
         elif isinstance(error,commands.CheckFailure):
           await ctx.send(f'You have failed to pass the checks required to run {ctx.command}. This is the result of missing roles and/or permissions. Errors: {error.errors}; Failed Checks: {error.checks}')

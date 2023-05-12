@@ -62,8 +62,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     # create the background task and run it in the background
     #self.bg_task = self.loop.create_task(self.verifyscheduled())
 
-  @commands.command(name="logloot",brief="Adds/Subtracts loot from a user's balance.",help="Adds/Subtracts from a user's balance. The format is: n!logloot @User item amount. If you are subtracting make the amount negative.")
-  async def returnpaymentdata(self, ctx, member, item, amount):
+  @commands.command(name="logloot",brief="Adds/Subtracts loot from a user's balance. (LR)",help="Adds/Subtracts from a user's balance. The format is: n!logloot @User item amount. If you are subtracting make the amount negative.")
+  async def returnpaymentdata(self, ctx, member: discord.Member, item, amount):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
         msgb = str(member)+" "+item+" "+amount
@@ -73,20 +73,30 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         if member=="clan":
           pass
         else:
-          member=int(member.replace("<","").replace("@","").replace(">",""))
-          member=ctx.message.guild.get_member(member).id
+          memvar=member
         try:
-          nf = int(dumps(lists.readdata()[gid][str(member)][str(item)]).replace(':','=').replace('{','').replace('}','').replace('"',''))
+          nf = int(dumps(lists.readdata()[gid][str(member.id)][str(item)]).replace(':','=').replace('{','').replace('}','').replace('"',''))
           ns = int(amount)
           added = ns + nf
           if chk == True:
-                data[gid][str(member)][str(item)] = int(added)
-                lists.setdata(data)
-                await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
+            data[gid][str(member.id)][str(item)] = int(added)
+            lists.setdata(data)
+            #await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
+            e = discord.Embed(title="Member Balance Update")
+            e.add_field(name="Target Member", value=memvar.display_name, inline=True)
+            e.add_field(name="Updated By", value=ctx.message.author.display_name, inline=True)
+            e.add_field(name="Old Balance",value=nf,inline=True)
+            e.add_field(name="New Balance",value=added,inline=True)
+            e.add_field(name="Item",value=item,inline=True)
+            e.add_field(name="Amount Added",value=ns,inline=True)
+            e.set_thumbnail(url=memvar.display_avatar)
+            #tz = pytz.timezone('America/New_York')
+            e.timestamp=datetime.now()
+            await ctx.send(embed=e)
         except KeyError:
           await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
           
-  @commands.command(name='reset',help="Resets one loot value in a user's balance. Format: n!reset @User item")
+  @commands.command(name='reset',brief="Resets a member's balance. (LR)",help="Resets one loot value in a user's balance. Format: n!reset @User item")
   async def resetalldata(self, ctx, member: discord.Member, item):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
@@ -98,7 +108,15 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           try:
             data[gid][str(member.id)][str(item)]=0
             lists.setdata(data)
-            await ctx.send('User Data Reset')
+            memvar=member
+            e = discord.Embed(title="Member Balance Reset")
+            e.add_field(name="Target Member", value=memvar.display_name, inline=True)
+            e.add_field(name="Reset By", value=ctx.message.author.display_name, inline=True)
+            e.add_field(name="Item",value=item,inline=True)
+            e.set_thumbnail(url=memvar.display_avatar)
+            #tz = pytz.timezone('America/New_York')
+            e.timestamp=datetime.now()
+            await ctx.send(embed=e)
           except KeyError:
             await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
         else:
@@ -113,8 +131,17 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       gid = str(ctx.message.guild.id)
       lists.logback(ctx,member)
       #if chk == True:
+      data = lists.readdata()
       try:
-        await ctx.send(dumps(lists.readdata()[gid][str(member.id)]).replace(':','=').replace('{','').replace('}','').replace('"',''))
+        memvar=member
+        e = discord.Embed(title="Member Balance")
+        e.add_field(name="Member", value=memvar.display_name, inline=True)
+        for x in data[gid][str(member.id)].keys():
+          e.add_field(name=x,value=data[gid][str(member.id)][x],inline=True)
+        e.set_thumbnail(url=memvar.display_avatar)
+        #tz = pytz.timezone('America/New_York')
+        e.timestamp=datetime.now()
+        await ctx.send(embed=e)
       except KeyError:
         await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
     elif str(ctx.message.author.id) in banned:
@@ -122,7 +149,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     else:
       await ctx.send("Error")
 
-  @commands.command(name="addmember",brief="Adds a member to the clan's distribution database.", help="Adds a member to the distribution database. Just ping the user in the command. Format: n!addmember @User")
+  @commands.command(name="addmember",brief="Adds a member to the clan's distribution database. (LR)", help="Adds a member to the distribution database. Just ping the user in the command. Format: n!addmember @User")
   async def addmember(self,ctx, member: discord.Member):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
@@ -141,12 +168,20 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             inputv = {"flux":0,"loaders":0,"rcs":0,"pushers":0}
           data[gid][str(member.id)]=dict(inputv)
           lists.setdata(data)
-          await ctx.send(f'Added {member} to the distribution list in {ctx.message.guild.name}')
+          memvar=member
+          e = discord.Embed(title="Member Added")
+          e.add_field(name="Member", value=memvar.display_name, inline=True)
+          e.add_field(name="Added By",value=ctx.message.author.display_name,inline=True)
+          e.add_field(name="Default Balance",value=inputv,inline=True)
+          e.set_thumbnail(url=memvar.display_avatar)
+          #tz = pytz.timezone('America/New_York')
+          e.timestamp=datetime.now()
+          await ctx.send(embed=e)
         else:
           return False
 
-  @commands.command(name="removemember",brief="Removes a member from a clan's distribution database.", help="Removes a member from the distribution database. Just ping the user in the command and it will remove them. Format: n!removemember @User")
-  async def remmem(self,ctx,member: discord.Member):
+  @commands.command(name="removemember",brief="Removes a member from a clan's distribution database. (LR)", help="Removes a member from the distribution database. Just ping the user in the command and it will remove them. Format: n!removemember @User")
+  async def remmem(self,ctx,member: discord.Member,*,reason=None):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
         chk = lists.checkperms(ctx)
@@ -157,13 +192,21 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         if chk == True:
           try:
             lists.setdata(data)
-            await ctx.send(f'Removed {member} from the distribution list in {ctx.message.guild.name}')
+            memvar=member
+            e = discord.Embed(title="Member Removed")
+            e.add_field(name="Member", value=memvar.display_name, inline=True)
+            e.add_field(name="Removed By By",value=ctx.message.author.display_name,inline=True)
+            e.add_field(name="Reason",value=reason,inline=True)
+            e.set_thumbnail(url=memvar.display_avatar)
+            #tz = pytz.timezone('America/New_York')
+            e.timestamp=datetime.now()
+            await ctx.send(embed=e)
           except KeyError:
             await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
         else:
           return False
 
-  @commands.command(name='balall',help="Calls all balances in a clan's distribution database. Format: n!balall")
+  @commands.command(name='balall',brief="Calls All Clan Balances (LR)",help="Calls all balances in a clan's distribution database. Format: n!balall")
   async def balanceall(self,ctx):
         clan = ctx.message.guild
         #msgparts, data = msg.split(" "), lists.readdata()
@@ -188,9 +231,9 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           for i in cntntlist:
             await ctx.send(i)
         else:
-          return False
+          await ctx.send("Leadership Restricted Command")
 
-  @commands.command(name="defaultbal",description="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs")
+  @commands.command(name="defaultbal",brief="Sets a clan's default balance (LR)",help="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs",description="Hi")
   async def defaultbal(self,ctx,*,items):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
@@ -200,7 +243,13 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         data=lists.readother()
         data["defaultdist"][str(ctx.message.guild.id)]=list
         lists.setother(data)
-        await ctx.send("Updated Default Balance")
+        e = discord.Embed(title="Default Balance Updated")
+        e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
+        e.add_field(name="Default Balance",value=list,inline=True)
+        e.set_thumbnail(url=ctx.message.author.display_avatar)
+        #tz = pytz.timezone('America/New_York')
+        e.timestamp=datetime.now()
+        await ctx.send(embed=e)
       else:
         await ctx.send("Unauhtorized To Use Leadership Commands")
     else:
@@ -333,7 +382,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         print("Error Occured")
 
 
-  @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY")
+  @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY",hidden=True)
   async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
       #await self.verifyscheduled()

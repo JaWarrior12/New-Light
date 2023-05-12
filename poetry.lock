@@ -169,6 +169,22 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-wtf"
+version = "1.1.1"
+description = "Form rendering, validation, and CSRF protection for Flask with WTForms."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Flask = "*"
+itsdangerous = "*"
+WTForms = "*"
+
+[package.extras]
+email = ["email-validator"]
+
+[[package]]
 name = "httpsproxy-urllib2"
 version = "1.0"
 description = "Python 2.5 urllib2 patched to use CONNECT for https proxies"
@@ -350,6 +366,20 @@ python-versions = ">=3.7"
 watchdog = ["watchdog"]
 
 [[package]]
+name = "wtforms"
+version = "3.0.1"
+description = "Form validation and rendering for Python web development."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+MarkupSafe = "*"
+
+[package.extras]
+email = ["email-validator"]
+
+[[package]]
 name = "yarl"
 version = "1.7.2"
 description = "Yet another URL library"
@@ -376,7 +406,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8.0,<3.9"
-content-hash = "59bd5df20c2155e7c24063fb949ce8d4f76813cee1df001dea9580770f08dc2e"
+content-hash = "d77b583c3df9a29c1d15152b82eaeb0e744065c64c2d4ed2a5c4f548d6d639eb"
 
 [metadata.files]
 aiohttp = []
@@ -392,6 +422,7 @@ colorama = []
 discord = []
 "discord.py" = []
 flask = []
+flask-wtf = []
 httpsproxy-urllib2 = []
 idna = []
 importlib-metadata = []
@@ -401,7 +432,10 @@ markupsafe = []
 multidict = []
 numpy = []
 pytz = []
-pytz-deprecation-shim = []
+pytz-deprecation-shim = [
+    {file = "pytz_deprecation_shim-0.1.0.post0-py2.py3-none-any.whl", hash = "sha256:8314c9692a636c8eb3bda879b9f119e350e93223ae83e70e80c31675a0fdc1a6"},
+    {file = "pytz_deprecation_shim-0.1.0.post0.tar.gz", hash = "sha256:af097bae1b616dde5c5744441e2ddc69e74dfdcb0c263129610d85b87445a59d"},
+]
 requests = []
 six = []
 typing-extensions = []
@@ -409,5 +443,9 @@ tzdata = []
 tzlocal = []
 urllib3 = []
 werkzeug = []
+wtforms = [
+    {file = "WTForms-3.0.1-py3-none-any.whl", hash = "sha256:837f2f0e0ca79481b92884962b914eba4e72b7a2daaf1f939c890ed0124b834b"},
+    {file = "WTForms-3.0.1.tar.gz", hash = "sha256:6b351bbb12dd58af57ffef05bc78425d08d1914e0fd68ee14143b7ade023c5bc"},
+]
 yarl = []
 zipp = []

@@ -20,8 +20,14 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   def __init__(self, bot: commands.Bot):
     self.bot = bot
 
-  @commands.command(name="setupserver",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan.")
+  def is_guild_owner():
+    def predicate(ctx):
+        return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id or ctx.author.id in lists.developers
+    return commands.check(predicate)
+
+  @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact JaWarrior#1305 about completing server setup.")
   @commands.has_permissions(administrator=True)
+  @commands.check_any(is_guild_owner())
   async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no"):
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
@@ -34,16 +40,16 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals}
+        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name)}
         defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0,"rcd":0}}
         data = lists.readdata()
         data[gid]=dict(defaultd)
         lists.setdata(data)
         data = lists.readdataB()
-        data[gid]=dict(default)
+        data[gid]=defaultb
         lists.setdataB(data)
         data = lists.readdataC()
-        data[gid]=defaultb
+        data[gid]=default
         lists.setdataC(data)
         data = lists.readdataD()
         data[gid]=dict(default)
@@ -60,8 +66,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       else:
         await ctx.send("Server already setup.")
 
-  @commands.command(name="authuser",help="Authorizes A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!authuser <USERID>")
+  @commands.command(name="authuser",breif="Authorizes User For LR Commands (LR)",help="Authorizes A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!authuser <USERID>")
   @commands.has_permissions(administrator=True)
+  @commands.check_any(is_guild_owner())
   async def authorizeuser(self,ctx,user):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
@@ -100,12 +107,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send("I Hit a Wall, Try Running The Command Again")
 
-  def is_guild_owner():
-    def predicate(ctx):
-        return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id
-    return commands.check(predicate)
   
-  @commands.command(name="deauthuser",help="Removes Authorization From A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!deauthuser <USERID>")
+  @commands.command(name="deauthuser",brief="Removes a user's LR access. (LR)",help="Removes Authorization From A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!deauthuser <USERID>")
   @commands.check_any(is_guild_owner())
   async def deathuser(self,ctx,user):
     if str(ctx.message.author.id) not in banned:
@@ -145,7 +148,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send("I Hit a Wall, Try Running The Command Again")
 
-  @commands.command(name="authlist",help="Lists all users authorized to use leadership commands in the server.")
+  @commands.command(name="authlist",brief="Gets Servers LR Authorized List (Server Owner Only)",help="Lists all users authorized to use leadership commands in the server.")
+  @commands.check_any(is_guild_owner())
   async def authlist(self,ctx):
     if str(ctx.message.author.id) not in banned:
       msg="none"
@@ -161,11 +165,11 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
 
-  @commands.command(name="confighelp")
+  @commands.command(name="confighelp",help="Description of ServerConfig Settings")
   async def conhelp(self,ctx):
     await ctx.send("Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)")
 
-  @app_commands.command(name="serverconfig",description="Server Config Command")
+  @app_commands.command(name="serverconfig",description="Server Config Command (LR)\nServer Config Command, Use n!confighelp for a list of what the values mean.")
   @commands.has_permissions(administrator=True)
   @app_commands.choices(option=[
       app_commands.Choice(name="Ping Channel", value="pingchan"),
@@ -176,24 +180,26 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Store Member Balances? (Yes/No)",value="storebal")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
-    #chk = lists.slashcheckperms(interaction.guild_id,interaction.author.id)
-    #if chk == True:
-    val = 0
-    val=input
-    print(option.value)
-    if option.value == "distship":
-      val=str(input)
-    elif option.value=="clanPercent":
-      val=float(input)
-    elif option.value == "storebal":
-      val=str(input.lower())
+    chk = lists.slashcheckperms(interaction.guild_id,interaction.author.id)
+    if chk == True:
+      val = 0
+      val=input
+      print(option.value)
+      if option.value == "distship":
+        val=str(input)
+      elif option.value=="clanPercent":
+        val=float(input)
+      elif option.value == "storebal":
+        val=str(input.lower())
+      else:
+        val=int(input)
+      data=lists.readdataE()
+      data[str(interaction.guild_id)][str(option.value)]=val
+      #print(data)
+      lists.setdataE(data)
+      await interaction.response.send_message(f'Changed {str(option.name)} to {val}')
     else:
-      val=int(input)
-    data=lists.readdataE()
-    data[str(interaction.guild_id)][str(option.value)]=val
-    #print(data)
-    lists.setdataE(data)
-    await interaction.response.send_message(f'Changed {str(option.name)} to {val}')
+      await interaction.response.send_message("You are not authorized to manage server configuration settings.")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(SetupCmds(bot))

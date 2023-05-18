@@ -93,6 +93,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             #tz = pytz.timezone('America/New_York')
             e.timestamp=datetime.now()
             await ctx.send(embed=e)
+          else:
+            await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
         except KeyError:
           await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
           
@@ -120,7 +122,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           except KeyError:
             await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
         else:
-          return False
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
           
   @commands.command(name='balance',brief="Calls a user's balance.",help="Calls a member's balance. Just ping the user in the command. Format: n!balance @user")
   async def getuserloot(self,ctx,member: discord.Member):
@@ -178,7 +180,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           e.timestamp=datetime.now()
           await ctx.send(embed=e)
         else:
-          return False
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
   @commands.command(name="removemember",brief="Removes a member from a clan's distribution database. (LR)", help="Removes a member from the distribution database. Just ping the user in the command and it will remove them. Format: n!removemember @User")
   async def remmem(self,ctx,member: discord.Member,*,reason=None):
@@ -204,7 +206,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           except KeyError:
             await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
         else:
-          return False
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
   @commands.command(name='balall',brief="Calls All Clan Balances (LR)",help="Calls all balances in a clan's distribution database. Format: n!balall")
   async def balanceall(self,ctx):
@@ -231,7 +233,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           for i in cntntlist:
             await ctx.send(i)
         else:
-          await ctx.send("Leadership Restricted Command")
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}"))
 
   @commands.command(name="defaultbal",brief="Sets a clan's default balance (LR)",help="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs",description="Hi")
   async def defaultbal(self,ctx,*,items):
@@ -251,7 +253,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         e.timestamp=datetime.now()
         await ctx.send(embed=e)
       else:
-        await ctx.send("Unauhtorized To Use Leadership Commands")
+        await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
     else:
       await ctx.send("Your ID Is In The Banned List.")
 

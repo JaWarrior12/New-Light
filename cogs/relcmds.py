@@ -112,7 +112,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
           except KeyError:
             await ctx.send(f'KeyError: {clan} Is not in the relations database. Either {clan} has not been entered into the list by a clan leader or it is listed under a different key. Fixes: Capitalize the first letter (cougar -> Cougar), Use an abbreviation (Swiss Armed Forces -> SAF), or remove spaces in the name (Hellenic League -> HellenicLeague). The solution could be a mix of the provided fixes.')
         else:
-          return False
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
       else:
           await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
           return False
@@ -145,7 +145,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
           except KeyError:
             await ctx.send(f'KeyError: {full_name} Is not in the relations database. Either {full_name} has not been entered into the list by a clan leader or it is listed under a different key. Fixes: Capitalize the first letter (cougar -> Cougar), Use an abbreviation (Swiss Armed Forces -> SAF), or remove spaces in the name (Hellenic League -> HellenicLeague). The solution could be a mix of the provided fixes.')
         else:
-          return False
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
   
   @commands.command(name='relall',brief="Fetches the server's complete relations list. (LR)",help="Calls all of a clan's relations in their relations database. Format: n!relall")
   async def relall(self,ctx,*,clan=None):
@@ -158,8 +158,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
           await ctx.send('List of All Relations')
           await ctx.send(dumps(lists.readdataB()[mesg]).replace(': "',' = ').replace('{','').replace(',','\n').replace('}','').replace('"',''))
         else:
-          await ctx.send('Error')
-          return False
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
   @commands.command(name="reltest",hidden=True,disabled=True)
   @commands.has_role("Developer")

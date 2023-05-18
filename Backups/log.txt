@@ -1,2 +1,6 @@
  
 Command run at 2023-05-12 10:23:38.709737-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: shutdown, Command Contents: None
+
+Command run at 2023-05-13 11:26:46.761656-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: readships, Command Contents: prod 2023 3 25 5
+
+Command run at 2023-05-13 11:28:10.856637-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: readlogs, Command Contents: test 2023 4 5 10

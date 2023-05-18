@@ -132,7 +132,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       await ctx.send("Error")
 
-  @commands.command(name="readships",help="Reads the ships file from the Dred Public Econ Dumps. \nFormatting:\n -Version is test or prod(main server)\n -Year,MonthNumber,Day follow date formatting (2022_11(month,november)_13(day)\n -Key is a number 1-50000 to start (acutal max will be provided once yiu run the command so you can run again with real data.")
+  @commands.command(name="readships",help="Reads the ships file from the Dred Public Econ Dumps. \nFormatting:\n -Version is test or prod(main server)\n -Year,MonthNumber,Day follow date formatting (2022 11(month,november) 13(day)\n -Key is the list item index, so Key=10 responds with item 10 in the list, the actual length will be send also.")
   async def readships(self,ctx,version,year,monthnumber,day,key):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')

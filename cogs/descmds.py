@@ -108,7 +108,6 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
           for x in data[gid]:
             x=str(x)
             f = discord.Embed(title=x)
-            print("double")
             f.set_image(url=str(data[gid][x]["Image"]))
             f.add_field(name="Designer",value=f'<@{data[gid][x]["Designer"]}>',inline=True)
             keylist=list(data[gid][x].keys())
@@ -116,7 +115,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
             keylist.remove("Image")
             for key in keylist:
               f.add_field(name=str(key),value=data[gid][x][str(key)],inline=True)
-            await ctx.send(embed=f)
+            await ctx.message.author.send(embed=f)
         elif design=="list":
           gid = str(ctx.message.guild.id)
           data=lists.readdataD()
@@ -125,7 +124,6 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
             k.add_field(name="",value=x)
           await ctx.send(embed=k)
         else:
-          print("single")
           gid = str(ctx.message.guild.id)
           data=lists.readdataD()
           lists.logback(ctx,design)

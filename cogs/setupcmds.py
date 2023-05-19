@@ -231,7 +231,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
               #print(inx)
               rnk=int(roles[inx].id)
               #print(rnk)
-              if rnk==1048339231141003435:
+              if role.name=="@everyone":
                 pass
               else:
                 if rnk in ranks:
@@ -259,10 +259,12 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         ctnt=""
         for x in ranks:
           rle=ctx.message.guild.get_role(x)
-          ctnt=ctnt+"\n"+rle.mention+"\n-------------"
+          ctnt=ctnt+"\n\n"+rle.mention+"\n-------------"
           for us in ctx.message.guild.members:
-            if rle in us.roles:
-              ctnt=ctnt+"\n"+us.mention
+            if rle in us.roles and ctnt.find(us.mention)==-1:
+              ctnt=ctnt+"\n"+us.display_name
+            else:
+              pass
         await nmesg.edit(content=ctnt)
     else:
       await ctx.send("Not authorized to use leadership commands in this server")

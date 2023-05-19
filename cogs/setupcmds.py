@@ -28,7 +28,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact JaWarrior#1305 about completing server setup.")
   @commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
-  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no"):
+  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0):
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
         msg = None
@@ -40,7 +40,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name)}
+        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0}
         defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0,"rcd":0}}
         data = lists.readdata()
         data[gid]=dict(defaultd)
@@ -167,7 +167,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @commands.command(name="confighelp",help="Description of ServerConfig Settings")
   async def conhelp(self,ctx):
-    await ctx.send("Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)")
+    await ctx.send("Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel== Member List Channel")
 
   @app_commands.command(name="serverconfig",description="Server Config Command (LR)\nServer Config Command, Use n!confighelp for a list of what the values mean.")
   @commands.has_permissions(administrator=True)
@@ -177,7 +177,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Clan Percent",value="clanPercent"),
       app_commands.Choice(name="Clan Storage (Hexcode)",value="distship"),
       app_commands.Choice(name="Member Role",value="memrole"),
-      app_commands.Choice(name="Store Member Balances? (Yes/No)",value="storebal")
+      app_commands.Choice(name="Store Member Balances? (Yes/No)",value="storebal"),
+      app_commands.Choice(name="Member List Channel",value="memchan")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     chk = lists.slashcheckperms(interaction.guild_id,interaction.author.id)
@@ -197,9 +198,74 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       data[str(interaction.guild_id)][str(option.value)]=val
       #print(data)
       lists.setdataE(data)
-      await interaction.response.send_message(f'Changed {str(option.name)} to {val}')
+      await interaction.response.send_message(f'Changed {(option.name)} to {val}')
     else:
       await interaction.response.send_message("You are not authorized to manage server configuration settings.")
+
+  @commands.command(name="memberlistconfig",aliases=["mlc"],brief="Setup member list.",help="Setup member list, n!mlc (LR)")
+  async def mlc(self,ctx):
+    if lists.checkperms(ctx)==True:
+      if lists.readdataE()[str(ctx.message.guild.id)]["memchan"]==0:
+        await ctx.send("Member List Channel Not Configured, Please Use /serverconfig to desigante your member channel.")
+      else:
+        gid=str(ctx.message.guild.id)
+        lists.logback(ctx,msg=None)
+        memchan=lists.readdataE()[str(ctx.message.guild.id)]["memchan"]
+        channel=await ctx.message.guild.fetch_channel(int(memchan))
+        nmesg=await channel.send("Member List Message")
+        #message=await channel.fetch_message(nmesg)
+        #print(nmesg.id)
+        data=lists.readdataE()
+        data[str(ctx.message.guild.id)]["memmsg"]=int(nmesg.id)
+        lists.setdataE(data)
+        await ctx.send("Message Configured, Adding Members")
+        ranks=[]
+        for x in ctx.message.guild.members:
+          #print(x.display_name)
+          #print(x.roles)
+          roles=x.roles
+          inx=0
+          for role in roles:
+            if role.id==data[gid]["memrole"]:
+              inx=int(roles.index(role))+1
+              #print(inx)
+              rnk=int(roles[inx].id)
+              #print(rnk)
+              if rnk==1048339231141003435:
+                pass
+              else:
+                if rnk in ranks:
+                  pass
+                else:
+                  ranks.append(rnk)
+
+        #await ctx.send(ranks)
+        rmlist=[]
+        for r in ranks:
+          rmlistb=[]
+          for mem in ctx.message.guild.members:
+            print(mem)
+            rolesb=mem.roles
+            for roleb in rolesb:
+              print(roleb)
+              print(r)
+              if roleb.id==r:
+                rmlistb.append(mem.id)
+              else:
+                pass
+          rmlist.append(rmlistb)
+        await ctx.send(rmlist)
+        await ctx.send(ranks)
+        ctnt=""
+        for x in ranks:
+          rle=ctx.message.guild.get_role(x)
+          ctnt=ctnt+"\n"+rle.mention+"\n-------------"
+          for us in ctx.message.guild.members:
+            if rle in us.roles:
+              ctnt=ctnt+"\n"+us.mention
+        await nmesg.edit(content=ctnt)
+    else:
+      await ctx.send("Not authorized to use leadership commands in this server")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(SetupCmds(bot))

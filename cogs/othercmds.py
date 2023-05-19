@@ -246,6 +246,56 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
       #await ctx.send(x)
       pass
     await ctx.send(embed=e)
+
+  @commands.Cog.listener()
+  async def on_member_update(self,before, after):
+      if len(before.roles) < len(after.roles):
+        newRole = next(role for role in after.roles if role not in before.roles)
+        data=lists.readdataE()
+        gid=int(before.guild.id)
+        memrlid=int(data[str(after.guild.id)]["memrole"])
+        ranks=[]
+        for x in after.guild.members:
+          #print(x.display_name)
+          #print(x.roles)
+          roles=x.roles
+          inx=0
+          for role in roles:
+            if role.id==data[gid]["memrole"]:
+              inx=int(roles.index(role))+1
+              #print(inx)
+              rnk=roles[inx]
+              #print(rnk)
+              if rnk.name=="@everyone" or rnk.name=="everyone":
+                pass
+              else:
+                if int(rnk.id) in ranks:
+                  pass
+                else:
+                  ranks.append(int(rnk.id))
+        #await ctx.send(ranks)
+        rmlist=[]
+        for r in ranks:
+          rmlistb=[]
+          for mem in after.guild.members:
+            #print(mem)
+            rolesb=mem.roles
+            for roleb in rolesb:
+              #print(roleb)
+              #print(r)
+              if roleb.id==r:
+                rmlistb.append(mem.id)
+              else:
+                pass
+          rmlist.append(rmlistb)
+        ctnt=""
+        for x in ranks:
+          rle=after.guild.get_role(x)
+          ctnt=ctnt+"\n"+rle.mention+"\n-------------"
+          for us in after.guild.members:
+            if rle in us.roles:
+              ctnt=ctnt+"\n"+us.mention
+        #await nmesg.edit(content=ctnt)
     
 async def setup(bot: commands.Bot):
     await bot.add_cog(OtherCmds(bot))

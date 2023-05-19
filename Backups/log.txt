@@ -4,3 +4,117 @@ Command run at 2023-05-12 10:23:38.709737-04:00, by JaWarrior (User ID: 93028443
 Command run at 2023-05-13 11:26:46.761656-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: readships, Command Contents: prod 2023 3 25 5
 
 Command run at 2023-05-13 11:28:10.856637-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: readlogs, Command Contents: test 2023 4 5 10
+
+Command run at 2023-05-18 12:43:10.179680-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.deccmds
+
+Command run at 2023-05-18 12:43:18.814720-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-05-18 12:43:51.964162-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-05-18 12:45:07.396636-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-05-18 12:49:14.633812-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:10:18.455418-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:10:33.518547-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:11:50.023772-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:11:52.138351-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:12:32.468275-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:12:35.046958-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:14:44.896778-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:15:00.201959-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:19:23.864875-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: load, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:19:27.207539-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:22:57.102220-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:22:59.316198-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:24:21.063426-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:24:23.822335-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:24:34.862686-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:24:36.900368-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:39:02.786907-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:39:32.082244-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:39:34.691411-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:41:12.202042-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:41:14.192542-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:42:08.740853-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:42:11.664003-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:45:44.286464-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:46:29.616732-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:46:42.030219-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:47:38.882392-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:47:40.863397-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:49:00.616758-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:49:02.842423-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 14:49:59.580929-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 14:50:02.033026-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:28:41.794254-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:28:43.884945-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:29:06.691504-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:29:09.526323-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:29:38.932063-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:29:43.237793-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:30:02.964488-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:30:05.418913-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:30:29.600871-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:30:34.190518-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:31:41.725899-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:31:46.178458-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:44:39.250415-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:46:42.987135-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:47:05.647090-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:47:07.262293-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:47:34.752328-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:47:37.243979-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None
+
+Command run at 2023-05-18 15:49:00.598386-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.setupcmds
+
+Command run at 2023-05-18 15:49:02.963278-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: mlc, Command Contents: None

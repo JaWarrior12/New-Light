@@ -123,18 +123,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
       ctx.send("Not A Dev")
 
   @commands.Cog.listener()
-  async def on_member_update(self,before, after):
-      if len(before.roles) < len(after.roles):
-          newRole = next(role for role in after.roles if role not in before.roles)
-  
-          if newRole.name == "OfficialMember": #OfficialMember
-            gid = before.guild.id
-            #lists.updatemsg(gid)
-            print("MemList Updated")
-          else:
-            print("Not OfficialMember Role")
-
-  @commands.Cog.listener()
   async def on_disconnect():
     print("disconnect listener activated")
     lists.logdown()
@@ -318,7 +306,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
 
   @commands.command(name='sync', description='Owner only')
   async def sync(self,ctx):
-    if ctx.message.author.id in developers:
+    if int(ctx.message.author.id) in developers:
         await self.bot.tree.sync()
         print('Command tree synced.')
     else:
@@ -333,6 +321,28 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
       await ctx.message.author.send(f'I joined {ctx.message.guild.name} at {converteddate} (EST).')
     else:
       await ctx.send('You must be the owner to use this command!')
+
+  @commands.command(name='addkey', brief='Adds a key to all items in the Config database.', help="Adds a key to all items in the Config database.",hidden=True,disabled=True)
+  async def memchan(self, ctx, database,key,val=None):
+    if ctx.message.author.id in developers:
+      value=0
+      if type(val)=="int":
+        value=0
+      elif type(val)=="list":
+        value=[]
+      elif key=="dict":
+        value={}
+      elif type(val)=="str":
+        value=None
+      else:
+        value=None
+      data=lists.readdataE()
+      for x in data:
+        x.update({key:value})
+        print(data)
+      lists.setdataE(data)
+    else:
+      await ctx.send("You are not a developer and CANNOT run this command.")
 
   @tasks.loop(time=times)
   async def backupdaily(self):

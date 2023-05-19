@@ -233,7 +233,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           for i in cntntlist:
             await ctx.send(i)
         else:
-          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}"))
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
   @commands.command(name="defaultbal",brief="Sets a clan's default balance (LR)",help="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs",description="Hi")
   async def defaultbal(self,ctx,*,items):

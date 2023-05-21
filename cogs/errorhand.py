@@ -6,6 +6,7 @@ import traceback
 import sys
 #from keep_alive import keep_alive
 from discord.ext import commands
+from discord import app_commands
 from discord.utils import get
 from discord import Member
 from json import loads, dumps
@@ -140,7 +141,9 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
 
         elif isinstance(error,commands.CheckFailure):
           await ctx.send(f'You have failed to pass the checks required to run {ctx.command}. This is the result of missing roles and/or permissions. Errors: {error.errors}; Failed Checks: {error.checks}')
-          
+
+        elif isinstance(error):
+          await ctx.send("App Command Error: Sync Failure")
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.
             print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)

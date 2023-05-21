@@ -40,7 +40,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     
     
   @commands.command(name="ban",hidden=True)
-  @commands.has_role('Developer')
+  #@commands.has_role('Developer')
   async def banuser(self,ctx,user):
     if ctx.message.author.id in developers:
       keya = "all"

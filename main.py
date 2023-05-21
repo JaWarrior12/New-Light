@@ -31,6 +31,7 @@ intents.members = True
 
 
 bot = commands.Bot(command_prefix='n!',intents=intents)
+#tree = discord.app_commands.CommandTree(bot)
 
 value = bot
 
@@ -67,7 +68,11 @@ async def on_ready():  # When the bot is ready
 @bot.event
 async def on_guild_join(guild):
   if int(guild.id) in lists.bannedGuild:
-    await lists.checkguild(bot,guild)
+    myguild = bot.get_guild(1031900634741473280)
+    mychannel = myguild.get_channel(1037788623015268444)
+    await mychannel.send(f"I was asked to join a banned guild, {guild.name}!")
+    await mychannel.send(f"Id: {guild.id}")
+    await guild.leave()
   else:
     #guild=before
     tz = pytz.timezone('America/New_York')
@@ -170,10 +175,14 @@ async def my_task():
       print(int(clan))
       channel = myguild.get_channel(int(pc))
       print(channel)
-      await channel.send(f'@here {link}')
-      data["pinglinks"].remove(x)
-      lists.setother(data)
-    
+      if link.contains("https://drednot.io/invite"):
+        await channel.send(f'@here {link}')
+        data["pinglinks"].remove(x)
+        lists.setother(data)
+      else:
+        data["pinglinks"].remove(x)
+        lists.setother(data)
+  
 #Load Cogs (My Way)
 async def main():
   async with bot:
@@ -188,9 +197,11 @@ async def main():
     await bot.load_extension("cogs.adcmds")
     await bot.load_extension("cogs.slashcmds")
     await bot.load_extension("cogs.setupcmds")
-    #await tree.sync()
+    #await bot.tree.sync()
+    #bot.tree.copy_global_to(guild=discord.Object(id=1031900634741473280))
     my_console.start()
     await bot.start(os.environ['token'])
+    #await bot.tree.sync(guild=discord.Object(id=1031900634741473280))
     #await my_task.start()
 
 
@@ -202,7 +213,6 @@ async def main():
 		#bot.load_extension(extension)  # Loades every extension.
 
 #web socket for Uptimerobot to ping, keeps bot online
-#tree = app_commands.CommandTree(bot)
 keep_alives()
 #bot.run(os.environ['token'],log_handler=handler)
 asyncio.run(main())

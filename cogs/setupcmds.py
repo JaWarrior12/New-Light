@@ -177,8 +177,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Clan Percent",value="clanPercent"),
       app_commands.Choice(name="Clan Storage (Hexcode)",value="distship"),
       app_commands.Choice(name="Member Role",value="memrole"),
-      app_commands.Choice(name="Store Member Balances? (Yes/No)",value="storebal"),
-      app_commands.Choice(name="Member List Channel",value="memchan")
+      app_commands.Choice(name="test",value="papp"),
+      app_commands.Choice(name="Store Member Balances? (Yes/No)",value="storebal")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     chk = lists.slashcheckperms(interaction.guild_id,interaction.author.id)
@@ -202,7 +202,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await interaction.response.send_message("You are not authorized to manage server configuration settings.")
 
-  @commands.command(name="memberlistconfig",aliases=["mlc"],brief="Setup member list.",help="Setup member list, n!mlc (LR)")
+  @commands.command(name="memberlistconfig",aliases=["mlc"],brief="Setup member list.",help="Setup member list, n!mlc (LR)",hidden=True,disabled=False)
   async def mlc(self,ctx):
     if lists.checkperms(ctx)==True:
       if lists.readdataE()[str(ctx.message.guild.id)]["memchan"]==0:
@@ -227,7 +227,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           inx=0
           for role in roles:
             if role.id==data[gid]["memrole"]:
-              inx=int(roles.index(role))+1
+              inx=roles.index(roles.pop())
               #print(inx)
               rnk=int(roles[inx].id)
               #print(rnk)

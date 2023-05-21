@@ -297,18 +297,34 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
     else:
       await ctx.send("You are not a developer and cannot use this command")
 
-  #@commands.Cog.listener()
-  #async def on_message(self,msg):
-   # print(msg.content)
-    #mes = msg.content
-    #if "https://" in mes:
-      #await msg.delete()
-
   @commands.command(name='sync', description='Owner only')
-  async def sync(self,ctx):
+  async def sync(self,ctx,opt=None):
     if int(ctx.message.author.id) in developers:
+      if opt=="test":
+        myguild = self.bot.get_guild(1031900634741473280)
+        #self.bot.tree.clear_commands(guild=myguild)
+        self.bot.tree.copy_global_to(guild=myguild)
+        await ctx.send("Copied To Guild")
+        await self.bot.tree.sync(guild=myguild)
+        await ctx.send("Synced App Cmds In Dev Sevrer")
+      elif opt=="reset":
+        await ctx.send("Reseting App Command Tree")
+        commands=self.bot.tree.get_commands()
+        await ctx.send(commands)
+        self.bot.tree.clear_commands
         await self.bot.tree.sync()
-        print('Command tree synced.')
+        await ctx.send("Cleared Tree, Reseting Now")
+        for x in commands:
+          self.bot.tree.add_command(x)
+        await self.bot.tree.sync()
+        await ctx.send("Command Tree Synced")
+      elif opt=="lc":
+        commands=await self.bot.tree.fetch_commands()
+        await ctx.send(commands)
+      else:
+        #self.bot.tree.clear_commands()
+        await self.bot.tree.sync()
+        await ctx.send('Command tree synced globaly.')
     else:
         await ctx.send('You must be the owner to use this command!')
 

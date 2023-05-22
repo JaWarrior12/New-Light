@@ -25,6 +25,11 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id or ctx.author.id in lists.developers
     return commands.check(predicate)
 
+  async def setup_hook(self):
+        # This copies the global commands over to your guild.
+        self.bot.tree.copy_global_to(guild=1031900634741473280)
+        await self.bot.tree.sync(guild=1031900634741473280)
+
   @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact JaWarrior#1305 about completing server setup.")
   @commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
@@ -169,20 +174,19 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   async def conhelp(self,ctx):
     await ctx.send("Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel== Member List Channel")
 
-  @app_commands.command(name="serverconfig",description="Server Config Command (LR)\nServer Config Command, Use n!confighelp for a list of what the values mean.")
-  @commands.has_permissions(administrator=True)
+  @app_commands.command(name="serverconfigbroken",description="Server Config Command (LR)\nServer Config Command, Use n!confighelp for a list of what the values mean.")
+  #@app_commands.checks.has_permissions(administrator=True)
   @app_commands.choices(option=[
       app_commands.Choice(name="Ping Channel", value="pingchan"),
       app_commands.Choice(name="Distribution Channel", value="distchan"),
       app_commands.Choice(name="Clan Percent",value="clanPercent"),
       app_commands.Choice(name="Clan Storage (Hexcode)",value="distship"),
       app_commands.Choice(name="Member Role",value="memrole"),
-      app_commands.Choice(name="test",value="papp"),
       app_commands.Choice(name="Store Member Balances? (Yes/No)",value="storebal")
     ])
-  async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
+  async def servconfigbroken(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     chk = lists.slashcheckperms(interaction.guild_id,interaction.author.id)
-    if chk == True:
+    if chk == None:
       val = 0
       val=input
       print(option.value)
@@ -200,8 +204,29 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       lists.setdataE(data)
       await interaction.response.send_message(f'Changed {(option.name)} to {val}')
     else:
-      await interaction.response.send_message("You are not authorized to manage server configuration settings.")
+      await interaction.response.send_message("Command Disabled")
+      #await interaction.response.send_message("You are not authorized to manage server configuration settings.")
 
+  @commands.command(name="serverconfig",description="Server Config Command (LR)",help="Server Config Command, Use n!confighelp for a list of what the values mean.")
+  async def serverconfig(self,ctx,option,value):
+    chk = lists.checkperms(ctx)
+      if chk == True:
+        val = 0
+        val=input
+        print(option.value)
+        if option.value == "distship":
+          val=str(input)
+        elif option.value=="clanPercent":
+          val=float(input)
+        elif option.value == "storebal":
+          val=str(input.lower())
+        else:
+          val=int(input)
+        data=lists.readdataE()
+        data[str(interaction.guild_id)][str(option.value)]=val
+        #print(data)
+        lists.setdataE(data)
+  
   @commands.command(name="memberlistconfig",aliases=["mlc"],brief="Setup member list.",help="Setup member list, n!mlc (LR)",hidden=True,disabled=False)
   async def mlc(self,ctx):
     if lists.checkperms(ctx)==True:

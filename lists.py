@@ -213,6 +213,11 @@ async def checkguild(bot,guild):
     await mychannel.send(f'Guild Id: {guild.id}')
     await guild.leave
 
+def lognewguild(stamp,msg,guild):
+  with open("Backups/disconnectlogs.txt", "a+") as o:
+      o.write(f'New Light {msg} {guild.name}, Id: {guild.id} at {stamp}.')
+      o.write('\n\n')
+
 def formatClanBal(ship,bal):
   formedbal={"flux": 0, "iron": 0, "explosive": 0, "rcs": 0, "bursts": 0, "autos": 0, "loaders": 0, "pushers": 0, "rubber": 0, "scanners": 0, "balls": 0, "hh": 0, "ice": 0, "launchers": 0, "rcd": 0}
   #print(ship)

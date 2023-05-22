@@ -1,6 +1,7 @@
 #websocket for uptimerobot to ping, keeps bot online
 from flask import Flask, render_template, request
 from flask_wtf import FlaskForm
+#from flask_ipban import IpBan
 from wtforms import RadioField
 from threading import Thread
 import random

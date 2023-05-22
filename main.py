@@ -3,7 +3,7 @@ from os import system
 import asyncio
 import time
 import pytz
-import datetime 
+import datetime
 from discord.ext import commands, tasks
 from pretty_help import EmojiMenu, PrettyHelp
 from discord.utils import get
@@ -67,23 +67,31 @@ async def on_ready():  # When the bot is ready
 
 @bot.event
 async def on_guild_join(guild):
-  if int(guild.id) in lists.bannedGuild:
+  tz = pytz.timezone('America/New_York')
+  stamp=datetime.datetime.now(tz)
+  lists.lognewguild(stamp,"joined",guild)
+  print("joined banned?")
+  if guild.id in lists.bannedGuilds:
+    print("banned guild")
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)
     await mychannel.send(f"I was asked to join a banned guild, {guild.name}!")
     await mychannel.send(f"Id: {guild.id}")
     await guild.leave()
   else:
+    print("joined allowed")
     #guild=before
     tz = pytz.timezone('America/New_York')
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)
-    await mychannel.send(f'Joined Server: {guild.name}; ID: {guild.id}; Time:{datetime.dateime.now(tz)}')
+    print("fetched channel")
+    await mychannel.send(f'Joined Server: {guild.name}; ID: {guild.id}; Time:{datetime.datetime.now(tz)}')
+    print(guild.system_channel)
     if guild.system_channel==None:
       invite="No System Channel Found, Unable To Create Invite"
     else:
       invite = await guild.system_channel.create_invite(reason="Inviting My Developer Incase You Need Support.")
-
+      print("fetched system channel")
     e = discord.Embed(title="I've joined a server.")
     e.add_field(name="Server Name", value=guild.name, inline=True)
     e.add_field(name="Server ID",value=guild.id,inline=True)
@@ -126,10 +134,13 @@ async def on_disconnect():
 
 @bot.event
 async def on_guild_remove(guild):
+  tz = pytz.timezone('America/New_York')
+  stamp=datetime.datetime.now(tz)
+  lists.lognewguild(stamp,"left",guild)
   myguild = bot.get_guild(1031900634741473280)
   mychannel = myguild.get_channel(1037788623015268444)
-  tz = pytz.timezone('America/New_York')
-  await mychannel.send(f'Left Server: {guild.name}; ID: {guild.id}; Time:{datetime.dateime.now(tz)}; Server Owner:{guild.owner.name}')
+  #tz = pytz.timezone('America/New_York')
+  await mychannel.send(f'Left Server: {guild.name}; ID: {guild.id}; Time:{datetime.datetime.now(tz)}; Server Owner:{guild.owner.name}')
   if guild.system_channel==None:
     invite="No System Channel Found, Unable To Create Invite"
   else:
@@ -175,7 +186,7 @@ async def my_task():
       print(int(clan))
       channel = myguild.get_channel(int(pc))
       print(channel)
-      if link.contains("https://drednot.io/invite"):
+      if "https://drednot.io/invite" in link:
         await channel.send(f'@here {link}')
         data["pinglinks"].remove(x)
         lists.setother(data)

@@ -73,31 +73,10 @@
       <!--<button onclick="return myFunction()">Ping Server</button>
       <input type="submit" value="Ping Server" onclick="myFunction()">-->
     </form>
-  </br
+    </br>
     <script>
       function myFunction() {
         document.forms[0].submit();
-      };
-      function setopts() {
-        const opts = document.getElementsByTagName("select");
-        let nOpt = new Option('test','hi')
-        opts.add(nOpt)
-        const file=readFile("../other.json");
-        const data=JSON.parse(file);
-        var name=0;
-        var id=0;
-        function removeAll(selectBox) {
-          while (selectBox.options.length > 0) {
-            select.remove(0);
-          };
-        };
-        removeAll(opts)
-        for (let x in data["guilds"]) {
-          name= data["guilds"][x]["name"];
-          id = data["guilds"][x]["id"];
-          let newOption = new Option(name,id);
-          opts.add(newOption,undefined);
-        };
       };
     </script>
   </body>

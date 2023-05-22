@@ -305,25 +305,31 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
         #self.bot.tree.clear_commands(guild=myguild)
         self.bot.tree.copy_global_to(guild=myguild)
         await ctx.send("Copied To Guild")
-        await self.bot.tree.sync(guild=myguild)
+        tree=await self.bot.tree.sync(guild=myguild)
         await ctx.send("Synced App Cmds In Dev Sevrer")
       elif opt=="reset":
         await ctx.send("Reseting App Command Tree")
         commands=self.bot.tree.get_commands()
         await ctx.send(commands)
         self.bot.tree.clear_commands
-        await self.bot.tree.sync()
+        tree=await self.bot.tree.sync()
         await ctx.send("Cleared Tree, Reseting Now")
         for x in commands:
           self.bot.tree.add_command(x)
-        await self.bot.tree.sync()
+        tree=await self.bot.tree.sync()
         await ctx.send("Command Tree Synced")
       elif opt=="lc":
         commands=await self.bot.tree.fetch_commands()
         await ctx.send(commands)
+      elif opt=="tr":
+        commands=await self.tree.sync()
+        await ctx.send("Synced")
+      elif opt=="bt":
+        commands=await self.bot.tree.sync()
+        await ctx.send("Synced")
       else:
         #self.bot.tree.clear_commands()
-        await self.bot.tree.sync()
+        tree=await self.bot.tree.sync()
         await ctx.send('Command tree synced globaly.')
     else:
         await ctx.send('You must be the owner to use this command!')
@@ -359,6 +365,32 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
       lists.setdataE(data)
     else:
       await ctx.send("You are not a developer and CANNOT run this command.")
+
+  @commands.command(name="clearpinglinks",aliases=["cpl"],description="Clears Ping Links",help="Clears Ping Links")
+  async def clearpinglinks(self,ctx):
+    if ctx.message.author.id in developers:
+      data=lists.readother()
+      data["pinglinks"].clear()
+      lists.setother(data)
+      await ctx.send("Cleared Ping Links")
+    else:
+      await ctx.send("Not A Dev")
+
+  @commands.command(name="metrics",description="Metrics",help="Metrics")
+  async def metrics(self,ctx,metric):
+    if ctx.message.author.id in developers:
+      if metric=="commands":
+        cmds=[]
+        for x in self.bot.commands:
+          cmds.append(x.name)
+        await ctx.send(cmds)
+      elif metric=="tree":
+        #await ctx.send(self.bot.tree_cls)
+        await ctx.send(f'\n\n{self.bot.tree}')
+      else:
+        pass
+    else:
+      await ctx.send("Not A Dev")
 
   @tasks.loop(time=times)
   async def backupdaily(self):

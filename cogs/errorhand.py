@@ -13,9 +13,21 @@ from json import loads, dumps
 from backup import backup
 from startup import startup
 
+import lists
+
 class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+
+  @commands.command(name="errorhandlist",hidden=True)
+  async def ehl(self,ctx,msg=None):
+    if ctx.message.author.id in lists.developers:
+      if msg=="app":
+        await ctx.send(self.has_app_command_error_handler)
+      else:
+        await ctx.send(self.has_error_handler)
+    else:
+      await ctx.send("Not A Dev")
 
   @commands.Cog.listener()
   async def on_command_error(self, ctx, error):
@@ -142,11 +154,44 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
         elif isinstance(error,commands.CheckFailure):
           await ctx.send(f'You have failed to pass the checks required to run {ctx.command}. This is the result of missing roles and/or permissions. Errors: {error.errors}; Failed Checks: {error.checks}')
 
-        elif isinstance(error):
+        elif isinstance(error,app_commands.CommandSyncFailure):
+          await ctx.send("App Command Error: Sync Failure")
+          
+        elif isinstance(error,app_commands.AppCommandError):
           await ctx.send("App Command Error: Sync Failure")
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.
             print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+
+  @commands.Cog.listener()
+  async def on_app_command_error(self, interaction: discord.Interaction, error: discord.app_commands.AppCommandError):
+        if hasattr(interaction.command, 'on_error'):
+            return
+          
+        cog = ctx.cog
+        if cog:
+            if cog._get_overridden_method(cog.cog_command_error) is not None:
+                return
+
+        ignored = (app_commands.CommandNotFound, )
+
+        # Allows us to check for original exceptions raised and sent to CommandInvokeError.
+        # If nothing is found. We keep the exception passed to on_command_error.
+        error = getattr(error, 'original', error)
+
+        # Anything in ignored will return and prevent anything happening.
+        if isinstance(error, ignored):
+            return
+
+        elif isinstance(error,app_commands.CommandSyncFailure):
+          await interaction.response.send_message("App Command Error: Sync Failure")
+          
+        elif isinstance(error,app_commands.AppCommandError):
+          await interaction.response.send_message("App Command Error: Sync Failure")
+        else:
+            # All other Errors not returned come here. And we can just print the default TraceBack.
+            print('Ignoring exception in command {}:'.format(interaction.command), file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
 async def setup(bot: commands.Bot):

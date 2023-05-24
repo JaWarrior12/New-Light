@@ -5,7 +5,7 @@ import time
 import pytz
 import datetime
 from discord.ext import commands, tasks
-#from pretty_help import EmojiMenu, PrettyHelp
+from pretty_help import EmojiMenu, PrettyHelp
 from discord.utils import get
 from keep_alive import keep_alives
 from discord import app_commands
@@ -35,9 +35,9 @@ bot = commands.Bot(command_prefix='n!',intents=intents)
 value = bot
 
 
-#nav = EmojiMenu("◀️", "▶️", "❌")
-#ending_note="New Light (LR=Command Restricted To Clan/Server Leadership)\nWiki:https://github.com/JaWarrior12/New-Light/wiki"
-#bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green(),ending_note=ending_note)
+nav = EmojiMenu("◀️", "▶️", "❌")
+ending_note="New Light (LR=Command Restricted To Clan/Server Leadership)\nWiki:https://github.com/JaWarrior12/New-Light/wiki"
+bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green(),ending_note=ending_note)
 
 class MyHelp(commands.MinimalHelpCommand):
     async def send_pages(self):
@@ -46,9 +46,9 @@ class MyHelp(commands.MinimalHelpCommand):
         for page in self.paginator.pages:
             e.description += page
         await destination.send(embed=e)
-bot.help_command = MyHelp()
+#bot.help_command = MyHelp()
 
-version = "3.6.1"
+version = "3.6.2"
 
 
 @bot.event

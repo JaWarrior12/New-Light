@@ -264,3 +264,11 @@ Command run at 2023-05-23 15:10:43.237755-04:00, by JaWarrior (User ID: 93028443
 Command run at 2023-05-23 15:28:16.552666-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
 
 Command run at 2023-05-24 08:28:43.734144-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Contents: New Light Development Server
+
+Command run at 2023-05-24 10:15:34.869470-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-05-24 10:22:37.329785-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-05-24 10:23:54.084170-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds
+
+Command run at 2023-05-24 10:24:14.783345-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Contents: cogs.devcmds

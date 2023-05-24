@@ -170,7 +170,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   async def conhelp(self,ctx):
     await ctx.send("Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel== Member List Channel")
 
-  @app_commands.command(name="serverconfig",description="Server Config Command (LR)\nServer Config Command, Use n!confighelp for a list of what the values mean.")
+  @app_commands.command(name="serverconfig",description="Server Config (LR), n!confighelp for help")
   @app_commands.checks.has_permissions(administrator=True)
   @app_commands.choices(option=[
       app_commands.Choice(name="Ping Channel", value="pingchan"),

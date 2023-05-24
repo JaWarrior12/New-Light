@@ -309,6 +309,14 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
         self.bot.tree.copy_global_to(guild=ctx.message.guild)
         synced=await ctx.bot.tree.sync(guild=ctx.message.guild)
         await ctx.send(f"Synced {len(synced)} commands to {ctx.message.guild.name}!")
+      elif msg=="cleartest":
+        self.bot.tree.clear_commands(guild=ctx.message.guild)
+        await self.bot.tree.sync(guild=ctx.message.guild)
+        await ctx.send("Tree Cleared For Guild")
+      elif msg=="clear":
+        self.bot.tree.clear_commands()
+        await self.bot.tree.sync()
+        await ctx.send("Tree Cleared Globaly")
       else:
         synced=await ctx.bot.tree.sync()
         print("command tree synced")
@@ -368,10 +376,16 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
       elif metric=="tree":
         #await ctx.send(self.bot.tree_cls)
         await ctx.send(f'\n\n{self.bot.tree}')
+      elif metric=="params":
+        appinfo=discord.AppInfo.install_params#.AppInstallParams.scopes
+        scopes=discord.AppInstallParams.scopes
+        perms=discord.AppInstallParams.permissions
+        await ctx.send(f'AppInfo:{appinfo}\nScopes:{scopes}\nPermissions:{perms}')
       else:
         pass
     else:
       await ctx.send("Not A Dev")
+
 
   @tasks.loop(time=times)
   async def backupdaily(self):

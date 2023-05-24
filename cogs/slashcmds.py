@@ -12,7 +12,12 @@ class SlashCmds(commands.Cog,name="Slash Commands",description="SCMDS"):
     """ /command-1 """
     await inter.response.send_message("Hello from command 1!")
 
+  @commands.hybrid_command()
+  async def slash(self,ctx):
+    await ctx.send("Hi! I can use slash commands now!")
+
 async def setup(bot: commands.Bot) -> None:
   await bot.add_cog(SlashCmds(bot))
+  #bot.tree.add_command(SlashCmds.my_command)
   #bot.tree.remove_command(SlashCmds.my_slash)
   #bot.tree.add_command(SlashCmds.my_slash,override=True)

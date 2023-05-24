@@ -5,7 +5,7 @@ import time
 import pytz
 import datetime
 from discord.ext import commands, tasks
-from pretty_help import EmojiMenu, PrettyHelp
+#from pretty_help import EmojiMenu, PrettyHelp
 from discord.utils import get
 from keep_alive import keep_alives
 from discord import app_commands
@@ -13,7 +13,6 @@ from discord import Member
 from json import loads, dumps
 from backup import backup
 from startup import startup
-from dpyConsole import Console
 import logging
 
 #Import Lists
@@ -31,15 +30,14 @@ intents.members = True
 
 
 bot = commands.Bot(command_prefix='n!',intents=intents)
-#tree = discord.app_commands.CommandTree(bot)
+#tree = app_commands.CommandTree(bot)
 
 value = bot
 
-my_console = Console(bot)
 
-nav = EmojiMenu("◀️", "▶️", "❌")
-ending_note="New Light (LR=Command Restricted To Clan/Server Leadership)\nWiki:https://github.com/JaWarrior12/New-Light/wiki"
-bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green(),ending_note=ending_note)
+#nav = EmojiMenu("◀️", "▶️", "❌")
+#ending_note="New Light (LR=Command Restricted To Clan/Server Leadership)\nWiki:https://github.com/JaWarrior12/New-Light/wiki"
+#bot.help_command = PrettyHelp(navigation=nav, color=discord.Colour.green(),ending_note=ending_note)
 
 class MyHelp(commands.MinimalHelpCommand):
     async def send_pages(self):
@@ -48,7 +46,7 @@ class MyHelp(commands.MinimalHelpCommand):
         for page in self.paginator.pages:
             e.description += page
         await destination.send(embed=e)
-#bot.help_command = MyHelp()
+bot.help_command = MyHelp()
 
 version = "3.6.1"
 
@@ -208,9 +206,7 @@ async def main():
     await bot.load_extension("cogs.adcmds")
     await bot.load_extension("cogs.slashcmds")
     await bot.load_extension("cogs.setupcmds")
-    #await bot.tree.sync()
     #bot.tree.copy_global_to(guild=discord.Object(id=1031900634741473280))
-    my_console.start()
     await bot.start(os.environ['token'])
     #await bot.tree.sync(guild=discord.Object(id=1031900634741473280))
     #await my_task.start()

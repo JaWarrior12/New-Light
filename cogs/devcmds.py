@@ -298,41 +298,22 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
       await ctx.send("You are not a developer and cannot use this command")
 
   @commands.command(name='sync', description='Owner only')
-  async def sync(self,ctx,opt=None):
+  async def sync(self,ctx,msg=None):
     if int(ctx.message.author.id) in developers:
-      if opt=="test":
-        myguild = self.bot.get_guild(1031900634741473280)
-        #self.bot.tree.clear_commands(guild=myguild)
-        self.bot.tree.copy_global_to(guild=myguild)
-        await ctx.send("Copied To Guild")
-        tree=await self.bot.tree.sync(guild=myguild)
-        await ctx.send("Synced App Cmds In Dev Sevrer")
-      elif opt=="reset":
-        await ctx.send("Reseting App Command Tree")
-        commands=self.bot.tree.get_commands()
-        await ctx.send(commands)
-        self.bot.tree.clear_commands
-        tree=await self.bot.tree.sync()
-        await ctx.send("Cleared Tree, Reseting Now")
-        for x in commands:
-          self.bot.tree.add_command(x)
-        tree=await self.bot.tree.sync()
-        await ctx.send("Command Tree Synced")
-      elif opt=="lc":
-        commands=await self.bot.tree.fetch_commands()
-        await ctx.send(commands)
-      elif opt=="tr":
-        commands=await self.tree.sync()
-        await ctx.send("Synced")
-      elif opt=="bt":
-        commands=await self.bot.tree.sync()
-        await ctx.send("Synced")
+      if msg=="list":
+        cmds=await ctx.bot.tree.fetch_commands()
+        cmdsg=await ctx.bot.tree.fetch_commands(guild=ctx.message.guild)
+        await ctx.send(cmds)
+        await ctx.send(f'\nGuild\n{cmdsg}')
+      elif msg=="test":
+        self.bot.tree.copy_global_to(guild=ctx.message.guild)
+        synced=await ctx.bot.tree.sync(guild=ctx.message.guild)
+        await ctx.send(f"Synced {len(synced)} commands to {ctx.message.guild.name}!")
       else:
-        #self.bot.tree.clear_commands()
-        tree=await self.bot.tree.sync()
-        await ctx.send('Command tree synced globaly.')
+        synced=await ctx.bot.tree.sync()
+        print("command tree synced")
     else:
-        await ctx.send('You must be the owner to use this command!')
+      await ctx.send('You must be the owner to use this command!')
 
   @commands.command(name='joindate', description='Checks Join Date Of New Light', hidden=True)
   async def joindata(self,ctx):

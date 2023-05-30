@@ -234,10 +234,10 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
   async def whois(self,ctx,member:discord.Member):
     #print(1)
     shargids=member.mutual_guilds
-    e=discord.Embed(title=f"Servers {member.display_name} Shares With New Light")
+    e=discord.Embed(title=f"Servers {member.name} Shares With New Light")
     e.set_thumbnail(url=member.display_avatar)
     for x in shargids:
-      e.add_field(name="",value=x,inline=True)
+      e.add_field(name=x,value=member.dispaly_name,inline=True)
       #await ctx.send(x)
       pass
     await ctx.send(embed=e)

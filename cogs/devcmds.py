@@ -39,7 +39,7 @@ FRF = lists.FRF
 utc=timezone.utc
 times=time(hour=0,minute=20,tzinfo=utc)
 
-class DevCmds(commands.Cog, name="Developer Commands",description="Developer Commands + Setupserver command"):
+class DevCmds(commands.Cog, name="Developer Commands",description="Developer Only Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     self.backupdaily.start()
@@ -256,7 +256,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
       await ctx.send("You are not a developer and CAN NOT use developer commands!")
 
   @commands.command(name="banb",hidden=True,disabled=True)
-  @commands.has_role('Developer')
+  #@commands.has_role('Developer')
   async def banuser(self,ctx,user):
     if ctx.message.author.id in developers:
       keya = "all"
@@ -323,7 +323,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Com
     else:
       await ctx.send('You must be the owner to use this command!')
 
-  @commands.command(name='joindate', description='Checks Join Date Of New Light', hidden=True)
+  @commands.command(name='joindate', description='Checks Join Date Of New Light', hidden=False)
   async def joindata(self,ctx):
     if ctx.message.author.id in developers:
       me=ctx.message.guild.get_member(974045822167679087)

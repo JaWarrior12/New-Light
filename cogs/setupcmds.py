@@ -228,61 +228,87 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     if lists.checkperms(ctx)==True:
       if lists.readdataE()[str(ctx.message.guild.id)]["memchan"]==0:
         await ctx.send("Member List Channel Not Configured, Please Use /serverconfig to desigante your member channel.")
+      if lists.readdataE()[str(ctx.message.guild.id)]["memrole"]==0:
+        await ctx.send("Member Role Not Configured, Please use /serverconfig to designate your member role.")
       else:
         gid=str(ctx.message.guild.id)
         lists.logback(ctx,msg=None)
         memchan=lists.readdataE()[str(ctx.message.guild.id)]["memchan"]
         channel=await ctx.message.guild.fetch_channel(int(memchan))
         nmesg=await channel.send("Member List Message")
+        groles=ctx.message.guild.roles
         #message=await channel.fetch_message(nmesg)
         #print(nmesg.id)
         data=lists.readdataE()
         data[str(ctx.message.guild.id)]["memmsg"]=int(nmesg.id)
         lists.setdataE(data)
         await ctx.send("Message Configured, Adding Members")
+        memrole=ctx.message.guild.get_role(int(data[gid]["memrole"]))
         ranks=[]
+        rnkord=[]
         for x in ctx.message.guild.members:
           #print(x.display_name)
           #print(x.roles)
           roles=x.roles
+          #print(roles)
           inx=0
           for role in roles:
-            if role.id==data[gid]["memrole"]:
-              inx=int(roles.index(role))+1
-              #print(inx)
-              rnk=int(roles[inx].id)
+            if role.id==memrole.id:
+              print(f'Role Pos:{roles.index(role)}')
+              inx=roles.index(role)+1
+              print(f'Index:{inx}')
+              rid=roles[inx].id
+              roleb=ctx.message.guild.get_role(rid)
+              print(roleb)
               #print(rnk)
-              if role.name=="@everyone":
+              if roleb.name=="@everyone":
                 pass
               else:
-                if rnk in ranks:
+                if groles.index(roleb) in rnkord:
                   pass
                 else:
-                  ranks.append(rnk)
+                  #ranks.append(rnk)
+                  rnkord.append(groles.index(roleb))
 
         #await ctx.send(ranks)
+        gidranks=ctx.message.guild.roles
+        rnkord.sort(reverse=True)
+        print(rnkord)
+        for x in rnkord:
+          rle=gidranks[x].id
+          pos=rnkord.index(x)
+          ranks.insert(pos,rle)
+        print(rnkord)
+        print(ranks)
+        print(groles[9])
         rmlist=[]
         for r in ranks:
           rmlistb=[]
           for mem in ctx.message.guild.members:
-            print(mem)
+            #print(mem)
             rolesb=mem.roles
             for roleb in rolesb:
-              print(roleb)
-              print(r)
+              #print(roleb)
+              #print(r)
               if roleb.id==r:
                 rmlistb.append(mem.id)
+                #mems.remove(mem)
               else:
                 pass
           rmlist.append(rmlistb)
-        await ctx.send(rmlist)
-        await ctx.send(ranks)
+        #await ctx.send(rmlist)
+        #await ctx.send(ranks)
         ctnt=""
         for x in ranks:
           rle=ctx.message.guild.get_role(x)
-          ctnt=ctnt+"\n\n"+rle.mention+"\n-------------"
+          if rle.id==memrole.id:
+            pass
+          elif len(rle.members)>=1:
+            ctnt=ctnt+"\n\n"+rle.name+"\n-------------"
+          else:
+            pass
           for us in ctx.message.guild.members:
-            if rle in us.roles and ctnt.find(us.mention)==-1:
+            if rle in us.roles and ctnt.find(us.display_name)==-1 and memrole in us.roles:
               ctnt=ctnt+"\n"+us.display_name
             else:
               pass

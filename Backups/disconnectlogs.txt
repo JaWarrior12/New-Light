@@ -432,3 +432,45 @@ New Light joined New Light Development Server, Id: 1031900634741473280 at 2023-0
 
 New Light disconnected from the DISCORD platform at 2023-05-24 11:32:54.816519-04:00.
 
+New Light left JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:41:51.285895-04:00.
+
+New Light joined JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:42:07.771029-04:00.
+
+New Light left JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:42:51.965023-04:00.
+
+New Light joined JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:43:17.367854-04:00.
+
+New Light left JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:44:12.586583-04:00.
+
+New Light joined JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:45:07.357172-04:00.
+
+New Light left JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:45:40.619020-04:00.
+
+New Light joined JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:46:03.428545-04:00.
+
+New Light left JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:46:48.690229-04:00.
+
+New Light joined JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:47:10.762241-04:00.
+
+New Light left JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:48:35.686715-04:00.
+
+New Light joined JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:49:07.727046-04:00.
+
+New Light left JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:50:02.599001-04:00.
+
+New Light joined JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:50:18.697722-04:00.
+
+New Light left JaWarrior's server, Id: 1110280188937388164 at 2023-05-24 12:50:19.350047-04:00.
+
+New Light disconnected from the DISCORD platform at 2023-05-29 21:26:06.825786-04:00.
+
+New Light disconnected from the DISCORD platform at 2023-05-29 23:13:39.390792-04:00.
+
+New Light disconnected from the DISCORD platform at 2023-05-30 01:00:12.852528-04:00.
+
+New Light disconnected from the DISCORD platform at 2023-05-30 01:58:35.975017-04:00.
+
+New Light disconnected from the DISCORD platform at 2023-05-30 05:46:22.468385-04:00.
+
+New Light disconnected from the DISCORD platform at 2023-05-30 06:58:52.555072-04:00.
+

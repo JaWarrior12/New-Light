@@ -16,7 +16,7 @@ from startup import startup
 authorized = [949451462151376948, 722703947638505556, 445763770799620097, 907899780561272842, 872718294023569408,930806975950909451]
 banned = 0 #[948934984088035408,975761604975153233]
 developers = [949451462151376948,722703947638505556,930284432634556496]
-bannedGuilds=[1100970317909864469]
+bgids=0
 
 #Authorized Based On Clan
 #Self ID=974045822167679087
@@ -89,6 +89,14 @@ def bannedlist():
   mylist = dumps(readdataE()[keyb])
   global banned
   banned = mylist
+
+glist = 0
+def bannedguilds():
+  keyb=str("banguilds")
+  global glist
+  glist = dumps(readdataE()[keyb])
+  global bgids
+  bgids = glist
 
 def getguild(ctx):
   id = ctx.message.guild.id

@@ -39,7 +39,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     self.bot = bot
     
     
-  @commands.command(name="ban",hidden=True)
+  @commands.command(name="ban",hidden=False,help="Bans A User From Using New Light")
   #@commands.has_role('Developer')
   async def banuser(self,ctx,user):
     if ctx.message.author.id in developers:
@@ -61,7 +61,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     else:
       await ctx.send("You are not a developer and cannot use this command")
 
-  @commands.command(name="unban",hidden=True)
+  @commands.command(name="unban",hidden=False,help="Unbans A User From Using New Light")
   async def unban(self,ctx,user_id):
     if ctx.message.author.id in developers:
       if str(user_id) not in banned:
@@ -79,6 +79,28 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
         await ctx.send(f'The ID of {user_id} could not be found, try again.')
     else:
       await ctx.send("You are not a developer and cannot use this command.")
+
+  @commands.command(name="banguild",help="Bans A Server From Using New Light")
+  async def banguild(self,ctx,gid):
+    if ctx.message.author.id in developers:
+      data=lists.readdataE()
+      data["banguilds"].append(int(gid))
+      lists.setdataE(data)
+      lists.bannedguilds()
+      await ctx.send(f"Banned Guild With ID:{gid}")
+    else:
+      await ctx.send("Not A Dev")
+
+  @commands.command(name="unbanguild",help="Unbans A Server From Using New Light")
+  async def unbanguild(self,ctx,gid):
+    if ctx.message.author.id in developers:
+      data=lists.readdataE()
+      data["banguilds"].remove(int(gid))
+      lists.setdataE(data)
+      lists.bannedguilds()
+      await ctx.send(f"UnBanned Guild With ID:{gid}")
+    else:
+      await ctx.send("Not A Dev")
 
   @commands.command(name="deauth",hidden=True)
   async def deauth(self,ctx,guild,user):
@@ -111,7 +133,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
-  @commands.command(name="listguilds",hidden=True)
+  @commands.command(name="listguilds",hidden=False,help="Lists All Servers New Light Is In")
   async def listguilds(self,ctx):
     if ctx.message.author.id in developers:
       names=[]
@@ -122,7 +144,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
-  @commands.command(name="leaveserver",hidden=True)
+  @commands.command(name="leaveserver",hidden=False,help="Forces New Light To Leave A Server")
   async def leave(self, ctx,id, *, reason=None):
     if ctx.message.author.id in developers:
       guild = self.bot.get_guild(int(id))
@@ -134,7 +156,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
-  @commands.command(name="clearserver",hidden=True)
+  @commands.command(name="clearserver",hidden=False,help="Clears A Server From New Light's Databases")
   async def clearserver(self,ctx,id,*,reason=None):
     if ctx.message.author.id in developers:
       guild = self.bot.get_guild(int(id))
@@ -180,7 +202,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
-  @commands.command(name="logdat",hidden=True)
+  @commands.command(name="logdat",hidden=False,help="Reads Log Data")
   async def logdat(self,ctx,function,min=None,max=None):
     if ctx.message.author.id in developers:
       if function=="clear":

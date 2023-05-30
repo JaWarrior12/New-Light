@@ -17,13 +17,15 @@ app.config.update(
     TEMPLATES_AUTO_RELOAD=True,
     SECRET_KEY=seckey
 )
+#ip_ban=IpBan(app)
+#ip_ban = IpBan(ban_seconds=200)
 
 class SimpleForm(FlaskForm):
   def setchoices():
     opts=[]
     data=lists.readdataE()
     for x in data:
-      if x=="ban":
+      if x=="ban" or x=="banguilds":
         continue
       else:
         #print(x)

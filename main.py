@@ -19,6 +19,7 @@ import logging
 import lists
 
 lists.bannedlist()
+lists.bannedguilds()
 
 #handler=logging.basicConfig(filename='Backups/errorlog.log',format='%(asctime)s - %(levelname)s - %(message)s',filemode='a',level=logging.CRITICAL)
 #logger = logging.getLogger()
@@ -69,7 +70,8 @@ async def on_guild_join(guild):
   stamp=datetime.datetime.now(tz)
   lists.lognewguild(stamp,"joined",guild)
   print("joined banned?")
-  if guild.id in lists.bannedGuilds:
+  print(lists.bgids)
+  if int(guild.id) in lists.readdataE()["banguilds"]:
     print("banned guild")
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)
@@ -184,7 +186,7 @@ async def my_task():
       print(int(clan))
       channel = myguild.get_channel(int(pc))
       print(channel)
-      if "https://drednot.io/invite" in link:
+      if "https://drednot.io/invite/" in link:
         await channel.send(f'@here {link}')
         data["pinglinks"].remove(x)
         lists.setother(data)

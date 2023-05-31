@@ -44,13 +44,13 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
     bots=self.bot
 
   @commands.command(name='test',brief='Test Command for devs.',hidden=True)
-  @commands.has_role('Developer')
+  #@commands.has_role('Developer')
   async def test(self,ctx):
     lists.logdown()
     await ctx.send("hi")
 
   @commands.command(name="listtest",hidden=True)
-  @commands.has_role('Developer')
+  #@commands.has_role('Developer')
   async def listtesting(self,ctx):
     if ctx.message.author.id in developers:
       key = "lt"
@@ -72,7 +72,7 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
       await ctx.send(mylist)
 
   @commands.command(name="chl",hidden=True)
-  @commands.has_role('Developer')
+  #@commands.has_role('Developer')
   async def chlist(self,ctx,msg):
     if ctx.message.author.id in developers:
       key = "lt"

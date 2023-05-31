@@ -69,7 +69,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       return False
     elif str(ctx.message.author.id) not in banned:
       msgb = version + " " + year + " " + monthnumber  + " " + day + " " + keys
-      lists.logback(ctx,msgb)
+      #lists.logback(ctx,msgb)
       #keyparts, datax = keys.split(" ")
       response = requests.get(f'https://pub.drednot.io/{version}/econ/{int(year)}_{int(monthnumber)}_{int(day)}/summary.json',params={'q': 'requests+language:python'})
       json_response = response.json()
@@ -85,7 +85,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
       msgb = target_item #target_key + " " + target_item
-      lists.logback(ctx,msgb)
+      #lists.logback(ctx,msgb)
       url = "https://pub.drednot.io/test/econ/item_schema.json"
       response = loads(requests.get(url).content)
       def find_route(data, route_no):
@@ -110,7 +110,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
       msgb = version + " " + year + " " + monthnumber  + " " + day + " " + key
-      lists.logback(ctx,msgb)
+      #lists.logback(ctx,msgb)
       response = requests.get(f'https://pub.drednot.io/{version}/econ/{int(year)}_{int(monthnumber)}_{int(day)}/summary.json',params={'q': 'requests+language:python'})
       json_response = response.json()
       repository = json_response[key]
@@ -125,7 +125,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
       msgb = version + " " + year + " " + monthnumber  + " " + day + " " + key
-      lists.logback(ctx,msgb)
+      #lists.logback(ctx,msgb)
       jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{monthnumber}_{day}/log.json.gz')
       await ctx.send(len(jsondata))
       await ctx.send(jsondata[int(key)])
@@ -138,7 +138,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
       msgb = version + " " + year + " " + monthnumber  + " " + day + " " + key
-      lists.logback(ctx,msgb)
+      #lists.logback(ctx,msgb)
       jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{monthnumber}_{day}/ships.json.gz')
       await ctx.send(len(jsondata))
       await ctx.send(jsondata[int(key)])
@@ -151,7 +151,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
       msgb = version + " " + year + " " + month  + " " + day + " " + file + " " + hex_code +" "+ extra_key+" "+log_count
-      lists.logback(ctx,msgb)
+      #lists.logback(ctx,msgb)
       jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/{file}.json.gz')
       if file == "log":
         hexcode="{"+hex_code+"}"

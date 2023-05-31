@@ -221,7 +221,7 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
       msgb = str(msg)
       chk = lists.checkperms(ctx)
       gid = str(ctx.message.guild.id)
-      lists.logback(ctx,msgb)
+      #lists.logback(ctx,msgb)
       list=lists.readdataE()
       if chk == True:
         for mem in list[str(ctx.message.guild.id)]["auth"]:

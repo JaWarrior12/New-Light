@@ -44,7 +44,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         try:
           data[gid][design][item] = str(value)
           lists.setdataD(data)
-          lists.logback(ctx,msg)
+          #lists.logback(ctx,msg)
           await ctx.send(f'Now {design} has a {value} value of {value}.')
         except KeyError:
           await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
@@ -70,7 +70,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         data[gid][str(design)] = default
         #print(data)
         lists.setdataD(data)
-        lists.logback(ctx,design)
+        #lists.logback(ctx,design)
         await ctx.send(f'Added {design} to the Database')
       except KeyError:
         await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
@@ -87,7 +87,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         try:
           del data[gid][design]
           lists.setdataD(data)
-          lists.logback(ctx,design)
+          #lists.logback(ctx,design)
           await ctx.send(f'Deleted {design} from the Database')
         except KeyError:
           await ctx.send(f'KeyError! {design} does not exist in my database! Please use n!design all if you would like to call all designs or n!design list for a list of design names.')
@@ -126,7 +126,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         else:
           gid = str(ctx.message.guild.id)
           data=lists.readdataD()
-          lists.logback(ctx,design)
+          #lists.logback(ctx,design)
           e = discord.Embed(title=design)
           e.set_image(url=str(data[gid][design]["Image"]))
           e.add_field(name="Designer",value=f'<@{data[gid][design]["Designer"]}>',inline=True)

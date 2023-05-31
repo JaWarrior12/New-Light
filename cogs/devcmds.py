@@ -56,7 +56,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   @commands.command(name='shutdown',brief="Shuts down and restarts New Light", help="Shuts Down and Restarts New Light. Args: None")
   async def shutdown(self,ctx,msg=None):
     if ctx.message.author.id in developers:
-      lists.logback(ctx,msg)
+      #lists.logback(ctx,msg)
       sdm = "NEW LIGHT Is Shutting Down Now And Will Be Back Online Shortly."
       #channel = ctx.get_channel(974078794065403924)
       #await ctx.send("Published message: " + sdm)
@@ -76,7 +76,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   @commands.command(name='backup', brief="Backs up New Light to the reseve databases", help="Backs up New Light's Databases. Args: None")
   async def backups(self,ctx,*,msg=None):
     if ctx.message.author.id in developers:
-      lists.logback(ctx,msg)
+      #lists.logback(ctx,msg)
       print('Backing Up')
       await ctx.send('Backing Up Data')
       backup(ctx)
@@ -96,7 +96,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   @commands.command(name='lockdown', brief="Locks down a channel, preventing guests from chatting", help="Licks down a channel and prevents guests from chatting. Args: None", hidden=True)
 #@commands.has_permissions(manage_channels = True)
   async def lockdown(self,ctx,*,msg=None):
-    lists.logback(ctx,msg)
+    #lists.logback(ctx,msg)
     if ctx.message.author.id in developers:
       await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
       await ctx.send( ctx.channel.mention + " ***is now in lockdown.***")
@@ -139,7 +139,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   #Reload Commands
   @commands.command(name='reload',aliases=['rl'],brief="Reloads All Cogs",help="Reloads All or one cog(s). Args: <all/cogs.Cog>")
   async def reload(self, ctx, cog=None):
-    lists.logback(ctx,cog)
+    #lists.logback(ctx,cog)
     if ctx.message.author.id in developers:
       extensions = self.bot.extensions
       if cog == 'all':
@@ -158,7 +158,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   
   @commands.command(name="unload", aliases=['ul'],brief="Unloads A Cog", help="Unloads a Cog. Args: <cogs.Cog>") 
   async def unload(self, ctx, cog=None):
-    lists.logback(ctx,cog)
+    #lists.logback(ctx,cog)
     if ctx.message.author.id in developers:
       extensions = self.bot.extensions
       if cog not in extensions:
@@ -172,7 +172,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   
   @commands.command(name="load",brief="Loads A Cog",help="Loads a cog. Args: <cogs.Cog>")
   async def load(self, ctx, cog=None):
-    lists.logback(ctx,cog)
+    #lists.logback(ctx,cog)
     if ctx.message.author.id in developers:
       try:
         await self.bot.load_extension(cog)
@@ -184,7 +184,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   
   @commands.command(name="listcogs", aliases=['lc'],brief="Lists All Cogs",help="Lists all cogs. Args: No e")
   async def listcogs(self, ctx, msg=None):
-    lists.logback(ctx,msg)
+    #lists.logback(ctx,msg)
     if ctx.message.author.id in developers:
       base_string = "```css\n"  # Gives some styling to the list (on pc side)
       base_string += "\n".join([str(cog) for cog in self.bot.extensions])
@@ -199,7 +199,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
         msg = None
-        lists.logback(ctx,msg)
+        #lists.logback(ctx,msg)
         msgb = "a b"
         pc=int(pingChannel)
     #if ctx.message.author.id in developers:

@@ -35,7 +35,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
 
   @commands.command(name='rel',brief="Gets a clan's relation.",help="Calls a relation from a clan's relation database. Format: n!rel clan; Clan can be a clan's name, emoji, or abbreviation.")
   async def relations(self,ctx, *, clan):
-        lists.logback(ctx,clan)
+        #lists.logback(ctx,clan)
         if str(ctx.message.author.id) not in banned:
           try:
             st=None
@@ -71,7 +71,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
         msgb = str(clan+" "+relation)
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
-        lists.logback(ctx,msgb)
+        #lists.logback(ctx,msgb)
         if chk == True:
           try:
             #data[gid][clan]=str(relation)
@@ -125,7 +125,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
         msgb = str(emoji+" "+relation+" "+abrv+" "+full_name)
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
-        lists.logback(ctx,msgb)
+        #lists.logback(ctx,msgb)
         if chk == True:
           try:
             #data[gid][clan]=str(relation)
@@ -152,7 +152,7 @@ class RelCmds(commands.Cog, name="Relations Commands",description="Clan Relation
         #msgparts, data = msg.split(" "), lists.readdataB()
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
-        lists.logback(ctx,clan)
+        #lists.logback(ctx,clan)
         mesg = str(gid)
         if chk == True:
           await ctx.send('List of All Relations')

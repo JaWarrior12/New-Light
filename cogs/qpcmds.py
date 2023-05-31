@@ -40,7 +40,7 @@ class QPCmds(commands.Cog, name="QuickPing Commands",description="QuickPing Syst
       try:
         shipnameb=shipname.lower()
         gid = str(ctx.message.guild.id)
-        lists.logback(ctx,shipname)
+        #lists.logback(ctx,shipname)
         await ctx.send(dumps(lists.readdataC()[gid][shipnameb]).replace('{','').replace('}', '').replace('"', ''))
       except KeyError:
         await ctx.send(f'KeyError: {shipname} Is not in the quickping database. Either {shipname} has not been entered into the list by a member or it is listed under a different key. Fixes: Capitalize the first letter (slugger -> Slugger), Use an abbreviation (Gamking Sniper 1 -> GKS1), or remove spaces in the name (Destruction Awaits You -> DestructionAwaitsYou). The solution could be a mix of the provided fixes.')
@@ -66,7 +66,7 @@ class QPCmds(commands.Cog, name="QuickPing Commands",description="QuickPing Syst
       pinger = ping + linkb
       data[gid][linkb]=str(pinger)
       lists.setdataC(data)
-      lists.logback(ctx,msg)
+      #lists.logback(ctx,msg)
       await ctx.send(f'Added {msgparts[1]} with a link of {msgparts[0]} to the QuickPing database.')
     #await ctx.send(dumps(readdataC()[msg]).replace('{','').replace('}', '').replace('"', ''))
     else:
@@ -84,7 +84,7 @@ class QPCmds(commands.Cog, name="QuickPing Commands",description="QuickPing Syst
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
     elif str(ctx.message.author.id) not in banned:
-      lists.logback(ctx,ship)
+      #lists.logback(ctx,ship)
       gid = str(ctx.message.guild.id)
       name=str(ship).lower()
       data=lists.readdataC()

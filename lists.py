@@ -115,7 +115,7 @@ def logback(ctx,msg):
   #print(data)
   with open("Backups/log.txt", "a+") as g:
     g.write('\n')
-    g.write(f'Command run at {ct}, by {usern} (User ID: {userid}), in server {guildn} (Server ID: {guildid}). Command Run: {commandrun}, Command Contents: {mesg}')
+    g.write(f'Command run at {ct}, by {usern} (User ID: {userid}), in server {guildn} (Server ID: {guildid}). Command Run: {commandrun}, Command Content: {mesg}')
     g.write('\n')
     
 def logdown():

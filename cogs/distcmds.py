@@ -67,7 +67,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
         msgb = str(member)+" "+item+" "+amount
-        lists.logback(ctx,msgb)
+        #lists.logback(ctx,msgb)
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
         if member=="clan":
@@ -103,7 +103,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
         msgb=str(member)+" "+item
-        lists.logback(ctx,msgb)
+        #lists.logback(ctx,msgb)
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
         if chk == True:
@@ -131,7 +131,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       print(member.id)
       #chk = lists.checkperms(ctx)
       gid = str(ctx.message.guild.id)
-      lists.logback(ctx,member)
+      #lists.logback(ctx,member)
       #if chk == True:
       data = lists.readdata()
       try:
@@ -155,7 +155,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
   async def addmember(self,ctx, member: discord.Member):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
-        lists.logback(ctx,member)
+        #lists.logback(ctx,member)
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
         if chk == True:
@@ -190,7 +190,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         gid = str(ctx.message.guild.id)
         mem=str(member.id)
         del data[gid][mem]
-        lists.logback(ctx,member)
+        #lists.logback(ctx,member)
         if chk == True:
           try:
             lists.setdata(data)
@@ -214,7 +214,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         #msgparts, data = msg.split(" "), lists.readdata()
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
-        lists.logback(ctx,clan)
+        #lists.logback(ctx,clan)
         mesg = str(gid)
         if chk == True:
           await ctx.send('Balances Of All Members')
@@ -239,7 +239,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
   async def defaultbal(self,ctx,*,items):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
-      lists.logback(ctx,items)
+      #lists.logback(ctx,items)
       if chk == True:
         list=items.split(";")
         data=lists.readother()

@@ -30,6 +30,10 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
       await ctx.send("Not A Dev")
 
   @commands.Cog.listener()
+  async def on_command_completion(self,ctx):
+    lists.logback(ctx,ctx.message.content)
+
+  @commands.Cog.listener()
   async def on_command_error(self, ctx, error):
         #"""The event triggered when an error is raised while invoking a command.
         #Parameters

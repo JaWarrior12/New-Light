@@ -34,7 +34,7 @@ DSR = lists.DSR
 FRF = lists.FRF
 
 
-class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tools"):
+class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Developer Admin Tools"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     
@@ -102,7 +102,27 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     else:
       await ctx.send("Not A Dev")
 
-  @commands.command(name="deauth",hidden=True)
+  @commands.command(name="banlist",help="Lists Banned Guilds or Users")
+  async def  banlist(self,ctx,opt):
+    if ctx.message.author.id in developers:
+      if opt=="users":
+        data=lists.readdataE()
+        ctnt=""
+        for x in data["ban"]:
+          ctnt=ctnt+"\n-"+str(x)
+        await ctx.send(f'Banned Users:\n{ctnt}')
+      elif opt=="guilds":
+        data=lists.readdataE()
+        ctnt=""
+        for x in data["banguilds"]:
+          ctnt=ctnt+"\n-"+str(x)
+        await ctx.send(f'Banned Guilds:\n{ctnt}')
+      else:
+        await ctx.send("I don't know what you want me to list.")
+    else:
+      await ctx.send("Not A Dev")
+
+  @commands.command(name="deauth",hidden=False,help="Remotely Deauthorizes a user in a server.")
   async def deauth(self,ctx,guild,user):
     if ctx.message.author.id in developers:
       data=lists.readdataE()
@@ -115,7 +135,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
-  @commands.command(name="authus",hidden=True)
+  @commands.command(name="authus",hidden=False,help="Remotely Authorizes A User In A Server")
   async def authus(self,ctx,guild,user):
     if ctx.message.author.id in developers:
       gid =str(guild)
@@ -190,7 +210,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
-  @commands.command(name="authedus",hidden=True)
+  @commands.command(name="authedus",hidden=False,help="Lists Authorized Users in a guild")
   async def authedus(self,ctx,guild=None):
     if ctx.message.author.id in developers:
       data=lists.readdataE()
@@ -236,7 +256,7 @@ class AdCmds(commands.Cog, name="Admin Tools", description="New Light Admin Tool
       await ctx.send("You are not a developer and cannot use this command.")
       pass
 
-  @commands.command(name="createinvite",hidden=True)
+  @commands.command(name="createinvite",hidden=False,help="Creates An Invite For The Developer")
   async def createinvite(self,ctx,gid):
     if int(ctx.message.author.id) in developers:
       guild = self.bot.get_guild(int(gid))

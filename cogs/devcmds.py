@@ -48,11 +48,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     #print(1)
     self.backupdaily.cancel()
 
-  @commands.command(name='ping',brief="Latency Command",help="Latency Command")
-  @commands.cooldown(1, 10, commands.BucketType.user)
-  async def ping(self,ctx):
-    await ctx.send(f"Pong 🏓! Latency: {round(int(self.bot.latency)*1000)}ms")
-
   @commands.command(name='shutdown',brief="Shuts down and restarts New Light", help="Shuts Down and Restarts New Light. Args: None")
   async def shutdown(self,ctx,msg=None):
     if ctx.message.author.id in developers:
@@ -71,7 +66,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       #await main.bot.logout()
     else:
       print(ctx.message.author.id)
-      await ctx.send('ONLY DEVELOPERS ARE ALLOWED TO SHUTDOWN THE BOT!!! YOU ARE NOT A DEVELOPER') 
+      await ctx.send('Developer Only Command') 
 
   @commands.command(name='backup', brief="Backs up New Light to the reseve databases", help="Backs up New Light's Databases. Args: None")
   async def backups(self,ctx,*,msg=None):
@@ -93,7 +88,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send("You are not a developer and CANNOT run this command.")
   
-  @commands.command(name='lockdown', brief="Locks down a channel, preventing guests from chatting", help="Licks down a channel and prevents guests from chatting. Args: None", hidden=True)
+  @commands.command(name='lockdown', brief="Locks down a channel, preventing guests from chatting", help="Licks down a channel and prevents guests from chatting. Args: None", hidden=False,disabled=True)
 #@commands.has_permissions(manage_channels = True)
   async def lockdown(self,ctx,*,msg=None):
     #lists.logback(ctx,msg)
@@ -103,7 +98,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send(f'<@{ctx.message.author.id}> You Are NOT A Developer And CANNOT Lockdown Channels')
 
-  @commands.command(name='unlock', brief='Unlocks A Channel', help="Unlocks a channel. Args: None", hidden=True)
+  @commands.command(name='unlock', brief='Unlocks A Channel', help="Unlocks a channel. Args: None", hidden=False,disabled=True)
 #@commands.has_permissions(manage_channels=True)
   async def unlock(self,ctx):
     if ctx.message.author.id in developers:
@@ -112,7 +107,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send(f'<@{ctx.message.author.id}> You Are NOT A Developer And CANNOT Unlock Channels')
       
-  @commands.command(name='addrole',pass_context=True, brief='Addrole Cmd, Broken RN', help="Adds a role to a member. Args: <@Role> <@Member>", hidden=True)
+  @commands.command(name='addrole',pass_context=True, brief='Addrole Cmd, Broken RN', help="Adds a role to a member. Args: <@Role> <@Member>", hidden=False,disable=True)
   async def addrole(self,ctx, role: discord.Role, member: discord.Member=None):
     if ctx.message.author.id in developers:
       member = member or ctx.message.author
@@ -193,56 +188,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send("Not A Dev")
 
-  @commands.command(name="setupserverold",brief="Setup For Your Server",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.",hidden=True,disabled=True)
-  @commands.has_permissions(administrator=True)
-  async def setupsrvrold(self,ctx,pingChannel=None,distroChannel=None):
-      servers=lists.readdata()
-      if str(ctx.message.guild.id) not in servers.keys():
-        msg = None
-        #lists.logback(ctx,msg)
-        msgb = "a b"
-        pc=int(pingChannel)
-    #if ctx.message.author.id in developers:
-      # check if all elements in ls are integers
-      #if all([isinstance(item, int) for item in authUs]) == True:
-        gid = ctx.message.guild.id
-        uid = ctx.message.author.id
-        #await lists.logmajor(self,ctx,msg=str(uid))
-        default = {}
-        defaultb=[]
-        defaultc={"auth":[],"pingchan":pc,"distchan":int(distroChannel),"name":ctx.message.guild.name}
-        data = lists.readdata()
-        data[gid]=dict(default)
-        lists.setdata(data)
-        data = lists.readdataB()
-        data[gid]=dict(default)
-        lists.setdataB(data)
-        data = lists.readdataC()
-        data[gid]=defaultb
-        lists.setdataC(data)
-        data = lists.readdataD()
-        data[gid]=dict(default)
-        lists.setdataD(data)
-        data = lists.readdataE()
-        data[gid]=dict(defaultc)
-        lists.setdataE(data)
-        data = lists.readdataE()
-        banlt=data
-        banlt[gid]["auth"].append(str(uid))
-        lists.setdataE(banlt)
-        server = ctx.message.guild
-        await server.create_role(name="QuickPing")
-      else:
-        await ctx.send("Server already setup.")
-
-        #await server.create_role(name="OfficialMember")
-        #datac = dumps(lists.readdataE())
-      #else:
-        #await ctx.send("The AuthorizedUsers list can only be User Id's, only integers are allowed in the list.")
-    #else:
-      #await ctx.send("You are not a Developer and Can Not run this command.")
-
-  @commands.command(name="adminrole",hidden=True)
+  @commands.command(name="adminrole",hidden=False,disabled=True)
   async def adrle(self,ctx):
     if ctx.message.author.id in developers:
       member = ctx.author
@@ -255,47 +201,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send("You are not a developer and CAN NOT use developer commands!")
 
-  @commands.command(name="banb",hidden=True,disabled=True)
-  #@commands.has_role('Developer')
-  async def banuser(self,ctx,user):
-    if ctx.message.author.id in developers:
-      keya = "all"
-      keyb = "ban"
-      gid = str(ctx.message.guild.id)
-      #mylist = []
-      #datab = dumps(lists.readdataE()[keyb]).replace("[","").replace("]","")
-      data = dumps(lists.readdataE()[keyb])#.replace("[","").replace("]","").replace(' ',"").replace("'","").replace('"',"")
-      if str(user) in banned:
-        await ctx.send(f'The User With An Id Of {user} Is Already In The Ban List')
-      else:
-        #await lists.logmajor(self,ctx,user)
-        print(data)
-        #await ctx.send(type(data))
-        ##await ctx.send(data)
-        #await ctx.send("----")
-        data=data.replace("[","").replace("]","").replace('"','')
-        #await ctx.send(data)
-        #await ctx.send(data.split(","))
-        mylist = data#.split(",")#.split(",") #[data.replace("'","").replace('"','')]
-        #await ctx.send(type(mylist))
-        #await ctx.send(mylist)
-        if "[]" in mylist:
-          mylist.remove("[]")
-        #await ctx.send("----")
-        #await ctx.send(mylist)
-        #await ctx.send("----")
-        usr = str(user).replace("'","").replace('"','')
-        use = [mylist+","+usr]
-        #await ctx.send(use)
-        #mylist.append(use)#.replace("'","").replace('"',''))
-        #await ctx.send(mylist)
-        datab=lists.readdataE()
-        datab[keyb]=use
-        lists.setdataE(datab)
-        await ctx.send(f'The User With A User Id Of {user} has been BANNED from using New Light')
-        lists.bannedlist()
-    else:
-      await ctx.send("You are not a developer and cannot use this command")
 
   @commands.command(name='sync', description='Owner only')
   async def sync(self,ctx,msg=None):

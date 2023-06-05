@@ -43,6 +43,11 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
     global bots
     bots=self.bot
 
+  @commands.command(name='ping',brief="Latency Command",help="Latency Command")
+  @commands.cooldown(1, 10, commands.BucketType.user)
+  async def ping(self,ctx):
+    await ctx.send(f"Pong 🏓! Latency: {round(int(self.bot.latency)*1000)}ms")
+
   @commands.command(name='test',brief='Test Command for devs.',hidden=True)
   #@commands.has_role('Developer')
   async def test(self,ctx):

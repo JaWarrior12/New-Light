@@ -3,7 +3,7 @@ import time
 import pytz
 import datetime
 #from keep_alive import keep_alive
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
 from discord import app_commands
 from discord import Member
@@ -318,98 +318,100 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             else:
               pass
         await nmesg.edit(content=ctnt)
+        await ctx.send(f"Member List Created: {nmesg.jump_url}")
     else:
       await ctx.send("Not authorized to use leadership commands in this server")
 
-  @commands.Cog.listener()
-  async def on_member_update(self,before,after):
-    if lists.readdataE()[str(before.guild.id)]["memchan"]==0:
-      pass
-    elif lists.readdataE()[str(before.guild.id)]["memrole"]==0:
-      pass
-    else:
-      #print("Member Updated")
-      gid=str(before.guild.id)
-      guild=self.bot.get_guild(after.guild.id)
-      #print(guild.name)
-      data=lists.readdataE()
-      memchan=lists.readdataE()[str(guild.id)]["memchan"]
-      channel=await guild.fetch_channel(int(memchan))
-      nmesg=await channel.fetch_message(int(data[str(guild.id)]["memmsg"]))
-      groles=guild.roles
-      #message=await channel.fetch_message(nmesg)
-      data[str(guild.id)]["memmsg"]=int(nmesg.id)
-      lists.setdataE(data)
-      memrole=guild.get_role(int(data[gid]["memrole"]))
-      ranks=[]
-      rnkord=[]
-      for x in guild.members:
-        #print(x.display_name)
-        #print(x.roles)
-        roles=x.roles
-        #print(roles)
-        lstrle=roles[-1]
-        inx=0
-        for role in roles:
-          if role.id==memrole.id:
-            #print(f'Role Pos:{roles.index(role)}')
-            inx=roles.index(role)+1
-            #print(f'Index:{inx}')
-            rid=roles[inx].id
-            roleb=guild.get_role(rid)
-            #print(roleb)
-            #print(rnk)
-            if roleb.name=="@everyone":
-              pass
-            else:
-              if groles.index(roleb) in rnkord:
-                pass
-              else:
-                #ranks.append(rnk)
-                rnkord.append(groles.index(roleb))
-      gidranks=guild.roles
-      rnkord.sort(reverse=True)
-      #print(rnkord)
-      for x in rnkord:
-        rle=gidranks[x].id
-        pos=rnkord.index(x)
-        ranks.insert(pos,rle)
-        rmlist=[]
-        mems=list(guild.members)
-        #print(mems)
-        for r in ranks:
-          rmlistb=[]
-          for mem in mems:
-            #print(mem)
-            rolesb=mem.roles
-            for roleb in rolesb:
+  @tasks.loop(hours=1)
+  async def updatememlist(self):
+    for g in self.bot.guilds:
+      if lists.readdataE()[str(g.id)]["memchan"]==0:
+        pass
+      elif lists.readdataE()[str(g.id)]["memrole"]==0:
+        pass
+      else:
+        #print("Member Updated")
+        gid=str(g.id)
+        guild=self.bot.get_guild(g.id)
+        #print(guild.name)
+        data=lists.readdataE()
+        memchan=lists.readdataE()[str(guild.id)]["memchan"]
+        channel=await guild.fetch_channel(int(memchan))
+        nmesg=await channel.fetch_message(int(data[str(guild.id)]["memmsg"]))
+        groles=guild.roles
+        #message=await channel.fetch_message(nmesg)
+        data[str(guild.id)]["memmsg"]=int(nmesg.id)
+        lists.setdataE(data)
+        memrole=guild.get_role(int(data[gid]["memrole"]))
+        ranks=[]
+        rnkord=[]
+        for x in guild.members:
+          #print(x.display_name)
+          #print(x.roles)
+          roles=x.roles
+          #print(roles)
+          lstrle=roles[-1]
+          inx=0
+          for role in roles:
+            if role.id==memrole.id:
+              #print(f'Role Pos:{roles.index(role)}')
+              inx=roles.index(role)+1
+              #print(f'Index:{inx}')
+              rid=roles[inx].id
+              roleb=guild.get_role(rid)
               #print(roleb)
-              #print(r)
-              if roleb.id==r:
-                rmlistb.append(mem.id)
-              else:
+              #print(rnk)
+              if roleb.name=="@everyone":
                 pass
-          rmlist.append(rmlistb)
-        #await ctx.send(rmlist)
-        #await ctx.send(ranks)
-        ctnt=""
-        for x in ranks:
-          rle=guild.get_role(x)
-          if rle.id==memrole.id:
-            pass
-          elif any([x.mention in ctnt for x in rle.members]):
-            pass
-          elif len(rle.members)>=1:
-            ctnt=ctnt+"\n\n∙"+rle.mention+" ("+str(len(rle.members))+") :"
-          else:
-            pass
-          for us in mems:
-            if rle in us.roles and ctnt.find(us.mention)==-1 and memrole in us.roles:
-              ctnt=ctnt+"\n--"+us.mention
-              mems.remove(us)
+              else:
+                if groles.index(roleb) in rnkord:
+                  pass
+                else:
+                  #ranks.append(rnk)
+                  rnkord.append(groles.index(roleb))
+        gidranks=guild.roles
+        rnkord.sort(reverse=True)
+        #print(rnkord)
+        for x in rnkord:
+          rle=gidranks[x].id
+          pos=rnkord.index(x)
+          ranks.insert(pos,rle)
+          rmlist=[]
+          mems=list(guild.members)
+          #print(mems)
+          for r in ranks:
+            rmlistb=[]
+            for mem in mems:
+              #print(mem)
+              rolesb=mem.roles
+              for roleb in rolesb:
+                #print(roleb)
+                #print(r)
+                if roleb.id==r:
+                  rmlistb.append(mem.id)
+                else:
+                  pass
+            rmlist.append(rmlistb)
+          #await ctx.send(rmlist)
+          #await ctx.send(ranks)
+          ctnt=""
+          for x in ranks:
+            rle=guild.get_role(x)
+            if rle.id==memrole.id:
+              pass
+            elif any([x.mention in ctnt for x in rle.members]):
+              pass
+            elif len(rle.members)>=1:
+              ctnt=ctnt+"\n\n∙"+rle.mention+" ("+str(len(rle.members))+") :"
             else:
               pass
-        await nmesg.edit(content=ctnt)
+            for us in mems:
+              if rle in us.roles and ctnt.find(us.mention)==-1 and memrole in us.roles:
+                ctnt=ctnt+"\n--"+us.mention
+                mems.remove(us)
+              else:
+                pass
+          await nmesg.edit(content=ctnt)
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(SetupCmds(bot))

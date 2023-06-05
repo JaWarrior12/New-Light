@@ -1,0 +1,24 @@
+
+Command run at 2023-05-31 14:09:42.769678-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: help, Command Content: n!help
+
+Command run at 2023-05-31 14:10:05.685210-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: banguild, Command Content: n!banguild 731135382611296327
+
+Command run at 2023-05-31 14:10:23.021376-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 216921412781211648
+
+Command run at 2023-05-31 14:23:55.171779-04:00, by fg817sw751478 (User ID: 1109536169550696583), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: shutdown, Command Content: n!shutdown
+
+Command run at 2023-05-31 14:29:50.141148-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: banlist, Command Content: n!banlist users
+
+Command run at 2023-05-31 14:30:25.595775-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.adcmds
+
+Command run at 2023-05-31 14:30:30.310718-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: banlist, Command Content: n!banlist users
+
+Command run at 2023-05-31 14:30:40.967468-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: banlist, Command Content: n!banlist guilds
+
+Command run at 2023-06-01 17:36:47.795551-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 802290316072976424
+
+Command run at 2023-06-01 17:37:58.785870-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: unban, Command Content: n!unban 802290316072976424
+
+Command run at 2023-06-02 09:40:09.056612-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-06-02 09:44:33.005730-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: listguilds, Command Content: n!listguilds

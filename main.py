@@ -76,7 +76,12 @@ async def on_guild_join(guild):
     myguild = bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1037788623015268444)
     await mychannel.send(f"I was asked to join a banned guild, {guild.name}!")
+    if guild.system_channel==None:
+      invite="No System Channel Found, Unable To Create Invite"
+    else:
+      invite = await guild.system_channel.create_invite(reason="Notifying My Developer That I Have Been Asked To Join A Banned Server.")
     await mychannel.send(f"Id: {guild.id}")
+    await mychannel.send(f'Invite:{invite}')
     await guild.leave()
   else:
     print("joined allowed")

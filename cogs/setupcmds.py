@@ -19,7 +19,11 @@ banned= lists.banned
 class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    #bot.tree.add_command(self.servconfig,guild=None,override=True)
+    self.updatememlist.start()
+    #self.my_console=Console(bot)
+  def cog_unload(self):
+    #print(1)
+    self.updatememlist.cancel()
 
   def is_guild_owner():
     def predicate(ctx):

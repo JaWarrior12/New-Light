@@ -286,6 +286,16 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
         scopes=discord.AppInstallParams.scopes
         perms=discord.AppInstallParams.permissions
         await ctx.send(f'AppInfo:{appinfo}\nScopes:{scopes}\nPermissions:{perms}')
+      elif metric=="cmdcnt":
+        data=lists.readother()
+        await ctx.send(f'Commands Sent Count:{int(data["cmdcnt"])}')
+      elif metric=="guilds":
+        glist=self.bot.guilds
+        glen=len(self.bot.guilds)
+        gls=""
+        for x in self.bot.guilds:
+          gls=gls+"\n -"+str(x.name)
+        await ctx.send(f"Number Of Guilds I'm In: {glen}!\nList Of Guilds I'm In: {gls}")
       else:
         pass
     else:

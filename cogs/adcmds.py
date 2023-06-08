@@ -223,7 +223,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       await ctx.send("You are not a developer and cannot use this command.")
 
   @commands.command(name="logdat",hidden=False,help="Reads Log Data")
-  async def logdat(self,ctx,function,min=None,max=None):
+  async def logdat(self,ctx,function,min=10,max=10):
     if ctx.message.author.id in developers:
       if function=="clear":
         with open("Backups/log.txt", "w") as g:

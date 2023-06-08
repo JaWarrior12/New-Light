@@ -22,3 +22,45 @@ Command run at 2023-06-01 17:37:58.785870-04:00, by JaWarrior (User ID: 93028443
 Command run at 2023-06-02 09:40:09.056612-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
 
 Command run at 2023-06-02 09:44:33.005730-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: listguilds, Command Content: n!listguilds
+
+Command run at 2023-06-05 13:31:42.590231-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: help, Command Content: n!help shutdown
+
+Command run at 2023-06-05 13:36:52.570906-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-06-05 13:37:01.020443-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-06-05 13:40:33.910584-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics guilds
+
+Command run at 2023-06-05 13:40:58.855411-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: help, Command Content: n!help
+
+Command run at 2023-06-05 13:42:40.141496-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics guilds
+
+Command run at 2023-06-05 13:43:36.383159-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics guilds
+
+Command run at 2023-06-05 13:45:18.771050-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-06-05 14:15:37.804050-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: listguilds, Command Content: n!listguilds
+
+Command run at 2023-06-06 08:31:29.232565-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-06-06 12:15:47.864442-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics guilds
+
+Command run at 2023-06-06 12:15:55.579400-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-06-06 12:16:18.632895-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics guilds
+
+Command run at 2023-06-07 18:44:48.876242-04:00, by .kiwi (User ID: 1074449766357925918), in server random ass server (Server ID: 1116134755247853688). Command Run: slash, Command Content: 
+
+Command run at 2023-06-07 18:47:11.448837-04:00, by .kiwi (User ID: 1074449766357925918), in server random ass server (Server ID: 1116134755247853688). Command Run: help, Command Content: n!help
+
+Command run at 2023-06-07 18:48:32.237219-04:00, by .kiwi (User ID: 1074449766357925918), in server random ass server (Server ID: 1116134755247853688). Command Run: design, Command Content: n!design farmer
+
+Command run at 2023-06-07 18:48:53.781237-04:00, by .kiwi (User ID: 1074449766357925918), in server random ass server (Server ID: 1116134755247853688). Command Run: design, Command Content: n!design list
+
+Command run at 2023-06-07 18:49:30.991013-04:00, by .kiwi (User ID: 1074449766357925918), in server random ass server (Server ID: 1116134755247853688). Command Run: design, Command Content: n!design adddes
+
+Command run at 2023-06-08 08:20:17.911657-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-06-08 08:58:53.086996-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: help, Command Content: n!help logdat
+
+Command run at 2023-06-08 08:59:55.176195-04:00, by JaWarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.adcmds

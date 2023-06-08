@@ -33,7 +33,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
         msg = None
-        #lists.logback(ctx,msg)
+        lists.logback(ctx,msg)
         msgb = "a b"
         pc=int(pingChannel)
         gid = ctx.message.guild.id

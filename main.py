@@ -49,7 +49,7 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.6.2"
+version = "3.6.3"
 
 
 @bot.event
@@ -80,8 +80,15 @@ async def on_guild_join(guild):
       invite="No System Channel Found, Unable To Create Invite"
     else:
       invite = await guild.system_channel.create_invite(reason="Notifying My Developer That I Have Been Asked To Join A Banned Server.")
-    await mychannel.send(f"Id: {guild.id}")
-    await mychannel.send(f'Invite:{invite}')
+    e = discord.Embed(title="I Was Asked To Join A Banned Server")
+    e.add_field(name="Server Name", value=guild.name, inline=True)
+    e.add_field(name="Server ID",value=guild.id,inline=True)
+    e.add_field(name="Server Owner",value=guild.owner.name,inline=True)
+    e.add_field(name="Invite Link", value=invite, inline=False)
+    e.set_thumbnail(url=guild.icon)
+    #tz = pytz.timezone('America/New_York')
+    e.timestamp=datetime.datetime.now(tz)
+    await mychannel.send(embed=e)
     await guild.leave()
   else:
     print("joined allowed")
@@ -97,11 +104,19 @@ async def on_guild_join(guild):
     else:
       invite = await guild.system_channel.create_invite(reason="Inviting My Developer Incase You Need Support.")
       print("fetched system channel")
+    if guild.owner.id in myguild.members:
+      rle=myguild.get_role(1031901280408436817)
+      mem=guild.get_member(guild.owner.id)
+      await mem.add_role(rle)
+      addrole="Yes"
+    else:
+      addrole="No"
     e = discord.Embed(title="I've joined a server.")
     e.add_field(name="Server Name", value=guild.name, inline=True)
     e.add_field(name="Server ID",value=guild.id,inline=True)
     e.add_field(name="Server Owner",value=guild.owner.name,inline=True)
     e.add_field(name="Invite Link", value=invite, inline=False)
+    e.add_field(name="Added NL User Role?",value=addrole,inline=False)
     e.set_thumbnail(url=guild.icon)
     #tz = pytz.timezone('America/New_York')
     e.timestamp=datetime.datetime.now(tz)
@@ -150,13 +165,20 @@ async def on_guild_remove(guild):
     invite="No System Channel Found, Unable To Create Invite"
   else:
     invite = await guild.system_channel.create_invite(reason="Notifying My Developer")
+  if guild.owner.id in myguild.members:
+    rle=myguild.get_role(1031901280408436817)
+    mem=guild.get_member(guild.owner.id)
+    await mem.remove_roles(rle)
+    addrole="Yes"
+  else:
+    addrole="No"
   lists.clearserver(str(guild.id))
-
   e = discord.Embed(title="I've Left A Server.")
   e.add_field(name="Server Name", value=guild.name, inline=True)
   e.add_field(name="Server ID",value=guild.id,inline=True)
   e.add_field(name="Server Owner",value=guild.owner.name,inline=True)
   e.add_field(name="Invite Link", value=invite, inline=False)
+  e.add_field(name="Removed NL User Role?",value=addrole,inline=False)
   e.set_thumbnail(url=guild.icon)
   #tz = pytz.timezone('America/New_York')
   e.timestamp=datetime.datetime.now(tz)
@@ -213,9 +235,7 @@ async def main():
     await bot.load_extension("cogs.adcmds")
     await bot.load_extension("cogs.slashcmds")
     await bot.load_extension("cogs.setupcmds")
-    #bot.tree.copy_global_to(guild=discord.Object(id=1031900634741473280))
     await bot.start(os.environ['token'])
-    #await bot.tree.sync(guild=discord.Object(id=1031900634741473280))
     #await my_task.start()
 
 

@@ -96,7 +96,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           else:
             await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
         except KeyError:
-          await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
+          await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
           
   @commands.command(name='reset',brief="Resets a member's balance. (LR)",help="Resets one loot value in a user's balance. Format: n!reset @User item")
   async def resetalldata(self, ctx, member: discord.Member, item):
@@ -120,7 +120,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             e.timestamp=datetime.now()
             await ctx.send(embed=e)
           except KeyError:
-            await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
+            await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
           
@@ -145,7 +145,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         e.timestamp=datetime.now()
         await ctx.send(embed=e)
       except KeyError:
-        await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
+        await ctx.send(f"KeyError: User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
     elif str(ctx.message.author.id) in banned:
       await ctx.send("Your ID Is In The Banned List.")
     else:
@@ -161,7 +161,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         if chk == True:
           inputv={}
           keylist=lists.readother()["defaultdist"].keys()
-          await ctx.send(keylist)
+          #await ctx.send(keylist)
           if str(ctx.message.guild.id) in keylist:
             items=lists.readother()["defaultdist"][str(ctx.message.guild.id)]
             for x in items:
@@ -204,7 +204,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             e.timestamp=datetime.now()
             await ctx.send(embed=e)
           except KeyError:
-            await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
+            await ctx.send(f"KeyError: User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 

@@ -76,3 +76,163 @@ Command run at 2023-07-03 19:22:15.127839-04:00, by jawarrior (User ID: 93028443
 Command run at 2023-07-03 19:23:41.923013-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logdat, Command Content: n!logdat read
 
 Command run at 2023-07-20 13:00:54.341379-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: listguilds, Command Content: n!listguilds
+
+Command run at 2023-07-22 14:53:51.069352-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-22 14:57:48.123187-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-22 14:58:59.804074-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: slash, Command Content: 
+
+Command run at 2023-07-22 15:31:11.618942-04:00, by joker1100 (User ID: 858649812416462879), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: invitehelp, Command Content: n!invitehelp <@858649812416462879>
+
+Command run at 2023-07-22 15:33:19.912655-04:00, by bulgarianman (User ID: 1068211603494932560), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-22 15:35:15.344832-04:00, by bulgarianman (User ID: 1068211603494932560), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-22 15:36:07.938361-04:00, by bulgarianman (User ID: 1068211603494932560), in server The Merge (Server ID: 1122964426472034415). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-07-22 15:37:42.592274-04:00, by bulgarianman (User ID: 1068211603494932560), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-22 16:18:06.921355-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-22 16:25:33.953988-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help add member
+
+Command run at 2023-07-22 16:25:42.640254-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help addmember
+
+Command run at 2023-07-22 16:26:51.724990-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help balance
+
+Command run at 2023-07-22 16:27:35.292155-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help logloot
+
+Command run at 2023-07-22 16:30:02.605258-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help Database
+
+Command run at 2023-07-22 16:30:26.903553-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: confighelp, Command Content: n!confighelp
+
+Command run at 2023-07-22 16:30:48.999872-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: authedus, Command Content: n!authedus
+
+Command run at 2023-07-22 16:31:25.855389-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: sync, Command Content: n!sync
+
+Command run at 2023-07-22 16:32:46.327933-04:00, by joker1100 (User ID: 858649812416462879), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balance, Command Content: n!balance <@858649812416462879>
+
+Command run at 2023-07-22 16:33:08.798874-04:00, by joker1100 (User ID: 858649812416462879), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balance, Command Content: n!balance <@858649812416462879>
+
+Command run at 2023-07-22 16:35:58.074495-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help addmember
+
+Command run at 2023-07-22 16:37:18.334688-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help defaultbal
+
+Command run at 2023-07-22 16:40:40.751378-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: help, Command Content: n!help sync
+
+Command run at 2023-07-22 16:41:28.983684-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: sync, Command Content: n!sync
+
+Command run at 2023-07-22 16:41:53.011938-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-22 16:42:21.416871-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: help, Command Content: n!help deauth
+
+Command run at 2023-07-22 16:42:43.606516-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: deauth, Command Content: n!deauth fuck off <@858649812416462879>
+
+Command run at 2023-07-22 17:54:18.060518-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-22 19:24:45.994012-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: help, Command Content: n!help  Distribution Commands
+
+Command run at 2023-07-22 19:25:06.332190-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: help, Command Content: n!help addmember
+
+Command run at 2023-07-23 16:11:18.879436-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-23 16:16:04.633886-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help  Distribution Commands
+
+Command run at 2023-07-23 16:17:07.274731-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: help, Command Content: n!help addmember
+
+Command run at 2023-07-23 16:45:49.770114-04:00, by bulgarianman (User ID: 1068211603494932560), in server The Merge (Server ID: 1122964426472034415). Command Run: balance, Command Content: n!balance <@1068211603494932560>
+
+Command run at 2023-07-25 07:02:38.169324-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.distcmds
+
+Command run at 2023-07-25 07:02:47.057313-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balance, Command Content: n!balance <@1061402701583356016>
+
+Command run at 2023-07-25 07:04:27.680187-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: help, Command Content: n!help
+
+Command run at 2023-07-25 07:38:12.441062-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: addmember, Command Content: n!addmember <@858649812416462879>
+
+Command run at 2023-07-25 07:39:02.200450-04:00, by joker1100 (User ID: 858649812416462879), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balance, Command Content: n!balance <@858649812416462879>
+
+Command run at 2023-07-25 07:45:59.366483-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: balance, Command Content: n!balance <@858649812416462879>
+
+Command run at 2023-07-25 07:50:10.853538-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.setupcmds
+
+Command run at 2023-07-25 07:50:19.457900-04:00, by jawarrior (User ID: 930284432634556496), in server test bot (Server ID: 1008075938061357237). Command Run: setupserver, Command Content: None
+
+Command run at 2023-07-25 07:52:24.126830-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: setupserver, Command Content: n!setupserver
+
+Command run at 2023-07-25 07:52:53.967168-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: addmember, Command Content: n!addmember <@858649812416462879>
+
+Command run at 2023-07-25 07:57:31.448154-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: balance, Command Content: n!balance <@858649812416462879>
+
+Command run at 2023-07-25 07:58:17.034540-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: addmember, Command Content: n!addmember <@858649812416462879>
+
+Command run at 2023-07-25 07:58:53.536617-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: addmember, Command Content: n!addmember <@858404054249242625>
+
+Command run at 2023-07-25 07:59:57.574535-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: balance, Command Content: n!balance <@858404054249242625>
+
+Command run at 2023-07-25 08:01:54.872947-04:00, by bulgarianman (User ID: 1068211603494932560), in server The Merge (Server ID: 1122964426472034415). Command Run: setupserver, Command Content: None
+
+Command run at 2023-07-25 08:09:50.822276-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: defaultbal, Command Content: n!defaultbal iron;explo;flux;rubber
+
+Command run at 2023-07-25 08:10:27.616304-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: balance, Command Content: n!balance <@858649812416462879>
+
+Command run at 2023-07-25 08:11:57.400031-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: removemember, Command Content: n!removemember <@858649812416462879>
+
+Command run at 2023-07-25 08:12:10.512608-04:00, by joker1100 (User ID: 858649812416462879), in server test bot (Server ID: 1008075938061357237). Command Run: addmember, Command Content: n!addmember <@858649812416462879>
+
+Command run at 2023-07-25 08:12:56.494668-04:00, by jawarrior (User ID: 930284432634556496), in server test bot (Server ID: 1008075938061357237). Command Run: logloot, Command Content: n!logloot <@858649812416462879> flux 100
+
+Command run at 2023-07-25 08:13:06.169546-04:00, by jawarrior (User ID: 930284432634556496), in server test bot (Server ID: 1008075938061357237). Command Run: balance, Command Content: n!balance <@858649812416462879>
+
+Command run at 2023-07-25 08:13:58.633190-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: setupserver, Command Content: n!setupserver
+
+Command run at 2023-07-25 08:14:26.783347-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: authuser, Command Content: n!authuser 858404054249242625
+
+Command run at 2023-07-25 08:15:35.789842-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: authuser, Command Content: n!authuser 858649812416462879
+
+Command run at 2023-07-25 08:18:11.618984-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: authuser, Command Content: n!authuser 858649812416462879
+
+Command run at 2023-07-25 08:18:58.308472-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: authus, Command Content: n!authus 1122964426472034415 858649812416462879
+
+Command run at 2023-07-25 08:19:47.617100-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: authuser, Command Content: n!authuser 858649812416462879
+
+Command run at 2023-07-25 08:21:33.072900-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: defaultbal, Command Content: n!defaultbal flux;rubber;iron;explo
+
+Command run at 2023-07-25 08:21:46.875895-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: addmember, Command Content: n!addmember <@858404054249242625>
+
+Command run at 2023-07-25 08:22:07.112705-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: addmember, Command Content: n!addmember <@1068211603494932560>
+
+Command run at 2023-07-25 08:22:29.825311-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: logloot, Command Content: n!logloot <@858404054249242625>  flux 1000
+
+Command run at 2023-07-25 08:23:16.761471-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: addmember, Command Content: n!addmember <@858649812416462879>
+
+Command run at 2023-07-25 08:28:23.109797-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-07-25 08:59:30.184865-04:00, by ahmad_pro (User ID: 858404054249242625), in server The Merge (Server ID: 1122964426472034415). Command Run: balance, Command Content: n!balance <@1068211603494932560>
+
+Command run at 2023-07-25 09:00:42.061861-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: logloot, Command Content: n!logloot <@858404054249242625>  flux -1500
+
+Command run at 2023-07-25 09:00:52.582521-04:00, by joker1100 (User ID: 858649812416462879), in server The Merge (Server ID: 1122964426472034415). Command Run: balance, Command Content: n!balance <@858404054249242625>
+
+Command run at 2023-07-25 10:11:28.342252-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-07-25 10:42:55.104633-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-07-25 14:28:02.674305-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-07-26 08:46:10.602869-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-07-28 19:47:37.096294-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: listguilds, Command Content: n!listguilds
+
+Command run at 2023-07-29 16:01:34.427287-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: saftimer, Command Content: n!saftimer
+
+Command run at 2023-07-29 16:06:25.551538-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.othercmds
+
+Command run at 2023-07-29 16:06:29.180695-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: saftimer, Command Content: n!saftimer
+
+Command run at 2023-07-29 16:08:52.947336-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.othercmds
+
+Command run at 2023-07-29 16:08:58.352318-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: saftimer, Command Content: n!saftimer
+
+Command run at 2023-07-29 16:09:37.336958-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.othercmds

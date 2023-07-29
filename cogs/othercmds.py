@@ -10,6 +10,8 @@ from discord import Member
 from discord import app_commands
 from discord.ext.commands import has_permissions, MissingPermissions
 from json import loads, dumps
+import requests
+from bs4 import BeautifulSoup
 #from backup import backup
 #from startup import startup
 
@@ -37,7 +39,7 @@ FRF = lists.FRF
 
 bots=0
 
-class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands + AuthUser + Invitehelp + Pingpage"):
+class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands + Pingpage + Wiki Link + Setup Guide"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     global bots
@@ -54,6 +56,9 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
     lists.logdown()
     await ctx.send("hi")
 
+  @commands.command(name="wiki",help="Link To Github Wiki")
+  async def wiki(self,ctx):
+    await ctx.send("Wiki: https://github.com/JaWarrior12/New-Light/wiki")
   @commands.command(name="listtest",hidden=True)
   #@commands.has_role('Developer')
   async def listtesting(self,ctx):
@@ -76,50 +81,10 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
       await ctx.send(type(mylist))
       await ctx.send(mylist)
 
-  @commands.command(name="chl",hidden=True)
-  #@commands.has_role('Developer')
-  async def chlist(self,ctx,msg):
-    if ctx.message.author.id in developers:
-      key = "lt"
-      keyb = str("auth")
-      gid = str(ctx.message.guild.id)
-      mylist = []
-      msgb = "a b"
-      msgparts, data = msgb.split(" ")
-      datab = dumps(lists.readdataE()[gid][keyb]).replace("[","").replace("]","").replace('"',"").replace("'","")
-      await ctx.send(datab)
-      await ctx.send("-----")
-      await ctx.send(type(datab))
-      mylist = list(datab)
-      await ctx.send(mylist)
-      key=","
-      for x in mylist:
-        print(x)
-        if x == ",":
-          mylist.remove(x)
-          await ctx.send(f'Removed {x}')
-          await ctx.send(mylist)
-          continue
-      await ctx.send(mylist)
-      await ctx.send(type(mylist))
-      await ctx.send(mylist)
-      mylist.append(msg)
-      await ctx.send(mylist)
-      data[gid][keyb]=mylist
-      await ctx.send(data)
-      lists.setdataE(data)
-      
-    else:
-      await ctx.send("You are not a developer and cannot use this command")
 
-  @commands.command(name="invitehelp",help="This command DMs you information on inviting New Light to your server. Format: n!invitehelp @Yourself",disabled=True)
-  async def invitehelp(self,ctx,user:discord.User):
-    with open('InviteHelp.txt', 'rb') as fp:
-        await user.send(file=discord.File(fp, 'New Light Documentation'))
-    f = open("InviteHelp.txt", "r")
-    if f.mode == 'r':
-      contents = f.read()
-      await user.send("Invite Help Documentation")
+  @commands.command(name="invitehelp",help="This command DMs you information on inviting New Light to your server. Format: n!invitehelp @Yourself",disabled=False,hidden=False)
+  async def invitehelp(self,ctx):
+    await ctx.send("Setup Guide: https://github.com/JaWarrior12/New-Light/wiki/Setup-Guide")
 
   @commands.Cog.listener()
   async def on_disconnect():
@@ -129,111 +94,9 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
       print(e.args[0])
       lists.logdown()
 
-
-  @commands.command(name="authuserold",help="Authorizes A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!authuser <USERID>",hidden=True,disabled=True)
-  @commands.has_permissions(administrator=True)
-  async def authorizeuserold(self,ctx,user):
-    if str(ctx.message.author.id) not in banned:
-      chk = lists.checkperms(ctx)
-      if chk == True:
-        #await lists.logmajor(ctx,user)
-        #lists.logmajor(self,ctx,user)
-        gid=str(ctx.message.guild.id)
-        key="auth"
-        data = dumps(lists.readdataE()[gid][key])
-        if str(user) in data:
-          await ctx.send(f'The User With An ID Of {user} Is Already Authorized')
-        else:
-          data = lists.readdataE()
-          banlt=data
-          #await ctx.send(banlt)
-          banlt[gid]["auth"].append(str(user))
-          #await ctx.send(banlt)
-          lists.setdataE(banlt)
-          await ctx.send(f'The User With A User Id Of {user} has been authorized to use Leadership Commands in the server {ctx.message.guild.name} by {ctx.message.author.name}')
-          myguild = ctx.guild
-          channel = myguild.get_channel(1037788623015268444)
-          e = discord.Embed(title="User Authorized")
-          e.add_field(name="Server Name", value=ctx.guild.name, inline=False)
-          e.add_field(name="Server ID", value=ctx.guild.id, inline=False)
-          e.add_field(name="User Authorizing", value=f'Name:{ctx.message.author.name}; ID:{ctx.message.author.id}', inline=False)
-          member=ctx.guild.get_member(int(user))
-          e.add_field(name="User Being Authorized", value=f'Name:{member.name}; ID:{member.id}', inline=False)
-          tz = pytz.timezone('America/New_York')
-          e.timestamp=datetime.datetime.now(tz)
-          await channel.send(embed=e)
-          
-      else:
-        await ctx.send("You are not authorized and CANNOT authorize users.")
-    elif str(ctx.messsage.author.id) in banned:
-      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
-    else:
-      await ctx.send("I Hit a Wall, Try Running The Command Again")
-
-  def is_guild_owner():
-    def predicate(ctx):
-        return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id
-    return commands.check(predicate)
-  
-  @commands.command(name="deauthuserold",help="Removes Authorization From A User To Use Leadership Commands. Required Permissions: Administrator; Format: n!deauthuser <USERID>",hidden=True,disabled=True)
-  @commands.check_any(is_guild_owner())
-  async def deathuserold(self,ctx,user):
-    if str(ctx.message.author.id) not in banned:
-      chk = lists.checkperms(ctx)
-      if chk == True:
-        #await lists.logmajor(ctx,user)
-        #lists.logmajor(self,ctx,user)
-        gid=str(ctx.message.guild.id)
-        key="auth"
-        data = dumps(lists.readdataE()[gid][key])
-        if str(user) not in data:
-          await ctx.send(f'The User With An ID Of {user} Is Not Authorized')
-        else:
-          data = lists.readdataE()
-          banlt=data
-          #await ctx.send(banlt)
-          banlt[gid]["auth"].remove(str(user))
-          #await ctx.send(banlt)
-          lists.setdataE(banlt)
-          await ctx.send(f'The User With A User Id Of {user} has been DEAUTHORIZED to use Leadership Commands in the server {ctx.message.guild.name} by {ctx.message.author.name}')
-          myguild = ctx.guild
-          channel = myguild.get_channel(1037788623015268444)
-          e = discord.Embed(title="User Deauthorized")
-          e.add_field(name="Server Name", value=ctx.guild.name, inline=False)
-          e.add_field(name="Server ID", value=ctx.guild.id, inline=False)
-          e.add_field(name="User Deauhtorizing", value=f'Name:{ctx.message.author.name}; ID:{ctx.message.author.id}', inline=False)
-          member=ctx.guild.get_member(int(user))
-          e.add_field(name="User Being Deauthorized", value=f'Name:{member.name}; ID:{member.id}', inline=False)
-          tz = pytz.timezone('America/New_York')
-          e.timestamp=datetime.datetime.now(tz)
-          await channel.send(embed=e)
-          
-      else:
-        await ctx.send("You are not authorized and CANNOT authorize users.")
-    elif str(ctx.messsage.author.id) in banned:
-      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
-    else:
-      await ctx.send("I Hit a Wall, Try Running The Command Again")
-
   @commands.command(name="pingpage",aliases=["pinger","ppage","p"],brief="Link to WebPing Page",help="Sends the link to New Light Remote WebPing Page")
   async def pingpage(self,ctx):
     await ctx.send("New Light Ping Page: https://new-light-discord-bot.jawarrior.repl.co")
-
-  @commands.command(name="authlistold",hidden=True,disabled=True)
-  async def authlist(self,ctx):
-    if str(ctx.message.author.id) not in banned:
-      msg="none"
-      msgb = str(msg)
-      chk = lists.checkperms(ctx)
-      gid = str(ctx.message.guild.id)
-      #lists.logback(ctx,msgb)
-      list=lists.readdataE()
-      if chk == True:
-        for mem in list[str(ctx.message.guild.id)]["auth"]:
-          member=ctx.message.guild.get_member(int(mem))
-          await ctx.send(f'Name:{member.display_name}; ID:{member.id}')
-    else:
-      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
 
   @commands.command(name="whois",help="Gets Clans A Member Is In")
   async def whois(self,ctx,member:discord.Member):
@@ -245,6 +108,16 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
       e.add_field(name=x,value=member.dispaly_name,inline=True)
       #await ctx.send(x)
       pass
+    await ctx.send(embed=e)
+
+  @commands.command(name="event",help="Calls The Swiss Army Event Timer")
+  async def saftimer(self,ctx):
+    r = requests.get(f'https://swiss-website.floofyjpeg.repl.co/timers/{str(os.environ["swisskey"])}')
+    tdat=r.json()
+    e=discord.Embed(title=f"Swiss Army Event Timer")
+    e.add_field(name="",value=tdat["us"],inline=False)
+    e.add_field(name="",value=tdat["eu"],inline=False)
+    e.add_field(name="",value=tdat["asia"],inline=False)
     await ctx.send(embed=e)
     
 async def setup(bot: commands.Bot):

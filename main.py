@@ -30,7 +30,7 @@ intents.members = True
 #client = discord.Client()
 
 
-bot = commands.Bot(command_prefix='n!',intents=intents)
+bot = commands.Bot(command_prefix='n!',intents=intents, case_insensitive=True)
 #tree = app_commands.CommandTree(bot)
 
 value = bot
@@ -49,7 +49,7 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.6.3"
+version = "3.6.4"
 
 
 @bot.event
@@ -104,11 +104,14 @@ async def on_guild_join(guild):
     else:
       invite = await guild.system_channel.create_invite(reason="Inviting My Developer Incase You Need Support.")
       print("fetched system channel")
-    if guild.owner.id in myguild.members:
+    if guild.owner in myguild.members:
+      #print("Owner In Dev Server")
       rle=myguild.get_role(1031901280408436817)
-      mem=guild.get_member(guild.owner.id)
-      await mem.add_role(rle)
+      #print("fetched role")
+      mem=myguild.get_member(guild.owner.id)
+      await mem.add_roles(rle)
       addrole="Yes"
+      #print("Role Added")
     else:
       addrole="No"
     e = discord.Embed(title="I've joined a server.")
@@ -116,6 +119,7 @@ async def on_guild_join(guild):
     e.add_field(name="Server ID",value=guild.id,inline=True)
     e.add_field(name="Server Owner",value=guild.owner.name,inline=True)
     e.add_field(name="Invite Link", value=invite, inline=False)
+    e.add_field(name="Member Count",value=guild.member_count,inline=False)
     e.add_field(name="Added NL User Role?",value=addrole,inline=False)
     e.set_thumbnail(url=guild.icon)
     #tz = pytz.timezone('America/New_York')

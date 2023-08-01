@@ -49,7 +49,7 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.6.4"
+version = "3.6.5"
 
 
 @bot.event
@@ -237,8 +237,8 @@ async def main():
     await bot.load_extension("cogs.econcmds")
     await bot.load_extension("cogs.devcmds")
     await bot.load_extension("cogs.adcmds")
-    await bot.load_extension("cogs.slashcmds")
     await bot.load_extension("cogs.setupcmds")
+    await bot.load_extension("cogs.slashcmds")
     await bot.start(os.environ['token'])
     #await my_task.start()
 

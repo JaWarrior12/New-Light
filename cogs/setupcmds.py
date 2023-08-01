@@ -67,8 +67,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         banlt[gid]["auth"].append(str(uid))
         lists.setdataE(banlt)
         server = ctx.message.guild
-        await server.create_role(name="QuickPing")
         await ctx.send("Server Setup Succesfully!")
+        await server.create_role(name="QuickPing")
+        await ctx.send("QuickPing Role Created")
       else:
         await ctx.send("Server already setup.")
 
@@ -176,7 +177,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     await ctx.send("Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel== Member List Channel")
 
   @app_commands.command(name="serverconfig",description="Server Config (LR), n!confighelp for help")
-  @app_commands.checks.has_permissions(administrator=True)
+  #@app_commands.checks.has_permissions(administrator=True)
   @app_commands.choices(option=[
       app_commands.Choice(name="Ping Channel", value="pingchan"),
       app_commands.Choice(name="Distribution Channel", value="distchan"),
@@ -187,7 +188,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Member List Channel",value="memchan")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
-    chk = lists.slashcheckperms(interaction.guild_id,interaction.author.id)
+    #print("Started Serverconfig Slash")
+    chk = lists.slashcheckperms(interaction.guild_id,interaction.user.id)
     if chk == True:
       val = 0
       val=input
@@ -223,7 +225,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         else:
           val=int(input)
         data=lists.readdataE()
-        data[str(ctx.message.guild_id)][str(option)]=val
+        data[str(ctx.message.guild.id)][str(option)]=val
         #print(data)
         lists.setdataE(data)
         await ctx.send(f'Changed {(option)} to {val}')

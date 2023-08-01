@@ -176,7 +176,7 @@ def checkperms(ctx):
   gid = str(ctx.message.guild.id)
   uid = str(ctx.message.author.id)
   keya="auth"
-  autho = dumps(readdataE()[gid][keya])
+  autho = readdataE()[gid]["auth"]
   if str(uid) not in banned:
     if str(uid) in autho:
       return True
@@ -192,8 +192,7 @@ def checkperms(ctx):
 def slashcheckperms(gidd,uidd):
   gid=str(gidd)
   uid=str(uidd)
-  keya="auth"
-  autho = dumps(readdataE()[gid][keya])
+  autho = readdataE()[gid]["auth"]
   if str(uid) not in banned:
     if str(uid) in autho:
       return True

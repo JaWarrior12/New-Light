@@ -236,3 +236,67 @@ Command run at 2023-07-29 16:08:52.947336-04:00, by jawarrior (User ID: 93028443
 Command run at 2023-07-29 16:08:58.352318-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: saftimer, Command Content: n!saftimer
 
 Command run at 2023-07-29 16:09:37.336958-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.othercmds
+
+Command run at 2023-07-29 17:06:24.092546-04:00, by invalid_dev (User ID: 1092909436877688916), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: slash, Command Content: 
+
+Command run at 2023-07-30 19:09:37.539668-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: event, Command Content: n!event
+
+Command run at 2023-07-30 19:09:37.777859-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: event, Command Content: n!event
+
+Command run at 2023-07-31 12:27:50.653569-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: event, Command Content: n!event
+
+Command run at 2023-07-31 12:27:52.259568-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-07-31 12:27:56.196205-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-07-31 15:34:45.820594-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: listguilds, Command Content: n!listguilds
+
+Command run at 2023-07-31 16:23:37.872609-04:00, by jawarrior (User ID: 930284432634556496), in server 🦮 Dozer Inc 🦮 (Server ID: 1099093166415695893). Command Run: setupserver, Command Content: None
+
+Command run at 2023-07-31 16:24:57.188467-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: authus, Command Content: n!authus 1099093166415695893 815053810161680464
+
+Command run at 2023-07-31 16:31:30.080668-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: sync, Command Content: n!sync
+
+Command run at 2023-07-31 16:36:09.446840-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-07-31 16:41:20.816006-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-07-31 16:42:51.654998-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt pingchan 1000000
+
+Command run at 2023-07-31 16:42:56.088840-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-07-31 16:43:08.926395-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt pingchan 1000000
+
+Command run at 2023-07-31 16:44:07.607336-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.setupcmds
+
+Command run at 2023-07-31 16:44:17.073923-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt pingchan 1000000
+
+Command run at 2023-07-31 16:45:32.349776-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt pingchan 1000000
+
+Command run at 2023-07-31 16:46:07.436667-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt pingchan 1000000
+
+Command run at 2023-07-31 16:46:40.480276-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt pingchan 1000000
+
+Command run at 2023-07-31 16:50:31.470579-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.setupcmds
+
+Command run at 2023-07-31 16:52:21.297284-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.setupcmds
+
+Command run at 2023-07-31 16:52:47.856445-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.setupcmds
+
+Command run at 2023-07-31 16:55:35.008666-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt pingchan 1000000
+
+Command run at 2023-07-31 16:58:46.743046-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.setupcmds
+
+Command run at 2023-07-31 16:58:52.889427-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: sync, Command Content: n!sync
+
+Command run at 2023-07-31 16:59:40.911220-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.setupcmds
+
+Command run at 2023-07-31 19:55:25.028972-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmndct
+
+Command run at 2023-07-31 19:55:31.471423-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-07-31 20:22:27.923139-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: banguild, Command Content: n!banguild 931816719226388492
+
+Command run at 2023-07-31 20:22:43.540988-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 840287613374038057
+
+Command run at 2023-07-31 20:22:59.846400-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 919861188651810816

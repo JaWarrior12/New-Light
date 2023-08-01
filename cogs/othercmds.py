@@ -111,8 +111,9 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
     await ctx.send(embed=e)
 
   @commands.command(name="event",help="Calls The Swiss Army Event Timer")
-  async def saftimer(self,ctx):
-    r = requests.get(f'https://swiss-website.floofyjpeg.repl.co/timers/{str(os.environ["swisskey"])}')
+  async def saftimer(self,ctx):\
+    #link: https://swiss-website.floofyjpeg.repl.co/timers/{str(os.environ["swisskey"])}')
+    r = requests.get(f'https://google.com')
     tdat=r.json()
     e=discord.Embed(title=f"Swiss Army Event Timer")
     e.add_field(name="",value=tdat["us"],inline=False)

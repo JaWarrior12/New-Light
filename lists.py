@@ -226,7 +226,7 @@ def lognewguild(stamp,msg,guild):
       o.write('\n\n')
 
 def formatClanBal(ship,bal):
-  formedbal={"flux": 0, "iron": 0, "explosive": 0, "rcs": 0, "bursts": 0, "autos": 0, "loaders": 0, "pushers": 0, "rubber": 0, "scanners": 0, "balls": 0, "hh": 0, "ice": 0, "launchers": 0, "rcd": 0}
+  formedbal={"flux": 0, "iron": 0, "explosive": 0, "rcs": 0, "bursts": 0, "autos": 0, "loaders": 0, "pushers": 0, "rubber": 0, "scanners": 0, "balls": 0, "hhs": 0, "ice": 0, "launchers": 0, "rcds": 0}
   #print(ship)
   #print(bal)
   url = "https://pub.drednot.io/test/econ/item_schema.json"
@@ -257,7 +257,7 @@ def formatClanBal(ship,bal):
       oldbal=ship["5"]
       formedbal.update({str(name):oldbal})
     elif int(x)==104:
-      name="hh"
+      name="hhs"
       oldbal=ship["104"]
       formedbal.update({str(name):oldbal})
     elif int(x)==115 or int(x)==116 or int(x)==120:
@@ -301,7 +301,7 @@ def formatClanBal(ship,bal):
       newbal=int(oldbal)+int(old)
       formedbal.update({str(name):newbal})
     elif int(x)==122:
-      name="rcd"
+      name="rcds"
       oldbal=ship["122"]
       formedbal.update({str(name):oldbal})
     else:

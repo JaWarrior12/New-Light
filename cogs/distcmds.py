@@ -486,10 +486,18 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       endbal=data[str(msg.guild.id)]["clan"]
       #print(endbal)
       apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal,msg.content,data[str(msg.guild.id)]]
-      other["verifydist"].append(apit)
-      #print(other)
-      lists.setother(other)
-      await msg.add_reaction("⬆")
+      if condat[str(msg.guild.id)]["verbal"]=="yes":
+        other["verifydist"].append(apit)
+        #print(other)
+        lists.setother(other)
+        await msg.add_reaction("⬆")
+      else:
+        dat=lists.bals()
+        print(dat)
+        print(data)
+        dat[str(msg.guild.id)]=data
+        lists.setdata(dat)
+        await msg.add_reaction("⏫")
     else:
       pass
 

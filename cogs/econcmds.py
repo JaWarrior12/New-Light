@@ -166,6 +166,10 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       else:
         await ctx.send(f'The length of the list I want to give you is too long to send in discord as one message. There are {len(route)} items and I can only send lists of less than or equal to 10 items (Discord Character Limit). I will now send the list in chunks of ~10ish. Amount of items sent is based on the LOG_COUNT key.')
         i=0
+        if log_count == "none":
+          log_count=100
+        else:
+          pass
         b=int(log_count)
         for x in route:
           routeb=route[i:i+9]

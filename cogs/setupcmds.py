@@ -33,7 +33,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact jawarrior about completing server setup.")
   #@commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
-  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0):
+  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0,verbal="no"):
       servers=lists.readdata()
       if str(ctx.message.guild.id) not in servers.keys():
         msg = None
@@ -45,7 +45,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0}
+        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0,"verbal":verbal}
         defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0,"rcd":0}}
         data = lists.readdata()
         data[gid]=dict(defaultd)
@@ -185,7 +185,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Clan Storage (Hexcode)",value="distship"),
       app_commands.Choice(name="Member Role",value="memrole"),
       app_commands.Choice(name="Store Member Balances? (Yes/No)",value="storebal"),
-      app_commands.Choice(name="Member List Channel",value="memchan")
+      app_commands.Choice(name="Member List Channel",value="memchan"),
+      app_commands.Choice(name="Verify Distribution Logs?",value="verbal")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     #print("Started Serverconfig Slash")
@@ -198,7 +199,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         val=str(input)
       elif option.value=="clanPercent":
         val=float(input)
-      elif option.value == "storebal":
+      elif option.value == "storebal" or option.vale=="verbal":
         val=str(input.lower())
       else:
         val=int(input)
@@ -220,7 +221,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=str(input)
         elif option=="clanPercent":
           val=float(input)
-        elif option == "storebal":
+        elif option == "storebal" or option.value=="verbal":
           val=str(input.lower())
         else:
           val=int(input)

@@ -49,7 +49,7 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.6.5"
+version = "3.6.6"
 
 
 @bot.event

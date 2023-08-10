@@ -272,9 +272,9 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     #t.start()
     print("Restarted Timer")
     
-  @tasks.loop(time=tmes)
-  #@self.my_console.command()
+  @tasks.loop(minutes=5.0)#time=tmes)
   async def verifyscheduled(self):
+    print("Verifying Distro Logs")
     a=0
     data=lists.readdataE()
     oth=lists.readother()
@@ -287,12 +287,14 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       prebal=x[3]
       endbal=x[4]
       ctxt=x[5]
+      count=x[7]
+      purp=x[8]
+      #print(count)
       guild=self.bot.get_guild(int(gid))
       channel=guild.get_channel(chanid)
       #task = asyncio.create_task(channel.fetch_message(int(msgid)))
       #mesg=await asyncio.shield(task)
       mesg=await channel.fetch_message(int(msgid))
-      #print(mesg)
       try:
         #print(7)
         if str(mesg.guild.id) in list(data.keys()):
@@ -310,84 +312,93 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             ds=data[str(mesg.guild.id)]["distship"]
             distship=str("{"+ds+"}")
             distshipb=ds
-            #print(distship)
+            if purp.lower()=="withdrawal":
+              temp=hex
+              hex=distship
+              distship=temp
             strgnew=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/ships.json.gz')
-            #print(4)
-            #strgold=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(int(date[2])-1)}_{int(int(date[0])-1)}_{int(int(date[1])-1)}/ships.json.gz')
-            #print(2)
             jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/log.json.gz')
-            #print(6)
             def find_routea(data, route_no):
               return list(filter(lambda x: x.get("src") == route_no, data))
             route = find_routea(jsondata,hex)
             remain=list(filter(lambda x: x.get("dst") == distship, route))
             #print(9)
             #print(remain)
-            count=0
             result=0
+            ct=0
+            cd={}
+            #print(count)
             for f in remain:
               #print(f)
-              #print(f['src'])
-              #print(f['dst'])
               hexa=hex
               distshipa=distship
-              #print(hexa)
-              #print(distshipa)
               if f['dst']==distshipa and f['src']==hexa:
                 cbal=list(filter(lambda f: f.get('hex_code') == ds, strgnew))
-                #print(cbal)
-                #print(10)
-                #print(cbal[0]['items'])
-                formbal=lists.formatClanBal(cbal[0]['items'],endbal)
-                #print(formbal)
-                #print(8)
-                if str(endbal) == str(formbal):
-                  result=1
-                  #await mesg.add_reaction("✅")
-                  #oth["verifydist"].remove(x)
-                  #lists.setother(oth)
-                else:
-                  result=2
-                  #await mesg.add_reaction("❌")
-                  #print(oth)
-                  #oth["verifydist"].remove(x)
-                  #lists.setother(oth)
-                  #distdat[str(mesg.guild.id)]=x[6]
-                  #lists.setdata(distdat)
+                formbal=lists.formItem(f)
+                keys=list(formbal.keys())
+                ct=ct+formbal[keys[0]]
+                cd.update({keys[0]:ct})
               else:
-                await mesg.add_reaction("✖")
-            #print(result)
+                pass
+            for p in list(cd.keys()):
+              if p not in list(count.keys()):
+                cd.pop(p)
+            cdkys=list(cd.keys())
+            if purp.lower()=="withdrawal":
+              obj=cd[cdkys[0]]
+              cd[cdkys[0]]= -abs(obj)
+            if cd == count:
+              result=1
+            else:
+              result=2
             if result==1:
               await mesg.add_reaction("✅")
-              #print(x[6])
               distdat[str(mesg.guild.id)]=x[6]
               lists.setdata(distdat)
-              others=lists.readother()
-              others["verifydist"].remove(x)
-              lists.setother(others)
+              #others=lists.readother()
+              #others["verifydist"].remove(x)
+              #lists.setother(others)
             else:
               await mesg.add_reaction("❌")
-              others=lists.readother()
-              others["verifydist"].remove(x)
-              lists.setother(others)
+              #others=lists.readother()
+              #others["verifydist"].remove(x)
+              #lists.setother(others)
             print("Reaction Added")
           else:
             pass
         else:
           pass
         oth["verifydist"].remove(x)
-      except:
+      except Exception as e:
+        if hasattr(e, 'message'):
+          emes=e.message
+        else:
+          emes=e
+        print(emes)
         await mesg.add_reaction("🤷")
-        others=lists.readother()
-        others["verifydist"].remove(x)
-        lists.setother(others)
+        #others=lists.readother()
+        #others["verifydist"].remove(x)
+        #lists.setother(others)
         print("Error Occured")
-
-
+    others=lists.readother()
+    others["verifydist"]=[]
+    lists.setother(others)
+    print("All Logs Verified")
+        
+  @commands.command(name="verdist")
+  async def verdist(self,ctx):
+    if ctx.message.author.id in developers:
+      await ctx.send("Starting Verification")
+      await self.verifyscheduled(self)
+      #await verifyscheduled(self)
+      await ctx.send("Verified Distro Logs")
+    else:
+      await ctx.send("Only The Developer Can Use This Command.")
   @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY",hidden=True)
   async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
       #await self.verifyscheduled()
+      self.verifyscheduled.cancel()
       self.verifyscheduled.start()
       await ctx.send("Started Distribution Verification Timer")
     else:
@@ -395,8 +406,10 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
 
   @commands.Cog.listener()
   async def on_message(self,msg):
+    #print("Message Sent")
     condat=lists.readdataE()
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:
+      #print("dist log msg")
       cnt=msg.content
       pts=cnt.split("\n")
       u=pts[1]
@@ -404,11 +417,14 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       #print(users)
       l=pts[2]
       loot=l.split(";")
-      data=lists.readdata()
+      purp=pts[5]
+      data=lists.bals()
       prebal=data[str(msg.guild.id)]["clan"]
+      #print(prebal)
       #allbal=data[str(msg.guild.id)]["clan"]
       #print(loot)
-      thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets")
+      thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets)")
+      #print(loot)
       for x in loot:
         loc=loot.index(x)
         w=x.split(":")
@@ -424,7 +440,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         cbala=data[str(msg.guild.id)]["clan"][str(item)]
         cbala=cbala+div
         await thrd.send(f"Clan Gets {div} {item}")
-        if condat[str(msg.guild.id)]["storebal"].lower()=="yes":
+        if condat[str(msg.guild.id)]["storebal"].lower()=="no":
           cbala=data[str(msg.guild.id)]["clan"][str(item)]
           cbala=cbala+whole
         else:
@@ -455,11 +471,11 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           #print(i)
           i=i.replace("<","").replace("@","").replace(">","")
           #print(i)
-          i=msg.guild.get_member(int(i)).id
+          mbr=msg.guild.get_member(int(i)).id
           #print(i)
-          keys=list(data[str(msg.guild.id)][str(i)].keys())
+          keys=list(data[str(msg.guild.id)][str(mbr)].keys())
           if str(item) in keys:
-            bal=data[str(msg.guild.id)][str(i)][str(item)]
+            bal=data[str(msg.guild.id)][str(mbr)][str(item)]
             #print(bal)
             #keys=list(data[str(msg.guild.id)][str(i)].keys())
             #print(keys)
@@ -469,7 +485,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             #print("True")
             bal=bal+mem
             #print(bal)
-            data[str(msg.guild.id)][str(i)][str(item)]=bal
+            data[str(msg.guild.id)][str(mbr)][str(item)]=bal
             #print(data[str(msg.guild.id)][str(i)][str(item)])
             #lists.setdata(data)
           else:
@@ -481,26 +497,29 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             data[str(msg.guild.id)]["clan"][str(item)]=bala
             #print(data[str(msg.guild.id)]["clan"][str(item)])
             #lists.setdata(data)
+        #print("next")
       other=lists.readother()
       #print(other)
       endbal=data[str(msg.guild.id)]["clan"]
       #print(endbal)
-      apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal,msg.content,data[str(msg.guild.id)]]
+      lootdict={}
+      for x in loot:
+        p=list(x.split(":"))
+        lootdict.update({str(p[0]):int(p[1])})
+      apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal,msg.content,data[str(msg.guild.id)],lootdict,purp]
+      #print(apit)
+      other["verifydist"].append(apit)
       if condat[str(msg.guild.id)]["verbal"]=="yes":
-        other["verifydist"].append(apit)
-        #print(other)
+        #print("verbal:yes")
         lists.setother(other)
         await msg.add_reaction("⬆")
       else:
-        dat=lists.bals()
-        print(dat)
-        print(data)
-        dat[str(msg.guild.id)]=data
+        dat=lists.readdata()
+        dat=data
         lists.setdata(dat)
         await msg.add_reaction("⏫")
     else:
       pass
-
 
   @commands.Cog.listener()
   async def on_ready(self):

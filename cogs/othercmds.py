@@ -11,7 +11,7 @@ from discord import app_commands
 from discord.ext.commands import has_permissions, MissingPermissions
 from json import loads, dumps
 import requests
-from bs4 import BeautifulSoup
+#import BeautifulSoup
 #from backup import backup
 #from startup import startup
 
@@ -112,7 +112,7 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
 
   @commands.command(name="event",help="Calls The Swiss Army Event Timer")
   async def saftimer(self,ctx):\
-    #link: https://swiss-website.floofyjpeg.repl.co/timers/{str(os.environ["swisskey"])}')
+    #link: https://swiss-website.floofyjpeg.repl.co/timers/xanniAPIpass1')
     r = requests.get(f'https://google.com')
     tdat=r.json()
     e=discord.Embed(title=f"Swiss Army Event Timer")

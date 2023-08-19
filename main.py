@@ -49,7 +49,7 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.6.6"
+version = "3.6.8"
 
 
 @bot.event
@@ -239,7 +239,7 @@ async def main():
     await bot.load_extension("cogs.adcmds")
     await bot.load_extension("cogs.setupcmds")
     await bot.load_extension("cogs.slashcmds")
-    await bot.start(os.environ['token'])
+    await bot.start("OTc0MDQ1ODIyMTY3Njc5MDg3.GEcXZY.aQYm5Wf_T-L9JrRb-jv4me5kj5kAhdwncSx4gU")
     #await my_task.start()
 
 
@@ -255,3 +255,5 @@ keep_alives()
 #bot.run(os.environ['token'],log_handler=handler)
 asyncio.run(main())
 #@my_console.command()
+
+#Git Key: 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

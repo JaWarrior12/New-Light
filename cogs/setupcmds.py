@@ -174,7 +174,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @commands.command(name="confighelp",help="Description of ServerConfig Settings")
   async def conhelp(self,ctx):
-    await ctx.send("Server Settings\n-Ping Channel==Channel ID Of Server's Battle Links Channel\n-Distribution Channel==Channel ID Of Server's Distro Logging Channel\n-Clan Percent==What Percent Of Items In Logs Go To The Clan\n-Clan Storage==HexCode Of Clan Storage\n-Member Role==ID Of Member Role\n-Store Member Balances?==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel== Member List Channel\nVerify Distribution Logs?==Controls What Setting The Automated Distribution Logger Runs (Yes/No)")
+    await ctx.send("Server Settings\n-Ping Channel (pingchan)==Channel ID Of Server's Battle Links Channel\n-Distribution Channel (distchan)==Channel ID Of Server's Distro Logging Channel\n-Clan Percent (clanPercent)==What Percent Of Items In Logs Go To The Clan\n-Clan Storage (distship)==HexCode Of Clan Storage\n-Member Role (memrole)==ID Of Member Role\n-Store Member Balances? (membal)==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel (memchan)== Member List Channel\nVerify Distribution Logs? (verbal)==Controls What Setting The Automated Distribution Logger Runs (Yes/No)")
 
   @app_commands.command(name="serverconfig",description="Server Config (LR), n!confighelp for help")
   #@app_commands.checks.has_permissions(administrator=True)

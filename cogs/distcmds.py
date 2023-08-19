@@ -5,7 +5,7 @@ import pytz
 import datetime
 from datetime import datetime, timedelta, timezone
 from datetime import time as tme
-from apscheduler.schedulers.background import BackgroundScheduler
+#from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Timer
 import urllib.request
 import requests
@@ -17,7 +17,7 @@ from discord import Member
 from json import loads, dumps
 from backup import backup
 from startup import startup
-from dpyConsole import Console
+#from dpyConsole import Console
 
 #Lists
 import lists
@@ -272,7 +272,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     #t.start()
     print("Restarted Timer")
     
-  @tasks.loop(minutes=5.0)#time=tmes)
+  @tasks.loop(time=tmes)
   async def verifyscheduled(self):
     print("Verifying Distro Logs")
     a=0

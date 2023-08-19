@@ -44,7 +44,7 @@ def home():
 
 @app.route('/datafiles/<string:file>/<string:passkey>')
 def jsondat(file,passkey=0):
-  if passkey==str(os.environ['WEBPASS']):
+  if passkey=="1498657841136236":
     return loads(open(f'{file}.json', 'r').read())
   else:
     return "Access to NEW LIGHT DATA FILES is restricted."

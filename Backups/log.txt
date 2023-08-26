@@ -192,3 +192,5 @@ Command run at 2023-08-22 20:27:19.205208-04:00, by jawarrior (User ID: 93028443
 Command run at 2023-08-23 08:11:10.940209-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 802290316072976424
 
 Command run at 2023-08-25 08:25:59.919083-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 1121338755182243861
+
+Command run at 2023-08-26 14:47:40.434908-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping

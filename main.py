@@ -18,6 +18,8 @@ import logging
 #Import Lists
 import lists
 
+token=Bot_Token
+
 lists.bannedlist()
 lists.bannedguilds()
 
@@ -232,14 +234,14 @@ async def main():
     await bot.load_extension("cogs.relcmds")
     await bot.load_extension("cogs.distcmds")
     await bot.load_extension("cogs.descmds")
-    await bot.load_extension("cogs.qpcmds")
+    #await bot.load_extension("cogs.qpcmds") #Disabled For Now
     await bot.load_extension("cogs.othercmds")
     await bot.load_extension("cogs.econcmds")
     await bot.load_extension("cogs.devcmds")
     await bot.load_extension("cogs.adcmds")
     await bot.load_extension("cogs.setupcmds")
     await bot.load_extension("cogs.slashcmds")
-    await bot.start("OTc0MDQ1ODIyMTY3Njc5MDg3.GEcXZY.aQYm5Wf_T-L9JrRb-jv4me5kj5kAhdwncSx4gU")
+    await bot.start(token)
     #await my_task.start()
 
 
@@ -255,5 +257,3 @@ keep_alives()
 #bot.run(os.environ['token'],log_handler=handler)
 asyncio.run(main())
 #@my_console.command()
-
-#Git Key: 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

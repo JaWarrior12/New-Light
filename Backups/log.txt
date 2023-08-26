@@ -152,3 +152,43 @@ Command run at 2023-08-10 08:55:44.751370-04:00, by jawarrior (User ID: 93028443
 Command run at 2023-08-10 13:36:17.025995-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 8 log 01D9A src
 
 Command run at 2023-08-10 13:36:49.101674-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 9 log 01D9A src
+
+Command run at 2023-08-19 19:05:02.047703-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-08-20 13:12:28.037163-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 102
+
+Command run at 2023-08-20 18:32:05.752535-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
+
+Command run at 2023-08-21 20:31:51.843663-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 56
+
+Command run at 2023-08-21 20:32:13.030507-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 1
+
+Command run at 2023-08-21 20:32:14.889866-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 2
+
+Command run at 2023-08-21 20:32:16.421259-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 3
+
+Command run at 2023-08-21 20:32:18.468160-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 4
+
+Command run at 2023-08-21 20:32:23.218173-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 5
+
+Command run at 2023-08-21 20:32:27.077591-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 3
+
+Command run at 2023-08-21 20:32:30.952694-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 6
+
+Command run at 2023-08-21 20:32:33.374594-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 7
+
+Command run at 2023-08-21 20:32:35.952760-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 8
+
+Command run at 2023-08-21 20:32:39.749559-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 9
+
+Command run at 2023-08-21 20:32:44.609038-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 10
+
+Command run at 2023-08-22 20:25:45.800023-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 237
+
+Command run at 2023-08-22 20:26:31.006021-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 252
+
+Command run at 2023-08-22 20:27:19.205208-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 234
+
+Command run at 2023-08-23 08:11:10.940209-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 802290316072976424
+
+Command run at 2023-08-25 08:25:59.919083-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 1121338755182243861

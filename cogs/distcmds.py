@@ -1,5 +1,6 @@
 import os, discord
 import time as timea
+import traceback
 import asyncio
 import pytz
 import datetime
@@ -272,7 +273,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     #t.start()
     print("Restarted Timer")
     
-  @tasks.loop(minutes=5)#time=tmes)
+  @tasks.loop(minutes=5.0)#time=tmes)
   async def verifyscheduled(self):
     print("Verifying Distro Logs")
     a=0
@@ -332,6 +333,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
                 cd.pop(p)
             cdkys=list(cd.keys())
             if purp.lower()=="withdrawal":
+              print(cd)
+              print(cdkys)
               obj=cd[cdkys[0]]
               cd[cdkys[0]]= -abs(obj)
             if cd == count:
@@ -356,18 +359,13 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         else:
           emes=e
         print(emes)
+        print(traceback.format_exc())
         await mesg.add_reaction("🤷")
         print("Error Occured")
     others=lists.readother()
     others["verifydist"]=[]
     lists.setother(others)
     print("All Logs Verified")
-    distdat.close()
-    data.close()
-    oth.close()
-    others.close()
-    strgnew.close()
-    jsondata.close()
         
   @commands.command(name="verdist")
   async def verdist(self,ctx):
@@ -407,10 +405,13 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         amount=int(w[1])
         percent=float(condat[str(msg.guild.id)]["clanPercent"]) #Percent The Clan Gets
         whole=amount
-        pw= percent * whole
-        div=round(pw/100)
+        if purp == "withdrawal":
+          pw= whole
+          div=round(pw)
+        else:
+          pw=percent*whole
+          div=round(pw/100)
         cbala=0
-        print(amount)
         if amount > 0:
           cbala=data[str(msg.guild.id)]["clan"][str(item)]
           cbala=cbala+div
@@ -425,9 +426,14 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           cbala=data[str(msg.guild.id)]["clan"][str(item)]
           cbala=cbala+div
           data[str(msg.guild.id)]["clan"][item]=cbala
-        rem=amount-div
+        if purp=="withdrawal":
+          rem=div
+        else:
+          rem=amount-abs(div)
         mem=round(rem/int(len(users)))
         memtot=mem*len(users)
+        print(memtot)
+        print(div+memtot)
         await thrd.send(f'The Listed Members Get {mem} {item} each.')
         #Code To Give The "Lost" Flux To The Clan
         if div+memtot != whole:
@@ -463,13 +469,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         dat=data
         lists.setdata(dat)
         await msg.add_reaction("⏫")
-        dat.close()
     else:
       pass
-    condat.close()
-    other.close()
-    data.close()
-
 
   @commands.Cog.listener()
   async def on_member_update(self,before, after):

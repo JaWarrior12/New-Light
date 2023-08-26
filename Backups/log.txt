@@ -1,218 +1,32 @@
  
-Command run at 2023-08-03 20:14:21.919153-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logdat, Command Content: n!logdat clear
+Command run at 2023-08-26 16:21:53.031156-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logdat, Command Content: t!logdat clear
 
-Command run at 2023-08-03 20:15:09.181235-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 7 30 log 43AC4 src
+Command run at 2023-08-26 16:25:01.161460-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-03 20:15:27.396060-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 7 31 log 43AC4 src
+Command run at 2023-08-26 16:25:57.010895-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-03 20:15:38.677286-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 1 log 43AC4 src
+Command run at 2023-08-26 16:26:43.355083-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-03 20:16:59.181205-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 ships E92DA
+Command run at 2023-08-26 16:27:38.826741-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-03 20:17:14.498843-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 log E92DA dst
+Command run at 2023-08-26 16:29:07.096601-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-03 20:17:25.591016-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 log E92DA src
+Command run at 2023-08-26 16:30:04.246290-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 08:38:09.067570-04:00, by jawarrior (User ID: 930284432634556496), in server 🏔 Lost Nova Drednot.io (Server ID: 1096261963664851064). Command Run: defaultbal, Command Content: n!defaultbal flux;rcs;loaders;pushers
+Command run at 2023-08-26 16:46:26.036763-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 08:38:29.384171-04:00, by jawarrior (User ID: 930284432634556496), in server 🏔 Lost Nova Drednot.io (Server ID: 1096261963664851064). Command Run: addmember, Command Content: n!addmember <@930284432634556496>
+Command run at 2023-08-26 16:53:55.044047-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 08:38:37.404374-04:00, by jawarrior (User ID: 930284432634556496), in server 🏔 Lost Nova Drednot.io (Server ID: 1096261963664851064). Command Run: logloot, Command Content: n!logloot <@930284432634556496> flux 10000000
+Command run at 2023-08-26 16:56:27.468139-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 08:39:04.083100-04:00, by jawarrior (User ID: 930284432634556496), in server 🏔 Lost Nova Drednot.io (Server ID: 1096261963664851064). Command Run: balance, Command Content: n!balance <@930284432634556496>
+Command run at 2023-08-26 17:06:18.529868-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 12:57:29.440553-04:00, by 7501 (User ID: 1015701233794830356), in server 🏔 Lost Nova Drednot.io (Server ID: 1096261963664851064). Command Run: defaultbal, Command Content: n!defaultbal flux;rcs;loaders;metal;explosive
+Command run at 2023-08-26 17:07:10.890894-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 13:25:37.465620-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+Command run at 2023-08-26 17:10:59.139805-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 14:00:29.020605-04:00, by 7501 (User ID: 1015701233794830356), in server 🏔 Lost Nova Drednot.io (Server ID: 1096261963664851064). Command Run: logloot, Command Content: n!logloot <@930284432634556496> flux -10000000
+Command run at 2023-08-26 17:30:59.943041-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 14:00:42.299789-04:00, by 7501 (User ID: 1015701233794830356), in server 🏔 Lost Nova Drednot.io (Server ID: 1096261963664851064). Command Run: balance, Command Content: n!balance <@930284432634556496>
+Command run at 2023-08-26 17:32:00.490170-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
-Command run at 2023-08-04 15:18:50.243995-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt distchan 1137102284795433141
-
-Command run at 2023-08-04 15:19:12.740116-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: serverconfigalt, Command Content: n!serverconfigalt distchan 1088910409685287003
-
-Command run at 2023-08-04 15:25:06.440515-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Content: n!balall
-
-Command run at 2023-08-06 15:20:05.300476-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 985980871918104656
-
-Command run at 2023-08-06 16:03:35.524997-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Content: n!balall
-
-Command run at 2023-08-06 16:14:11.513128-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: n!rl cogs.balcmds
-
-Command run at 2023-08-06 16:52:46.378352-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balance, Command Content: n!balance <@930284432634556496>
-
-Command run at 2023-08-06 17:19:33.654480-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: addmember, Command Content: n!addmember <@949451462151376948>
-
-Command run at 2023-08-07 14:50:20.461043-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 ships 29D80
-
-Command run at 2023-08-07 14:50:34.306835-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 5 ships 29D80
-
-Command run at 2023-08-07 14:50:50.174200-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 5 ships E92DA
-
-Command run at 2023-08-07 14:50:56.213118-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 ships E92DA
-
-Command run at 2023-08-07 14:51:16.444115-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 log E92DA dst
-
-Command run at 2023-08-07 14:51:33.021471-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 log E92DA src
-
-Command run at 2023-08-07 14:52:09.697455-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 ships 5094B1
-
-Command run at 2023-08-07 14:52:15.631876-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 5 ships 5094B1
-
-Command run at 2023-08-07 14:52:19.654645-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 ships 5094B1
-
-Command run at 2023-08-07 14:52:43.124012-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 ships 43AC4
-
-Command run at 2023-08-07 14:52:48.838646-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 5 ships 43AC4
-
-Command run at 2023-08-07 14:52:52.408918-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 ships 43AC4
-
-Command run at 2023-08-07 17:12:13.607257-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: readlogs, Command Content: n!readlogs prod 2023 8 6 100
-
-Command run at 2023-08-08 14:24:05.906094-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: sync, Command Content: n!sync
-
-Command run at 2023-08-08 15:25:29.602125-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 7 ships E92DA
-
-Command run at 2023-08-08 15:25:46.988855-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 7 ships 43AC4
-
-Command run at 2023-08-08 15:26:03.583633-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 7 ships 5094B1
-
-Command run at 2023-08-08 15:28:06.826704-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 log 01D9A src
-
-Command run at 2023-08-08 15:28:23.126678-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 log 01D9A dst
-
-Command run at 2023-08-08 15:28:29.011129-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 5 log 01D9A src
-
-Command run at 2023-08-08 15:28:34.930609-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 log 01D9A src
-
-Command run at 2023-08-08 15:28:40.115917-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 3 log 01D9A src
-
-Command run at 2023-08-08 15:29:00.234861-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 log CF328A src
-
-Command run at 2023-08-08 15:29:15.327216-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 6 log CF328A dst
-
-Command run at 2023-08-08 15:29:23.135599-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 5 log CF328A dst
-
-Command run at 2023-08-08 15:29:47.530357-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 log CF328A dst
-
-Command run at 2023-08-08 15:30:06.023769-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 105
-
-Command run at 2023-08-08 15:30:27.220407-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 7 log CF328A dst
-
-Command run at 2023-08-08 20:00:47.345824-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 8 log 01D9A src
-
-Command run at 2023-08-08 20:02:02.764790-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 8 log CF328A dst
-
-Command run at 2023-08-08 20:02:42.438407-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 5 log D0FAF src
-
-Command run at 2023-08-08 20:03:11.852151-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 log D0FAF src
-
-Command run at 2023-08-08 20:03:55.437908-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 3 log D0FAF src
-
-Command run at 2023-08-08 20:04:23.166091-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 2 log D0FAF src
-
-Command run at 2023-08-08 20:04:23.691070-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 235
-
-Command run at 2023-08-08 20:05:02.838657-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 log D0FAF src
-
-Command run at 2023-08-08 20:05:36.945319-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 4 log BB6B7FD dst
-
-Command run at 2023-08-08 20:07:46.548863-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 7 20 log 278BC dst
-
-Command run at 2023-08-08 20:07:56.761554-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 7 21 log 278BC dst
-
-Command run at 2023-08-08 20:08:01.294993-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 7 19 log 278BC dst
-
-Command run at 2023-08-08 20:08:34.553414-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 1 21 log 278BC dst
-
-Command run at 2023-08-08 20:08:39.859514-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 1 20 log 278BC dst
-
-Command run at 2023-08-08 20:08:45.646318-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 1 19 log 278BC dst
-
-Command run at 2023-08-08 20:10:08.378726-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 7 20 log 938179 dst
-
-Command run at 2023-08-08 20:10:39.743674-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 7 21 log 938179 dst
-
-Command run at 2023-08-08 20:10:49.846678-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 114
-
-Command run at 2023-08-08 20:11:02.021859-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 223
-
-Command run at 2023-08-08 20:11:05.915446-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 112
-
-Command run at 2023-08-10 08:44:05.709992-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 831563990571155486
-
-Command run at 2023-08-10 08:44:15.718569-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: banguild, Command Content: n!banguild 1134627017074151504
-
-Command run at 2023-08-10 08:44:34.456794-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 1124192808627085413
-
-Command run at 2023-08-10 08:55:44.751370-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: leaveserver, Command Content: n!leaveserver 1134627017074151504 Your Drednot account, Plasma, has been banned by cogg. I will not support a server run by a banned user. If you wish to talk about this please rejoin the development server and DM jawarrior. https://discord.gg/WGmCS7pJ48
-
-Command run at 2023-08-10 13:36:17.025995-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 8 log 01D9A src
-
-Command run at 2023-08-10 13:36:49.101674-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: hex, Command Content: n!hex prod 2023 8 9 log 01D9A src
-
-Command run at 2023-08-19 19:05:02.047703-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
-
-Command run at 2023-08-20 13:12:28.037163-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 102
-
-Command run at 2023-08-20 18:32:05.752535-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: metrics, Command Content: n!metrics cmdcnt
-
-Command run at 2023-08-21 20:31:51.843663-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 56
-
-Command run at 2023-08-21 20:32:13.030507-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 1
-
-Command run at 2023-08-21 20:32:14.889866-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 2
-
-Command run at 2023-08-21 20:32:16.421259-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 3
-
-Command run at 2023-08-21 20:32:18.468160-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 4
-
-Command run at 2023-08-21 20:32:23.218173-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 5
-
-Command run at 2023-08-21 20:32:27.077591-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 3
-
-Command run at 2023-08-21 20:32:30.952694-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 6
-
-Command run at 2023-08-21 20:32:33.374594-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 7
-
-Command run at 2023-08-21 20:32:35.952760-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 8
-
-Command run at 2023-08-21 20:32:39.749559-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 9
-
-Command run at 2023-08-21 20:32:44.609038-04:00, by icecakex. (User ID: 994667980912857141), in server NL testing (Server ID: 1142867852685217893). Command Run: itemschema, Command Content: n!itemschema 10
-
-Command run at 2023-08-22 20:25:45.800023-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 237
-
-Command run at 2023-08-22 20:26:31.006021-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 252
-
-Command run at 2023-08-22 20:27:19.205208-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: itemschema, Command Content: n!itemschema 234
-
-Command run at 2023-08-23 08:11:10.940209-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 802290316072976424
-
-Command run at 2023-08-25 08:25:59.919083-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 1121338755182243861
-
-Command run at 2023-08-26 14:47:40.434908-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
-
-Command run at 2023-08-26 15:15:13.899210-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: t!ping
-
-Command run at 2023-08-26 15:27:06.148215-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
-
-Command run at 2023-08-26 15:31:08.715908-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: t!ping
-
-Command run at 2023-08-26 15:33:44.885632-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: t!ping
-
-Command run at 2023-08-26 15:38:48.154521-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Content: t!balall
-
-Command run at 2023-08-26 15:40:27.961610-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
-
-Command run at 2023-08-26 15:42:11.129837-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
-
-Command run at 2023-08-26 15:52:00.446350-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
-
-Command run at 2023-08-26 15:52:38.271358-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distmds
-
-Command run at 2023-08-26 15:52:44.414568-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
-
-Command run at 2023-08-26 15:53:50.749645-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
+Command run at 2023-08-26 17:33:20.101272-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds

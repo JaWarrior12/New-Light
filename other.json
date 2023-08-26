@@ -1,1 +1,110 @@
-{"pinglinks": [], "defaultdist": {"1031900634741473280": ["flux"], "1008075938061357237": ["iron", "explo", "flux", "rubber"], "1122964426472034415": ["flux", "rubber", "iron", "explo"], "1096261963664851064": ["flux", "rcs", "loaders", "metal", "explosive"]}, "verifydist": [], "cmdcnt": 338, "guilds": {"The Merge": 1122964426472034415, "test bot": 1008075938061357237, "\ud83c\udfd4 Lost Nova Drednot.io": 1096261963664851064, "\ud83e\uddae Dozer Inc \ud83e\uddae": 1099093166415695893, "CRAPPY SERVER GO BRRRRRRRR": 1138606144961654855, "NL testing": 1142867852685217893}}
+{
+    "pinglinks": [],
+    "defaultdist": {
+        "1031900634741473280": [
+            "flux"
+        ],
+        "1008075938061357237": [
+            "iron",
+            "explo",
+            "flux",
+            "rubber"
+        ],
+        "1122964426472034415": [
+            "flux",
+            "rubber",
+            "iron",
+            "explo"
+        ],
+        "1096261963664851064": [
+            "flux",
+            "rcs",
+            "loaders",
+            "metal",
+            "explosive"
+        ]
+    },
+    "verifydist": [
+        [
+            1031900634741473280,
+            1137090028632277083,
+            1145085703299006545,
+            {
+                "flux": 2938,
+                "iron": 37265,
+                "explosive": 12581,
+                "rcs": 0,
+                "bursts": 0,
+                "autos": 0,
+                "loaders": 1217,
+                "pushers": 216,
+                "rubber": 240,
+                "scanners": 15,
+                "balls": 1,
+                "hh": 7,
+                "ice": 2207,
+                "launchers": 11,
+                "rcd": 14
+            },
+            {
+                "flux": 2938,
+                "iron": 37265,
+                "explosive": 12581,
+                "rcs": 0,
+                "bursts": 0,
+                "autos": 0,
+                "loaders": 1217,
+                "pushers": 216,
+                "rubber": 240,
+                "scanners": 15,
+                "balls": 1,
+                "hh": 7,
+                "ice": 2207,
+                "launchers": 11,
+                "rcd": 14
+            },
+            "Test\n<@930284432634556496>\nexplosive:-64\nCF328A\n8/9/2023\nwithdrawal",
+            {
+                "clan": {
+                    "flux": 2938,
+                    "iron": 37265,
+                    "explosive": 12581,
+                    "rcs": 0,
+                    "bursts": 0,
+                    "autos": 0,
+                    "loaders": 1217,
+                    "pushers": 216,
+                    "rubber": 240,
+                    "scanners": 15,
+                    "balls": 1,
+                    "hh": 7,
+                    "ice": 2207,
+                    "launchers": 11,
+                    "rcd": 14
+                },
+                "930284432634556496": {
+                    "flux": 2170
+                },
+                "949451462151376948": {
+                    "flux": 0
+                },
+                "858649812416462879": {
+                    "flux": 0
+                }
+            },
+            {
+                "explosive": -64
+            },
+            "withdrawal"
+        ]
+    ],
+    "cmdcnt": 349,
+    "guilds": {
+        "The Merge": 1122964426472034415,
+        "test bot": 1008075938061357237,
+        "\ud83c\udfd4 Lost Nova Drednot.io": 1096261963664851064,
+        "\ud83e\uddae Dozer Inc \ud83e\uddae": 1099093166415695893,
+        "CRAPPY SERVER GO BRRRRRRRR": 1138606144961654855,
+        "NL testing": 1142867852685217893
+    }
+}

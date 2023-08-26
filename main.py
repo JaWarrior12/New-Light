@@ -18,7 +18,7 @@ import logging
 #Import Lists
 import lists
 
-token="Bot_Token"
+token="OTc1ODU4NTM3MjIzODQ3OTM2.G1ZBfP.I9mH0pJ67zyfOyoksM78kqetLfovpWlBWO1RRA"
 
 lists.bannedlist()
 lists.bannedguilds()
@@ -32,7 +32,7 @@ intents.members = True
 #client = discord.Client()
 
 
-bot = commands.Bot(command_prefix='n!',intents=intents, case_insensitive=True)
+bot = commands.Bot(command_prefix='t!',intents=intents, case_insensitive=True)
 #tree = app_commands.CommandTree(bot)
 
 value = bot

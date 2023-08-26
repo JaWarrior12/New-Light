@@ -194,3 +194,25 @@ Command run at 2023-08-23 08:11:10.940209-04:00, by jawarrior (User ID: 93028443
 Command run at 2023-08-25 08:25:59.919083-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ban, Command Content: n!ban 1121338755182243861
 
 Command run at 2023-08-26 14:47:40.434908-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: n!ping
+
+Command run at 2023-08-26 15:15:13.899210-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: t!ping
+
+Command run at 2023-08-26 15:27:06.148215-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
+
+Command run at 2023-08-26 15:31:08.715908-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: t!ping
+
+Command run at 2023-08-26 15:33:44.885632-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: ping, Command Content: t!ping
+
+Command run at 2023-08-26 15:38:48.154521-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Content: t!balall
+
+Command run at 2023-08-26 15:40:27.961610-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
+
+Command run at 2023-08-26 15:42:11.129837-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
+
+Command run at 2023-08-26 15:52:00.446350-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
+
+Command run at 2023-08-26 15:52:38.271358-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distmds
+
+Command run at 2023-08-26 15:52:44.414568-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
+
+Command run at 2023-08-26 15:53:50.749645-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds

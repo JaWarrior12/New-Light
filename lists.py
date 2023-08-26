@@ -77,6 +77,9 @@ def setother(datah):
     with open("other.json", "w") as f:
         f.write(dumps(datah))
 
+def bals():
+    return loads(open('distribution.json', 'r').read())
+
 def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
 

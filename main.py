@@ -18,7 +18,7 @@ import logging
 #Import Lists
 import lists
 
-token=Bot_Token
+token="Bot_Token"
 
 lists.bannedlist()
 lists.bannedguilds()

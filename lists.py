@@ -77,6 +77,9 @@ def setother(datah):
     with open("other.json", "w") as f:
         f.write(dumps(datah))
 
+def bals():
+    return loads(open('distribution.json', 'r').read())
+
 def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
 
@@ -309,6 +312,164 @@ def formatClanBal(ship,bal):
     #print(formedbal)
   #print(formedbal)
   return dict(formedbal)
+
+def formItem(ship):
+    formedbal={}
+    #response=bal
+    #print(ship)
+    #print(bal)
+    url = "https://pub.drednot.io/test/econ/item_schema.json"
+    keys=list(ship.keys())
+    #print(keys)
+    oldbal=0
+  #for x in keys:
+    def find_route(data, route_no):
+      return list(filter(lambda x: x.get('item') == route_no, data))
+    #route = find_route(response,int(x))
+    route=ship["item"]
+    print(route)
+    name="a"
+    print(ship["count"])
+    i=route
+    #FLux,Iron,Exp,Rubber,Ice,RC,Burst,Auto,Loader,Pusher,Scanner,Ball,HH
+    if int(i)==1:
+      name="iron"
+      oldbal=oldbal+ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==2:
+      name="explosive"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==4:
+      name="rubber"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==5:
+      name="flux"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==104:
+      name="handheld"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==115:
+      name="manifest_scanner"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==116:
+      name="bom_scanner"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==120:
+      name="blueprint_scanner"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==242:
+      name="pusher"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==243:
+      name="item_launcher"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==227:
+      name="rc"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==228:
+      name="burst"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==229:
+      name="auto"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==252:
+      name="loader"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==234:
+      name="ice"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==51:
+      name="volleyball"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==53:
+      name="basketball"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==55:
+      name="beachball"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==51:
+      name="football"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==122:
+      name="rcd"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==256:
+      name="shield_generator"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==257:
+      name="shield_projector"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==258:
+      name="turret_controller"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==162:
+      name="rapid_booster"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==164:
+      name="preservation_boster"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==123:
+      name="shield_core"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==112:
+      name="construction_gauntlets"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==114:
+      name="hover_pack"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==109:
+      name="speed_skates"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==110:
+      name="booster_boots"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==111:
+      name="launcher_gauntlets"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==113:
+      name="rocket_pack"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==108:
+      name="backpack"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    else:
+      asn=0
+    #print(formedbal)
+    #print(oldbal)
+    #print(formedbal)
+    return dict(formedbal)
 
 def clrserver(id):
   gid=str(id)

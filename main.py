@@ -18,7 +18,7 @@ import logging
 #Import Lists
 import lists
 
-token="OTc1ODU4NTM3MjIzODQ3OTM2.Gvuy5K.dpJ_7_kxhi5GD08PCAjAlco7eMscHLLtxpVQYk"
+token="Bot_Token"
 
 lists.bannedlist()
 lists.bannedguilds()

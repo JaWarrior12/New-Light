@@ -46,7 +46,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         default = {}
         defaultb=[]
         defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0,"verbal":verbal}
-        defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rcs":0,"bursts":0,"autos":0,"loaders":0,"pushers":0,"rubber":0,"scanners":0,"balls":0,"hh":0,"ice":0,"launchers":0,"rcd":0}}
+        defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rc":0,"burst":0,"auto":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
         data = lists.readdata()
         data[gid]=dict(defaultd)
         lists.setdata(data)

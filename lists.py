@@ -349,49 +349,65 @@ def formItem(ship):
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==104:
-      name="hh"
+      name="handheld"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
-    elif int(i)==115 or int(i)==116 or int(i)==120:
-      name="scanners"
-      old=formedbal[name]
+    elif int(i)==115:
+      name="manifest_scanner"
       oldbal=ship["count"]
-      newbal=int(oldbal)+int(old)
-      formedbal.update({str(name):newbal})
+      formedbal.update({str(name):oldbal})
+    elif int(i)==116:
+      name="bom_scanner"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==120:
+      name="blueprint_scanner"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
     elif int(i)==242:
-      name="pushers"
+      name="pusher"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==243:
-      name="launchers"
+      name="item_launcher"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==227:
-      name="rcs"
+      name="rc"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==228:
-      name="bursts"
+      name="burst"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==229:
-      name="autos"
+      name="auto"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==252:
-      name="loaders"
+      name="loader"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==234:
       name="ice"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
-    elif int(i)==51 or int(i)==53 or int(i)==55 or int(i)==56:
-      name="balls"
-      old=formedbal[name]
+    elif int(i)==51:
+      name="volleyball"
       oldbal=ship["count"]
-      newbal=int(oldbal)+int(old)
-      formedbal.update({str(name):newbal})
+      formedbal.update({str(name):oldbal})
+    elif int(i)==53:
+      name="basketball"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==55:
+      name="beachball"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==51:
+      name="football"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
     elif int(i)==122:
       name="rcd"
       oldbal=ship["count"]
@@ -409,15 +425,15 @@ def formItem(ship):
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==162:
-      name="rapid_fire"
+      name="rapid_booster"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==164:
-      name="preservation"
+      name="preservation_boster"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==123:
-      name="shield_cores"
+      name="shield_core"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     elif int(i)==112:
@@ -426,6 +442,26 @@ def formItem(ship):
       formedbal.update({str(name):oldbal})
     elif int(i)==114:
       name="hover_pack"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==109:
+      name="speed_skates"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==110:
+      name="booster_boots"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==111:
+      name="launcher_gauntlets"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==113:
+      name="rocket_pack"
+      oldbal=ship["count"]
+      formedbal.update({str(name):oldbal})
+    elif int(i)==108:
+      name="backpack"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
     else:

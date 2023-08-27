@@ -30,3 +30,9 @@ Command run at 2023-08-26 17:30:59.943041-04:00, by jawarrior (User ID: 93028443
 Command run at 2023-08-26 17:32:00.490170-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
 
 Command run at 2023-08-26 17:33:20.101272-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: rl, Command Content: t!rl cogs.distcmds
+
+Command run at 2023-08-27 14:13:18.147362-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: balall, Command Content: t!balall
+
+Command run at 2023-08-27 14:13:53.094445-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: logloot, Command Content: t!logloot <@930284432634556496> scattershot_ammo 100
+
+Command run at 2023-08-27 14:15:52.652436-04:00, by jawarrior (User ID: 930284432634556496), in server New Light Development Server (Server ID: 1031900634741473280). Command Run: defaultbal, Command Content: t!defaultbal flux;rc;loader;pusher;scatter

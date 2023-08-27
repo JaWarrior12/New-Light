@@ -80,20 +80,23 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           ns = int(amount)
           added = ns + nf
           if chk == True:
-            data[gid][str(member.id)][str(item)] = int(added)
-            lists.setdata(data)
-            #await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
-            e = discord.Embed(title="Member Balance Update")
-            e.add_field(name="Target Member", value=memvar.display_name, inline=True)
-            e.add_field(name="Updated By", value=ctx.message.author.display_name, inline=True)
-            e.add_field(name="Old Balance",value=nf,inline=True)
-            e.add_field(name="New Balance",value=added,inline=True)
-            e.add_field(name="Item",value=item,inline=True)
-            e.add_field(name="Amount Added",value=ns,inline=True)
-            e.set_thumbnail(url=memvar.display_avatar)
-            #tz = pytz.timezone('America/New_York')
-            e.timestamp=datetime.now()
-            await ctx.send(embed=e)
+            if item in lists.readother()["alloweditems"]:
+              data[gid][str(member.id)][str(item)] = int(added)
+              lists.setdata(data)
+              #await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
+              e = discord.Embed(title="Member Balance Update")
+              e.add_field(name="Target Member", value=memvar.display_name, inline=True)
+              e.add_field(name="Updated By", value=ctx.message.author.display_name, inline=True)
+              e.add_field(name="Old Balance",value=nf,inline=True)
+              e.add_field(name="New Balance",value=added,inline=True)
+              e.add_field(name="Item",value=item,inline=True)
+              e.add_field(name="Amount Added",value=ns,inline=True)
+              e.set_thumbnail(url=memvar.display_avatar)
+              #tz = pytz.timezone('America/New_York')
+              e.timestamp=datetime.now()
+              await ctx.send(embed=e)
+            else:
+              await ctx.send(f"Sorry Item {item} is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           else:
             await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
         except KeyError:
@@ -109,17 +112,20 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         gid = str(ctx.message.guild.id)
         if chk == True:
           try:
-            data[gid][str(member.id)][str(item)]=0
-            lists.setdata(data)
-            memvar=member
-            e = discord.Embed(title="Member Balance Reset")
-            e.add_field(name="Target Member", value=memvar.display_name, inline=True)
-            e.add_field(name="Reset By", value=ctx.message.author.display_name, inline=True)
-            e.add_field(name="Item",value=item,inline=True)
-            e.set_thumbnail(url=memvar.display_avatar)
-            #tz = pytz.timezone('America/New_York')
-            e.timestamp=datetime.now()
-            await ctx.send(embed=e)
+            if item in lists.readother()["alloweditems"]:
+              data[gid][str(member.id)][str(item)]=0
+              lists.setdata(data)
+              memvar=member
+              e = discord.Embed(title="Member Balance Reset")
+              e.add_field(name="Target Member", value=memvar.display_name, inline=True)
+              e.add_field(name="Reset By", value=ctx.message.author.display_name, inline=True)
+              e.add_field(name="Item",value=item,inline=True)
+              e.set_thumbnail(url=memvar.display_avatar)
+              #tz = pytz.timezone('America/New_York')
+              e.timestamp=datetime.now()
+              await ctx.send(embed=e)
+            else:
+              await ctx.send(f"Sorry Item {item} is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
             await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
         else:
@@ -168,7 +174,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             for x in items:
               inputv.update({str(x):0})
           else:
-            inputv = {"flux":0,"loaders":0,"rcs":0,"pushers":0}
+            inputv = {"flux":0,"loader":0,"rc":0,"pusher":0}
           data[gid][str(member.id)]=dict(inputv)
           lists.setdata(data)
           memvar=member
@@ -242,17 +248,36 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       chk = lists.checkperms(ctx)
       #lists.logback(ctx,items)
       if chk == True:
+        allowitems=[]
+        blockitems=[]
         list=items.split(";")
+        for x in list:
+          if x in lists.readother()["alloweditems"]:
+            allowitems.append(x)
+          else:
+            blockitems.append(x)
         data=lists.readother()
-        data["defaultdist"][str(ctx.message.guild.id)]=list
+        data["defaultdist"][str(ctx.message.guild.id)]=allowitems
         lists.setother(data)
-        e = discord.Embed(title="Default Balance Updated")
-        e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
-        e.add_field(name="Default Balance",value=list,inline=True)
-        e.set_thumbnail(url=ctx.message.author.display_avatar)
-        #tz = pytz.timezone('America/New_York')
-        e.timestamp=datetime.now()
-        await ctx.send(embed=e)
+        if len(blockitems)==0:
+          e = discord.Embed(title="Default Balance Updated")
+          e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
+          e.add_field(name="Default Balance",value=list,inline=True)
+          e.set_thumbnail(url=ctx.message.author.display_avatar)
+          #tz = pytz.timezone('America/New_York')
+          e.timestamp=datetime.now()
+          await ctx.send(embed=e)
+        else:
+          e = discord.Embed(title="Default Balance Updated")
+          e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
+          e.add_field(name="Default Balance",value=list,inline=True)
+          e.add_field(name="Allowed Items",value=allowitems)
+          e.add_field(name="Blocked Items",value=blockitems,inline=True)
+          e.set_thumbnail(url=ctx.message.author.display_avatar)
+          #tz = pytz.timezone('America/New_York')
+          e.timestamp=datetime.now()
+          await ctx.send(embed=e)
+          await ctx.send(f"Sorry The Following Items: {blockitems} are not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
       else:
         await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
     else:
@@ -273,7 +298,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     #t.start()
     print("Restarted Timer")
     
-  @tasks.loop(minutes=5.0)#time=tmes)
+  @tasks.loop(time=tmes)
   async def verifyscheduled(self):
     print("Verifying Distro Logs")
     a=0

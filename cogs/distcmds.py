@@ -1,5 +1,6 @@
 import os, discord
 import time as timea
+import traceback
 import asyncio
 import pytz
 import datetime
@@ -79,20 +80,23 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           ns = int(amount)
           added = ns + nf
           if chk == True:
-            data[gid][str(member.id)][str(item)] = int(added)
-            lists.setdata(data)
-            #await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
-            e = discord.Embed(title="Member Balance Update")
-            e.add_field(name="Target Member", value=memvar.display_name, inline=True)
-            e.add_field(name="Updated By", value=ctx.message.author.display_name, inline=True)
-            e.add_field(name="Old Balance",value=nf,inline=True)
-            e.add_field(name="New Balance",value=added,inline=True)
-            e.add_field(name="Item",value=item,inline=True)
-            e.add_field(name="Amount Added",value=ns,inline=True)
-            e.set_thumbnail(url=memvar.display_avatar)
-            #tz = pytz.timezone('America/New_York')
-            e.timestamp=datetime.now()
-            await ctx.send(embed=e)
+            if item in lists.readother()["alloweditems"]:
+              data[gid][str(member.id)][str(item)] = int(added)
+              lists.setdata(data)
+              #await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
+              e = discord.Embed(title="Member Balance Update")
+              e.add_field(name="Target Member", value=memvar.display_name, inline=True)
+              e.add_field(name="Updated By", value=ctx.message.author.display_name, inline=True)
+              e.add_field(name="Old Balance",value=nf,inline=True)
+              e.add_field(name="New Balance",value=added,inline=True)
+              e.add_field(name="Item",value=item,inline=True)
+              e.add_field(name="Amount Added",value=ns,inline=True)
+              e.set_thumbnail(url=memvar.display_avatar)
+              #tz = pytz.timezone('America/New_York')
+              e.timestamp=datetime.now()
+              await ctx.send(embed=e)
+            else:
+              await ctx.send(f"Sorry Item {item} is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           else:
             await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
         except KeyError:
@@ -108,17 +112,20 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         gid = str(ctx.message.guild.id)
         if chk == True:
           try:
-            data[gid][str(member.id)][str(item)]=0
-            lists.setdata(data)
-            memvar=member
-            e = discord.Embed(title="Member Balance Reset")
-            e.add_field(name="Target Member", value=memvar.display_name, inline=True)
-            e.add_field(name="Reset By", value=ctx.message.author.display_name, inline=True)
-            e.add_field(name="Item",value=item,inline=True)
-            e.set_thumbnail(url=memvar.display_avatar)
-            #tz = pytz.timezone('America/New_York')
-            e.timestamp=datetime.now()
-            await ctx.send(embed=e)
+            if item in lists.readother()["alloweditems"]:
+              data[gid][str(member.id)][str(item)]=0
+              lists.setdata(data)
+              memvar=member
+              e = discord.Embed(title="Member Balance Reset")
+              e.add_field(name="Target Member", value=memvar.display_name, inline=True)
+              e.add_field(name="Reset By", value=ctx.message.author.display_name, inline=True)
+              e.add_field(name="Item",value=item,inline=True)
+              e.set_thumbnail(url=memvar.display_avatar)
+              #tz = pytz.timezone('America/New_York')
+              e.timestamp=datetime.now()
+              await ctx.send(embed=e)
+            else:
+              await ctx.send(f"Sorry Item {item} is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
             await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
         else:
@@ -167,7 +174,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             for x in items:
               inputv.update({str(x):0})
           else:
-            inputv = {"flux":0,"loaders":0,"rcs":0,"pushers":0}
+            inputv = {"flux":0,"loader":0,"rc":0,"pusher":0}
           data[gid][str(member.id)]=dict(inputv)
           lists.setdata(data)
           memvar=member
@@ -241,17 +248,36 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       chk = lists.checkperms(ctx)
       #lists.logback(ctx,items)
       if chk == True:
+        allowitems=[]
+        blockitems=[]
         list=items.split(";")
+        for x in list:
+          if x in lists.readother()["alloweditems"]:
+            allowitems.append(x)
+          else:
+            blockitems.append(x)
         data=lists.readother()
-        data["defaultdist"][str(ctx.message.guild.id)]=list
+        data["defaultdist"][str(ctx.message.guild.id)]=allowitems
         lists.setother(data)
-        e = discord.Embed(title="Default Balance Updated")
-        e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
-        e.add_field(name="Default Balance",value=list,inline=True)
-        e.set_thumbnail(url=ctx.message.author.display_avatar)
-        #tz = pytz.timezone('America/New_York')
-        e.timestamp=datetime.now()
-        await ctx.send(embed=e)
+        if len(blockitems)==0:
+          e = discord.Embed(title="Default Balance Updated")
+          e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
+          e.add_field(name="Default Balance",value=list,inline=True)
+          e.set_thumbnail(url=ctx.message.author.display_avatar)
+          #tz = pytz.timezone('America/New_York')
+          e.timestamp=datetime.now()
+          await ctx.send(embed=e)
+        else:
+          e = discord.Embed(title="Default Balance Updated")
+          e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
+          e.add_field(name="Default Balance",value=list,inline=True)
+          e.add_field(name="Allowed Items",value=allowitems)
+          e.add_field(name="Blocked Items",value=blockitems,inline=True)
+          e.set_thumbnail(url=ctx.message.author.display_avatar)
+          #tz = pytz.timezone('America/New_York')
+          e.timestamp=datetime.now()
+          await ctx.send(embed=e)
+          await ctx.send(f"Sorry The Following Items: {blockitems} are not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
       else:
         await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
     else:
@@ -289,26 +315,17 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       ctxt=x[5]
       count=x[7]
       purp=x[8]
-      #print(count)
       guild=self.bot.get_guild(int(gid))
       channel=guild.get_channel(chanid)
-      #task = asyncio.create_task(channel.fetch_message(int(msgid)))
-      #mesg=await asyncio.shield(task)
       mesg=await channel.fetch_message(int(msgid))
       try:
-        #print(7)
         if str(mesg.guild.id) in list(data.keys()):
           distro=int(data[str(mesg.guild.id)]["distchan"])
-          #print(distro)
           if int(mesg.channel.id)==distro:
-            #print(1)
             pts=ctxt.split("\n")
             pts=list(pts)
-            #print(pts)
             date=pts[4].split("/")
-            #print(date)
             hex=str("{"+str(pts[3])+"}")
-            #print(hex)
             ds=data[str(mesg.guild.id)]["distship"]
             distship=str("{"+ds+"}")
             distshipb=ds
@@ -322,14 +339,10 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               return list(filter(lambda x: x.get("src") == route_no, data))
             route = find_routea(jsondata,hex)
             remain=list(filter(lambda x: x.get("dst") == distship, route))
-            #print(9)
-            #print(remain)
             result=0
             ct=0
             cd={}
-            #print(count)
             for f in remain:
-              #print(f)
               hexa=hex
               distshipa=distship
               if f['dst']==distshipa and f['src']==hexa:
@@ -345,6 +358,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
                 cd.pop(p)
             cdkys=list(cd.keys())
             if purp.lower()=="withdrawal":
+              print(cd)
+              print(cdkys)
               obj=cd[cdkys[0]]
               cd[cdkys[0]]= -abs(obj)
             if cd == count:
@@ -355,14 +370,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await mesg.add_reaction("✅")
               distdat[str(mesg.guild.id)]=x[6]
               lists.setdata(distdat)
-              #others=lists.readother()
-              #others["verifydist"].remove(x)
-              #lists.setother(others)
             else:
               await mesg.add_reaction("❌")
-              #others=lists.readother()
-              #others["verifydist"].remove(x)
-              #lists.setother(others)
             print("Reaction Added")
           else:
             pass
@@ -375,10 +384,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         else:
           emes=e
         print(emes)
+        print(traceback.format_exc())
         await mesg.add_reaction("🤷")
-        #others=lists.readother()
-        #others["verifydist"].remove(x)
-        #lists.setother(others)
         print("Error Occured")
     others=lists.readother()
     others["verifydist"]=[]
@@ -390,14 +397,12 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     if ctx.message.author.id in developers:
       await ctx.send("Starting Verification")
       await self.verifyscheduled(self)
-      #await verifyscheduled(self)
       await ctx.send("Verified Distro Logs")
     else:
       await ctx.send("Only The Developer Can Use This Command.")
   @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY",hidden=True)
   async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
     if ctx.message.author.id in developers:
-      #await self.verifyscheduled()
       self.verifyscheduled.cancel()
       self.verifyscheduled.start()
       await ctx.send("Started Distribution Verification Timer")
@@ -406,56 +411,54 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
 
   @commands.Cog.listener()
   async def on_message(self,msg):
-    #print("Message Sent")
     condat=lists.readdataE()
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:
-      #print("dist log msg")
       cnt=msg.content
       pts=cnt.split("\n")
       u=pts[1]
       users=u.split(" ")
-      #print(users)
       l=pts[2]
       loot=l.split(";")
       purp=pts[5]
       data=lists.bals()
       prebal=data[str(msg.guild.id)]["clan"]
-      #print(prebal)
-      #allbal=data[str(msg.guild.id)]["clan"]
-      #print(loot)
       thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets)")
-      #print(loot)
       for x in loot:
         loc=loot.index(x)
         w=x.split(":")
         item=str(w[0])
         amount=int(w[1])
-        #print(item)
         percent=float(condat[str(msg.guild.id)]["clanPercent"]) #Percent The Clan Gets
         whole=amount
-        pw= percent * whole
-        #pw=round(pa/100)
-        #print(pw)
-        div=round(pw/100)
-        cbala=data[str(msg.guild.id)]["clan"][str(item)]
-        cbala=cbala+div
-        await thrd.send(f"Clan Gets {div} {item}")
+        if purp == "withdrawal":
+          pw= whole
+          div=round(pw)
+        else:
+          pw=percent*whole
+          div=round(pw/100)
+        cbala=0
+        if amount > 0:
+          cbala=data[str(msg.guild.id)]["clan"][str(item)]
+          cbala=cbala+div
+          await thrd.send(f"Clan Gets {div} {item}")
+        else:
+          cbala=0
+          await thrd.send(f"Clan Gets Nothing From Withdrawls")
         if condat[str(msg.guild.id)]["storebal"].lower()=="no":
           cbala=data[str(msg.guild.id)]["clan"][str(item)]
           cbala=cbala+whole
         else:
           cbala=data[str(msg.guild.id)]["clan"][str(item)]
           cbala=cbala+div
-        #print(div)
-        #print(cbala)
-        data[str(msg.guild.id)]["clan"][item]=cbala
-        #lists.setdata(data)
-        rem=amount-div
-        #print(whole)
-        #print(rem)
+          data[str(msg.guild.id)]["clan"][item]=cbala
+        if purp=="withdrawal":
+          rem=div
+        else:
+          rem=amount-abs(div)
         mem=round(rem/int(len(users)))
-        #print(mem)
         memtot=mem*len(users)
+        print(memtot)
+        print(div+memtot)
         await thrd.send(f'The Listed Members Get {mem} {item} each.')
         #Code To Give The "Lost" Flux To The Clan
         if div+memtot != whole:
@@ -463,54 +466,27 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           missing=whole-dim
           cbalb=cbala+missing
           data[str(msg.guild.id)]["clan"][item]=cbalb
-          #print("clanbalance")
-          #print(div+missing)
-          #lists.setdata(data)
-        #print(users)
         for i in users:
-          #print(i)
           i=i.replace("<","").replace("@","").replace(">","")
-          #print(i)
           mbr=msg.guild.get_member(int(i)).id
-          #print(i)
           keys=list(data[str(msg.guild.id)][str(mbr)].keys())
           if str(item) in keys:
             bal=data[str(msg.guild.id)][str(mbr)][str(item)]
-            #print(bal)
-            #keys=list(data[str(msg.guild.id)][str(i)].keys())
-            #print(keys)
-            #print(item)
-            #print(mem)
-          #if str(item) in keys:
-            #print("True")
             bal=bal+mem
-            #print(bal)
             data[str(msg.guild.id)][str(mbr)][str(item)]=bal
-            #print(data[str(msg.guild.id)][str(i)][str(item)])
-            #lists.setdata(data)
           else:
-            #print("False")
             bala=data[str(msg.guild.id)]["clan"][str(item)]
-            #print(bala)
             bala=bala+mem
-            #print(bala)
             data[str(msg.guild.id)]["clan"][str(item)]=bala
-            #print(data[str(msg.guild.id)]["clan"][str(item)])
-            #lists.setdata(data)
-        #print("next")
       other=lists.readother()
-      #print(other)
       endbal=data[str(msg.guild.id)]["clan"]
-      #print(endbal)
       lootdict={}
       for x in loot:
         p=list(x.split(":"))
         lootdict.update({str(p[0]):int(p[1])})
       apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal,msg.content,data[str(msg.guild.id)],lootdict,purp]
-      #print(apit)
       other["verifydist"].append(apit)
       if condat[str(msg.guild.id)]["verbal"]=="yes":
-        #print("verbal:yes")
         lists.setother(other)
         await msg.add_reaction("⬆")
       else:
@@ -522,22 +498,9 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       pass
 
   @commands.Cog.listener()
-  async def on_ready(self):
-    x=datetime.today()
-    tz = pytz.timezone('America/New_York')
-    x=datetime.today()
-    y = x.replace(day=x.day, hour=16, minute=15, second=0, microsecond=0) + timedelta(days=0)
-    delta_t=y-x
-    secs=delta_t.total_seconds()
-    print(secs)
-    #client=commands.Bot
-    t = Timer(10, self.workaround)
-    t.start()
-    print("Started Timer")
-
-  @commands.Cog.listener()
   async def on_member_update(self,before, after):
-    if len(before.roles) < len(after.roles):
+    x=0
+    if x==1:
       gid = before.guild.id
       data=lists.readdata()
       condat=lists.readdataE()

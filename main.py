@@ -32,7 +32,7 @@ intents.members = True
 #client = discord.Client()
 
 
-bot = commands.Bot(command_prefix='n!',intents=intents, case_insensitive=True)
+bot = commands.Bot(command_prefix='t!',intents=intents, case_insensitive=True)
 #tree = app_commands.CommandTree(bot)
 
 value = bot

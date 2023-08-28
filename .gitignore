@@ -2,3 +2,6 @@
 $ **/main
 main.py
 *.json
+Backups/disconnectlogs.txt
+Backups/log.txt
+Backups/bcklog.txt

@@ -1,3 +1,4 @@
 #Ignore Main
 $ **/main
 main.py
+*.json

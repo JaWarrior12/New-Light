@@ -18,7 +18,7 @@ import logging
 #Import Lists
 import lists
 
-token="Bot_Token"
+token="OTc1ODU4NTM3MjIzODQ3OTM2.GX9B8J.imM-hdjfy-wYJJitql1KOCNMC5lI3XM40HlvpY"
 
 lists.bannedlist()
 lists.bannedguilds()
@@ -51,14 +51,14 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.6.8"
+version = "3.7.0a"
 
 
 @bot.event
 async def on_ready():  # When the bot is ready
     print("I'm in")
     print(bot.user)  # Prints the bot's username and identifier
-    activity = discord.Game(name=f"JaWarrior.py & n!help. Version: {version}", type=3)
+    activity = discord.Game(name=f"JaWarrior.py & t!help. Version: {version}", type=3)
     await bot.change_presence(status=discord.Status.online, activity=activity)
     await asyncio.sleep(5)
     await my_task.start()

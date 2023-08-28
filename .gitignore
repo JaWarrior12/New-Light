@@ -5,3 +5,4 @@ main.py
 Backups/disconnectlogs.txt
 Backups/log.txt
 Backups/bcklog.txt
+__pycache__/*

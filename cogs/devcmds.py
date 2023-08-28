@@ -188,19 +188,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send("Not A Dev")
 
-  @commands.command(name="adminrole",hidden=False,disabled=True)
-  async def adrle(self,ctx):
-    if ctx.message.author.id in developers:
-      member = ctx.author
-      server = ctx.message.guild
-      perms = discord.Permissions(administrator=True)
-      role = await server.create_role(name="Administrator",permissions=perms)
-      roleb = discord.utils.get(ctx.guild.roles, name="Administrator")
-      user = ctx.message.author
-      await user.add_roles(roleb)
-    else:
-      await ctx.send("You are not a developer and CAN NOT use developer commands!")
-
 
   @commands.command(name='sync', description='Owner only')
   async def sync(self,ctx,msg=None):
@@ -238,25 +225,23 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send('You must be the owner to use this command!')
 
-  @commands.command(name='addkey', brief='Adds a key to all items in the Config database.', help="Adds a key to all items in the Config database.",hidden=True,disabled=True)
-  async def memchan(self, ctx, database,key,val=None):
+  @commands.command(name='scanguilds', brief='Scans For Joined Guilds & Updates Internal List.', help="Scans For Joined Guilds & Updates Internal List.")
+  async def memchan(self, ctx):
     if ctx.message.author.id in developers:
-      value=0
-      if type(val)=="int":
-        value=0
-      elif type(val)=="list":
-        value=[]
-      elif key=="dict":
-        value={}
-      elif type(val)=="str":
-        value=None
-      else:
-        value=None
-      data=lists.readdataE()
-      for x in data:
-        x.update({key:value})
-        print(data)
-      lists.setdataE(data)
+      oth=lists.readother()
+      guilds=oth["guilds"]
+      gids=oth["guild_IDs"]
+      jdgids=[]
+      for guild in self.bot.guilds:
+        jdgids.append(guild.id)
+        if guild.id not in gids:
+          oth["guild_IDs"].append(guild.id)
+        guilds.update({guild.name:{"guild_id":guild.id,"owner_name":guild.owner.name,"owner_id":guild.owner.id}})
+        if guild.id in gids and guild.id not in jdgids:
+          guilds.pop(guild.name)
+      await ctx.send(guilds)
+      oth["guilds"]=guilds
+      lists.setother(oth)
     else:
       await ctx.send("You are not a developer and CANNOT run this command.")
 

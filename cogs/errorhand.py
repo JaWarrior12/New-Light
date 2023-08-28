@@ -15,6 +15,8 @@ from startup import startup
 
 import lists
 
+developers = lists.developers
+
 class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
@@ -34,11 +36,18 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
     if "help" in ctx.message.content:
       pass
     else:
-      lists.logback(ctx,ctx.message.content)
-      data=lists.readother()
-      new=int(data["cmdcnt"])+1
-      data["cmdcnt"]=int(new)
-      lists.setother(data)
+      if ctx.author.id in developers: 
+        lists.logback(ctx,ctx.message.content)
+        data=lists.readother()
+        new=int(data["cmdcnt"]["devCommands"])+1
+        data["cmdcnt"]=int(new)
+        lists.setother(data)
+      else:
+        lists.logback(ctx,ctx.message.content)
+        data=lists.readother()
+        new=int(data["cmdcnt"]["userCommands"])+1
+        data["cmdcnt"]=int(new)
+        lists.setother(data)
 
   @commands.Cog.listener()
   async def on_command_error(self, ctx, error):
@@ -180,7 +189,7 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
         if hasattr(interaction.command, 'on_error'):
             return
           
-        cog = ctx.cog
+        cog = interaction.command.cog
         if cog:
             if cog._get_overridden_method(cog.cog_command_error) is not None:
                 return

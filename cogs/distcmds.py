@@ -423,7 +423,18 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       data=lists.bals()
       prebal=data[str(msg.guild.id)]["clan"]
       thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets)")
+      allow=[]
+      block=[]
       for x in loot:
+          if x in lists.readother()["alloweditems"]:
+            allow.append(x)
+          else:
+            block.append(x)
+      if len(block)==0:
+        pass
+      else:
+        await thrd.send(f"Sorry The Following Items: {block} are not registered in my system and have NOT been counted for. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
+      for x in allow:
         loc=loot.index(x)
         w=x.split(":")
         item=str(w[0])

@@ -36,49 +36,49 @@ BotDevelopmentServer=1031900634741473280
 
 #Defs
 def readdata():
-    return loads(open('distribution.json', 'r').read())
+    return loads(open('../NLDB/distribution.json', 'r').read())
 
 def setdata(data):
-    with open("distribution.json", "w") as f:
+    with open("../NLDB/distribution.json", "w") as f:
         f.write(dumps(data))
 
 def readdataB():
-    return loads(open("relations.json","r").read())
+    return loads(open("../NLDB/relations.json","r").read())
 
 def setdataB(dataB):
-    with open("relations.json", "w") as g:
+    with open("../NLDB/relations.json", "w") as g:
         g.write(dumps(dataB))
 
 def readdataC():
-    return loads(open('quickping.json', 'r').read())
+    return loads(open('../NLDB/quickping.json', 'r').read())
 
 def setdataC(dataC):
-    with open("quickping.json", "w") as g:
+    with open("../NLDB/quickping.json", "w") as g:
         g.write(dumps(dataC))
 
 def readdataD():
-    return loads(open('designs.json', 'r').read())
+    return loads(open('../NLDB/designs.json', 'r').read())
 
 def setdataD(dataD):
-    with open("designs.json", "w") as g:
+    with open("../NLDB/designs.json", "w") as g:
         g.write(dumps(dataD))
       
 def readdataE():
-    return loads(open('config.json', 'r').read())
+    return loads(open('../NLDB/config.json', 'r').read())
 
 def setdataE(datae):
-    with open("config.json", "w") as h:
+    with open("../NLDB/config.json", "w") as h:
         h.write(dumps(datae))
 
 def readother():
-    return loads(open('other.json', 'r').read())
+    return loads(open('../NLDB/other.json', 'r').read())
 
 def setother(datah):
-    with open("other.json", "w") as f:
+    with open("../NLDB/other.json", "w") as f:
         f.write(dumps(datah))
 
 def bals():
-    return loads(open('distribution.json', 'r').read())
+    return loads(open('../NLDB/distribution.json', 'r').read())
 
 def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))

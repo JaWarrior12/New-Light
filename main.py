@@ -32,7 +32,7 @@ intents.members = True
 #client = discord.Client()
 
 
-bot = commands.Bot(command_prefix='t!',intents=intents, case_insensitive=True)
+bot = commands.Bot(command_prefix='n!',intents=intents, case_insensitive=True)
 #tree = app_commands.CommandTree(bot)
 
 value = bot
@@ -51,7 +51,7 @@ class MyHelp(commands.MinimalHelpCommand):
         await destination.send(embed=e)
 #bot.help_command = MyHelp()
 
-version = "3.6.8"
+version = "3.7.0a"
 
 
 @bot.event

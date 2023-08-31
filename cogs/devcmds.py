@@ -239,7 +239,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
         guilds.update({guild.name:{"guild_id":guild.id,"owner_name":guild.owner.name,"owner_id":guild.owner.id}})
         if guild.id in gids and guild.id not in jdgids:
           guilds.pop(guild.name)
-      await ctx.send(guilds)
       oth["guilds"]=guilds
       lists.setother(oth)
     else:

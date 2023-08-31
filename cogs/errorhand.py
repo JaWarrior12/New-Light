@@ -37,15 +37,11 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
       pass
     else:
       if ctx.author.id in developers: 
-        lists.logback(ctx,ctx.message.content)
-        data=lists.readother()
-        new=int(data["cmdcnt"]["devCommands"])+1
-        data["cmdcnt"]=int(new)
-        lists.setother(data)
+        pass
       else:
         lists.logback(ctx,ctx.message.content)
         data=lists.readother()
-        new=int(data["cmdcnt"]["userCommands"])+1
+        new=int(data["cmdcnt"]+1)
         data["cmdcnt"]=int(new)
         lists.setother(data)
 

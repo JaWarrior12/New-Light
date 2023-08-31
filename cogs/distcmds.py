@@ -64,24 +64,32 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     #self.bg_task = self.loop.create_task(self.verifyscheduled())
 
   @commands.command(name="logloot",brief="Adds/Subtracts loot from a user's balance. (LR)",help="Adds/Subtracts from a user's balance. The format is: n!logloot @User item amount. If you are subtracting make the amount negative.")
-  async def returnpaymentdata(self, ctx, member: discord.Member, item, amount):
-        msg="a b"
-        msgparts, data = msg.split(" "), lists.readdata()
-        msgb = str(member)+" "+item+" "+amount
-        #lists.logback(ctx,msgb)
-        chk = lists.checkperms(ctx)
-        gid = str(ctx.message.guild.id)
-        if member=="clan":
-          pass
-        else:
-          memvar=member
-        try:
-          nf = int(dumps(lists.readdata()[gid][str(member.id)][str(item)]).replace(':','=').replace('{','').replace('}','').replace('"',''))
-          ns = int(amount)
-          added = ns + nf
+  async def returnpaymentdata(self, ctx, member: discord.Member, item, amount,*,reason=None):
+          msg="a b"
+          msgparts, data = msg.split(" "), lists.readdata()
+          msgb = str(member)+" "+item+" "+amount
+          #lists.logback(ctx,msgb)
+          chk = lists.checkperms(ctx)
+          gid = str(ctx.message.guild.id)
+          added=0
+          if member=="clan":
+            pass
+          else:
+            memvar=member
+          #try:
           if chk == True:
             if item in lists.readother()["alloweditems"]:
-              data[gid][str(member.id)][str(item)] = int(added)
+              if item in list(data[gid][str(member.id)].keys()):
+                nf = int(data[gid][str(member.id)][item])
+                ns = int(amount)
+                added = ns + nf
+              else:
+                nf = 0
+                ns = int(amount)
+                added = ns + nf
+              print(amount)
+              print(added)
+              data[gid][str(member.id)].update({str(item):int(added)})
               lists.setdata(data)
               #await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
               e = discord.Embed(title="Member Balance Update")
@@ -95,15 +103,18 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               #tz = pytz.timezone('America/New_York')
               e.timestamp=datetime.now()
               await ctx.send(embed=e)
+              myguild = self.bot.get_guild(1031900634741473280)
+              mychannel = myguild.get_channel(1145862891271094322)
+              await mychannel.send(f"{member.mention}'s balance was changed by `{item}:{amount}`.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`")
             else:
-              await ctx.send(f"Sorry Item {item} is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
+              await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           else:
             await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
-        except KeyError:
-          await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
+          #except KeyError:
+            #await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
           
   @commands.command(name='reset',brief="Resets a member's balance. (LR)",help="Resets one loot value in a user's balance. Format: n!reset @User item")
-  async def resetalldata(self, ctx, member: discord.Member, item):
+  async def resetalldata(self, ctx, member: discord.Member, item,*,reason=None):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
         msgb=str(member)+" "+item
@@ -124,13 +135,48 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               #tz = pytz.timezone('America/New_York')
               e.timestamp=datetime.now()
               await ctx.send(embed=e)
+              myguild = self.bot.get_guild(1031900634741473280)
+              mychannel = myguild.get_channel(1145862891271094322)
+              await mychannel.send(f"{member.mention}'s balance was changed, item `{item}` was reset.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`")
             else:
-              await ctx.send(f"Sorry Item {item} is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
+              await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
             await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
-          
+
+  @commands.command(name='deleteitem',brief="Deletes An Item From A User's Balance. (LR)",help="Deletes one loot value in a user's balance. Format: n!deleteitem @User item")
+  async def resetalldata(self, ctx, member: discord.Member, item,*,reason=None):
+        msg="a b"
+        msgparts, data = msg.split(" "), lists.readdata()
+        msgb=str(member)+" "+item
+        #lists.logback(ctx,msgb)
+        chk = lists.checkperms(ctx)
+        gid = str(ctx.message.guild.id)
+        if chk == True:
+          try:
+            if item in lists.readother()["alloweditems"]:
+              data[gid][str(member.id)].pop(item)
+              lists.setdata(data)
+              memvar=member
+              e = discord.Embed(title="Member Balance Reset")
+              e.add_field(name="Target Member", value=memvar.display_name, inline=True)
+              e.add_field(name="Deleted By", value=ctx.message.author.display_name, inline=True)
+              e.add_field(name="Item Deleted",value=item,inline=True)
+              e.set_thumbnail(url=memvar.display_avatar)
+              #tz = pytz.timezone('America/New_York')
+              e.timestamp=datetime.now()
+              await ctx.send(embed=e)
+              myguild = self.bot.get_guild(1031900634741473280)
+              mychannel = myguild.get_channel(1145862891271094322)
+              await mychannel.send(f"{member.mention}'s balance was changed, item `{item}` was deleted.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`")
+            else:
+              await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
+          except KeyError:
+            await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
+        else:
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
+
   @commands.command(name='balance',brief="Calls a user's balance.",help="Calls a member's balance. Just ping the user in the command. Format: n!balance @user")
   async def getuserloot(self,ctx,member: discord.Member):
     if str(ctx.message.author.id) not in banned:

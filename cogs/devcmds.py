@@ -88,7 +88,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send("You are not a developer and CANNOT run this command.")
   
-  @commands.command(name='lockdown', brief="Locks down a channel, preventing guests from chatting", help="Licks down a channel and prevents guests from chatting. Args: None", hidden=False,disabled=True)
+  @commands.command(name='lockdown', brief="Locks down a channel, preventing guests from chatting", help="Licks down a channel and prevents guests from chatting. Args: None", hidden=True,disabled=True)
 #@commands.has_permissions(manage_channels = True)
   async def lockdown(self,ctx,*,msg=None):
     #lists.logback(ctx,msg)
@@ -98,7 +98,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send(f'<@{ctx.message.author.id}> You Are NOT A Developer And CANNOT Lockdown Channels')
 
-  @commands.command(name='unlock', brief='Unlocks A Channel', help="Unlocks a channel. Args: None", hidden=False,disabled=True)
+  @commands.command(name='unlock', brief='Unlocks A Channel', help="Unlocks a channel. Args: None", hidden=True,disabled=True)
 #@commands.has_permissions(manage_channels=True)
   async def unlock(self,ctx):
     if ctx.message.author.id in developers:
@@ -107,7 +107,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send(f'<@{ctx.message.author.id}> You Are NOT A Developer And CANNOT Unlock Channels')
       
-  @commands.command(name='addrole',pass_context=True, brief='Addrole Cmd, Broken RN', help="Adds a role to a member. Args: <@Role> <@Member>", hidden=False,disable=True)
+  @commands.command(name='addrole',pass_context=True, brief='Addrole Cmd, Broken RN', help="Adds a role to a member. Args: <@Role> <@Member>", hidden=True,disable=True)
   async def addrole(self,ctx, role: discord.Role, member: discord.Member=None):
     if ctx.message.author.id in developers:
       member = member or ctx.message.author
@@ -233,6 +233,10 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       gids=oth["guild_IDs"]
       jdgids=[]
       for guild in self.bot.guilds:
+        me=guild.get_member(974045822167679087)
+        date=me.joined_at
+        converteddate=date.astimezone(pytz.timezone('US/Eastern'))
+        await ctx.send(f'I joined `{ctx.message.guild.name}` at `{converteddate}` (EST).')
         jdgids.append(guild.id)
         if guild.id not in gids:
           oth["guild_IDs"].append(guild.id)

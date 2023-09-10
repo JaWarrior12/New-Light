@@ -16,7 +16,6 @@ from discord.ext import commands, tasks
 from discord.utils import get
 from discord import Member
 from json import loads, dumps
-from backup import backup
 from startup import startup
 #from dpyConsole import Console
 
@@ -465,7 +464,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       users=u.split(" ")
       l=pts[2]
       loot=l.split(";")
-      purp=pts[5]
+      purp=pts[0]
       data=lists.bals()
       prebal=data[str(msg.guild.id)]["clan"]
       thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets)")

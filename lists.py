@@ -229,7 +229,7 @@ def lognewguild(stamp,msg,guild):
       o.write('\n\n')
 
 def formatClanBal(ship,bal):
-  formedbal={"flux": 0, "iron": 0, "explosive": 0, "rcs": 0, "bursts": 0, "autos": 0, "loaders": 0, "pushers": 0, "rubber": 0, "scanners": 0, "balls": 0, "hhs": 0, "ice": 0, "launchers": 0, "rcds": 0}
+  formedbal={}
   #print(ship)
   #print(bal)
   url = "https://pub.drednot.io/test/econ/item_schema.json"
@@ -470,6 +470,15 @@ def formItem(ship):
     #print(oldbal)
     #print(formedbal)
     return dict(formedbal)
+
+def itemNameById(item):
+  url = "https://pub.drednot.io/test/econ/item_schema.json"
+  response = loads(requests.get(url).content)
+  def find_route(data, route_no):
+      return list(filter(lambda x: x.get('id') == route_no, data))
+  data=find_route(response,item)
+  dat=data[0]
+  return dat["name"]
 
 def clrserver(id):
   gid=str(id)

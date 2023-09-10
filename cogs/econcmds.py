@@ -1,14 +1,17 @@
 import os, discord
 from os import system
 import time
+import asyncio
 import pytz
 import datetime 
 #import urllib2
 import urllib.request
 import requests
 import gzip
+from datetime import datetime, timedelta, timezone
+from datetime import time as tme
 #from keep_alive import keep_alive
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
 from discord import Member
 from discord.ext.commands import has_permissions, MissingPermissions
@@ -35,9 +38,16 @@ TestSrvr = lists.TestSrvr
 DSR = lists.DSR
 FRF = lists.FRF
 
+utc=timezone.utc
+tmes=tme(hour=0,minute=20,tzinfo=utc)
+
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+    #self.exchangeRatesUpdater.start()
+  def cog_unload(self):
+    pass
+    #self.exchangeRatesUpdater.cancel()
 
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
@@ -187,6 +197,67 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       await ctx.send("Error")
   
+  @tasks.loop(time=tmes)
+  async def exchangeRatesUpdater(self,ctx):
+    myguild = self.bot.get_guild(1031900634741473280)
+    mychannel = await myguild.fetch_channel(1150474219021410357)
+    threads=mychannel.threads
+    year=datetime.today().year
+    month=datetime.today().month
+    day=datetime.today().day
+    alldat = requests.get(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{(int(day)-1)}/summary.json').json()
+    data=alldat["items_held"]
+    datab=alldat["items_moved"]
+    keys=list(data.keys())
+    flux=float(data["5"])
+    tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,162,164,226,228,229,242,243,246,252,253,256,257,258,305,306,307]
+    for x in keys:
+      if int(x) in tracked:
+        if x == "5":
+          continue
+        else:
+          item=float(data[x])
+          #ib=float(datab[x])
+          rate=(flux/item)*0.5
+          divrate=(float(rate)*float(4))*0.5
+          ratefinal="%.2f" % round(rate, 2)
+          divfinal="%.5f" % round(divrate, 5)
+          #rb=(flux/ib)*0.5
+          #db=(float(rate)*float(16))*0.5
+          #rbf="%.2f" % round(rb, 2)
+          #dbf="%.2f" % round(db, 2)
+          #avgrt=(float(ratefinal)+float(rbf))/float(2)
+          #fxrt="%.2f" % round(avgrt, 2)
+          #avgdv=(float(divfinal)+float(dbf))/float(2)
+          #fxdv="%.2f" % round(avgdv, 2)
+          itemname=lists.itemNameById(int(x))
+          def find_route(lst, route_no):
+            found=[]
+            for z in lst:
+              if z.name==route_no:
+                found.append(z)
+            return found
+          thd=find_route(threads,itemname)
+          if len(thd)==0:
+            await mychannel.create_thread(name=itemname,content=f'Exchange Rate For {itemname}')
+            await asyncio.sleep(0.1)
+            upmc=await myguild.fetch_channel(1150474219021410357)
+            newthread=upmc.get_thread(upmc.last_message_id)
+
+            await newthread.send(content=f'Rate : `{ratefinal}`;\nDivRate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`')
+          else:
+            thrd=mychannel.get_thread(thd[0].id)
+            cntnt=thrd.last_message.content
+            cntnt=cntnt.replace("`","").replace("\n","")
+            cntnt=cntnt.split(";")
+            oldrate=(cntnt[0].split(":"))
+            olddiv=(cntnt[1].split(":"))
+            ratechange=float(oldrate[1])-float(ratefinal)
+            divchange=float(olddiv[1])-float(divfinal)
+            await thrd.purge(limit=100)
+            await thrd.send(f'Rate : `{ratefinal}`;\nDiv Rate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`\n\nChange:\n-Rate Change: `{ratechange}`\n-DivRate Change: `{divchange}`')
+      else:
+        continue
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(EconCmds(bot))

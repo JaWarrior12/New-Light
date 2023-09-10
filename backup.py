@@ -8,7 +8,7 @@ from json import loads, dumps
 from startup import startup
 
 def backrel():
-  with open('relations.json','r') as firstfile, open('Backups/rel2.json','w') as secondfile:
+  with open('../NLDB/relations.json','r') as firstfile, open('Backups/rel2.json','w') as secondfile:
       
     # read content from first file
     for line in firstfile:
@@ -17,7 +17,7 @@ def backrel():
              secondfile.write(line)
 
 def backdist():
-  with open('distribution.json','r') as firstfile, open('Backups/distri2.json','w') as secondfile:
+  with open('../NLDB/distribution.json','r') as firstfile, open('Backups/distri2.json','w') as secondfile:
       
     # read content from first file
     for line in firstfile:
@@ -26,7 +26,7 @@ def backdist():
              secondfile.write(line)
 
 def backqp():
-  with open('quickping.json','r') as firstfile, open('Backups/qp2.json','w') as secondfile:
+  with open('../NLDB/quickping.json','r') as firstfile, open('Backups/qp2.json','w') as secondfile:
       
     # read content from first file
     for line in firstfile:
@@ -35,7 +35,7 @@ def backqp():
              secondfile.write(line)
 
 def backdes():
-  with open('designs.json','r') as firstfile, open('Backups/des2.json','w') as secondfile:
+  with open('../NLDB/designs.json','r') as firstfile, open('Backups/des2.json','w') as secondfile:
       
     # read content from first file
     for line in firstfile:
@@ -44,7 +44,7 @@ def backdes():
              secondfile.write(line)
 
 def backoth():
-  with open('other.json','r') as firstfile, open('Backups/oth2.json','w') as secondfile:
+  with open('../NLDB/other.json','r') as firstfile, open('Backups/oth2.json','w') as secondfile:
       
     # read content from first file
     for line in firstfile:
@@ -53,7 +53,7 @@ def backoth():
              secondfile.write(line)
 
 def backconfig():
-  with open('config.json','r') as firstfile, open('Backups/con2.json','w') as secondfile:
+  with open('../NLDB/config.json','r') as firstfile, open('Backups/con2.json','w') as secondfile:
       
     # read content from first file
     for line in firstfile:

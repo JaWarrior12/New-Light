@@ -225,11 +225,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=str(input.lower())
         else:
           val=int(input)
-        print(val)
         data=lists.readdataE()
         data[str(ctx.message.guild.id)][str(option.lower)]=val
-        print(data)
-        #print(data)
         lists.setdataE(data)
         await ctx.send(f'Changed {(option)} to {val}')
 

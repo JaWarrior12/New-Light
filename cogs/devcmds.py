@@ -238,9 +238,9 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
         converteddate=date.astimezone(pytz.timezone('US/Eastern'))
         await ctx.send(f'I joined `{guild.name}`(ID: `{guild.id}`) at `{converteddate}` (EST).\nGuild Onwer: `{guild.owner.name}` (ID: `{guild.owner.id}`)')
         jdgids.append(guild.id)
-        oth["cmdmetrics"].update({str(guild.id):0})
         if guild.id not in gids:
           oth["guild_IDs"].append(guild.id)
+          oth["cmdmetrics"].update({str(guild.id):0})
         guilds.update({guild.name:{"guild_id":guild.id,"owner_name":guild.owner.name,"owner_id":guild.owner.id}})
         if guild.id in gids and guild.id not in jdgids:
           guilds.pop(guild.name)

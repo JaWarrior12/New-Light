@@ -236,8 +236,9 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
         me=guild.get_member(974045822167679087)
         date=me.joined_at
         converteddate=date.astimezone(pytz.timezone('US/Eastern'))
-        await ctx.send(f'I joined `{ctx.message.guild.name}` at `{converteddate}` (EST).')
+        await ctx.send(f'I joined `{guild.name}`(ID: `{guild.id}`) at `{converteddate}` (EST).\nGuild Onwer: `{guild.owner.name}` (ID: `{guild.owner.id}`)')
         jdgids.append(guild.id)
+        oth["cmdmetrics"].update({str(guild.id):0})
         if guild.id not in gids:
           oth["guild_IDs"].append(guild.id)
         guilds.update({guild.name:{"guild_id":guild.id,"owner_name":guild.owner.name,"owner_id":guild.owner.id}})
@@ -284,6 +285,14 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
         for x in self.bot.guilds:
           gls=gls+"\n -"+str(x.name)
         await ctx.send(f"Number Of Guilds I'm In: {glen}!\nList Of Guilds I'm In: {gls}")
+      elif metric="cmdtot":
+        data=lists.readother["cmdmetrics"]
+        e = discord.Embed(title="I've Left A Server.")
+        for x in data.keys():
+          e.add_field(name=self.bot.get_guild(x).name,value=data[x],inline=True)
+        tz = pytz.timezone('America/New_York')
+        e.timestamp=datetime.datetime.now(tz)
+        await ctx.send(embed=e)
       else:
         pass
     else:

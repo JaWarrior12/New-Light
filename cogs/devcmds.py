@@ -285,7 +285,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
         for x in self.bot.guilds:
           gls=gls+"\n -"+str(x.name)
         await ctx.send(f"Number Of Guilds I'm In: {glen}!\nList Of Guilds I'm In: {gls}")
-      elif metric="cmdtot":
+      elif metric=="cmdtot":
         data=lists.readother["cmdmetrics"]
         e = discord.Embed(title="I've Left A Server.")
         for x in data.keys():

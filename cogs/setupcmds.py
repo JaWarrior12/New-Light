@@ -225,12 +225,14 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=str(input.lower())
         else:
           val=int(input)
+        opt=option
+        print(opt)          
         data=lists.readdataE()
-        data[str(ctx.message.guild.id)][str(option.lower)]=val
+        data[str(ctx.message.guild.id)][opt]=val
         lists.setdataE(data)
         await ctx.send(f'Changed {(option)} to {val}')
 
-  @commands.command(name="memberlistconfig",aliases=["mlc"],brief="Setup member list.",help="Setup member list, n!mlc (LR)",hidden=True,disabled=False)
+  @commands.command(name="memberlistconfig",aliases=["mlc"],brief="Setup member list.",help="Setup member list, n!mlc (LR)",hidden=False,disabled=False)
   async def mlc(self,ctx):
     if lists.checkperms(ctx)==True:
       if lists.readdataE()[str(ctx.message.guild.id)]["memchan"]==0:
@@ -262,12 +264,13 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           inx=0
           for role in roles:
             if role.id==memrole.id:
-              print(f'Role Pos:{roles.index(role)}')
+              #print(f'Role Pos:{roles.index(role)}')
               inx=roles.index(role)+1
-              print(f'Index:{inx}')
+              #print(f'Index:{inx}')
               rid=roles[inx].id
+              #print(rid)
               roleb=ctx.message.guild.get_role(rid)
-              print(roleb)
+              #print(f'Roleb: {roleb}')
               #print(rnk)
               if roleb.name=="@everyone":
                 pass
@@ -277,8 +280,6 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                 else:
                   #ranks.append(rnk)
                   rnkord.append(groles.index(roleb))
-
-        #await ctx.send(ranks)
         gidranks=ctx.message.guild.roles
         rnkord.sort(reverse=True)
         print(rnkord)
@@ -286,9 +287,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           rle=gidranks[x].id
           pos=rnkord.index(x)
           ranks.insert(pos,rle)
-        print(rnkord)
-        print(ranks)
-        print(groles[9])
+        #print(rnkord)
+        #print(ranks)
         rmlist=[]
         mems=list(ctx.message.guild.members)
         #print(mems)
@@ -297,10 +297,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           for mem in mems:
             #print(mem)
             rolesb=mem.roles
-            for roleb in rolesb:
+            for rolec in rolesb:
               #print(roleb)
               #print(r)
-              if roleb.id==r:
+              if rolec.id==r:
                 rmlistb.append(mem.id)
               else:
                 pass

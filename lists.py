@@ -183,6 +183,8 @@ def checkperms(ctx):
   if str(uid) not in banned:
     if str(uid) in autho:
       return True
+    elif int(uid) in developers:
+      return True
     elif str(uid) not in autho:
       return False
     else:
@@ -198,6 +200,8 @@ def slashcheckperms(gidd,uidd):
   autho = readdataE()[gid]["auth"]
   if str(uid) not in banned:
     if str(uid) in autho:
+      return True
+    elif int(uid) in developers:
       return True
     elif str(uid) not in autho:
       return False

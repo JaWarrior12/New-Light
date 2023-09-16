@@ -46,8 +46,8 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     self.bot = bot
     #self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    pass
     #self.exchangeRatesUpdater.cancel()
+    pass
 
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
@@ -198,7 +198,9 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send("Error")
   
   @tasks.loop(time=tmes)
+  #@commands.command(name="ert")
   async def exchangeRatesUpdater(self,ctx):
+    print("Updating Exchange Rates")
     myguild = self.bot.get_guild(1031900634741473280)
     mychannel = await myguild.fetch_channel(1150474219021410357)
     threads=mychannel.threads
@@ -206,6 +208,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     month=datetime.today().month
     day=datetime.today().day
     alldat = requests.get(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{(int(day)-1)}/summary.json').json()
+    #alldat = requests.get(f'https://pub.drednot.io/prod/econ/2023_9_1/summary.json').json()
     data=alldat["items_held"]
     datab=alldat["items_moved"]
     keys=list(data.keys())
@@ -243,21 +246,25 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
             await asyncio.sleep(0.1)
             upmc=await myguild.fetch_channel(1150474219021410357)
             newthread=upmc.get_thread(upmc.last_message_id)
-
-            await newthread.send(content=f'Rate : `{ratefinal}`;\nDivRate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`')
+            await newthread.send(content=f"Rate : `{ratefinal}`;\nDivRate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`")
           else:
             thrd=mychannel.get_thread(thd[0].id)
             cntnt=thrd.last_message.content
             cntnt=cntnt.replace("`","").replace("\n","")
-            cntnt=cntnt.split(";")
-            oldrate=(cntnt[0].split(":"))
-            olddiv=(cntnt[1].split(":"))
+            ctnt=cntnt.split(";")
+            oldrate=(ctnt[0].split(":"))
+            olddiv=(ctnt[1].split(":"))
             ratechange=float(oldrate[1])-float(ratefinal)
             divchange=float(olddiv[1])-float(divfinal)
             await thrd.purge(limit=100)
-            await thrd.send(f'Rate : `{ratefinal}`;\nDiv Rate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`\n\nChange:\n-Rate Change: `{ratechange}`\n-DivRate Change: `{divchange}`')
+            #print(len(f"Rate : `{ratefinal}`;\nDiv Rate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`\n\nChange:\n-Rate Change: `{ratechange}`\n-DivRate Change: `{divchange}`\nYesterday's Rates:\n-Yesterday's Rate: `{float(oldrate[1])}`\n-Yesterday's DivRate: `{float(olddiv[1])}`"))
+            try:
+              await thrd.send(f"Rate : `{ratefinal}`;\nDiv Rate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`\n\nChange:\n-Rate Change: `{ratechange}`\n-DivRate Change: `{divchange}`\n\nYesterday's Rates:\n-Yesterday's Rate: `{float(oldrate[1])}`\n-Yesterday's DivRate: `{float(olddiv[1])}`")
+            except:
+              print("Error")
       else:
         continue
+    print("Exchange Rates Updated")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(EconCmds(bot))

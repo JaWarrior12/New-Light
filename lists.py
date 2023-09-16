@@ -132,29 +132,42 @@ def logdown():
     o.write('\n')
     
 def clearserver(id):
-  gid=str(id)
-  data=readdata()
-  data.pop(gid)
-  setdata(data)
-  gid=str(id)
-  data=readdataB()
-  data.pop(gid)
-  setdataB(data)
-  gid=str(id)
-  data=readdataC()
-  data.pop(gid)
-  setdataC(data)
-  gid=str(id)
-  data=readdataD()
-  data.pop(gid)
-  setdataD(data)
-  gid=str(id)
-  data=readdataE()
-  data.pop(gid)
-  setdataE(data)
-  data=readother()
-  data["defaultdist"].pop(gid)
-  setother(data)
+  try:
+    gid=str(id)
+    data=bals()
+    if gid in data.keys():
+      data.pop(gid)
+      setdata(data)
+    data=readdataB()
+    if gid in data.keys():
+      data.pop(gid)
+      setdataB(data)
+    data=readdataC()
+    if gid in data.keys():
+      data.pop(gid)
+      setdataC(data)
+    data=readdataD()
+    if gid in data.keys():
+      data.pop(gid)
+      setdataD(data)
+    data=readdataE()
+    if gid in data.keys():
+      data.pop(gid)
+      setdataE(data)
+    data=readother()
+    if gid in data["defaultdist"].keys():
+      data["defaultdist"].pop(gid)
+      setother(data)
+    data=readother()
+    if gid in data["guild_IDs"].keys():
+      data["guild_IDs"].pop(gid)
+      setother(data)
+    data=readother()
+    if gid in data["cmdmetrics"].keys():
+      data["cmdmetrics"].pop(gid)
+      setother(data)
+  except:
+    pass
 
 async def logmajor(bot,ctx,msg):
   #Major Event Logging (To Channel In Developmnt Server)(Events Logged Are: Authorizing Users, Bans, Joins)
@@ -183,6 +196,8 @@ def checkperms(ctx):
   if str(uid) not in banned:
     if str(uid) in autho:
       return True
+    elif int(uid) in developers:
+      return True
     elif str(uid) not in autho:
       return False
     else:
@@ -198,6 +213,8 @@ def slashcheckperms(gidd,uidd):
   autho = readdataE()[gid]["auth"]
   if str(uid) not in banned:
     if str(uid) in autho:
+      return True
+    elif int(uid) in developers:
       return True
     elif str(uid) not in autho:
       return False

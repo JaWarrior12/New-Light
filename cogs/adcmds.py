@@ -169,8 +169,8 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
     if ctx.message.author.id in developers:
       guild = self.bot.get_guild(int(id))
       await ctx.send(guild.name)
-      channel = discord.utils.get(guild.channels, name="general")
-      await channel.send(f'My Developer Has Ordered Me To Leave Your Server. Reason: {reason}. Please DM JaWarrior#1305 if you have any questions or would like to add me back. You can also join my development server: https://discord.gg/zcGYBcfhwX')
+      channel = guild.system_channel
+      await guild.system_channel.send(f'My Developer Has Ordered Me To Leave Your Server. Reason: {reason}. Please DM JaWarrior#1305 if you have any questions or would like to add me back. You can also join my development server: https://discord.gg/zcGYBcfhwX')
       await guild.leave()
       await ctx.send(f':ok_hand: Left guild: {guild.name} ({guild.id})')
     else:
@@ -180,8 +180,8 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   async def clearserver(self,ctx,id,*,reason=None):
     if ctx.message.author.id in developers:
       guild = self.bot.get_guild(int(id))
-      channel = discord.utils.get(guild.channels, name="general")
-      await channel.send(f'My Developer Has Ordered Me To Clear The Data For Your Server. Reason: {reason}. Please DM JaWarrior#1305 if you have any questions. You can also join my development server: https://discord.gg/zcGYBcfhwX')
+      channel = guild.system_channel
+      await guild.system_channel.send(f'My Developer Has Ordered Me To Clear The Data For Your Server. Reason: {reason}. Please DM JaWarrior#1305 if you have any questions. You can also join my development server: https://discord.gg/zcGYBcfhwX')
       channel_id = channel.id
       gid=str(id)
       data=lists.readdata()

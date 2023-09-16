@@ -213,14 +213,22 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   @commands.command(name="clearold",help="Removes Servers NL Is No Longer In From Databases")
   async def clearold(self,ctx):
     if ctx.message.author.id in developers:
+      await ctx.send("Clearing Guilds")
       myguilds=[]
       for y in self.bot.guilds:
-        myguilds.append(y.id)
-      kys=list(lists.readdataE.keys())
-      kys.remove("ban")
-      kys.remove("banguilds")
-      for x in kys:
-        if x not in myguilds:
+        myguilds.append(str(y.id))
+      kys=list(lists.readdataE().keys())
+      myguilds.append("ban")
+      myguilds.append("banguilds")
+      kys=kys
+      for z in myguilds:
+        if z in kys:
+          kys.remove(z)
+        else:
+          pass
+      kysb=kys
+      await ctx.send(f'Cleaing The Following Guilds: {kysb}')
+      for x in kysb:
           lists.clearserver(str(x))
       await ctx.send("Cleared Empty Guilds")
     else:

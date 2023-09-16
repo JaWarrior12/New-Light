@@ -134,28 +134,38 @@ def logdown():
 def clearserver(id):
   try:
     gid=str(id)
-    data=readdata()
-    data.pop(gid)
-    setdata(data)
-    gid=str(id)
+    data=bals()
+    if gid in data.keys():
+      data.pop(gid)
+      setdata(data)
     data=readdataB()
-    data.pop(gid)
-    setdataB(data)
-    gid=str(id)
+    if gid in data.keys():
+      data.pop(gid)
+      setdataB(data)
     data=readdataC()
-    data.pop(gid)
-    setdataC(data)
-    gid=str(id)
+    if gid in data.keys():
+      data.pop(gid)
+      setdataC(data)
     data=readdataD()
-    data.pop(gid)
-    setdataD(data)
-    gid=str(id)
+    if gid in data.keys():
+      data.pop(gid)
+      setdataD(data)
     data=readdataE()
-    data.pop(gid)
-    setdataE(data)
+    if gid in data.keys():
+      data.pop(gid)
+      setdataE(data)
     data=readother()
-    data["defaultdist"].pop(gid)
-    setother(data)
+    if gid in data["defaultdist"].keys():
+      data["defaultdist"].pop(gid)
+      setother(data)
+    data=readother()
+    if gid in data["guild_IDs"].keys():
+      data["guild_IDs"].pop(gid)
+      setother(data)
+    data=readother()
+    if gid in data["cmdmetrics"].keys():
+      data["cmdmetrics"].pop(gid)
+      setother(data)
   except:
     pass
 

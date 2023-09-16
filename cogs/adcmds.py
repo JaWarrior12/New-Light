@@ -210,6 +210,22 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
     else:
       await ctx.send("You are not a developer and cannot use this command.")
 
+  @commands.command(name="clearold",help="Removes Servers NL Is No Longer In From Databases")
+  async def clearold(self,ctx):
+    if ctx.message.author.id in developers:
+      myguilds=[]
+      for y in self.bot.guilds:
+        myguilds.append(y.id)
+      kys=list(lists.readdataE.keys())
+      kys.remove("ban")
+      kys.remove("banguilds")
+      for x in kys:
+        if x not in myguilds:
+          lists.clearserver(str(x))
+      await ctx.send("Cleared Empty Guilds")
+    else:
+      pass
+
   @commands.command(name="authedus",hidden=False,help="Lists Authorized Users in a guild")
   async def authedus(self,ctx,guild=None):
     if ctx.message.author.id in developers:

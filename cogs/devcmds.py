@@ -242,8 +242,11 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
           oth["guild_IDs"].append(guild.id)
           oth["cmdmetrics"].update({str(guild.id):0})
         guilds.update({guild.name:{"guild_id":guild.id,"owner_name":guild.owner.name,"owner_id":guild.owner.id}})
+        print(gids)
+        print(jdgids)
         if guild.id in gids and guild.id not in jdgids:
-          guilds.pop(guild.name)
+          #guilds.pop(guild.name)
+          pass
       oth["guilds"]=guilds
       lists.setother(oth)
     else:
@@ -285,11 +288,11 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
         for x in self.bot.guilds:
           gls=gls+"\n -"+str(x.name)
         await ctx.send(f"Number Of Guilds I'm In: {glen}!\nList Of Guilds I'm In: {gls}")
-      elif metric=="cmdtot":
-        data=lists.readother["cmdmetrics"]
-        e = discord.Embed(title="I've Left A Server.")
-        for x in data.keys():
-          e.add_field(name=self.bot.get_guild(x).name,value=data[x],inline=True)
+      elif metric=="cmdtotdat":
+        data=lists.readother()["cmdmetrics"]
+        e = discord.Embed(title="Command Metrics")
+        for x in list(data.keys()):
+          e.add_field(name=str(x),value=data[x],inline=True)
         tz = pytz.timezone('America/New_York')
         e.timestamp=datetime.datetime.now(tz)
         await ctx.send(embed=e)

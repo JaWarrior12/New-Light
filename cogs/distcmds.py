@@ -104,7 +104,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"{member.mention}'s balance was changed by `{item}:{amount}`.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`")
+              await mychannel.send(f"{member.mention}'s balance was changed by `{item}:{amount}`.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           else:
@@ -136,7 +136,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"{member.mention}'s balance was changed, item `{item}` was reset.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`")
+              await mychannel.send(f"{member.mention}'s balance was changed, item `{item}` was reset.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
@@ -168,7 +168,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"{member.mention}'s balance was changed, item `{item}` was deleted.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`")
+              await mychannel.send(f"{member.mention}'s balance was changed, item `{item}` was deleted.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:

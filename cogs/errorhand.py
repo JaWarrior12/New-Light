@@ -39,9 +39,7 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
       if ctx.message.author.id in developers: 
         data=lists.readother()
         old=data["cmdmetrics"]["developer"]
-        print(old)
         new=int(old)+1
-        print(new)
         data["cmdmetrics"]["developer"]=int(new)
         lists.setother(data)
       else:

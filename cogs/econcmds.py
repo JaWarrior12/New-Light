@@ -44,10 +44,10 @@ tmes=tme(hour=0,minute=20,tzinfo=utc)
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    #self.exchangeRatesUpdater.start()
+    self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    #self.exchangeRatesUpdater.cancel()
-    pass
+    self.exchangeRatesUpdater.cancel()
+    #pass
 
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))

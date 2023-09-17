@@ -36,10 +36,14 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
     if "help" in ctx.message.content:
       pass
     else:
-      if ctx.author.id in developers: 
+      if ctx.message.author.id in developers: 
         data=lists.readother()
-        data["cmdmetrics"]["developer"]=data["cmdmetrics"]["developer"]+1
-        lists.setdata(data)
+        old=data["cmdmetrics"]["developer"]
+        print(old)
+        new=int(old)+1
+        print(new)
+        data["cmdmetrics"]["developer"]=int(new)
+        lists.setother(data)
       else:
         lists.logback(ctx,ctx.message.content)
         guild=ctx.guild.id

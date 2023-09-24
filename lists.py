@@ -83,6 +83,12 @@ def bals():
 def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
 
+def getToken(id):
+  data=loads(open('../NLDB/secrets.json', 'r').read())
+  token=data[str(id)]
+  print(token)
+  return token
+
      
 #Banned List
 mylist = 0

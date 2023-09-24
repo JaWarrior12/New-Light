@@ -242,8 +242,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
           oth["guild_IDs"].append(guild.id)
           oth["cmdmetrics"].update({str(guild.id):0})
         guilds.update({guild.name:{"guild_id":guild.id,"owner_name":guild.owner.name,"owner_id":guild.owner.id}})
-        print(gids)
-        print(jdgids)
         if guild.id in gids and guild.id not in jdgids:
           #guilds.pop(guild.name)
           pass
@@ -301,6 +299,12 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       await ctx.send("Not A Dev")
 
+  @commands.command(name="appid")
+  async def appid(self,ctx):
+    if ctx.message.author.id in developers:
+      await ctx.send(self.bot.application_id)
+    else:
+      pass
 
   @tasks.loop(time=times)
   async def backupdaily(self):

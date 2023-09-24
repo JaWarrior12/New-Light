@@ -1,6 +1,4 @@
 #Ignore Main
-$ **/main
-main.py
 *.json
 Backups/disconnectlogs.txt
 Backups/log.txt

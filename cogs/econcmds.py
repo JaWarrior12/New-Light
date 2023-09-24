@@ -39,7 +39,7 @@ DSR = lists.DSR
 FRF = lists.FRF
 
 utc=timezone.utc
-tmes=tme(hour=0,minute=20,tzinfo=utc)
+tmes=tme(hour=0,minute=30,tzinfo=utc)
 
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
@@ -196,7 +196,6 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
             break
     else:
       await ctx.send("Error")
-  
   global tmes
   @tasks.loop(time=tmes)
   #@commands.command(name="ert")

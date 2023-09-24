@@ -197,7 +197,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       await ctx.send("Error")
   
-   global tmes
+  global tmes
   @tasks.loop(time=tmes)
   #@commands.command(name="ert")
   async def exchangeRatesUpdater(self):

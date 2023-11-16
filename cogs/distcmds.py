@@ -77,6 +77,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             memvar=member
           #try:
           if chk == True:
+            previousBalance=data[gid][str(member.id)]
             if item in lists.readother()["alloweditems"]:
               if item in list(data[gid][str(member.id)].keys()):
                 nf = int(data[gid][str(member.id)][item])
@@ -104,7 +105,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"{member.mention}'s balance was changed by `{item}:{amount}`.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"{member.mention}'s balance was changed by `{item}:{amount}`.\nPrevious Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           else:
@@ -122,6 +123,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         gid = str(ctx.message.guild.id)
         if chk == True:
           try:
+            previousBalance=data[gid][str(member.id)]
             if item in lists.readother()["alloweditems"]:
               data[gid][str(member.id)][str(item)]=0
               lists.setdata(data)
@@ -136,7 +138,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"{member.mention}'s balance was changed, item `{item}` was reset.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"`{member.mention}'s balance was changed, item `{item}` was reset.\nPrevious Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
@@ -145,7 +147,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
   @commands.command(name='deleteitem',brief="Deletes An Item From A User's Balance. (LR)",help="Deletes one loot value in a user's balance. Format: n!deleteitem @User item")
-  async def resetalldata(self, ctx, member: discord.Member, item,*,reason=None):
+  async def deleteiteminbalance(self, ctx, member: discord.Member, item,*,reason=None):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
         msgb=str(member)+" "+item
@@ -154,11 +156,12 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         gid = str(ctx.message.guild.id)
         if chk == True:
           try:
+            previousBalance=data[gid][str(member.id)]
             if item in lists.readother()["alloweditems"]:
               data[gid][str(member.id)].pop(item)
               lists.setdata(data)
               memvar=member
-              e = discord.Embed(title="Member Balance Reset")
+              e = discord.Embed(title="Member Balance Item Deletion")
               e.add_field(name="Target Member", value=memvar.display_name, inline=True)
               e.add_field(name="Deleted By", value=ctx.message.author.display_name, inline=True)
               e.add_field(name="Item Deleted",value=item,inline=True)
@@ -168,7 +171,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"{member.mention}'s balance was changed, item `{item}` was deleted.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"`{member.mention}'s balance was changed, item `{item}` was deleted.\nPrevious Balance; `{previousBalance}`\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
@@ -231,32 +234,227 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           #tz = pytz.timezone('America/New_York')
           e.timestamp=datetime.now()
           await ctx.send(embed=e)
+          myguild = self.bot.get_guild(1031900634741473280)
+          mychannel = myguild.get_channel(1145862891271094322)
+          await mychannel.send(f"`{member.mention}` was added to the distribution list in server `{ctx.message.guild.name}`.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Add Member`\nPerformed In Server: `{ctx.message.guild.name}`")
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
   @commands.command(name="removemember",brief="Removes a member from a clan's distribution database. (LR)", help="Removes a member from the distribution database. Just ping the user in the command and it will remove them. Format: n!removemember @User")
   async def remmem(self,ctx,member: discord.Member,*,reason=None):
+    msg="a b"
+    msgparts, data = msg.split(" "), lists.readdata()
+    chk = lists.checkperms(ctx)
+    gid = str(ctx.message.guild.id)
+    mem=str(member.id)
+    myguild = self.bot.get_guild(1031900634741473280)
+    mychannel = myguild.get_channel(1145862891271094322)
+    await mychannel.send(f"`{member.mention}` was removed from the distribution list in server `{ctx.message.guild.name}`.\nBalance Before Deletion: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Remove Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+    del data[gid][mem]
+    #lists.logback(ctx,member)
+    if chk == True:
+      try:
+        lists.setdata(data)
+        memvar=member
+        e = discord.Embed(title="Member Removed")
+        e.add_field(name="Member", value=memvar.display_name, inline=True)
+        e.add_field(name="Removed By By",value=ctx.message.author.display_name,inline=True)
+        e.add_field(name="Reason",value=reason,inline=True)
+        e.set_thumbnail(url=memvar.display_avatar)
+        #tz = pytz.timezone('America/New_York')
+        e.timestamp=datetime.now()
+        await ctx.send(embed=e)
+      except KeyError:
+        await ctx.send(f"KeyError: User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
+      else:
+        await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
+
+  @commands.command(name="addnonuser",brief="Adds a non-user balance to the clan's distribution database. (LR)", help="Adds a non-user balance to the distribution database. Just ping the user in the command. Format: n!anu @User",aliases=["anub"])
+  async def addnonuser(self,ctx,*,balanceName):
+    msg="a b"
+    msgparts, data = msg.split(" "), lists.readdata()
+    #lists.logback(ctx,member)
+    chk = lists.checkperms(ctx)
+    gid = str(ctx.message.guild.id)
+    if chk == True:
+      inputv={}
+      keylist=lists.readother()["defaultdist"].keys()
+      #await ctx.send(keylist)
+      if str(ctx.message.guild.id) in keylist:
+        items=lists.readother()["defaultdist"][str(ctx.message.guild.id)]
+        for x in items:
+          inputv.update({str(x):0})
+      else:
+        inputv = {"flux":0,"loader":0,"rc":0,"pusher":0}
+      data[gid][str(balanceName)]=dict(inputv)
+      lists.setdata(data)
+      e = discord.Embed(title="Non-User Balance Added")
+      e.add_field(name="Balance Name", value=balanceName, inline=True)
+      e.add_field(name="Added By",value=ctx.message.author.display_name,inline=True)
+      e.add_field(name="Default Balance",value=inputv,inline=True)
+      #tz = pytz.timezone('America/New_York')
+      e.timestamp=datetime.now()
+      await ctx.send(embed=e)
+      myguild = self.bot.get_guild(1031900634741473280)
+      mychannel = myguild.get_channel(1145862891271094322)
+      await mychannel.send(f"Non-User Balance `{balanceName}` was added to the distribution list in server `{ctx.message.guild.name}`.\nResulting Balance: `{data[gid][str(balanceName)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Add Non-User Balance`\nPerformed In Server: `{ctx.message.guild.name}`")
+    else:
+      await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
+
+  @commands.command(name="removenonuser",brief="Removes a non-user balance from a clan's distribution database. (LR)", help="Removes a non-user balance from the distribution database. Just ping the user in the command and it will remove them. Format: n!rnub balanceName",aliases=["rnub"])
+  async def removenonuserbalance(self,ctx,*,balanceName):
+    msg="a b"
+    msgparts, data = msg.split(" "), lists.readdata()
+    chk = lists.checkperms(ctx)
+    gid = str(ctx.message.guild.id)
+    myguild = self.bot.get_guild(1031900634741473280)
+    mychannel = myguild.get_channel(1145862891271094322)
+    await mychannel.send(f"Non-User Balance `{balanceName}` was removed from the distribution list in server `{ctx.message.guild.name}`.\nResulting Balance: `{data[gid][str(balanceName)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Remove Non-User Balance`\nPerformed In Server: `{ctx.message.guild.name}`")
+    del data[gid][balanceName]
+    #lists.logback(ctx,member)
+    if chk == True:
+      try:
+        lists.setdata(data)
+        e = discord.Embed(title="Non-User Balance Removed")
+        e.add_field(name="Balance Name", value=balanceName, inline=True)
+        e.add_field(name="Removed By By",value=ctx.message.author.display_name,inline=True)
+        #tz = pytz.timezone('America/New_York')
+        e.timestamp=datetime.now()
+        await ctx.send(embed=e)
+      except KeyError:
+        await ctx.send(f"KeyError: Non-User Balance `{balanceName}` cannot be found in {ctx.message.guild.name}'s Distribution List.")
+    else:
+      await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
+
+  @commands.command(name='nonuserbalancee',brief="Calls a non-user balance.",help="Calls a non-user balance. Just ping the user in the command. Format: n!balance balanceName",aliases=["nub"])
+  async def getnub(self,ctx,*,balanceName):
+    if str(ctx.message.author.id) not in banned:
+      data = None
+      #chk = lists.checkperms(ctx)
+      gid = str(ctx.message.guild.id)
+      #lists.logback(ctx,member)
+      #if chk == True:
+      data = lists.readdata()
+      try:
+        e = discord.Embed(title="Non-User Balance Balance")
+        e.add_field(name="Balance Name", value=balanceName, inline=True)
+        for x in data[gid][str(balanceName)].keys():
+          e.add_field(name=x,value=data[gid][str(balanceName)][x],inline=True)
+        #tz = pytz.timezone('America/New_York')
+        e.timestamp=datetime.now()
+        await ctx.send(embed=e)
+      except KeyError:
+        await ctx.send(f"KeyError: Non-User Balance `{balanceName}` cannot be found in {ctx.message.guild.name}'s Distribution List.")
+    elif str(ctx.message.author.id) in banned:
+      await ctx.send("Your ID Is In The Banned List.")
+    else:
+      await ctx.send("Error")
+
+  @commands.command(name="changeNonUserBalance",brief="Adds/Subtracts loot from a non-user balance. (LR)",help="Adds/Subtracts from a non-user balance. The format is: n!cnub balanceName item amount. If you are subtracting make the amount negative.",aliases=["changenub","loglootnub","lognub","cnub"])
+  async def changeNUB(self, ctx,item, amount,*,balanceName):
+          msg="a b"
+          msgparts, data = msg.split(" "), lists.readdata()
+          msgb = str(balanceName)+" "+item+" "+amount
+          #lists.logback(ctx,msgb)
+          chk = lists.checkperms(ctx)
+          gid = str(ctx.message.guild.id)
+          added=0
+          #try:
+          if chk == True:
+            previousBalance=data[gid][str(balanceName)]
+            if item in lists.readother()["alloweditems"]:
+              if item in list(data[gid][str(balanceName)].keys()):
+                nf = int(data[gid][str(balanceName)][item])
+                ns = int(amount)
+                added = ns + nf
+              else:
+                nf = 0
+                ns = int(amount)
+                added = ns + nf
+              print(amount)
+              print(added)
+              data[gid][str(balanceName)].update({str(item):int(added)})
+              lists.setdata(data)
+              #await ctx.send(f'Now {member.name} has {added} {item} in {ctx.message.guild.name}')
+              e = discord.Embed(title="Non-User Balance Update")
+              e.add_field(name="Balance Name", value=balanceName, inline=True)
+              e.add_field(name="Updated By", value=ctx.message.author.display_name, inline=True)
+              e.add_field(name="Old Balance",value=nf,inline=True)
+              e.add_field(name="New Balance",value=added,inline=True)
+              e.add_field(name="Item",value=item,inline=True)
+              e.add_field(name="Amount Added",value=ns,inline=True)
+              #tz = pytz.timezone('America/New_York')
+              e.timestamp=datetime.now()
+              await ctx.send(embed=e)
+              myguild = self.bot.get_guild(1031900634741473280)
+              mychannel = myguild.get_channel(1145862891271094322)
+              await mychannel.send(f"Non-User Balance `{balanceName}` balance was changed by `{item}:{amount}`.\nPrevious Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(balanceName)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Update Non-User Balance`\nPerformed In Server: `{ctx.message.guild.name}`")
+            else:
+              await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
+          else:
+            await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
+          #except KeyError:
+            #await ctx.send(f"KeyError: Either Item {item} Or User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
+
+  @commands.command(name='resetnonuserbalance',brief="Resets an item in a non-user balance. (LR)",help="Resets one loot value in a non-user balance. Format: n!reset item balanceName",aliases=["resetnub","rtnub"])
+  async def resetNUB(self, ctx, item,*,balanceName):
         msg="a b"
         msgparts, data = msg.split(" "), lists.readdata()
+        msgb=str("member")+" "+item
+        #lists.logback(ctx,msgb)
         chk = lists.checkperms(ctx)
         gid = str(ctx.message.guild.id)
-        mem=str(member.id)
-        del data[gid][mem]
-        #lists.logback(ctx,member)
         if chk == True:
           try:
-            lists.setdata(data)
-            memvar=member
-            e = discord.Embed(title="Member Removed")
-            e.add_field(name="Member", value=memvar.display_name, inline=True)
-            e.add_field(name="Removed By By",value=ctx.message.author.display_name,inline=True)
-            e.add_field(name="Reason",value=reason,inline=True)
-            e.set_thumbnail(url=memvar.display_avatar)
-            #tz = pytz.timezone('America/New_York')
-            e.timestamp=datetime.now()
-            await ctx.send(embed=e)
+            previousBalance=data[gid][str(balanceName)]
+            if item in lists.readother()["alloweditems"]:
+              data[gid][str(balanceName)][str(item)]=0
+              lists.setdata(data)
+              e = discord.Embed(title="Non-User Balance Reset")
+              e.add_field(name="Balance Name", value=balanceName, inline=True)
+              e.add_field(name="Reset By", value=ctx.message.author.display_name, inline=True)
+              e.add_field(name="Item",value=item,inline=True)
+              #tz = pytz.timezone('America/New_York')
+              e.timestamp=datetime.now()
+              await ctx.send(embed=e)
+              myguild = self.bot.get_guild(1031900634741473280)
+              mychannel = myguild.get_channel(1145862891271094322)
+              await mychannel.send(f"Non-User Balance `{balanceName}` balance was changed, item `{item}` was reset.\nPrevious Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(balanceName)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Update Non-User Balance`\nPerformed In Server: `{ctx.message.guild.name}`")
+            else:
+              await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
-            await ctx.send(f"KeyError: User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
+            await ctx.send(f"KeyError: Either Item {item} Or Non-User Balance {balanceName} cannot be found in {ctx.message.guild.name}'s Distribution List.")
+        else:
+          await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
+
+  @commands.command(name='deletenonuseritem',brief="Deletes An Item From A Non-User Balance. (LR)",help="Deletes one loot value in a Non-User balance. Format: n!deleteitem item balanceName",aliases=["dnub","delnubitem"])
+  async def deleteNUBItem(self, ctx,item,*,balanceName):
+        msg="a b"
+        msgparts, data = msg.split(" "), lists.readdata()
+        msgb=str("member")+" "+item
+        #lists.logback(ctx,msgb)
+        chk = lists.checkperms(ctx)
+        gid = str(ctx.message.guild.id)
+        if chk == True:
+          try:
+            previousBalance=data[gid][str(balanceName)]
+            if item in lists.readother()["alloweditems"]:
+              data[gid][str(balanceName)].pop(item)
+              lists.setdata(data)
+              e = discord.Embed(title="Non-User Balance Item Deletion")
+              e.add_field(name="Balance Name", value=balanceName, inline=True)
+              e.add_field(name="Deleted By", value=ctx.message.author.display_name, inline=True)
+              e.add_field(name="Item Deleted",value=item,inline=True)
+              #tz = pytz.timezone('America/New_York')
+              e.timestamp=datetime.now()
+              await ctx.send(embed=e)
+              myguild = self.bot.get_guild(1031900634741473280)
+              mychannel = myguild.get_channel(1145862891271094322)
+              await mychannel.send(f"Non-User Balance `{balanceName}` balance was changed, item `{item}` was deleted.\nPrevious Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(balanceName)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Update Non-User Balance`\nPerformed In Server: `{ctx.message.guild.name}`")
+            else:
+              await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
+          except KeyError:
+            await ctx.send(f"KeyError: Either Item {item} Or Non-User Balance {balanceName} cannot be found in {ctx.message.guild.name}'s Distribution List.")
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
@@ -272,8 +470,9 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           await ctx.send('Balances Of All Members')
           memlist=list(lists.readdata()[mesg].keys())
           cntntlist=[]
+          ids = [member.id for member in ctx.guild.members]
           for x in memlist:
-            if x == "clan":
+            if x == "clan" or x not in ids:
               cntntlist.append(f'{x} : {lists.readdata()[mesg][str(x)]}')
             else:
               usid=x

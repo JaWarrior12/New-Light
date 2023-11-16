@@ -31,13 +31,14 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     return commands.check(predicate)
 
   @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact jawarrior about completing server setup.")
-  @commands.has_permissions(administrator=True)
+  #@commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
   async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0,verbal="no"):
-      servers=lists.readdata()
+      servers=lists.readdataE()
       if str(ctx.message.guild.id) not in servers.keys():
+        await ctx.send("Started Server Setup")
         msg = None
-        lists.logback(ctx,msg)
+        #lists.logback(ctx,msg)
         msgb = "a b"
         pc=int(pingChannel)
         gid = ctx.message.guild.id
@@ -47,7 +48,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         defaultb=[]
         defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0,"verbal":verbal}
         defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rc":0,"burst":0,"auto":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
-        data = lists.readdata()
+        data = lists.bals()
         data[gid]=dict(defaultd)
         lists.setdata(data)
         data = lists.readdataB()
@@ -62,11 +63,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         data = lists.readdataE()
         data[gid]=dict(defaultc)
         lists.setdataE(data)
-        data = lists.readdataE()
-        banlt=data
+        banlt = lists.readdataE()
         banlt[gid]["auth"].append(str(uid))
         lists.setdataE(banlt)
-        #server = ctx.message.guild
         await ctx.send("Server Setup Succesfully!")
         #await server.create_role(name="QuickPing")
         #await ctx.send("QuickPing Role Created")
@@ -205,9 +204,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         val=int(input)
       data=lists.readdataE()
       data[str(interaction.guild_id)][str(option.value)]=val
-      #print(data)
       lists.setdataE(data)
-      await interaction.response.send_message(f'Changed {(option.name)} to {val}')
+      await interaction.response.send_message(f'Changed {option.name} to {val}')
     else:
       await interaction.response.send_message("You are not authorized to manage server configuration settings.")
 
@@ -267,7 +265,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
               #print(f'Role Pos:{roles.index(role)}')
               inx=roles.index(role)+1
               #print(f'Index:{inx}')
-              rid=roles[inx].id
+              rid=roles[-1].id
               #print(rid)
               roleb=ctx.message.guild.get_role(rid)
               #print(f'Roleb: {roleb}')

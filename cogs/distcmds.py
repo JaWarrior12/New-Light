@@ -544,23 +544,6 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     others["verifydist"]=[]
     lists.setother(others)
     print("All Logs Verified")
-        
-  @commands.command(name="verdist")
-  async def verdist(self,ctx):
-    if ctx.message.author.id in developers:
-      await ctx.send("Starting Verification")
-      await self.verifyscheduled(self)
-      await ctx.send("Verified Distro Logs")
-    else:
-      await ctx.send("Only The Developer Can Use This Command.")
-  @commands.command(name="verifytimer",aliases=['vft'],description="Starts Distribution Verification Timer, DEV ONLY",hidden=True)
-  async def verifytimer(self,ctx,opt="timer",hrs=0,mins=5,secs=0,micsecs=0,dys=1):
-    if ctx.message.author.id in developers:
-      self.verifyscheduled.cancel()
-      self.verifyscheduled.start()
-      await ctx.send("Started Distribution Verification Timer")
-    else:
-      await ctx.send("Only The Developer Can Use This Command.")
 
   @commands.Cog.listener()
   async def on_message(self,msg):

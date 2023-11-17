@@ -62,17 +62,21 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         gid = str(ctx.message.guild.id)
         msgparts, data = msg.split(" "), lists.readdataD()
         auth = ctx.message.author.id
-        auth2 = auth
-        img = ctx.message.attachments[0]
-        img2 = img.url
+        try:
+          img = ctx.message.attachments[0]
+          img2 = img.url
+        except:
+          img=None
+          img2=None
         #print(img2)
-        default = {"Designer":int(auth2),"Image":img2}
-        data[gid][str(design)] = default
+        default = {"Designer":int(auth),"Image":None}
+        data[gid].update({design:default})
         #print(data)
         lists.setdataD(data)
         #lists.logback(ctx,design)
         await ctx.send(f'Added {design} to the Database')
-      except KeyError:
+      except KeyError as e:
+        print(e)
         await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
     else:
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
@@ -102,26 +106,13 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
       try:
         design=str(design.lower())
         print(design)
-        if design=="all":
-          gid = str(ctx.message.guild.id)
-          data=lists.readdataD()
-          for x in data[gid]:
-            x=str(x)
-            f = discord.Embed(title=x)
-            f.set_image(url=str(data[gid][x]["Image"]))
-            f.add_field(name="Designer",value=f'<@{data[gid][x]["Designer"]}>',inline=True)
-            keylist=list(data[gid][x].keys())
-            keylist.remove("Designer")
-            keylist.remove("Image")
-            for key in keylist:
-              f.add_field(name=str(key),value=data[gid][x][str(key)],inline=True)
-            await ctx.message.author.send(embed=f)
-        elif design=="list":
+        if design=="list designs":
           gid = str(ctx.message.guild.id)
           data=lists.readdataD()
           k=discord.Embed(title="Design List")
           for x in data[gid]:
-            k.add_field(name="",value=x)
+            k.add_field(name="Design Name",value=x)
+            k.add_field(name="Designer",value=f'<@{int(data[x]["Designer"])}>')
           await ctx.send(embed=k)
         else:
           gid = str(ctx.message.guild.id)

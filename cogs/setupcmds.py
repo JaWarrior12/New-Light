@@ -234,7 +234,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   async def listserversettings(self,ctx):
     if str(ctx.message.author.id) not in banned:
       data = None
-      #chk = lists.checkperms(ctx)
+      chk = lists.checkperms(ctx)
       gid = str(ctx.message.guild.id)
       #lists.logback(ctx,member)
       if chk == True:

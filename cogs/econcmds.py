@@ -44,10 +44,10 @@ tmes=tme(hour=0,minute=30,tzinfo=utc)
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    #self.exchangeRatesUpdater.start()
+    self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    #self.exchangeRatesUpdater.cancel()
-    pass
+    self.exchangeRatesUpdater.cancel()
+    #pass
 
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
@@ -247,6 +247,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
               await asyncio.sleep(0.1)
               upmc=await myguild.fetch_channel(1150474219021410357)
               newthread=upmc.get_thread(upmc.last_message_id)
+              #with requests.get(f"https://drednot.io/img/{itemname}", stream=True) as r:
               await newthread.send(content=f"Rate : `{ratefinal}`;\nDivRate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`")
             else:
               thrd=mychannel.get_thread(thd[0].id)

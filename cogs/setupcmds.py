@@ -238,7 +238,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       gid = str(ctx.message.guild.id)
       #lists.logback(ctx,member)
       if chk == True:
-        data = lists.readdata()
+        data = lists.readdataE()
         try:
           e = discord.Embed(title="Configuration Settings For "+ctx.message.guild.name)
           #for x in data[gid].keys():
@@ -252,8 +252,6 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           e.add_field(name="Member Channel",value=ctx.guild.get_channel(data[gid]["memchan"]).mention,inline=True)
           e.add_field(name="Member Role",value=ctx.guild.get_role(data[gid]["memrole"]).mention,inline=True)
           e.add_field(name="Member List Message",value=ctx.guild.get_channel(data[gid]["memchan"]).get_partial_message(data[gid]["memmsg"]).jump_url,inline=True)
-          #tz = pytz.timezone('America/New_York')
-          e.timestamp=datetime.now()
           await ctx.send(embed=e)
         except KeyError:
           await ctx.send(f"KeyError: Guild {gid} cannot be found.")

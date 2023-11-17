@@ -230,6 +230,40 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         lists.setdataE(data)
         await ctx.send(f'Changed {(option)} to {val}')
 
+  @commands.command(name='serversettings',brief="Lists Server Settings.",help="Lists The Configuration Settings Of The Server")
+  async def listserversettings(self,ctx):
+    if str(ctx.message.author.id) not in banned:
+      data = None
+      #chk = lists.checkperms(ctx)
+      gid = str(ctx.message.guild.id)
+      #lists.logback(ctx,member)
+      if chk == True:
+        data = lists.readdata()
+        try:
+          e = discord.Embed(title="Configuration Settings For "+ctx.message.guild.name)
+          #for x in data[gid].keys():
+            #e.add_field(name=x,value=data[gid][x],inline=True)
+          e.add_field(name="Verify Logs?",value=data[gid]["verbal"],inline=True)
+          e.add_field(name="Store Member Balances?",value=data[gid]["storebal"],inline=True)
+          e.add_field(name="Clan Percent",value=data[gid]["clanPercent"],inline=True)
+          e.add_field(name="Clan Storage Hex Code",value=data[gid]["distship"],inline=True)
+          e.add_field(name="Distribution Logging  Channel",value=ctx.guild.get_channel(data[gid]["distchan"]).mention,inline=True)
+          e.add_field(name="Ping Channel",value=ctx.guild.get_channel(data[gid]["pingchan"]).mention,inline=True)
+          e.add_field(name="Member Channel",value=ctx.guild.get_channel(data[gid]["memchan"]).mention,inline=True)
+          e.add_field(name="Member Role",value=ctx.guild.get_role(data[gid]["memrole"]).mention,inline=True)
+          e.add_field(name="Member List Message",value=ctx.guild.get_channel(data[gid]["memchan"]).get_partial_message(data[gid]["memmsg"]).jump_url,inline=True)
+          #tz = pytz.timezone('America/New_York')
+          e.timestamp=datetime.now()
+          await ctx.send(embed=e)
+        except KeyError:
+          await ctx.send(f"KeyError: Guild {gid} cannot be found.")
+      else:
+        await ctx.send("You are not leadership Authorized")
+    elif str(ctx.message.author.id) in banned:
+      await ctx.send("Your ID Is In The Banned List.")
+    else:
+      await ctx.send("Error")
+
   @commands.command(name="memberlistconfig",aliases=["mlc"],brief="Setup member list.",help="Setup member list, n!mlc (LR)",hidden=False,disabled=False)
   async def mlc(self,ctx):
     if lists.checkperms(ctx)==True:

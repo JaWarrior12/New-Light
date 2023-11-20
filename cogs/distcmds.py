@@ -88,7 +88,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             memvar=member
             memName=member
             memAv=None
-            memMem=member
+            memMen=member
           #try:
           if chk == True:
             previousBalance=data[gid][str(memvar)].copy()
@@ -137,7 +137,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         memvar=0
         memName=0
         memAv=0
-        memMem=0
+        memMen=0
         try:
           member=await commands.MemberConverter().convert(ctx,member)
         except:
@@ -151,7 +151,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           memvar=member
           memName=member
           memAv=None
-          memMem=member
+          memMen=member
         if chk == True:
           try:
             previousBalance=data[gid][str(memvar)].copy()
@@ -189,7 +189,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         memvar=0
         memName=0
         memAv=0
-        memMem=0
+        memMen=0
         try:
           member=await commands.MemberConverter().convert(ctx,member)
         except:
@@ -203,7 +203,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           memvar=member
           memName=member
           memAv=None
-          memMem=member
+          memMen=member
         if chk == True:
           try:
             previousBalance=data[gid][str(memvar)].copy()
@@ -243,12 +243,12 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       memvar=0
       memName=0
       memAv=0
-      memMem=0
+      memMen=0
       if member=="clan":
         memvar=member
         memName=member
         memAv=None
-        memMem=member
+        memMen=member
       else:
         try:
           member=await commands.MemberConverter().convert(ctx,member)
@@ -263,7 +263,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           memvar=member
           memName=member
           memAv=None
-          memMem=member
+          memMen=member
       try:
         e = discord.Embed(title="Member Balance")
         e.add_field(name="Member", value=memName, inline=True)
@@ -290,7 +290,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         memvar=0
         memName=0
         memAv=0
-        memMem=0
+        memMen=0
         try:
           member=await commands.MemberConverter().convert(ctx,member)
         except:
@@ -304,7 +304,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           memvar=member
           memName=member
           memAv=None
-          memMem=member
+          memMen=member
         if chk == True:
           inputv={}
           keylist=lists.readother()["defaultdist"].keys()
@@ -327,7 +327,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           await ctx.send(embed=e)
           myguild = self.bot.get_guild(1031900634741473280)
           mychannel = myguild.get_channel(1145862891271094322)
-          await mychannel.send(f"`{memMen}` was added to the distribution list in server `{ctx.message.guild.name}`.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Add Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+          await mychannel.send(f"`{memMen}` was added to the distribution list in server `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Add Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+          await mychannel.send(f"Resulting Balance: `{data[gid][str(memvar)]}`")
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
@@ -340,7 +341,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     memvar=0
     memName=0
     memAv=0
-    memMem=0
+    memMen=0
     try:
       member=await commands.MemberConverter().convert(ctx,member)
     except:
@@ -354,11 +355,12 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       memvar=member
       memName=member
       memAv=None
-      memMem=member
+      memMen=member
     myguild = self.bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1145862891271094322)
     previousBalance=data[gid][memvar].copy()
-    await mychannel.send(f"`{memMen}` was removed from the distribution list in server `{ctx.message.guild.name}`.\nBalance Before Deletion: `{previousBalance}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Remove Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+    await mychannel.send(f"`{memMen}` was removed from the distribution list in server `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Remove Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+    await mychannel.send(f"Balance Before Deletion: `{previousBalance}`")
     del data[gid][memvar]
     #lists.logback(ctx,member)
     if chk == True:

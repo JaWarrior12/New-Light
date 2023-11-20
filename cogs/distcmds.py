@@ -88,7 +88,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             memvar=member
             memName=member
             memAv=None
-            memMem=member
+            memMen=member
           #try:
           if chk == True:
             previousBalance=data[gid][str(memvar)].copy()
@@ -117,7 +117,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"{memMen}'s balance was changed by `{item}:{amount}`.\nPrevious Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(memvar)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"`{memMen}'s balance was changed by `{ns}` `{item}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"Previous Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(memvar)]}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           else:
@@ -136,7 +137,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         memvar=0
         memName=0
         memAv=0
-        memMem=0
+        memMen=0
         try:
           member=await commands.MemberConverter().convert(ctx,member)
         except:
@@ -150,7 +151,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           memvar=member
           memName=member
           memAv=None
-          memMem=member
+          memMen=member
         if chk == True:
           try:
             previousBalance=data[gid][str(memvar)].copy()
@@ -161,13 +162,15 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               e.add_field(name="Target Member", value=memName, inline=True)
               e.add_field(name="Reset By", value=ctx.message.author.display_name, inline=True)
               e.add_field(name="Item",value=item,inline=True)
+              e.add_field(name="Previous Balance",value=previousBalance[item],inline=True)
               e.set_thumbnail(url=memAv)
               #tz = pytz.timezone('America/New_York')
               e.timestamp=datetime.now()
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"`{memMen}'s balance was changed, item `{item}` was reset.\nPrevious Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(memvar)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"`{memMen}'s balance was changed, item `{item}` was reset.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"Previous Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(memvar)]}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
@@ -186,7 +189,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         memvar=0
         memName=0
         memAv=0
-        memMem=0
+        memMen=0
         try:
           member=await commands.MemberConverter().convert(ctx,member)
         except:
@@ -200,7 +203,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           memvar=member
           memName=member
           memAv=None
-          memMem=member
+          memMen=member
         if chk == True:
           try:
             previousBalance=data[gid][str(memvar)].copy()
@@ -211,13 +214,15 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               e.add_field(name="Target Member", value=memName, inline=True)
               e.add_field(name="Deleted By", value=ctx.message.author.display_name, inline=True)
               e.add_field(name="Item Deleted",value=item,inline=True)
+              e.add_field(name="Previous Balance",value=previousBalance[item],inline=True)
               e.set_thumbnail(url=memAv)
               #tz = pytz.timezone('America/New_York')
               e.timestamp=datetime.now()
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"`{memMen}'s balance was changed, item `{item}` was deleted.\nPrevious Balance; `{previousBalance}`\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"`{memMen}'s balance was changed, item `{item}` was deleted.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"Previous Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(memvar)]}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
           except KeyError:
@@ -238,21 +243,27 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       memvar=0
       memName=0
       memAv=0
-      memMem=0
-      try:
-        member=await commands.MemberConverter().convert(ctx,member)
-      except:
-        member=member
-      if type(member) is discord.Member:
-        memvar=member.id
-        memName=member.display_name
-        memAv=member.display_avatar
-        memMen=member.mention
-      else:
+      memMen=0
+      if member=="clan":
         memvar=member
         memName=member
         memAv=None
-        memMem=member
+        memMen=member
+      else:
+        try:
+          member=await commands.MemberConverter().convert(ctx,member)
+        except:
+          member=member
+        if type(member) is discord.Member:
+          memvar=member.id
+          memName=member.display_name
+          memAv=member.display_avatar
+          memMen=member.mention
+        else:
+          memvar=member
+          memName=member
+          memAv=None
+          memMen=member
       try:
         e = discord.Embed(title="Member Balance")
         e.add_field(name="Member", value=memName, inline=True)
@@ -279,7 +290,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         memvar=0
         memName=0
         memAv=0
-        memMem=0
+        memMen=0
         try:
           member=await commands.MemberConverter().convert(ctx,member)
         except:
@@ -293,7 +304,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           memvar=member
           memName=member
           memAv=None
-          memMem=member
+          memMen=member
         if chk == True:
           inputv={}
           keylist=lists.readother()["defaultdist"].keys()
@@ -316,7 +327,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           await ctx.send(embed=e)
           myguild = self.bot.get_guild(1031900634741473280)
           mychannel = myguild.get_channel(1145862891271094322)
-          await mychannel.send(f"`{memMen}` was added to the distribution list in server `{ctx.message.guild.name}`.\nResulting Balance: `{data[gid][str(member.id)]}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Add Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+          await mychannel.send(f"`{memMen}` was added to the distribution list in server `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Add Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+          await mychannel.send(f"Resulting Balance: `{data[gid][str(memvar)]}`")
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
@@ -329,7 +341,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     memvar=0
     memName=0
     memAv=0
-    memMem=0
+    memMen=0
     try:
       member=await commands.MemberConverter().convert(ctx,member)
     except:
@@ -343,11 +355,12 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       memvar=member
       memName=member
       memAv=None
-      memMem=member
+      memMen=member
     myguild = self.bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1145862891271094322)
     previousBalance=data[gid][memvar].copy()
-    await mychannel.send(f"`{memMen}` was removed from the distribution list in server `{ctx.message.guild.name}`.\nBalance Before Deletion: `{previousBalance}`\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Remove Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+    await mychannel.send(f"`{memMen}` was removed from the distribution list in server `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Remove Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+    await mychannel.send(f"Balance Before Deletion: `{previousBalance}`")
     del data[gid][memvar]
     #lists.logback(ctx,member)
     if chk == True:

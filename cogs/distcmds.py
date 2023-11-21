@@ -234,7 +234,6 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
   async def getuserloot(self,ctx,member):
     if str(ctx.message.author.id) not in banned:
       data = None
-      print(member.id)
       #chk = lists.checkperms(ctx)
       gid = str(ctx.message.guild.id)
       #lists.logback(ctx,member)

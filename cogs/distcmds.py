@@ -25,18 +25,7 @@ import lists
 #authorized = lists.authorized
 banned = lists.banned
 developers = lists.developers
-#Authorized Based On Clan
-nlcauth = lists.nlcauth
-bocauth = lists.bocauth
-dsrauth = lists.dsrauth
-tsauth = lists.tsauth
-ffauth = lists.ffauth
-#Server IDs
-NLC = lists.NLC
-BOC = lists.BOC
-TestSrvr = lists.TestSrvr
-DSR = lists.DSR
-FRF = lists.FRF
+
 
 #tz = pytz.timezone('America/New_York')
 utc=timezone.utc
@@ -117,7 +106,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"`{memMen}'s balance was changed by `{ns}` `{item}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"`{memMen}`'s balance was changed by `{ns}` `{item}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
               await mychannel.send(f"Previous Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(memvar)]}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")

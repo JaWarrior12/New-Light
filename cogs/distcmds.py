@@ -25,18 +25,7 @@ import lists
 #authorized = lists.authorized
 banned = lists.banned
 developers = lists.developers
-#Authorized Based On Clan
-nlcauth = lists.nlcauth
-bocauth = lists.bocauth
-dsrauth = lists.dsrauth
-tsauth = lists.tsauth
-ffauth = lists.ffauth
-#Server IDs
-NLC = lists.NLC
-BOC = lists.BOC
-TestSrvr = lists.TestSrvr
-DSR = lists.DSR
-FRF = lists.FRF
+
 
 #tz = pytz.timezone('America/New_York')
 utc=timezone.utc

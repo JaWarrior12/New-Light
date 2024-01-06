@@ -25,18 +25,7 @@ import lists
 #authorized = lists.authorized
 banned = lists.banned
 developers = lists.developers
-#Authorized Based On Clan
-nlcauth = lists.nlcauth
-bocauth = lists.bocauth
-dsrauth = lists.dsrauth
-tsauth = lists.tsauth
-ffauth = lists.ffauth
-#Server IDs
-NLC = lists.NLC
-BOC = lists.BOC
-TestSrvr = lists.TestSrvr
-DSR = lists.DSR
-FRF = lists.FRF
+
 
 utc=timezone.utc
 tmes=tme(hour=0,minute=30,tzinfo=utc)
@@ -44,10 +33,10 @@ tmes=tme(hour=0,minute=30,tzinfo=utc)
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    #self.exchangeRatesUpdater.start()
+    self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    #self.exchangeRatesUpdater.cancel()
-    pass
+    self.exchangeRatesUpdater.cancel()
+    #pass
 
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
@@ -214,7 +203,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       datab=alldat["items_moved"]
       keys=list(data.keys())
       flux=float(data["5"])
-      tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,162,164,226,228,229,242,243,246,252,253,256,257,258,305,306,307]
+      tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,162,164,226,228,229,234,242,243,246,252,253,256,257,258,305,306,307]
       for x in keys:
         if int(x) in tracked:
           if x == "5":

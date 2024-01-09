@@ -25,18 +25,7 @@ import lists
 #authorized = lists.authorized
 banned = lists.banned
 developers = lists.developers
-#Authorized Based On Clan
-nlcauth = lists.nlcauth
-bocauth = lists.bocauth
-dsrauth = lists.dsrauth
-tsauth = lists.tsauth
-ffauth = lists.ffauth
-#Server IDs
-NLC = lists.NLC
-BOC = lists.BOC
-TestSrvr = lists.TestSrvr
-DSR = lists.DSR
-FRF = lists.FRF
+
 
 utc=timezone.utc
 tmes=tme(hour=0,minute=30,tzinfo=utc)
@@ -44,10 +33,10 @@ tmes=tme(hour=0,minute=30,tzinfo=utc)
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    #self.exchangeRatesUpdater.start()
+    self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    #self.exchangeRatesUpdater.cancel()
-    pass
+    self.exchangeRatesUpdater.cancel()
+    #pass
 
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))

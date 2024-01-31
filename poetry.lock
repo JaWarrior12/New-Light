@@ -341,27 +341,27 @@ files = [
 
 [[package]]
 name = "discord"
-version = "2.2.3"
+version = "2.3.2"
 description = "A mirror package for discord.py. Please install that instead."
 optional = false
 python-versions = "*"
 files = [
-    {file = "discord-2.2.3-py3-none-any.whl", hash = "sha256:b170972fc97e0582f2e4cbb1e2774f1324aae43d451a4f094212e88f22e564a5"},
-    {file = "discord-2.2.3.tar.gz", hash = "sha256:a8de4ed7529930fb655ac0fb73e016f7e647165de5877ff66dbcb395717b7690"},
+    {file = "discord-2.3.2-py3-none-any.whl", hash = "sha256:d7959418799dd3b1e896685812d880169c193468b061b3431fa2a4664febd3da"},
+    {file = "discord-2.3.2.tar.gz", hash = "sha256:cc1ee2dbe6df218ca51519af355b97e87309f8230f58c7f34885feb8e8a76145"},
 ]
 
 [package.dependencies]
-"discord.py" = ">=2.2.3"
+"discord.py" = ">=2.3.2"
 
 [[package]]
-name = "discord.py"
-version = "2.2.3"
+name = "discord-py"
+version = "2.3.2"
 description = "A Python wrapper for the Discord API"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "discord.py-2.2.3-py3-none-any.whl", hash = "sha256:792bdcfe71cfe013c446cf379b2e83e08b5050604322ad6fb592864e63511abd"},
-    {file = "discord.py-2.2.3.tar.gz", hash = "sha256:f9df95795c6f52c5db43b7ab43634993e12ef233288636a759166dd9c134d077"},
+    {file = "discord.py-2.3.2-py3-none-any.whl", hash = "sha256:9da4679fc3cb10c64b388284700dc998663e0e57328283bbfcfc2525ec5960a6"},
+    {file = "discord.py-2.3.2.tar.gz", hash = "sha256:4560f70f2eddba7e83370ecebd237ac09fbb4980dc66507482b0c0e5b8f76b9c"},
 ]
 
 [package.dependencies]
@@ -1055,4 +1055,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.0,<3.9"
-content-hash = "9af86eb92e4caa9db174127ff77ad1813c115c7d96fbef6024d39a9ed43fb601"
+content-hash = "93e3c89cee087ac2bf9fe69886ab9eb3fece044122266ef3fe901f340ed7b1c8"

@@ -13,7 +13,7 @@ updates:
       day: "sunday"
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
-    "target-branch": "development"
+    "target-branch": "Development"
     schedule:
       interval: "weekly"
       timezone: "America/New_York"

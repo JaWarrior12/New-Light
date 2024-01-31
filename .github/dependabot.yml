@@ -10,4 +10,5 @@ updates:
     schedule:
       interval: "weekly"
       timezone: "America/New_York"
-    reviewers: "JaWarrior12"
+    reviewers: 
+      - "JaWarrior12"

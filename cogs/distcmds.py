@@ -562,7 +562,11 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets)")
       allow=[]
       block=[]
+      lootItems=[]
       for x in loot:
+        if isinstance(x,str):
+          lootItems.append(x)
+      for x in lootItems:
           if x in lists.readother()["alloweditems"]:
             allow.append(x)
           else:

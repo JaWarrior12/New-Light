@@ -7,7 +7,7 @@ from discord.ext import commands
 def startup():
   time.sleep(5)
   print("Starting Back Up")
-  os.system('python main.py')
+  os.system('py main.py')
 
 def logdown():
   tz = pytz.timezone('America/New_York')

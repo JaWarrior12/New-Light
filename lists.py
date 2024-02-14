@@ -383,7 +383,7 @@ def formItem(ship):
       name="item_launcher"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})
-    elif int(i)==227:
+    elif int(i)==226:
       name="rc"
       oldbal=ship["count"]
       formedbal.update({str(name):oldbal})

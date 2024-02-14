@@ -2,7 +2,7 @@ import os, discord
 from os import system
 import time
 import pytz
-import datetime 
+from datetime import datetime, timezone
 #from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
@@ -108,9 +108,12 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
     e.add_field(name="",value=tdat["eu"],inline=False)
     e.add_field(name="",value=tdat["asia"],inline=False)
     await ctx.send(embed=e)
-    
+
+  #@commands.command(name="date",help="Fetches Current Date In UTC Or Converts A Date From Given Timezone To UTC")
+    #pass
+
 async def setup(bot: commands.Bot):
-    await bot.add_cog(OtherCmds(bot))
+  await bot.add_cog(OtherCmds(bot))
 
 
 async def hey(link):

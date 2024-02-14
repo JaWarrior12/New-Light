@@ -34,11 +34,11 @@ tmes=tme(hour=0,minute=20,tzinfo=utc)
 class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Distribution Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    self.verifyscheduled.start()
+    self.verifyschedule.start()
     #self.my_console=Console(bot)
   def cog_unload(self):
     #print(1)
-    self.verifyscheduled.cancel()
+    self.verifyschedule.cancel()
     
   #def workaround(self):
     #asyncio.run(self.verifyscheduled())
@@ -451,9 +451,9 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     #t = Timer(secs, self.workaround)
     #t.start()
     print("Restarted Timer")
-    
-  @tasks.loop(time=tmes)
-  async def verifyscheduled(self):
+
+  @staticmethod
+  async def verifyDistroLogs(self):
     print("Verifying Distro Logs")
     a=0
     data=lists.readdataE()
@@ -487,6 +487,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               temp=hex
               hex=distship
               distship=temp
+            print(f'Date0: {date[0]}; Date1: {date[1]}; Date2: {date[2]}')
             strgnew=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/ships.json.gz')
             jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/log.json.gz')
             def find_routea(data, route_no):
@@ -496,15 +497,21 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             result=0
             ct=0
             cd={}
-            for f in remain:
+            for fi in remain:
               hexa=hex
               distshipa=distship
-              if f['dst']==distshipa and f['src']==hexa:
+              if fi['dst']==distshipa and fi['src']==hexa:
                 cbal=list(filter(lambda f: f.get('hex_code') == ds, strgnew))
-                formbal=lists.formItem(f)
+                print(f'cbal: {cbal}')
+                formbal=lists.formItem(fi)
+                print(f'fi: {fi}')
+                print(f'formbal: {formbal}')
                 keys=list(formbal.keys())
-                ct=ct+formbal[keys[0]]
-                cd.update({keys[0]:ct})
+                #print(keys)
+                if(len(keys)>0):
+                  ct=ct+formbal[keys[0]]
+                  print(f'ct: {ct}')
+                  cd.update({keys[0]:ct})
               else:
                 pass
             for p in list(cd.keys()):
@@ -516,6 +523,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               print(cdkys)
               obj=cd[cdkys[0]]
               cd[cdkys[0]]= -abs(obj)
+            print(f'cd: {cd}')
+            print(f'count: {count}')
             if cd == count:
               result=1
             else:
@@ -533,6 +542,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           pass
         oth["verifydist"].remove(x)
       except Exception as e:
+        print(e)
         if hasattr(e, 'message'):
           emes=e.message
         else:
@@ -546,6 +556,17 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     lists.setother(others)
     print("All Logs Verified")
 
+  @tasks.loop(time=tmes)
+  async def verifyschedule(self):
+    await self.verifyDistroLogs(self)
+
+  @commands.command(name="forceDistroVerification",aliases=["fdl"])
+  async def forceDistroVerification(self,ctx):
+    if ctx.message.author.id in developers:
+      await ctx.send("Forcefully Verifying Distro Logs")
+      await self.verifyDistroLogs(self)
+      await ctx.send("Distro Logs Verified")
+
   @commands.Cog.listener()
   async def on_message(self,msg):
     condat=lists.readdataE()
@@ -557,29 +578,39 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       l=pts[2]
       loot=l.split(";")
       purp=pts[0]
-      data=lists.bals()
-      prebal=data[str(msg.guild.id)]["clan"]
+      data=lists.bals().copy()
+      #print(type(data))
+      prebal=data[str(msg.guild.id)]["clan"].copy()
       thrd=await msg.create_thread(name="Calculations (How Much Everyone Gets)")
       allow=[]
       block=[]
       lootItems=[]
       for x in loot:
         if isinstance(x,str):
-          lootItems.append(x)
+          splitStr=x.split(":")
+          #print(splitStr)
+          #print(splitStr[0])
+          lootItems.append(splitStr[0])
+      #print(lootItems)
       for x in lootItems:
           if x in lists.readother()["alloweditems"]:
             allow.append(x)
+            #print("allow")
           else:
+            #print("deny")
             block.append(x)
       if len(block)==0:
         pass
       else:
         await thrd.send(f"Sorry The Following Items: {block} are not registered in my system and have NOT been counted for. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
+      #endClanBal=0
       for x in allow:
-        loc=loot.index(x)
-        w=x.split(":")
+        #print(x)
+        loc=allow.index(x)
+        w=loot[loc].split(":")
         item=str(w[0])
         amount=int(w[1])
+        #print(f'{item} : {amount}')
         percent=float(condat[str(msg.guild.id)]["clanPercent"]) #Percent The Clan Gets
         whole=amount
         if purp == "withdrawal":
@@ -599,43 +630,50 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         if condat[str(msg.guild.id)]["storebal"].lower()=="no":
           cbala=data[str(msg.guild.id)]["clan"][str(item)]
           cbala=cbala+whole
+          data[str(msg.guild.id)]["clan"][str(item)]=cbala
         else:
           cbala=data[str(msg.guild.id)]["clan"][str(item)]
+          #print(f'Pre; {cbala}')
           cbala=cbala+div
+          #print(f'Post: {cbala}')
           data[str(msg.guild.id)]["clan"][item]=cbala
         if purp=="withdrawal":
           rem=div
         else:
           rem=amount-abs(div)
-        mem=round(rem/int(len(users)))
-        memtot=mem*len(users)
-        print(memtot)
-        print(div+memtot)
-        await thrd.send(f'The Listed Members Get {mem} {item} each.')
-        #Code To Give The "Lost" Flux To The Clan
-        if div+memtot != whole:
-          dim=div+memtot
-          missing=whole-dim
-          cbalb=cbala+missing
-          data[str(msg.guild.id)]["clan"][item]=cbalb
-        for i in users:
-          i=i.replace("<","").replace("@","").replace(">","")
-          mbr=msg.guild.get_member(int(i)).id
-          keys=list(data[str(msg.guild.id)][str(mbr)].keys())
-          if str(item) in keys:
-            bal=data[str(msg.guild.id)][str(mbr)][str(item)]
-            bal=bal+mem
-            data[str(msg.guild.id)][str(mbr)][str(item)]=bal
-          else:
-            bala=data[str(msg.guild.id)]["clan"][str(item)]
-            bala=bala+mem
-            data[str(msg.guild.id)]["clan"][str(item)]=bala
+        if condat[str(msg.guild.id)]["storebal"].lower()=="yes":
+          #print("Storebal=yes")
+          mem=round(rem/int(len(users)))
+          memtot=mem*len(users)
+          #print(memtot)
+          #print(div+memtot)
+          await thrd.send(f'The Listed Members Get {mem} {item} each.')
+          #Code To Give The "Lost" Flux To The Clan
+          if div+memtot != whole:
+            dim=div+memtot
+            missing=whole-dim
+            cbalb=cbala+missing
+            data[str(msg.guild.id)]["clan"][item]=cbalb
+          for i in users:
+            i=i.replace("<","").replace("@","").replace(">","")
+            mbr=msg.guild.get_member(int(i)).id
+            keys=list(data[str(msg.guild.id)][str(mbr)].keys())
+            if str(item) in keys:
+              bal=data[str(msg.guild.id)][str(mbr)][str(item)]
+              bal=bal+mem
+              data[str(msg.guild.id)][str(mbr)][str(item)]=bal
+            else:
+              bala=data[str(msg.guild.id)]["clan"][str(item)]
+              bala=bala+mem
+              data[str(msg.guild.id)]["clan"][str(item)]=bala
       other=lists.readother()
       endbal=data[str(msg.guild.id)]["clan"]
       lootdict={}
       for x in loot:
         p=list(x.split(":"))
         lootdict.update({str(p[0]):int(p[1])})
+      await thrd.send(prebal)
+      await thrd.send(endbal)
       apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal,msg.content,data[str(msg.guild.id)],lootdict,purp]
       other["verifydist"].append(apit)
       if condat[str(msg.guild.id)]["verbal"]=="yes":

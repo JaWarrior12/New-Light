@@ -587,10 +587,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       lootItems=[]
       for x in loot:
         if isinstance(x,str):
-          splitStr=x.split(":")
-          #print(splitStr)
-          #print(splitStr[0])
-          lootItems.append(splitStr[0])
+          lootItems.append(x)
       #print(lootItems)
       for x in lootItems:
           if x in lists.readother()["alloweditems"]:

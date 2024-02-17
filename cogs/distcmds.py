@@ -1,4 +1,5 @@
 import os, discord
+from aiohttp import DataQueue
 import time as timea
 import traceback
 import asyncio
@@ -461,88 +462,101 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     data=lists.readdataE()
     oth=lists.readother()
     distdat=lists.readdata()
-    for x in oth["verifydist"]:
-      loc = oth["verifydist"].index(x)
-      gid=x[0]
-      chanid=int(x[1])
-      msgid=x[2]
-      prebal=x[3]
-      endbal=x[4]
-      ctxt=x[5]
-      count=x[7]
-      purp=x[8]
-      guild=self.bot.get_guild(int(gid))
-      channel=guild.get_channel(chanid)
-      mesg=await channel.fetch_message(int(msgid))
+    dailyData=oth["verifydist"]
+    print(dailyData)
+  
+    def findRelatingLogs(data, key, hex):
+      return list(filter(lambda x: x.get(key) == hex, data))
+
+    shipItemTotals={}
+    for message in dailyData:
+      #print(message)
+      guild=self.bot.get_guild(int(message["guildId"]))
+      channel=guild.get_channel(int(message["channelId"]))
+      mesg=await channel.fetch_message(int(message["msgId"]))
+      thread=guild.get_thread(int(message["thrdId"]))
+      #print(thread.name)
+      result=0
       try:
-        if str(mesg.guild.id) in list(data.keys()):
-          distro=int(data[str(mesg.guild.id)]["distchan"])
-          if int(mesg.channel.id)==distro:
-            pts=ctxt.split("\n")
-            pts=list(pts)
-            date=pts[4].split("/")
-            hex=str("{"+str(pts[3])+"}")
-            ds=data[str(mesg.guild.id)]["distship"]
-            distship=str("{"+ds+"}")
-            distshipb=ds
-            if purp.lower()=="withdrawal":
-              temp=hex
-              hex=distship
-              distship=temp
-            print(f'Date0: {date[0]}; Date1: {date[1]}; Date2: {date[2]}')
-            strgnew=lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/ships.json.gz')
-            jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{date[2]}_{date[0]}_{date[1]}/log.json.gz')
-            def find_routea(data, route_no):
-              return list(filter(lambda x: x.get("src") == route_no, data))
-            route = find_routea(jsondata,hex)
-            remain=list(filter(lambda x: x.get("dst") == distship, route))
-            result=0
-            ct=0
-            cd={}
-            for fi in remain:
-              hexa=hex
-              distshipa=distship
-              if fi['dst']==distshipa and fi['src']==hexa:
-                cbal=list(filter(lambda f: f.get('hex_code') == ds, strgnew))
-                print(f'cbal: {cbal}')
-                formbal=lists.formItem(fi)
-                print(f'fi: {fi}')
-                print(f'formbal: {formbal}')
-                keys=list(formbal.keys())
-                #print(keys)
-                if(len(keys)>0):
-                  ct=ct+formbal[keys[0]]
-                  print(f'ct: {ct}')
-                  cd.update({keys[0]:ct})
-              else:
-                pass
-            for p in list(cd.keys()):
-              if p not in list(count.keys()):
-                cd.pop(p)
-            cdkys=list(cd.keys())
-            if purp.lower()=="withdrawal":
-              print(cd)
-              print(cdkys)
-              obj=cd[cdkys[0]]
-              cd[cdkys[0]]= -abs(obj)
-            print(f'cd: {cd}')
-            print(f'count: {count}')
-            if cd == count:
-              result=1
-            else:
-              result=2
-            if result==1:
-              await mesg.add_reaction("✅")
-              distdat[str(mesg.guild.id)]=x[6]
-              lists.setdata(distdat)
-            else:
-              await mesg.add_reaction("❌")
-            print("Reaction Added")
-          else:
+        #print(message)
+        if str(message["sourceShip"]) not in list(shipItemTotals.keys()):
+          shipItemTotals.update({message["sourceShip"]:{}})
+        #print(message)
+        date=f"{message['date'][2]}_{message['date'][0]}_{message['date'][1]}"
+        logFile = f"https://pub.drednot.io/prod/econ/{date}/log.json.gz"
+        shipFile = f"https://pub.drednot.io/prod/econ/{date}/ships.json.gz"
+        
+        log_response = requests.get(logFile)
+        log_data = gzip.decompress(log_response.content)  #.decode('utf-8')
+        logItems = loads(log_data)
+      
+        ships_response = requests.get(shipFile)
+        shipsData = gzip.decompress(ships_response.content).decode('utf-8')
+        ships= loads(shipsData)
+      
+        total_transfer_amount = 0
+        
+        logList=findRelatingLogs(logItems,"src",message["sourceShip"])
+        negativeList=findRelatingLogs(logItems,"dst",message["sourceShip"])
+        for sortlog in logList:
+          #print(f'Src: {sortlog["src"]}; Dst: {sortlog["dst"]}')
+          if sortlog["dst"] == message["destinationShip"]:
             pass
+          else:
+            #print(f'Removed')
+            logList.remove(sortlog)
+        for sortlog in negativeList:
+          #print(f'Src: {sortlog["src"]}; Dst: {sortlog["dst"]}')
+          if sortlog["src"] == message["destinationShip"]:
+            pass
+          else:
+            #print(f'Removed')
+            negativeList.remove(sortlog)
+        lootTotals={}
+        for lootItem in message["userClaim"]:
+          #print(lootItem)
+          if str(lootItem) not in list(shipItemTotals[message["sourceShip"]].keys()):
+            shipItemTotals[message["sourceShip"]].update({str(lootItem):0})
+          #print(f"lootItem: {lootItem}")
+          itemTotal=0
+          itemId=lists.itemNameToID(lootItem)
+          for itemlog in findRelatingLogs(logList,"item",itemId):
+            if int(itemlog["item"])==int(itemId) and itemlog["dst"]==message["destinationShip"]:
+              itemTotal+=itemlog["count"]
+              #print(itemlog)
+          for itemlog in findRelatingLogs(negativeList,"item",itemId):
+            if int(itemlog["item"])==int(itemId) and itemlog["src"]==message["destinationShip"]:
+              itemTotal-=itemlog["count"]
+              #print(itemlog)
+          shipItemTotals[message["sourceShip"]][str(lootItem)]+=itemTotal
+          lootTotals.update({lootItem:itemTotal})
+        #print(f"ShipItemTotals: {shipItemTotals}")
+        #print(f"lootTotals: {lootTotals}")
+        for key in list(lootTotals.keys()):
+          index=list(lootTotals.keys())
+          #print(f"User Claim: key == {key}; amount == {message['userClaim'][key]}")
+          #print(f"Actual: key == {key}; amount == {lootTotals[key]}")
+          if message['userClaim'][key] == lootTotals[key]:
+            await thread.send(f"Log Verified; Exact Amount Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`")
+            result=1
+          elif message['userClaim'][key] > lootTotals[key]:
+            await thread.send(f"Log Verified; More Than Amount Listed Has Been Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`\nDifference: `{abs(message["userClaim"][key]-lootTotals[key])}`")
+            await thread.send(f"This Is Most Likely Caused By Multiple Transfers From One Ship")
+            result=1
+          elif message['userClaim'][key] < lootTotals[key]:
+            await thread.send(f"Log Failed Verification; Less Than Amount Listed Has Been Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`\nDifference: `{abs(message["userClaim"][key]-lootTotals[key])}`")
+            #thread.send(f"This Is Most Likely Caused By")
+            result=0
+        if result==1:
+          await mesg.add_reaction("✅")
+          distdat[str(mesg.guild.id)]=message["clanData"]
+          lists.setdata(distdat)
         else:
-          pass
-        oth["verifydist"].remove(x)
+          await mesg.add_reaction("❌")
+        print("Reaction Added")
+    #else:
+      #pass
+        oth["verifydist"].remove(message)
       except Exception as e:
         print(e)
         if hasattr(e, 'message'):
@@ -575,6 +589,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:
       cnt=msg.content
       pts=cnt.split("\n")
+      #print(pts)
       u=pts[1]
       users=u.split(" ")
       l=pts[2]
@@ -588,93 +603,108 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       block=[]
       lootItems=[]
       for x in loot:
+        #print(x)
         if isinstance(x,str):
           lootItems.append(x)
       #print(lootItems)
       for x in lootItems:
-          if x in lists.readother()["alloweditems"]:
+          itemName=x.split(":")[0]
+          #print(itemName)
+          if itemName in lists.readother()["alloweditems"]:
             allow.append(x)
             #print("allow")
           else:
             #print("deny")
             block.append(x)
+      #print(block)
+      #print(allow)
       if len(block)==0:
         pass
       else:
         await thrd.send(f"Sorry The Following Items: {block} are not registered in my system and have NOT been counted for. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
-      #endClanBal=0
       for x in allow:
-        #print(x)
-        loc=allow.index(x)
-        w=loot[loc].split(":")
-        item=str(w[0])
-        amount=int(w[1])
-        #print(f'{item} : {amount}')
-        percent=float(condat[str(msg.guild.id)]["clanPercent"]) #Percent The Clan Gets
-        whole=amount
-        if purp == "withdrawal":
-          pw= whole
-          div=round(pw)
-        else:
-          pw=percent*whole
-          div=round(pw/100)
-        cbala=0
-        if amount > 0:
-          cbala=data[str(msg.guild.id)]["clan"][str(item)]
-          cbala=cbala+div
-          await thrd.send(f"Clan Gets {div} {item}")
-        else:
+        try:
+          #print(x)
+          loc=allow.index(x)
+          w=loot[loc].split(":")
+          item=str(w[0])
+          amount=int(w[1])
+          #print(f'{item} : {amount}')
+          percent=float(condat[str(msg.guild.id)]["clanPercent"]) #Percent The Clan Gets
+          whole=amount
+          if purp == "withdrawal":
+            pw= whole
+            div=round(pw)
+          else:
+            pw=percent*whole
+            div=round(pw/100)
           cbala=0
-          await thrd.send(f"Clan Gets Nothing From Withdrawls")
-        if condat[str(msg.guild.id)]["storebal"].lower()=="no":
-          cbala=data[str(msg.guild.id)]["clan"][str(item)]
-          cbala=cbala+whole
-          data[str(msg.guild.id)]["clan"][str(item)]=cbala
-        else:
-          cbala=data[str(msg.guild.id)]["clan"][str(item)]
-          #print(f'Pre; {cbala}')
-          cbala=cbala+div
-          #print(f'Post: {cbala}')
-          data[str(msg.guild.id)]["clan"][item]=cbala
-        if purp=="withdrawal":
-          rem=div
-        else:
-          rem=amount-abs(div)
-        if condat[str(msg.guild.id)]["storebal"].lower()=="yes":
-          #print("Storebal=yes")
-          mem=round(rem/int(len(users)))
-          memtot=mem*len(users)
-          #print(memtot)
-          #print(div+memtot)
-          await thrd.send(f'The Listed Members Get {mem} {item} each.')
-          #Code To Give The "Lost" Flux To The Clan
-          if div+memtot != whole:
-            dim=div+memtot
-            missing=whole-dim
-            cbalb=cbala+missing
-            data[str(msg.guild.id)]["clan"][item]=cbalb
-          for i in users:
-            i=i.replace("<","").replace("@","").replace(">","")
-            mbr=msg.guild.get_member(int(i)).id
-            keys=list(data[str(msg.guild.id)][str(mbr)].keys())
-            if str(item) in keys:
-              bal=data[str(msg.guild.id)][str(mbr)][str(item)]
-              bal=bal+mem
-              data[str(msg.guild.id)][str(mbr)][str(item)]=bal
-            else:
-              bala=data[str(msg.guild.id)]["clan"][str(item)]
-              bala=bala+mem
-              data[str(msg.guild.id)]["clan"][str(item)]=bala
+          if amount > 0:
+            cbala=data[str(msg.guild.id)]["clan"][str(item)]
+            cbala=cbala+div
+            await thrd.send(f"Clan Gets `{div}` `{item}`")
+          else:
+            cbala=0
+            await thrd.send(f"Clan Gets Nothing From Withdrawls")
+          if condat[str(msg.guild.id)]["storebal"].lower()=="no":
+            cbala=data[str(msg.guild.id)]["clan"][str(item)]
+            cbala=cbala+whole
+            data[str(msg.guild.id)]["clan"][str(item)]=cbala
+          else:
+            cbala=data[str(msg.guild.id)]["clan"][str(item)]
+            #print(f'Pre; {cbala}')
+            cbala=cbala+div
+            #print(f'Post: {cbala}')
+            data[str(msg.guild.id)]["clan"][item]=cbala
+          if purp=="withdrawal":
+            rem=div
+          else:
+            rem=amount-abs(div)
+          if condat[str(msg.guild.id)]["storebal"].lower()=="yes":
+            #print("Storebal=yes")
+            mem=round(rem/int(len(users)))
+            memtot=mem*len(users)
+            #print(memtot)
+            #print(div+memtot)
+            await thrd.send(f'The Listed Members Get `{mem}` `{item}` each.')
+            #Code To Give The "Lost" Flux To The Clan
+            if div+memtot != whole:
+              dim=div+memtot
+              missing=whole-dim
+              cbalb=cbala+missing
+              data[str(msg.guild.id)]["clan"][item]=cbalb
+            for i in users:
+              #print(i)
+              i=i.replace("<","").replace("@","").replace(">","")
+              mbr=msg.guild.get_member(int(i)).id
+              keys=list(data[str(msg.guild.id)][str(mbr)].keys())
+              if str(item) in keys:
+                bal=data[str(msg.guild.id)][str(mbr)][str(item)]
+                bal=bal+mem
+                data[str(msg.guild.id)][str(mbr)][str(item)]=bal
+              else:
+                bala=data[str(msg.guild.id)]["clan"][str(item)]
+                bala=bala+mem
+                data[str(msg.guild.id)]["clan"][str(item)]=bala
+        except Exception as e:
+          print(e)
+      #print(2)
       other=lists.readother()
-      endbal=data[str(msg.guild.id)]["clan"]
+      endbal=data[str(msg.guild.id)]
+      #print(1)
       lootdict={}
       for x in loot:
         p=list(x.split(":"))
         lootdict.update({str(p[0]):int(p[1])})
-      await thrd.send(prebal)
-      await thrd.send(endbal)
-      apit=[msg.guild.id,msg.channel.id,msg.id,prebal,endbal,msg.content,data[str(msg.guild.id)],lootdict,purp]
+      #await thrd.send(prebal)
+      #await thrd.send(endbal)
+      sourceShip="{"+pts[3]+"}"
+      destinationShip="{"+lists.readdataE()[str(msg.guild.id)]["distship"]+"}"
+      date=pts[4].split("/")
+      apit={"guildId":msg.guild.id,"channelId":msg.channel.id,"msgId":msg.id,"thrdId":thrd.id,"sourceShip":sourceShip,"destinationShip":destinationShip,"userClaim":lootdict,"purpose":purp,"date":date,"clanData":endbal}#prebal,endbal,msg.content,data[str(msg.guild.id)],lootdict,purp]
+      #print(apit)
       other["verifydist"].append(apit)
+      #print(other['verifydist'])
       if condat[str(msg.guild.id)]["verbal"]=="yes":
         lists.setother(other)
         await msg.add_reaction("⬆")

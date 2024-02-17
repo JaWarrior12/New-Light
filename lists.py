@@ -239,90 +239,129 @@ def lognewguild(stamp,msg,guild):
       o.write(f'New Light {msg} {guild.name}, Id: {guild.id} at {stamp}.')
       o.write('\n\n')
 
-def formatClanBal(ship,bal):
-  formedbal={}
+def itemNameToID(item):
+  formedbal=0
   #print(ship)
   #print(bal)
   url = "https://pub.drednot.io/test/econ/item_schema.json"
-  keys=list(ship.keys())
+  #keys=list(ship.keys())
   #print(keys)
-  for x in keys:
-    response = loads(requests.get(url).content)
-    def find_route(data, route_no):
-      return list(filter(lambda x: x.get('id') == route_no, data))
-    #route = find_route(response,int(x))
-    name="a"
-    #print(x)
-    #FLux,Iron,Exp,Rubber,Ice,RC,Burst,Auto,Loader,Pusher,Scanner,Ball,HH
-    if int(x)==1:
-      name="iron"
-      oldbal=ship["1"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==2:
-      name="explosive"
-      oldbal=ship["2"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==4:
-      name="rubber"
-      oldbal=ship["4"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==5:
-      name="flux"
-      oldbal=ship["5"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==104:
-      name="hhs"
-      oldbal=ship["104"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==115 or int(x)==116 or int(x)==120:
-      name="scanners"
-      old=formedbal[name]
-      oldbal=ship[x]
-      newbal=int(oldbal)+int(old)
-      formedbal.update({str(name):newbal})
-    elif int(x)==242:
-      name="pushers"
-      oldbal=ship["242"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==243:
-      name="launchers"
-      oldbal=ship["243"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==227:
-      name="rcs"
-      oldbal=ship["227"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==228:
-      name="bursts"
-      oldbal=ship["228"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==229:
-      name="autos"
-      oldbal=ship["229"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==252:
-      name="loaders"
-      oldbal=ship["252"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==234:
-      name="ice"
-      oldbal=ship["234"]
-      formedbal.update({str(name):oldbal})
-    elif int(x)==51 or int(x)==53 or int(x)==55 or int(x)==56:
-      name="balls"
-      old=formedbal[name]
-      oldbal=ship[x]
-      newbal=int(oldbal)+int(old)
-      formedbal.update({str(name):newbal})
-    elif int(x)==122:
-      name="rcds"
-      oldbal=ship["122"]
-      formedbal.update({str(name):oldbal})
-    else:
-      asn=0
-    #print(formedbal)
+  #for x in keys:
+  response = loads(requests.get(url).content)
+  def find_route(data, route_no):
+    return list(filter(lambda x: x.get('id') == route_no, data))
+  #route = find_route(response,int(x))
+  name="a"
+  id=0
+  #print(x)
+  #FLux,Iron,Exp,Rubber,Ice,RC,Burst,Auto,Loader,Pusher,Scanner,Ball,HH
+  i=item
+  if str(i)=="iron":
+    name="iron"
+    id=1
+  elif str(i)=="explosive":
+    name="explosive"
+    id=2
+  elif str(i)=="rubber":
+    name="rubber"
+    id=4
+  elif str(i)=="flux":
+    name="flux"
+    id=5
+  elif str(i)=="handheld":
+    name="handheld"
+    id=104
+  elif str(i)=="manifest_scanner":
+    name="manifest_scanner"
+    id=115
+  elif str(i)=="bom_scanner":
+    name="bom_scanner"
+    id=116
+  elif str(i)=="blueprint_scanner":
+    name="blueprint_scanner"
+    id=120
+  elif str(i)=="pusher":
+    name="pusher"
+    id=242
+  elif str(i)=="item_launcher":
+    name="item_launcher"
+    id=243
+  elif str(i)=="rc":
+    name="rc"
+    id=226
+  elif str(i)=="burst":
+    name="burst"
+    id=228
+  elif str(i)=="auto":
+    name="auto"
+    id=229
+  elif str(i)=="loader":
+    name="loader"
+    id=252
+  elif str(i)=="ice":
+    name="ice"
+    id=234
+  elif str(i)=="volleyball":
+    name="volleyball"
+    id=51
+  elif str(i)=="basketball":
+    name="basketball"
+    id=53
+  elif str(i)=="beachball":
+    name="beachball"
+    id=55
+  elif str(i)=="football":
+    name="football"
+    id=56
+  elif str(i)=="rcd":
+    name="rcd"
+    id=122
+  elif str(i)=="shield_generator":
+    name="shield_generator"
+    id=256
+  elif str(i)=="shield_projector":
+    name="shield_projector"
+    id=257
+  elif str(i)=="turret_controller":
+    name="turret_controller"
+    id=258
+  elif str(i)=="rapid_booster":
+    name="rapid_booster"
+    id=162
+  elif str(i)=="preservation_booster":
+    name="preservation_boster"
+    id=164
+  elif str(i)=="shield_core":
+    name="shield_core"
+    id=123
+  elif str(i)=="construction_gauntlets":
+    name="construction_gauntlets"
+    id=112
+  elif str(i)=="hover_pack":
+    name="hover_pack"
+    id=114
+  elif str(i)=="speed_skates":
+    name="speed_skates"
+    id=109
+  elif str(i)=="booster_boots":
+    name="booster_boots"
+    id=110
+  elif str(i)=="launcher_gauntlets":
+    name="launcher_gauntlets"
+    id=111
+  elif str(i)=="rocket_pack":
+    name="rocket_pack"
+    id=113
+  elif str(i)=="backpack":
+    name="backpack"
+    id=108
+  else:
+    id=0
   #print(formedbal)
-  return dict(formedbal)
+  #print(oldbal)
+  #print(formedbal)
+  #print(f'ID: {id}')
+  return id #dict(formedbal)
 
 def formItem(ship):
     formedbal={}
@@ -479,7 +518,7 @@ def formItem(ship):
       asn=0
     #print(formedbal)
     #print(oldbal)
-    #print(formedbal)
+    print(formedbal)
     return dict(formedbal)
 
 def itemNameById(item):

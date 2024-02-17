@@ -34,11 +34,13 @@ tmes=tme(hour=0,minute=20,tzinfo=utc)
 class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Distribution Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    self.verifyschedule.start()
+    #self.verifyschedule.start()
     #self.my_console=Console(bot)
+    pass
   def cog_unload(self):
     #print(1)
-    self.verifyschedule.cancel()
+    #self.verifyschedule.cancel()
+    pass
     
   #def workaround(self):
     #asyncio.run(self.verifyscheduled())
@@ -567,7 +569,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       await self.verifyDistroLogs(self)
       await ctx.send("Distro Logs Verified")
 
-  @commands.Cog.listener()
+  #@commands.Cog.listener()
   async def on_message(self,msg):
     condat=lists.readdataE()
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:

@@ -37,6 +37,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     self.bot = bot
     self.verifyschedule.start()
     #self.my_console=Console(bot)
+    pass
   def cog_unload(self):
     #print(1)
     self.verifyschedule.cancel()
@@ -468,103 +469,105 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
 
     shipItemTotals={}
     for message in dailyData:
-      #print(message)
-      guild=self.bot.get_guild(int(message["guildId"]))
-      channel=guild.get_channel(int(message["channelId"]))
-      mesg=await channel.fetch_message(int(message["msgId"]))
-      thread=guild.get_thread(int(message["thrdId"]))
-      #print(thread.name)
-      result=0
-      try:
+      result=True
+      while result:
         #print(message)
-        if str(message["sourceShip"]) not in list(shipItemTotals.keys()):
-          shipItemTotals.update({message["sourceShip"]:{}})
-        #print(message)
-        date=f"{message['date'][2]}_{message['date'][0]}_{message['date'][1]}"
-        logFile = f"https://pub.drednot.io/prod/econ/{date}/log.json.gz"
-        shipFile = f"https://pub.drednot.io/prod/econ/{date}/ships.json.gz"
+        guild=self.bot.get_guild(int(message["guildId"]))
+        channel=guild.get_channel(int(message["channelId"]))
+        mesg=await channel.fetch_message(int(message["msgId"]))
+        thread=guild.get_thread(int(message["thrdId"]))
+        #print(thread.name)
+        result=0
+        try:
+          #print(message)
+          if str(message["sourceShip"]) not in list(shipItemTotals.keys()):
+            shipItemTotals.update({message["sourceShip"]:{}})
+          #print(message)
+          date=f"{message['date'][2]}_{message['date'][0]}_{message['date'][1]}"
+          logFile = f"https://pub.drednot.io/prod/econ/{date}/log.json.gz"
+          shipFile = f"https://pub.drednot.io/prod/econ/{date}/ships.json.gz"
+          
+          log_response = requests.get(logFile)
+          log_data = gzip.decompress(log_response.content)  #.decode('utf-8')
+          logItems = loads(log_data)
         
-        log_response = requests.get(logFile)
-        log_data = gzip.decompress(log_response.content)  #.decode('utf-8')
-        logItems = loads(log_data)
-      
-        ships_response = requests.get(shipFile)
-        shipsData = gzip.decompress(ships_response.content).decode('utf-8')
-        ships= loads(shipsData)
-      
-        total_transfer_amount = 0
+          ships_response = requests.get(shipFile)
+          shipsData = gzip.decompress(ships_response.content).decode('utf-8')
+          ships= loads(shipsData)
         
-        logList=findRelatingLogs(logItems,"src",message["sourceShip"])
-        negativeList=findRelatingLogs(logItems,"dst",message["sourceShip"])
-        for sortlog in logList:
-          #print(f'Src: {sortlog["src"]}; Dst: {sortlog["dst"]}')
-          if sortlog["dst"] == message["destinationShip"]:
-            pass
+          total_transfer_amount = 0
+          
+          logList=findRelatingLogs(logItems,"src",message["sourceShip"])
+          negativeList=findRelatingLogs(logItems,"dst",message["sourceShip"])
+          for sortlog in logList:
+            #print(f'Src: {sortlog["src"]}; Dst: {sortlog["dst"]}')
+            if sortlog["dst"] == message["destinationShip"]:
+              pass
+            else:
+              #print(f'Removed')
+              logList.remove(sortlog)
+          for sortlog in negativeList:
+            #print(f'Src: {sortlog["src"]}; Dst: {sortlog["dst"]}')
+            if sortlog["src"] == message["destinationShip"]:
+              pass
+            else:
+              #print(f'Removed')
+              negativeList.remove(sortlog)
+          lootTotals={}
+          for lootItem in message["userClaim"]:
+            #print(lootItem)
+            if str(lootItem) not in list(shipItemTotals[message["sourceShip"]].keys()):
+              shipItemTotals[message["sourceShip"]].update({str(lootItem):0})
+            #print(f"lootItem: {lootItem}")
+            itemTotal=0
+            itemId=lists.itemNameToID(lootItem)
+            for itemlog in findRelatingLogs(logList,"item",itemId):
+              if int(itemlog["item"])==int(itemId) and itemlog["dst"]==message["destinationShip"]:
+                itemTotal+=itemlog["count"]
+                #print(itemlog)
+            for itemlog in findRelatingLogs(negativeList,"item",itemId):
+              if int(itemlog["item"])==int(itemId) and itemlog["src"]==message["destinationShip"]:
+                itemTotal-=itemlog["count"]
+                #print(itemlog)
+            shipItemTotals[message["sourceShip"]][str(lootItem)]+=itemTotal
+            lootTotals.update({lootItem:itemTotal})
+          #print(f"ShipItemTotals: {shipItemTotals}")
+          #print(f"lootTotals: {lootTotals}")
+          for key in list(lootTotals.keys()):
+            index=list(lootTotals.keys())
+            #print(f"User Claim: key == {key}; amount == {message['userClaim'][key]}")
+            #print(f"Actual: key == {key}; amount == {lootTotals[key]}")
+            if message['userClaim'][key] == lootTotals[key]:
+              await thread.send(f"Log Verified; Exact Amount Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`")
+              result=1
+            elif message['userClaim'][key] > lootTotals[key]:
+              await thread.send(f"Log Verified; More Than Amount Listed Has Been Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`\nDifference: `{abs(message["userClaim"][key]-lootTotals[key])}`")
+              await thread.send(f"This Is Most Likely Caused By Multiple Transfers From One Ship")
+              result=True
+            elif message['userClaim'][key] < lootTotals[key]:
+              await thread.send(f"Log Failed Verification; Less Than Amount Listed Has Been Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`\nDifference: `{abs(message["userClaim"][key]-lootTotals[key])}`")
+              #thread.send(f"This Is Most Likely Caused By")
+              result=False
+        except Exception as e:
+          print(e)
+          if hasattr(e, 'message'):
+            emes=e.message
           else:
-            #print(f'Removed')
-            logList.remove(sortlog)
-        for sortlog in negativeList:
-          #print(f'Src: {sortlog["src"]}; Dst: {sortlog["dst"]}')
-          if sortlog["src"] == message["destinationShip"]:
-            pass
-          else:
-            #print(f'Removed')
-            negativeList.remove(sortlog)
-        lootTotals={}
-        for lootItem in message["userClaim"]:
-          #print(lootItem)
-          if str(lootItem) not in list(shipItemTotals[message["sourceShip"]].keys()):
-            shipItemTotals[message["sourceShip"]].update({str(lootItem):0})
-          #print(f"lootItem: {lootItem}")
-          itemTotal=0
-          itemId=lists.itemNameToID(lootItem)
-          for itemlog in findRelatingLogs(logList,"item",itemId):
-            if int(itemlog["item"])==int(itemId) and itemlog["dst"]==message["destinationShip"]:
-              itemTotal+=itemlog["count"]
-              #print(itemlog)
-          for itemlog in findRelatingLogs(negativeList,"item",itemId):
-            if int(itemlog["item"])==int(itemId) and itemlog["src"]==message["destinationShip"]:
-              itemTotal-=itemlog["count"]
-              #print(itemlog)
-          shipItemTotals[message["sourceShip"]][str(lootItem)]+=itemTotal
-          lootTotals.update({lootItem:itemTotal})
-        #print(f"ShipItemTotals: {shipItemTotals}")
-        #print(f"lootTotals: {lootTotals}")
-        for key in list(lootTotals.keys()):
-          index=list(lootTotals.keys())
-          #print(f"User Claim: key == {key}; amount == {message['userClaim'][key]}")
-          #print(f"Actual: key == {key}; amount == {lootTotals[key]}")
-          if message['userClaim'][key] == lootTotals[key]:
-            await thread.send(f"Log Verified; Exact Amount Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`")
-            result=1
-          elif message['userClaim'][key] > lootTotals[key]:
-            await thread.send(f"Log Verified; More Than Amount Listed Has Been Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`\nDifference: `{abs(message["userClaim"][key]-lootTotals[key])}`")
-            await thread.send(f"This Is Most Likely Caused By Multiple Transfers From One Ship")
-            result=1
-          elif message['userClaim'][key] < lootTotals[key]:
-            await thread.send(f"Log Failed Verification; Less Than Amount Listed Has Been Transferred. \nItem: `{key}`\nAmount Actually Transferred: `{lootTotals[key]}`\nItem: `{key}`\nAmount Claimed To Be Transferred: `{message["userClaim"][key]}`\nDifference: `{abs(message["userClaim"][key]-lootTotals[key])}`")
-            #thread.send(f"This Is Most Likely Caused By")
-            result=0
-        if result==1:
-          await mesg.add_reaction("✅")
-          distdat[str(mesg.guild.id)]=message["clanData"]
-          lists.setdata(distdat)
-        else:
-          await mesg.add_reaction("❌")
-        print("Reaction Added")
-    #else:
-      #pass
-        oth["verifydist"].remove(message)
-      except Exception as e:
-        print(e)
-        if hasattr(e, 'message'):
-          emes=e.message
-        else:
-          emes=e
-        print(emes)
-        print(traceback.format_exc())
-        await mesg.add_reaction("🤷")
-        print("Error Occured")
+            emes=e
+          print(emes)
+          print(traceback.format_exc())
+          await mesg.add_reaction("🤷")
+          print("Error Occured")
+      if result:
+        await mesg.add_reaction("✅")
+        distdat[str(mesg.guild.id)]=message["clanData"]
+        lists.setdata(distdat)
+      else:
+        await mesg.add_reaction("❌")
+      print("Reaction Added")
+  #else:
+    #pass
+      oth["verifydist"].remove(message)
     others=lists.readother()
     others["verifydist"]=[]
     lists.setother(others)
@@ -581,7 +584,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       await self.verifyDistroLogs(self)
       await ctx.send("Distro Logs Verified")
 
-  @commands.Cog.listener()
+  #@commands.Cog.listener()
   async def on_message(self,msg):
     condat=lists.readdataE()
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:

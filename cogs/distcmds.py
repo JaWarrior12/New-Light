@@ -37,7 +37,6 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     self.bot = bot
     #self.verifyschedule.start()
     #self.my_console=Console(bot)
-    #pass
   def cog_unload(self):
     #self.verifyschedule.cancel()
     pass

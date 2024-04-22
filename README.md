@@ -4,6 +4,8 @@ New Light is a Dredark Clan Management Bot.
 
 Developed By JaWarrior
 
+If you use the code, please credit JaWarrior and have a link to this repository.
+
 [Official Discord Server](https://discord.gg/WGmCS7pJ48)
 
 New Light is a multi year project started in the spring of 2022 as a python learning project, New Light has evolved to gain many features and can complete complex tasks.

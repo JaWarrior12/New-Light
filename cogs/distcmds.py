@@ -520,7 +520,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     shipItemTotals={}
     for message in dailyData:
       result=True
-      while result:
+      count=0
+      while result and count < 1:
         #print(message)
         guild=self.bot.get_guild(int(message["guildId"]))
         channel=guild.get_channel(int(message["channelId"]))
@@ -608,6 +609,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           print(traceback.format_exc())
           await mesg.add_reaction("🤷")
           print("Error Occured")
+        count+=1
       if result:
         await mesg.add_reaction("✅")
         distdat[str(mesg.guild.id)]=message["clanData"]

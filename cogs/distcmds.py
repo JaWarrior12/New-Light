@@ -35,12 +35,11 @@ tmes=tme(hour=0,minute=20,tzinfo=utc)
 class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Distribution Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    self.verifyschedule.start()
+    #self.verifyschedule.start()
     #self.my_console=Console(bot)
-    pass
   def cog_unload(self):
-    #print(1)
-    self.verifyschedule.cancel()
+    #self.verifyschedule.cancel()
+    pass
     
   #def workaround(self):
     #asyncio.run(self.verifyscheduled())
@@ -108,7 +107,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"`{memMen}`'s balance was changed by `{ns}` `{item}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"{memMen}'s balance was changed by `{ns}` `{item}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
               await mychannel.send(f"Previous Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(memvar)]}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
@@ -160,7 +159,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
               await ctx.send(embed=e)
               myguild = self.bot.get_guild(1031900634741473280)
               mychannel = myguild.get_channel(1145862891271094322)
-              await mychannel.send(f"`{memMen}'s balance was changed, item `{item}` was reset.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+              await mychannel.send(f"{memMen}'s balance was changed, item `{item}` was reset.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
               await mychannel.send(f"Previous Balance: `{previousBalance}`\nResulting Balance: `{data[gid][str(memvar)]}`")
             else:
               await ctx.send(f"Sorry Item `{item}` is not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
@@ -348,10 +347,6 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       memMen=member
     myguild = self.bot.get_guild(1031900634741473280)
     mychannel = myguild.get_channel(1145862891271094322)
-    previousBalance=data[gid][memvar].copy()
-    await mychannel.send(f"`{memMen}` was removed from the distribution list in server `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Remove Member`\nPerformed In Server: `{ctx.message.guild.name}`")
-    await mychannel.send(f"Balance Before Deletion: `{previousBalance}`")
-    del data[gid][memvar]
     #lists.logback(ctx,member)
     if chk == True:
       try:
@@ -365,6 +360,11 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         #tz = pytz.timezone('America/New_York')
         e.timestamp=datetime.now()
         await ctx.send(embed=e)
+        previousBalance=data[gid][memvar].copy()
+        await mychannel.send(f"`{memMen}` was removed from the distribution list in server `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `Remove Member`\nPerformed In Server: `{ctx.message.guild.name}`")
+        await mychannel.send(f"Balance Before Deletion: `{previousBalance}`")
+        del data[gid][memvar]
+        lists.setdata(data)
       except KeyError:
         await ctx.send(f"KeyError: User {member} cannot be found in {ctx.message.guild.name}'s Distribution List.")
       else:
@@ -398,7 +398,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
-  @commands.command(name="defaultbal",brief="Sets a clan's default balance (LR)",help="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs",description="Hi")
+  @commands.command(name="defaultbal",brief="Sets a clan's default balance (LR)",help="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs",description="Sets the default balance when adding new members.")
   async def defaultbal(self,ctx,*,items):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
@@ -439,6 +439,55 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     else:
       await ctx.send("Your ID Is In The Banned List.")
 
+  @commands.command(name="transfer",brief="Transfer Loot From Your Balance To Someone Else's Balance",help="Transfer Loot From Your Balance To Someone Else's Balance",description="Transfer Loot From Your Balance To Someone Else's Balance")
+  async def itemTransfer(self,ctx,destination,item,amount : int,*,reason=None):
+    if str(ctx.message.author.id) not in banned:
+      chk = lists.checkperms(ctx)
+      member=destination
+      memvar=0
+      memName=0
+      memAv=0
+      memMen=0
+      try:
+        member=await commands.MemberConverter().convert(ctx,member)
+      except:
+        member=member
+      if type(member) is discord.Member:
+        memvar=str(member.id)
+        memName=member.display_name
+        memAv=member.display_avatar
+        memMen=member.mention
+      else:
+        memvar=member
+        memName=member
+        memAv=None
+        memMen=member
+      gid=str(ctx.message.guild.id)
+      myguild = self.bot.get_guild(1031900634741473280)
+      mychannel = myguild.get_channel(1145862891271094322)
+      if chk:
+        if item in lists.readother()["alloweditems"]:
+          data=lists.readdata()
+          sourcePreBal=data[gid][str(ctx.message.author.id)][item]
+          destPreBal=data[gid][str(memvar)][item]
+          sourcePostBal=int(sourcePreBal)-int(amount)
+          destPostBal=int(destPreBal)+int(amount)
+          data[gid][str(ctx.message.author.id)][item]=sourcePostBal
+          data[gid][memvar][item]=destPostBal
+          await ctx.send(f"Transfered {amount} {item} From {ctx.message.author.mention} to {memMen}.\n- {ctx.message.author.mention}'s New Balance: {sourcePostBal}.\n- {memMen}'s New Balance: {destPostBal}.")
+          lists.setdata(data)
+          await mychannel.send(f"ITEM TRANSFER\n\n`{memMen}`'s Balance Was Updated by {amount} {item} `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+          await mychannel.send(f"{ctx.message.author.mention}'s Balance Before Transfer: `{sourcePreBal}`")
+          await mychannel.send(f"{ctx.message.author.mention}'s Balance After Transfer: `{sourcePostBal}`")
+          await mychannel.send(f"{memMen}'s Balance Before Transfer: `{destPreBal}`")
+          await mychannel.send(f"{memMen}'s Balance After Transfer: `{destPostBal}`")
+          await mychannel.send("\nEND TRANSFER LOG")
+        else:
+          await ctx.send("You Can't Give That Item! Please See https://discord.com/channels/1031900634741473280/1145413798153437264 For The List Of Approved Items")
+    else:
+      await ctx.send("Your ID Is In The Banned List.")
+    
+
   #def workaround():
     #asyncio.run(verifyschedule("a"))
 
@@ -470,7 +519,8 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     shipItemTotals={}
     for message in dailyData:
       result=True
-      while result:
+      count=0
+      while result and count < 1:
         #print(message)
         guild=self.bot.get_guild(int(message["guildId"]))
         channel=guild.get_channel(int(message["channelId"]))
@@ -558,6 +608,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           print(traceback.format_exc())
           await mesg.add_reaction("🤷")
           print("Error Occured")
+        count+=1
       if result:
         await mesg.add_reaction("✅")
         distdat[str(mesg.guild.id)]=message["clanData"]
@@ -584,7 +635,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       await self.verifyDistroLogs(self)
       await ctx.send("Distro Logs Verified")
 
-  #@commands.Cog.listener()
+  @commands.Cog.listener()
   async def on_message(self,msg):
     condat=lists.readdataE()
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:

@@ -634,6 +634,26 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       await ctx.send("Forcefully Verifying Distro Logs")
       await self.verifyDistroLogs(self)
       await ctx.send("Distro Logs Verified")
+  
+  @commands.command(name="listDistroVerificationLogs",aliases=["ldl","ldvl"])
+  async def listDistroVerificationLogs(self,ctx):
+    if ctx.message.author.id in developers:
+      data = lists.readother()["verifydist"]
+      await ctx.send(f"Length Of Log List: {len(data)}")
+      for x in data:
+        await ctx.send(x)
+
+  @commands.command(name="forceClearDistroVerification",aliases=["fcdl"])
+  async def forceClearDistroVerification(self,ctx):
+    if ctx.message.author.id in developers:
+      await ctx.send("Forcefully Cearing Distro Verification Logs")
+      data = lists.readother()
+      await ctx.send(f"Number of Logs Being Cleared: {len(data["verifydist"])}\nLogs:")
+      for x in data["verifydist"]:
+        await ctx.send(x)
+      data["verifydist"].clear()
+      lists.setother(data)
+      await ctx.send("Distro Verification Logs Cleared")
 
   @commands.Cog.listener()
   async def on_message(self,msg):

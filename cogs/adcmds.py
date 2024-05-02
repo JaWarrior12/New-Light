@@ -30,7 +30,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
     
   @commands.command(name="ban",hidden=False,help="Bans A User From Using New Light")
   #@commands.has_role('Developer')
-  async def banuser(self,ctx,user):
+  async def banuser(self,ctx,user,*,reason=None):
     if ctx.message.author.id in developers:
       keya = "all"
       keyb = "ban"
@@ -38,15 +38,24 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       data = dumps(lists.readdataE()[keyb])
       if str(user) in banned:
         await ctx.send(f'The User With An Id Of {user} Is Already In The Ban List')
-      else:
+      elif type(user) != int:
+        await ctx.send(f"Error! User `{user}` is not an integer, and therefore not an ID!")
+      elif type(user)==int:
         data = lists.readdataE()
         banlt=data
         #await ctx.send(banlt)
         banlt["ban"].append(str(user))
         #await ctx.send(banlt)
+        other=lists.readother()
+        userObject=await self.bot.fetch_user(user)
+        tz = pytz.timezone('America/New_York')
+        date=datetime.now(tz)
+        other["banInfo"].update({str(gid):{"reason":reason,"name":userObject.name,"banDate":date}})
         lists.setdataE(banlt)
         await ctx.send(f'The User With A User Id Of {user} has been BANNED from using New Light')
         lists.bannedlist()
+      else:
+        await ctx.send("Unknown Error!")
     else:
       await ctx.send("You are not a developer and cannot use this command")
 
@@ -55,11 +64,16 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
     if ctx.message.author.id in developers:
       if str(user_id) not in banned:
         await ctx.send(f'The User With An ID Of {user_id} Is Not In The Banned List.')
-      elif str(user_id) in banned:
+      elif type(user_id)!=int:
+        await ctx.send(f"User ID `{user_id}` isn't and integer! It needs to be an integer!")
+      elif str(user_id) in banned and type(user_id)==int:
         data = lists.readdataE()
         banlt=data
         #await ctx.send(banlt)
         banlt["ban"].remove(str(user_id))
+        other=lists.readother()
+        other["banInfo"].pop(str(user_id))
+        lists.setother(other)
         #await ctx.send(banlt)
         lists.setdataE(banlt)
         lists.bannedlist()
@@ -70,41 +84,58 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       await ctx.send("You are not a developer and cannot use this command.")
 
   @commands.command(name="banguild",help="Bans A Server From Using New Light")
-  async def banguild(self,ctx,gid):
+  async def banguild(self,ctx,gid,*,reason=None):
     if ctx.message.author.id in developers:
-      data=lists.readdataE()
-      data["banguilds"].append(int(gid))
-      lists.setdataE(data)
-      lists.bannedguilds()
-      await ctx.send(f"Banned Guild With ID:{gid}")
+      if type(gid)==int:
+        data=lists.readdataE()
+        data["banguilds"].append(int(gid))
+        other=lists.readother()
+        guild=await self.bot.fetch_guild(gid)
+        tz = pytz.timezone('America/New_York')
+        date=datetime.now(tz)
+        other["banInfo"].update({str(gid):{"reason":reason,"name":guild.name,"banDate":date}})
+        lists.setother(other)
+        lists.setdataE(data)
+        lists.bannedguilds()
+        await ctx.send(f"Banned Guild With ID:{gid}")
+      else:
+        await ctx.send(f"Guild ID `{gid}` isn't an integer! It must be an integer!")
     else:
       await ctx.send("Not A Dev")
 
   @commands.command(name="unbanguild",help="Unbans A Server From Using New Light")
-  async def unbanguild(self,ctx,gid):
+  async def unbanguild(self,ctx,gid,*,reason=None):
     if ctx.message.author.id in developers:
-      data=lists.readdataE()
-      data["banguilds"].remove(int(gid))
-      lists.setdataE(data)
-      lists.bannedguilds()
-      await ctx.send(f"UnBanned Guild With ID:{gid}")
+      if type(gid)!=int:
+        data=lists.readdataE()
+        data["banguilds"].remove(int(gid))
+        lists.setdataE(data)
+        other=lists.readother()
+        guild=await self.bot.fetch_guild(gid)
+        other["banInfo"].pop(str(gid))
+        lists.setother(other)
+        lists.bannedguilds()
+        await ctx.send(f"UnBanned Guild With ID:{gid}")
+      else:
+        await ctx.send(f"Guild ID `{gid}` isn't an integer! It Needs to be an integer!")
     else:
       await ctx.send("Not A Dev")
 
-  @commands.command(name="banlist",help="Lists Banned Guilds or Users")
+  @commands.command(name="banlist",help="Lists Banned Guilds or Users",description="Opt can be `users` for users or `guilds` for guilds.")
   async def  banlist(self,ctx,opt):
     if ctx.message.author.id in developers:
       if opt=="users":
         data=lists.readdataE()
+        other=lists.readother()["banInfo"]
         ctnt=""
         for x in data["ban"]:
-          ctnt=ctnt+"\n-"+str(x)
+          ctnt=ctnt+"\n-"+str(x)+f" ; User Name: `{other[str(x)]['name']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)['banDate']]}"
         await ctx.send(f'Banned Users:\n{ctnt}')
       elif opt=="guilds":
         data=lists.readdataE()
         ctnt=""
         for x in data["banguilds"]:
-          ctnt=ctnt+"\n-"+str(x)
+          ctnt=ctnt+"\n-"+str(x)+f" ; User Name: `{other[str(x)]['name']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)['banDate']]}"
         await ctx.send(f'Banned Guilds:\n{ctnt}')
       else:
         await ctx.send("I don't know what you want me to list.")

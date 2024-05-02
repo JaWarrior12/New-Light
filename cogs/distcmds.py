@@ -398,7 +398,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         else:
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
-  @commands.command(name="defaultbal",brief="Sets a clan's default balance (LR)",help="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs",description="Sets the default balance when adding new members.")
+  @commands.command(name="defaultbalance",aliases=["defaultbal"],brief="Sets a clan's default balance (LR)",help="Sets the default balance, enter each item separated by a semi-colon (;). Ex. flux;rubber;loaders;rcs",description="Sets the default balance when adding new members.")
   async def defaultbal(self,ctx,*,items):
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
@@ -406,27 +406,39 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       if chk == True:
         allowitems=[]
         blockitems=[]
-        list=items.split(";")
-        for x in list:
-          if x in lists.readother()["alloweditems"]:
-            allowitems.append(x)
-          else:
-            blockitems.append(x)
+        defballist=items.split(";")
+        try:
+          for x in defballist:
+            if x in lists.readother()["alloweditems"]:
+              allowitems.append(x)
+            else:
+              blockitems.append(x)
+        except Exception as e:
+          print(e)
         data=lists.readother()
         data["defaultdist"][str(ctx.message.guild.id)]=allowitems
         lists.setother(data)
         if len(blockitems)==0:
           e = discord.Embed(title="Default Balance Updated")
           e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
-          e.add_field(name="Default Balance",value=list,inline=True)
+          e.add_field(name="Default Balance",value=defballist,inline=True)
           e.set_thumbnail(url=ctx.message.author.display_avatar)
           #tz = pytz.timezone('America/New_York')
           e.timestamp=datetime.now()
           await ctx.send(embed=e)
+          users=lists.readdata()
+          for user in list(users[str(ctx.message.guild.id)].keys()):
+            userItems=list(users[str(ctx.message.guild.id)][user].keys())
+            for itemKey in allowitems:
+              print(itemKey)
+              if itemKey not in userItems:
+                users[str(ctx.message.guild.id)][user].update({itemKey:0})
+          lists.setdata(users)
+          await ctx.send("All Member Balances Updated If They Did Not Contain Items From The New Default Balance")
         else:
           e = discord.Embed(title="Default Balance Updated")
           e.add_field(name="Updated By",value=ctx.message.author.display_name,inline=True)
-          e.add_field(name="Default Balance",value=list,inline=True)
+          e.add_field(name="Default Balance",value=defballist,inline=True)
           e.add_field(name="Allowed Items",value=allowitems)
           e.add_field(name="Blocked Items",value=blockitems,inline=True)
           e.set_thumbnail(url=ctx.message.author.display_avatar)
@@ -434,6 +446,15 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           e.timestamp=datetime.now()
           await ctx.send(embed=e)
           await ctx.send(f"Sorry The Following Items: {blockitems} are not registered in my system. Please see https://discord.com/channels/1031900634741473280/1145413798153437264 for the item name reference list.")
+          users=lists.readdata()
+          for user in list(users[str(ctx.message.guild.id)].keys()):
+            userItems=list(users[str(ctx.message.guild.id)][user].keys())
+            for itemKey in allowitems:
+              print(itemKey)
+              if itemKey not in userItems:
+                users[str(ctx.message.guild.id)][user].update({itemKey:0})
+          lists.setdata(users)
+          await ctx.send("All Member Balances Updated If They Did Not Contain Items From The New Default Balance")
       else:
         await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
     else:

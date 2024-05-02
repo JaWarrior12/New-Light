@@ -497,7 +497,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           data[gid][memvar][item]=destPostBal
           await ctx.send(f"Transfered {amount} {item} From {ctx.message.author.mention} to {memMen}.\n- {ctx.message.author.mention}'s New Balance: {sourcePostBal}.\n- {memMen}'s New Balance: {destPostBal}.")
           lists.setdata(data)
-          await mychannel.send(f"ITEM TRANSFER\n\n`{memMen}`'s Balance Was Updated by {amount} {item} `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
+          await mychannel.send(f"ITEM TRANSFER\n\n`{memMen}`'s Balance Was Updated by `{amount}` `{item}` `{ctx.message.guild.name}`.\nPerformed By: {ctx.message.author.mention}\nPerformed At: `{datetime.now()}`\nReason: `{reason}`\nPerformed In Server: `{ctx.message.guild.name}`")
           await mychannel.send(f"{ctx.message.author.mention}'s Balance Before Transfer: `{sourcePreBal}`")
           await mychannel.send(f"{ctx.message.author.mention}'s Balance After Transfer: `{sourcePostBal}`")
           await mychannel.send(f"{memMen}'s Balance Before Transfer: `{destPreBal}`")

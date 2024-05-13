@@ -804,19 +804,26 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       #print(apit)
       other["verifydist"].append(apit)
       #print(other['verifydist'])
-      if condat[str(msg.guild.id)]["verbal"]=="yes":
+      if condat[str(msg.guild.id)]["verbal"]==True:
         lists.setother(other)
         await msg.add_reaction("⬆")
       else:
-        if attatchmentCheck>=1:
+        if condat[str(msg.guild.id)]["nonverProof"]==True:
+          if attatchmentCheck>=1:
+            dat=lists.readdata()
+            dat=data
+            lists.setdata(dat)
+            await msg.add_reaction("⏫")
+            #await mesg.add_reaction("✅")
+          else:
+            #await mesg.add_reaction("❌")
+            await mesg.add_reaction("⛔")
+        else:
           dat=lists.readdata()
           dat=data
           lists.setdata(dat)
           await msg.add_reaction("⏫")
-          await mesg.add_reaction("✅")
-        else:
-          await mesg.add_reaction("❌")
-          await mesg.add_reaction("⛔")
+          #await mesg.add_reaction("✅")
     else:
       pass
 

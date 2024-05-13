@@ -538,6 +538,11 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       return list(filter(lambda x: x.get(key) == hex, data))
 
     shipItemTotals={}
+    
+    myguild = self.bot.get_guild(1031900634741473280)
+    mychannel = myguild.get_channel(1145862891271094322)
+    #await mychannel.send("--Verifying Distribution Logs--")
+    
     for message in dailyData:
       result=True
       count=0
@@ -681,6 +686,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     condat=lists.readdataE()
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:
       cnt=msg.content
+      attatchmentCheck=len(msg.attachments)
       pts=cnt.split("\n")
       #print(pts)
       u=pts[1]
@@ -802,10 +808,15 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         lists.setother(other)
         await msg.add_reaction("⬆")
       else:
-        dat=lists.readdata()
-        dat=data
-        lists.setdata(dat)
-        await msg.add_reaction("⏫")
+        if attatchmentCheck>=1:
+          dat=lists.readdata()
+          dat=data
+          lists.setdata(dat)
+          await msg.add_reaction("⏫")
+          await mesg.add_reaction("✅")
+        else:
+          await mesg.add_reaction("❌")
+          await mesg.add_reaction("⛔")
     else:
       pass
 

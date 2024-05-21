@@ -649,14 +649,14 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
   async def verifyschedule(self):
     await self.verifyDistroLogs(self)
 
-  @commands.command(name="forceDistroVerification",aliases=["fdl"])
+  @commands.command(name="forceDistroVerification",aliases=["fdl"],brief="Force Runs Distribution Verification Log Quene")
   async def forceDistroVerification(self,ctx):
     if ctx.message.author.id in developers:
       await ctx.send("Forcefully Verifying Distro Logs")
       await self.verifyDistroLogs(self)
       await ctx.send("Distro Logs Verified")
   
-  @commands.command(name="listDistroVerificationLogs",aliases=["ldl","ldvl"])
+  @commands.command(name="listDistroVerificationLogs",aliases=["ldl","ldvl"],brief="Displays Distribution Verification Log Quene")
   async def listDistroVerificationLogs(self,ctx):
     if ctx.message.author.id in developers:
       data = lists.readother()["verifydist"]
@@ -664,7 +664,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       for x in data:
         await ctx.send(x)
 
-  @commands.command(name="forceClearDistroVerification",aliases=["fcdl"])
+  @commands.command(name="forceClearDistroVerification",aliases=["fcdl"],brief="Force Clears Distribution Verification Log Quene")
   async def forceClearDistroVerification(self,ctx):
     if ctx.message.author.id in developers:
       await ctx.send("Forcefully Cearing Distro Verification Logs")
@@ -682,6 +682,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:
       cnt=msg.content
       pts=cnt.split("\n")
+      attatchmentCheck=len(msg.attachments)
       #print(pts)
       u=pts[1]
       users=u.split(" ")
@@ -739,7 +740,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           else:
             cbala=0
             await thrd.send(f"Clan Gets Nothing From Withdrawls")
-          if condat[str(msg.guild.id)]["storebal"].lower()=="no":
+          if condat[str(msg.guild.id)]["storebal"].lower()==False:
             cbala=data[str(msg.guild.id)]["clan"][str(item)]
             cbala=cbala+whole
             data[str(msg.guild.id)]["clan"][str(item)]=cbala
@@ -753,7 +754,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             rem=div
           else:
             rem=amount-abs(div)
-          if condat[str(msg.guild.id)]["storebal"].lower()=="yes":
+          if condat[str(msg.guild.id)]["storebal"].lower()==True:
             #print("Storebal=yes")
             mem=round(rem/int(len(users)))
             memtot=mem*len(users)
@@ -798,14 +799,26 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       #print(apit)
       other["verifydist"].append(apit)
       #print(other['verifydist'])
-      if condat[str(msg.guild.id)]["verbal"]=="yes":
+      if condat[str(msg.guild.id)]["verbal"]==True:
         lists.setother(other)
         await msg.add_reaction("⬆")
       else:
-        dat=lists.readdata()
-        dat=data
-        lists.setdata(dat)
-        await msg.add_reaction("⏫")
+        if condat[str(msg.guild.id)]["nonverProof"]==True:
+          if attatchmentCheck>=1:
+            dat=lists.readdata()
+            dat=data
+            lists.setdata(dat)
+            await msg.add_reaction("⏫")
+            #await mesg.add_reaction("✅")
+          else:
+            #await mesg.add_reaction("❌")
+            await msg.add_reaction("⛔")
+        else:
+          dat=lists.readdata()
+          dat=data
+          lists.setdata(dat)
+          await msg.add_reaction("⏫")
+          #await mesg.add_reaction("✅")
     else:
       pass
 

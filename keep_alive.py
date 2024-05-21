@@ -45,7 +45,14 @@ def home():
 @app.route('/datafiles/<string:file>/<string:passkey>')
 def jsondat(file,passkey=0):
   if passkey=="1498657841136236":
-    return loads(open(f'{file}.json', 'r').read())
+    base_path = '/Backups'
+    #GOOD -- Verify with normalised version of path
+    fullpath = os.path.normpath(os.path.join(base_path, filename))
+    if not fullpath.startswith(base_path):
+        raise Exception("not allowed")
+    data = loads(open(fullpath, 'rb').read())
+    return data
+    #return loads(open(f'{file}.json', 'r').read())
   else:
     return "Access to NEW LIGHT DATA FILES is restricted."
 

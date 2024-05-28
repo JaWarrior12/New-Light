@@ -168,6 +168,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           await ctx.send(f'Name:{member.display_name}; ID:{member.id}')
     else:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
+      
   @commands.command(name="confighelp",help="Description of ServerConfig Settings")
   async def conhelp(self,ctx):
     await ctx.send("Please See The Wiki Page: https://github.com/JaWarrior12/New-Light/wiki/Setup-Guide#config-settings")

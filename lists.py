@@ -65,6 +65,13 @@ def setother(datah):
     with open("../NLDB/other.json", "w") as f:
         f.write(dumps(datah))
 
+def readFakeTags():
+    return loads(open('../NLDB/faketagdb.json', 'r').read())
+
+def setFakeTags(datah):
+    with open("../NLDB/faketagdb.json", "w") as f:
+        f.write(dumps(datah))
+
 def bals():
     return loads(open('../NLDB/distribution.json', 'r').read())
 

@@ -163,8 +163,12 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                         #tz = pytz.timezone('America/New_York')
                         e.timestamp=datetime.datetime.now()
                         await ctx.send(embed=e)
-                        field_index = next(index for (index, f) in enumerate(e.fields) if f.value == value)
-                        e.insert_field_at(field_index+1,name=f"Previous Value Of {key} (Item Directly Above)",value=oldValue,inline=False)
+                        if key == "screenshot":
+                            #field_index = next(index for (index, f) in enumerate(e.fields) if f.value == value)
+                            e.add_field(name=f"Screenshot Was Updated, Old Screenshot URL: {oldValue}",value=oldValue,inline=False)
+                        else:
+                            field_index = next(index for (index, f) in enumerate(e.fields) if f.value == value)
+                            e.insert_field_at(field_index+1,name=f"Previous Value Of {key} (Item Directly Above)",value=oldValue,inline=False)
                         await mychannel.send(embed=e)
                         lists.setFakeTags(data)
             else:

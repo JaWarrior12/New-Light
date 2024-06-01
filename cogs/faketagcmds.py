@@ -45,23 +45,30 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                 data=lists.readFakeTags()
                 id=data["currentId"]+1
                 data["currentId"]=id
-                tz = pytz.timezone('America/New_York')
-                date=f"{datetime.datetime.now(tz).month}-{datetime.datetime.now(tz).day}-{datetime.datetime.now(tz).year}"
-                e = discord.Embed(title="Fake Tagged Ship Report")
-                hexcode=hexcode.replace("{","").replace("}","")
-                e.add_field(name="Submission ID",value=id,inline=True)
-                e.add_field(name="Submitted By",value=ctx.message.author.mention,inline=True)
-                e.add_field(name="Ship Hexcode",value=hexcode,inline=True)
-                e.add_field(name="Ship Name",value=shipName,inline=True)
-                e.add_field(name="Tag Of The Clan That This Ship Actually Belongs To",value=actualClansTag,inline=True)
-                e.add_field(name="Submission Date (EST)",value=date,inline=True)
-                e.set_image(url=screenshot.url)
-                #tz = pytz.timezone('America/New_York')
-                e.timestamp=datetime.datetime.now()
-                await ctx.send(embed=e)
-                report={"submissionId":id,"hexcode":hexcode,"shipName":shipName,"screenshot":screenshot.url,"submitterName":ctx.message.author.name,"submitterId":ctx.message.author.id,"actualClansTag":actualClansTag,"submissionDate":date,"owner":None,"captains":[],"dateOfLastUpdate":date,"lastUpdatedBy":None,"formerShipNames":[]}
-                data["fakeTaggedShips"].append(report)
-                lists.setFakeTags(data)
+                existingTags=[]
+                for ship in data["fakeTaggedShips"]:
+                    if ship["hexcode"] not in existingTags:
+                        existingTags.append(ship["hexcode"])
+                if hexcode in existingTags:
+                    await ctx.send(f"That Ship Is Already Registered")
+                else:
+                    tz = pytz.timezone('America/New_York')
+                    date=f"{datetime.datetime.now(tz).month}-{datetime.datetime.now(tz).day}-{datetime.datetime.now(tz).year}"
+                    e = discord.Embed(title="Fake Tagged Ship Report")
+                    hexcode=hexcode.replace("{","").replace("}","")
+                    e.add_field(name="Submission ID",value=id,inline=True)
+                    e.add_field(name="Submitted By",value=ctx.message.author.mention,inline=True)
+                    e.add_field(name="Ship Hexcode",value=hexcode,inline=True)
+                    e.add_field(name="Ship Name",value=shipName,inline=True)
+                    e.add_field(name="Tag Of The Clan That This Ship Actually Belongs To",value=actualClansTag,inline=True)
+                    e.add_field(name="Submission Date (EST)",value=date,inline=True)
+                    e.set_image(url=screenshot.url)
+                    #tz = pytz.timezone('America/New_York')
+                    e.timestamp=datetime.datetime.now()
+                    await ctx.send(embed=e)
+                    report={"submissionId":id,"hexcode":hexcode,"shipName":shipName,"screenshot":screenshot.url,"submitterName":ctx.message.author.name,"submitterId":ctx.message.author.id,"actualClansTag":actualClansTag,"submissionDate":date,"owner":None,"captains":[],"dateOfLastUpdate":date,"lastUpdatedBy":None,"formerShipNames":[]}
+                    data["fakeTaggedShips"].append(report)
+                    lists.setFakeTags(data)
             except Exception as e:
                 await ctx.send(e)
         else:

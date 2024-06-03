@@ -129,7 +129,12 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         other=lists.readother()["banInfo"]
         ctnt=""
         for x in data["ban"]:
-          ctnt=ctnt+"\n-"+str(x)+f" ; User Name: `{other[str(x)]['name']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)['banDate']]}"
+          print(x)
+          try:
+            ctnt=ctnt+"\n-"+str(x)+f" ; User Name: `{other[str(x)]['name']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)]['date']}"
+          except Exception as e:
+            await ctx.send(e)
+          print(ctnt)
         await ctx.send(f'Banned Users:\n{ctnt}')
       elif opt=="guilds":
         data=lists.readdataE()

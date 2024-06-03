@@ -204,7 +204,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
         datab=alldat["items_moved"]
         keys=list(data.keys())
         flux=float(data["5"])
-        tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,162,164,226,228,229,234,242,243,246,252,253,256,257,258,305,306,307]
+        tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,123,162,164,226,228,229,234,242,243,246,252,253,256,257,258,305,306,307]
         for x in keys:
           if int(x) in tracked:
             if x == "5":

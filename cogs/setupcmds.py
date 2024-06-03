@@ -46,7 +46,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0,"verbal":verbal}
+        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0,"verbal":verbal,"nonverProof":nonverProof}
         defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"rc":0,"burst":0,"auto":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
         data = lists.bals()
         data[gid]=dict(defaultd)
@@ -168,10 +168,11 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           await ctx.send(f'Name:{member.display_name}; ID:{member.id}')
     else:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
-
+      
   @commands.command(name="confighelp",help="Description of ServerConfig Settings")
   async def conhelp(self,ctx):
-    await ctx.send("Server Settings\n-Ping Channel (pingchan)==Channel ID Of Server's Battle Links Channel\n-Distribution Channel (distchan)==Channel ID Of Server's Distro Logging Channel\n-Clan Percent (clanPercent)==What Percent Of Items In Logs Go To The Clan\n-Clan Storage (distship)==HexCode Of Clan Storage\n-Member Role (memrole)==ID Of Member Role\n-Store Member Balances? (membal)==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel (memchan)== Member List Channel\nVerify Distribution Logs? (verbal)==Controls What Setting The Automated Distribution Logger Runs (Yes/No)")
+    await ctx.send("Please See The Wiki Page: https://github.com/JaWarrior12/New-Light/wiki/Setup-Guide#config-settings")
+    #await ctx.send("Server Settings\n-Ping Channel (pingchan)==Channel ID Of Server's Battle Links Channel\n-Distribution Channel (distchan)==Channel ID Of Server's Distro Logging Channel\n-Clan Percent (clanPercent)==What Percent Of Items In Logs Go To The Clan\n-Clan Storage (distship)==HexCode Of Clan Storage\n-Member Role (memrole)==ID Of Member Role\n-Store Member Balances? (membal)==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel (memchan)== Member List Channel\nVerify Distribution Logs? (verbal)==Controls What Setting The Automated Distribution Logger Runs (Yes/No)")
 
   @app_commands.command(name="serverconfig",description="Server Config (LR), n!confighelp for help")
   #@app_commands.checks.has_permissions(administrator=True)
@@ -247,6 +248,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             #e.add_field(name=x,value=data[gid][x],inline=True)
           e.add_field(name="Verify Logs?",value=data[gid]["verbal"],inline=True)
           e.add_field(name="Store Member Balances?",value=data[gid]["storebal"],inline=True)
+          e.add_field(name="Require Proof When Not Using Distro Log Verification?",value=data[gid]["nonverProof"],inline=True)
           e.add_field(name="Clan Percent",value=data[gid]["clanPercent"],inline=True)
           e.add_field(name="Clan Storage Hex Code",value=data[gid]["distship"],inline=True)
           e.add_field(name="Distribution Logging  Channel",value=ctx.guild.get_channel(data[gid]["distchan"]).mention,inline=True)

@@ -197,8 +197,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         val=str(input)
       elif option.value=="clanPercent":
         val=float(input)
-      elif option.value == "storebal" or option.vale=="verbal":
-        val=bool(input.lower())
+      elif option=="verbal":
+        val=bool(input)
+      elif option.value == "storebal":
+        val=str(input.lower())
       else:
         val=int(input)
       data=lists.readdataE()
@@ -218,8 +220,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=str(input)
         elif option=="clanPercent":
           val=float(input)
-        elif option == "storebal" or option=="verbal":
-          val=bool(input.lower())
+        elif option=="verbal":
+          val=bool(input)
+        elif option == "storebal":
+          val=str(input.lower())
         else:
           val=int(input)
         opt=option

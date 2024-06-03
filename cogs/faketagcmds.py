@@ -38,10 +38,14 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             await ctx.send("Your ID Is In The Banned List.")
   
     @commands.command(name="submitFakeTagger",aliases=["sft","addfaketag","submitft"],brief="Add A Fake Tagged Ship To The Database.")
-    async def submitFakeTagger(self,ctx,hexcode,actualClansTag,screenshot: discord.Attachment,*,shipName):
+    async def submitFakeTagger(self,ctx,hexcode,actualClansTag,*,shipName): #screenshot: discord.Attachment,
         if str(ctx.message.author.id) not in banned:
             try:
                 #await ctx.send(screenshot.url)
+                if len(ctx.message.attachments) >=1:
+                    screenshoturl=ctx.message.attachments[0].url
+                else:
+                    screenshoturl=None
                 data=lists.readFakeTags()
                 id=data["currentId"]+1
                 data["currentId"]=id
@@ -62,11 +66,12 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                     e.add_field(name="Ship Name",value=shipName,inline=True)
                     e.add_field(name="Tag Of The Clan That This Ship Actually Belongs To",value=actualClansTag,inline=True)
                     e.add_field(name="Submission Date (EST)",value=date,inline=True)
-                    e.set_image(url=screenshot.url)
+                    if len(ctx.message.attachments) >=1:
+                        e.set_image(url=screenshoturl)
                     #tz = pytz.timezone('America/New_York')
                     e.timestamp=datetime.datetime.now()
                     await ctx.send(embed=e)
-                    report={"submissionId":id,"hexcode":hexcode,"shipName":shipName,"screenshot":screenshot.url,"submitterName":ctx.message.author.name,"submitterId":ctx.message.author.id,"actualClansTag":actualClansTag,"submissionDate":date,"owner":None,"captains":[],"dateOfLastUpdate":date,"lastUpdatedBy":None,"formerShipNames":[]}
+                    report={"submissionId":id,"hexcode":hexcode,"shipName":shipName,"screenshot":screenshoturl,"submitterName":ctx.message.author.name,"submitterId":ctx.message.author.id,"actualClansTag":actualClansTag,"submissionDate":date,"owner":None,"captains":[],"dateOfLastUpdate":date,"lastUpdatedBy":None,"formerShipNames":[]}
                     data["fakeTaggedShips"].append(report)
                     lists.setFakeTags(data)
             except Exception as e:

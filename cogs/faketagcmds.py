@@ -123,7 +123,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     @commands.command(name="updateFakeTagSubmission",aliases=["ufts"],brief="!!CASE SENSITIVE!! Updates the submission with the new corresponding key:value pair.", help="Searches for the submission with the corresponding key:value pair. Valid Keys: hexcode, shipName, actualClansTag, owner (Ship's Owner)")
     async def scanFaketagDB(self,ctx,submissionId,key,*,value):
         if str(ctx.message.author.id) not in banned:
-            validKeys=["hexcode","shipName","actualClansTag","screenshot","owner"]
+            validKeys=["shipName","actualClansTag","screenshot","owner"]
             myguild = self.bot.get_guild(1031900634741473280)
             mychannel = myguild.get_channel(1245934187261722624)
             if key in validKeys:

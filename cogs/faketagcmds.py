@@ -123,7 +123,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     @commands.command(name="updateFakeTagSubmission",aliases=["ufts"],brief="!!CASE SENSITIVE!! Updates the submission with the new corresponding key:value pair.", help="Searches for the submission with the corresponding key:value pair. Valid Keys: hexcode, shipName, actualClansTag, owner (Ship's Owner)")
     async def scanFaketagDB(self,ctx,submissionId,key,*,value):
         if str(ctx.message.author.id) not in banned:
-            validKeys=["shipName","actualClansTag","screenshot","owner"]
+            validKeys=["shipName","actualClansTag","screenshot","owner","captains"]
             myguild = self.bot.get_guild(1031900634741473280)
             mychannel = myguild.get_channel(1245934187261722624)
             if key in validKeys:
@@ -182,7 +182,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             await ctx.send("Your ID Is In The Banned List.")
 
     @commands.command(name="deleteFakeTagSubmission",aliases=["dfts"],brief="Deletes A Submission, Must Be The Orignial Submitter or a Fake Tag DB Submissions Manager to delete a submission.")
-    async def deleteFakeTagSubmission(self,ctx,submissionId):
+    async def deleteFakeTagSubmission(self,ctx,submissionId,*,reason):
         if str(ctx.message.author.id) not in banned:
             myguild = self.bot.get_guild(1031900634741473280)
             mychannel = myguild.get_channel(1245934187261722624)
@@ -213,6 +213,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                     e.add_field(name="List Of Ship's Former Names",value=x["formerShipNames"],inline=True)
                     e.add_field(name="Submission Deletion Date",value=date,inline=False)
                     e.add_field(name="Submission Deleted By",value=f"{ctx.message.author.mention} ({ctx.message.author.name}/{ctx.message.author.id})",inline=False)
+                    e.add_field(name="Reason For Submission Deletion",value=reason,inline=False)
                     try:
                         e.set_image(url=x["screenshot"])
                     except:

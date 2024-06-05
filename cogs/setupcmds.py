@@ -33,7 +33,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact jawarrior about completing server setup.")
   #@commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
-  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0,verbal=False,nonverProof=False):
+  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0,verbal=False):
       servers=lists.readdataE()
       if str(ctx.message.guild.id) not in servers.keys():
         await ctx.send("Started Server Setup")
@@ -197,8 +197,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         val=str(input)
       elif option.value=="clanPercent":
         val=float(input)
-      elif option.value == "storebal" or option.vale=="verbal":
-        val=bool(input.lower())
+      elif option=="verbal":
+        val=bool(input)
+      elif option.value == "storebal":
+        val=str(input.lower())
       else:
         val=int(input)
       data=lists.readdataE()
@@ -218,8 +220,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=str(input)
         elif option=="clanPercent":
           val=float(input)
-        elif option == "storebal" or option=="verbal":
-          val=bool(input.lower())
+        elif option=="verbal":
+          val=bool(input)
+        elif option == "storebal":
+          val=str(input.lower())
         else:
           val=int(input)
         opt=option

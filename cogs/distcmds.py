@@ -538,6 +538,11 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
       return list(filter(lambda x: x.get(key) == hex, data))
 
     shipItemTotals={}
+    
+    myguild = self.bot.get_guild(1031900634741473280)
+    mychannel = myguild.get_channel(1145862891271094322)
+    #await mychannel.send("--Verifying Distribution Logs--")
+    
     for message in dailyData:
       result=True
       count=0
@@ -681,6 +686,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
     condat=lists.readdataE()
     if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:
       cnt=msg.content
+      attatchmentCheck=len(msg.attachments)
       pts=cnt.split("\n")
       attatchmentCheck=len(msg.attachments)
       #print(pts)
@@ -812,7 +818,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             #await mesg.add_reaction("✅")
           else:
             #await mesg.add_reaction("❌")
-            await msg.add_reaction("⛔")
+            await mesg.add_reaction("⛔")
         else:
           dat=lists.readdata()
           dat=data
@@ -843,6 +849,94 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         lists.setdata(data)
       else:
         pass
+
+  @staticmethod
+  async def verifyDistroLogsNew(self):
+    print("Verifying Distro Logs")
+    a=0
+    data=lists.readdataE()
+    oth=lists.readother()
+    distdat=lists.readdata()
+    dailyData=oth["verifydist"]
+    print(dailyData)
+
+    def findRelatingLogs(data, key, hex):
+      return list(filter(lambda x: x.get(key) == hex, data))
+
+    shipItemTotals={}
+    claimedPerShip={}
+    logsUsed={}
+    ships=[]
+    for log in dailyData:
+      hex=log["sourceShip"]
+      items=log["userClaim"]
+      if hex not in list(claimedPerShip.keys()):
+        claimedPerShip.update({hex:items})
+      else:
+        for item in list(items.keys()):
+          oldTotal=claimedPerShip[item]
+          newTotal=oldTotal+items[item]
+          claimedPerShip[item]=newTotal
+      ships.append(hex)
+    for ship in ships:
+      logsForShip=findRelatingLogs(dailyData,"sourceShip",ship)
+      for message in logsForShip:
+        result=True
+        count=0
+        guild=self.bot.get_guild(int(message["guildId"]))
+        channel=guild.get_channel(int(message["channelId"]))
+        mesg=await channel.fetch_message(int(message["msgId"]))
+        thread=guild.get_thread(int(message["thrdId"]))
+        date=f"{message['date'][2]}_{message['date'][0]}_{message['date'][1]}"
+        logFile = f"https://pub.drednot.io/prod/econ/{date}/log.json.gz"
+        shipFile = f"https://pub.drednot.io/prod/econ/{date}/ships.json.gz"
+  
+        log_response = requests.get(logFile)
+        log_data = gzip.decompress(log_response.content)  #.decode('utf-8')
+        logItems = loads(log_data)
+        ships_response = requests.get(shipFile)
+        shipsData = gzip.decompress(ships_response.content).decode('utf-8')
+        ships= loads(shipsData)
+        try:
+          logList=findRelatingLogs(logItems,"src",message["sourceShip"])
+          negativeList=findRelatingLogs(logItems,"dst",message["sourceShip"])
+          positiveLogs=findRelatingLogs(positiveLogs,"dst",message["destinationShip"])
+          withdrawals=findRelatingLogs(logItems,"src",message["sourceShip"])
+          itemTotals={}
+          for lootItem in list(message["userClaim"].keys()):
+            itemId=int(lists.itemNameToID(lootItem))
+            itemDeposits=findRelatingLogs(positiveLogs,"item",itemId)
+            itemWithdrawals=findRelatingLogs(withdrawals,"item",itemId)
+            netTotal=0
+            for log in itemDeposits:
+              netTotal+=log["count"]
+            for log in itemWithdrawals:
+              netTotal-=log["count"]
+            shipItemTotals[hex][lootItem]+=netTotal
+        except Exception as e:
+          print(e)
+          if hasattr(e, 'message'):
+            emes=e.message
+          else:
+            emes=e
+          print(emes)
+          print(traceback.format_exc())
+          await mesg.add_reaction("🤷")
+          print("Error Occured")
+        if result:
+          await mesg.add_reaction("✅")
+          distdat[str(mesg.guild.id)]=message["clanData"]
+          lists.setdata(distdat)
+        else:
+          await mesg.add_reaction("❌")
+        print("Reaction Added")
+  #else:
+    #pass
+      oth["verifydist"].remove(message)
+    others=lists.readother()
+    others["verifydist"]=[]
+    lists.setother(others)
+    print("All Logs Verified")
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(DistCmds(bot))

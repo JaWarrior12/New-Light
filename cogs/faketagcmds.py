@@ -23,14 +23,18 @@ developers = lists.developers
 submsMangrRleId=1245933318772490312 #Fake tag DB Submissions Manager Role ID
 
 utc=datetime.timezone.utc
-tmes=tme(hour=0,minute=30,tzinfo=utc)
+tmes=tme(hour=1,minute=0,tzinfo=utc)
 
 class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="Access The Fake Tag Database, New Light's in-house fake tagged ship tracker."):
     def __init__(self, bot: commands.Bot):
-        self.bot = bot
-
+        self.bot=bot
+        if bot.user.id != 975858537223847936:
+            self.fakeTagDBScanner.start()
     def cog_unload(self):
-        pass
+        if self.bot.user.id != 975858537223847936:
+            self.fakeTagDBScanner.cancel()
+        else:
+            pass
 
     @commands.command(name="FakeTagDBStats",aliases=["ftdbstats"],brief="Stats On The Fake Tag Database")
     async def fakeTagDBStats(self,ctx):
@@ -361,8 +365,8 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             await ctx.send(f'<@{ctx.message.author.id}> You Are NOT A Developer And CANNOT Lockdown Channels')
 
     global tmes
-    #@tasks.loop(time=tmes)
-    @commands.command(name="ftdbscan")
+    @tasks.loop(time=tmes)
+    #@commands.command(name="ftdbscan")
     async def fakeTagDBScanner(self,ctx, month, day, year):
         if self.bot.user.id==975858537223847936:
             try:

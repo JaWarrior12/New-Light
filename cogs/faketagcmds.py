@@ -353,7 +353,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                     await ctx.send(x)
             elif action=="add":
                 data["currentMajorClans"].append({"name":name,"tag":tag})
-                await ctx.send(f"Added Clan `{name}` with Tag `{tag}`")
+                #await ctx.send(f"Added Clan `{name}` with Tag `{tag}`")
                 lists.setFakeTags(data)
             elif action=="remove":
                 data["currentMajorClans"].remove(route[0])
@@ -362,13 +362,13 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             else:
                 await ctx.send(f"Action of {action} is not valid. Valid Actions: list, add, remove.")
         else:
-            await ctx.send(f'<@{ctx.message.author.id}> You Are NOT A Developer And CANNOT Lockdown Channels')
+            await ctx.send(f'<@{ctx.message.author.id}> You Are NOT A Developer And CANNOT Use This Command')
 
     global tmes
     @tasks.loop(time=tmes)
     #@commands.command(name="ftdbscan")
-    async def fakeTagDBScanner(self,ctx, month, day, year):
-        if self.bot.user.id==975858537223847936:
+    async def fakeTagDBScanner(self):
+        if self.bot.user.id != 975858537223847936:
             try:
                 def find_route(data2, route_no, key):
                     return list(filter(lambda y:route_no in y.get(key), data2))
@@ -376,9 +376,9 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                 def find_route2(data2, route_no, key):
                     return list(filter(lambda y: y.get(key) == route_no, data2))
                 scanDates=data["datesToScan"]
-                #year=2024
-                #month=5
-                #day=30
+                year=datetime.datetime.today().year
+                month=datetime.datetime.today().month
+                day=datetime.datetime.today().day
                 namesUpdatedCount=0
                 foundNames=[]
                 jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{year}_{month}_{day}/ships.json.gz')
@@ -432,11 +432,12 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                                     print(name)
                             foundNames.append(f'Submission ID: {data["fakeTaggedShips"][submittedtarget]["submissionId"]}; List Of Alt Names Found: {shipsOldNames}')
                 lists.setFakeTags(data)
-                await ctx.send(f"Scan Complete, Total Number Of Names Found: {namesUpdatedCount}")
+                print(f"Scan Complete, Total Number Of Names Found: {namesUpdatedCount}")
                 for entry in foundNames:
-                    await ctx.send(entry)
+                    pass
+                    #await ctx.send(entry)
             except Exception as e:
-                await ctx.send(e)
+                #await ctx.send(e)
                 print(e)
                 e_type, e_object, e_traceback = sys.exc_info()
 

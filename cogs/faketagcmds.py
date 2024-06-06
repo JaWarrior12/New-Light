@@ -1,4 +1,6 @@
-import os, discord, sys
+import os
+import discord 
+import sys
 from random import shuffle
 #from emoji import UNICODE_EMOJI
 import time

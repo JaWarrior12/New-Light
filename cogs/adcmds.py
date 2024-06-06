@@ -3,9 +3,10 @@ import discord
 import time
 import pytz
 import datetime
+from datetime import time as DT_time
 from typing import List
 #from keep_alive import keep_alive
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import get
 from discord import Member
 from discord import Permissions
@@ -22,11 +23,13 @@ import lists
 banned = lists.banned
 developers = lists.developers
 
-
-
 class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Developer Admin Tools"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
+    self.syncBanlist.start()
+  def cog_unload(self):
+    self.syncBanlist.cancel()
+  
     
     
   @commands.command(name="ban",hidden=False,help="Bans A User From Using New Light")
@@ -318,6 +321,10 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       await ctx.send(invite)
     else:
       await ctx.send("You are not a developer and cannot use this command.")
+
+  @tasks.loop(hours=1)
+  async def syncBanlist(self):
+    lists.bannedlist()
       
 async def setup(bot: commands.Bot):
     await bot.add_cog(AdCmds(bot))

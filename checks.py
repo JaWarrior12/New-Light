@@ -47,6 +47,6 @@ def is_authorized():
   def check_auth(ctx):
     gid = str(ctx.message.guild.id)
     uid = str(ctx.message.author.id)
-    data = readdataE()[gid]["auth"]
+    data = lists.readdataE()[gid]["auth"]
     return (uid in data and uid not in banned) or (int(uid) in developers)
   return commands.check(check_auth)

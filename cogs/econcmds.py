@@ -35,8 +35,10 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     self.bot = bot
     self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    self.exchangeRatesUpdater.cancel()
-    pass
+    if self.bot.user.id == 975858537223847936:
+      self.exchangeRatesUpdater.cancel()
+    else:
+      pass
 
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))

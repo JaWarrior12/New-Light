@@ -35,11 +35,14 @@ tmes=tme(hour=0,minute=20,tzinfo=utc)
 class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Distribution Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    #self.verifyschedule.start()
+    if bot.user.id != 975858537223847936:
+      self.verifyschedule.start()
     #self.my_console=Console(bot)
   def cog_unload(self):
-    #self.verifyschedule.cancel()
-    pass
+    if self.bot.user.id != 975858537223847936:
+      self.verifyschedule.cancel()
+    else:
+      pass
     
   #def workaround(self):
     #asyncio.run(self.verifyscheduled())

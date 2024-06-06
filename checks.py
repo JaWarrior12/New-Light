@@ -1,4 +1,5 @@
-import os, discord
+import os
+import discord
 from aiohttp import DataQueue
 import time as timea
 import traceback
@@ -31,3 +32,13 @@ def is_guild_owner():
   def predicate(ctx):
       return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id or ctx.author.id in lists.developers
   return commands.check(predicate)
+
+def is_banned():
+  def check_banned(ctx):
+    return ctx.message.author.id not in banned
+  return commands.check(check_banned)
+
+def is_developer():
+  def check_developer(ctx):
+    return ctx.message.author.id in developers
+  return commands.check(check_developer)

@@ -35,8 +35,10 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     self.bot = bot
     self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    self.exchangeRatesUpdater.cancel()
-    pass
+    if self.bot.user.id == 975858537223847936:
+      self.exchangeRatesUpdater.cancel()
+    else:
+      pass
 
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
@@ -131,16 +133,19 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       await ctx.send("Error")
 
-  @commands.command(name="readships",help="Reads the ships file from the Dred Public Econ Dumps. \nFormatting:\n -Version is test or prod(main server)\n -Year,MonthNumber,Day follow date formatting (2022 11(month,november) 13(day)\n -Key is the list item index, so Key=10 responds with item 10 in the list, the actual length will be send also.")
-  async def readships(self,ctx,version,year,monthnumber,day,key):
+  @commands.command(name="readships",help="Reads the ships file from the Dred Public Econ Dumps. \nFormatting:\n -Version is test or prod(main server)\n -Year,MonthNumber,Day follow date formatting (2022 11(month,november) 13(day)\n -key is name or hex_code\n -value is the value that goes with the key. IE: ship name or hexcode")
+  async def readships(self,ctx,version,year,monthnumber,day,key,value):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
       msgb = version + " " + year + " " + monthnumber  + " " + day + " " + key
       #lists.logback(ctx,msgb)
       jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{monthnumber}_{day}/ships.json.gz')
-      await ctx.send(len(jsondata))
-      await ctx.send(jsondata[int(key)])
+      def find_route(data, route_no):
+        return list(filter(lambda x: x.get(key) == route_no, data))
+      route = find_route(jsondata,value)
+      for x in route:
+        await ctx.send(x)
     else:
       await ctx.send("Error")
 
@@ -185,6 +190,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
             break
     else:
       await ctx.send("Error")
+      
   global tmes
   @tasks.loop(time=tmes)
   #@commands.command(name="ert")
@@ -204,7 +210,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
         datab=alldat["items_moved"]
         keys=list(data.keys())
         flux=float(data["5"])
-        tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,162,164,226,228,229,234,242,243,246,252,253,256,257,258,305,306,307]
+        tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,123,162,164,226,228,229,234,242,243,246,252,253,256,257,258,305,306,307]
         for x in keys:
           if int(x) in tracked:
             if x == "5":

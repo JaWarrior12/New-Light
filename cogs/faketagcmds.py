@@ -28,10 +28,10 @@ tmes=tme(hour=1,minute=0,tzinfo=utc)
 class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="Access The Fake Tag Database, New Light's in-house fake tagged ship tracker."):
     def __init__(self, bot: commands.Bot):
         self.bot=bot
-        if bot.user.id != 975858537223847936:
+        if bot.user.application_id != 975858537223847936:
             self.fakeTagDBScanner.start()
     def cog_unload(self):
-        if self.bot.user.id != 975858537223847936:
+        if self.bot.user.application_id != 975858537223847936:
             self.fakeTagDBScanner.cancel()
         else:
             pass
@@ -368,7 +368,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     @tasks.loop(time=tmes)
     #@commands.command(name="ftdbscan")
     async def fakeTagDBScanner(self):
-        if self.bot.user.id != 975858537223847936:
+        if self.bot.application_id != 975858537223847936:
             try:
                 def find_route(data2, route_no, key):
                     return list(filter(lambda y:route_no in y.get(key), data2))

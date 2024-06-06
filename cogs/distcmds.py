@@ -35,11 +35,11 @@ tmes=tme(hour=0,minute=20,tzinfo=utc)
 class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Distribution Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    if bot.user.id != 975858537223847936:
+    if bot.user.application_id != 975858537223847936:
       self.verifyschedule.start()
     #self.my_console=Console(bot)
   def cog_unload(self):
-    if self.bot.user.id != 975858537223847936:
+    if self.bot.user.applicatiojn_id != 975858537223847936:
       self.verifyschedule.cancel()
     else:
       pass

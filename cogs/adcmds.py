@@ -26,9 +26,9 @@ developers = lists.developers
 class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Developer Admin Tools"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    self.syncBanlist.start()
+    self.syncBanlists.start()
   def cog_unload(self):
-    self.syncBanlist.cancel()
+    self.syncBanlists.cancel()
   
     
     
@@ -323,8 +323,9 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       await ctx.send("You are not a developer and cannot use this command.")
 
   @tasks.loop(hours=1)
-  async def syncBanlist(self):
+  async def syncBanlists(self):
     lists.bannedlist()
-      
+    lists.bannedGuilds()
+    
 async def setup(bot: commands.Bot):
     await bot.add_cog(AdCmds(bot))

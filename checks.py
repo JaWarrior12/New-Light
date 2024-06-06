@@ -42,3 +42,11 @@ def is_developer():
   def check_developer(ctx):
     return ctx.message.author.id in developers
   return commands.check(check_developer)
+
+def is_authorized():
+  def check_auth(ctx):
+    gid = str(ctx.message.guild.id)
+    uid = str(ctx.message.author.id)
+    data = readdataE()[gid]["auth"]
+    return (uid in data and uid not in banned) or (int(uid) in developers)
+  return commands.check(check_auth)

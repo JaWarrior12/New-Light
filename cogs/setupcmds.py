@@ -13,8 +13,8 @@ from backup import backup
 from startup import startup
 import lists
 
-banned= lists.banned
-
+banned=lists.banned
+developers=lists.developers
 
 class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup Commands"):
   def __init__(self, bot: commands.Bot):

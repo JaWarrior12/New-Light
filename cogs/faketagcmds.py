@@ -54,10 +54,11 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
         if str(ctx.message.author.id) not in banned:
             data=lists.readFakeTags()
             def find_route(data2, route_no):
-                return list(filter(lambda y: y.get("hexcode") == int(route_no), data2))
+                return list(filter(lambda y: y.get("hexcode") == str(route_no), data2))
             matchingHexs=find_route(data,hexcode)
             if len(matchingHexs)>=1:
-                submId=data["fakeTaggedShips"][matchingHexs[0]]["submissionId"]
+                submId=matchingHexs[0]["submissionId"]
+                #submId=data["fakeTaggedShips"][matchingHexs[0]]["submissionId"]
                 await ctx.send(f"The Hexcode {hexcode} has already been submitted in the submission with an ID of {submId}")
             else:
                 try:

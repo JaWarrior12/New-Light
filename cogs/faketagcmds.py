@@ -1,4 +1,6 @@
-import os, discord, sys
+import os
+import discord 
+import sys
 from random import shuffle
 #from emoji import UNICODE_EMOJI
 import time
@@ -28,10 +30,10 @@ tmes=tme(hour=1,minute=0,tzinfo=utc)
 class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="Access The Fake Tag Database, New Light's in-house fake tagged ship tracker."):
     def __init__(self, bot: commands.Bot):
         self.bot=bot
-        if bot.user.id != 975858537223847936:
+        if bot.user.application_id != 975858537223847936:
             self.fakeTagDBScanner.start()
     def cog_unload(self):
-        if self.bot.user.id != 975858537223847936:
+        if self.bot.user.application_id != 975858537223847936:
             self.fakeTagDBScanner.cancel()
         else:
             pass
@@ -52,10 +54,11 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
         if str(ctx.message.author.id) not in banned:
             data=lists.readFakeTags()
             def find_route(data2, route_no):
-                return list(filter(lambda y: y.get("hexcode") == int(route_no), data2))
+                return list(filter(lambda y: y.get("hexcode") == str(route_no), data2))
             matchingHexs=find_route(data,hexcode)
             if len(matchingHexs)>=1:
-                submId=data["fakeTaggedShips"][matchingHexs[0]]["submissionId"]
+                submId=matchingHexs[0]["submissionId"]
+                #submId=data["fakeTaggedShips"][matchingHexs[0]]["submissionId"]
                 await ctx.send(f"The Hexcode {hexcode} has already been submitted in the submission with an ID of {submId}")
             else:
                 try:
@@ -368,7 +371,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     @tasks.loop(time=tmes)
     #@commands.command(name="ftdbscan")
     async def fakeTagDBScanner(self):
-        if self.bot.user.id != 975858537223847936:
+        if self.bot.application_id != 975858537223847936:
             try:
                 def find_route(data2, route_no, key):
                     return list(filter(lambda y:route_no in y.get(key), data2))

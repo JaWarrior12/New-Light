@@ -1,4 +1,5 @@
-import os, discord
+import os
+import discord
 import time
 import pytz
 import datetime
@@ -208,10 +209,10 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   async def joindata(self,ctx,guildId=None):
     if ctx.message.author.id in developers:
       if guildId==None:
-        me=ctx.message.guild.get_member(974045822167679087)
+        me=ctx.message.guild.get_member(self.bot.application_id)
       else:
         server=await self.bot.get_guild(guildId)
-        me=guild.get_member(self.bot.user.id)
+        me=guild.get_member(self.bot.application_id)
       date=me.joined_at
       converteddate=date.astimezone(pytz.timezone('US/Eastern'))
       await ctx.message.author.send(f'I joined {ctx.message.guild.name} at {converteddate} (EST).')

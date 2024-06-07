@@ -55,7 +55,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             data=lists.readFakeTags()
             def find_route(data2, route_no):
                 return list(filter(lambda y: y.get("hexcode") == str(route_no), data2))
-            matchingHexs=find_route(data,hexcode)
+            matchingHexs=find_route(data["fakeTaggedShips"],hexcode)
             if len(matchingHexs)>=1:
                 submId=matchingHexs[0]["submissionId"]
                 #submId=data["fakeTaggedShips"][matchingHexs[0]]["submissionId"]

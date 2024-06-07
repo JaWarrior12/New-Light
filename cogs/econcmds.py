@@ -1,4 +1,5 @@
-import os, discord
+import os
+import discord
 from os import system
 import time
 import asyncio

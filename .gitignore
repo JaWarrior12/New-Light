@@ -6,3 +6,5 @@ Backups/bcklog.txt
 __pycache__
 cogs/__pycache__
 main.py
+.replit
+replit.nix

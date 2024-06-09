@@ -176,6 +176,9 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                         lastUpdater=x["lastUpdatedBy"]=f"{ctx.message.author.mention} ({ctx.message.author.name}/{ctx.message.author.id})"
                         data["fakeTaggedShips"][submsnIndex]["lastUpdatedBy"]=lastUpdater
                         if key=="shipName":
+                            if value in data["fakeTaggedShips"][submsnIndex]["formerShipNames"] or value == data["fakeTaggedShips"][submsnIndex]["shipName"]:
+                                await ctx.send(f"The Name {value} is already logged for the submission with an id of {submissionId}")
+                                return
                             data["fakeTaggedShips"][submsnIndex]["formerShipNames"].append(oldValue)
                         if key=="captains":
                             print("captain update")

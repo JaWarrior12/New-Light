@@ -175,6 +175,9 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                         lastUpdater=x["lastUpdatedBy"]=f"{ctx.message.author.mention} ({ctx.message.author.name}/{ctx.message.author.id})"
                         data["fakeTaggedShips"][submsnIndex]["lastUpdatedBy"]=lastUpdater
                         if key=="shipName":
+                            if value in data["fakeTaggedShips"][submsnIndex]["formerShipNames"] or value == data["fakeTaggedShips"][submsnIndex]["shipName"]:
+                                await ctx.send(f"The Name {value} is already logged for the submission with an id of {submissionId}")
+                                return
                             data["fakeTaggedShips"][submsnIndex]["formerShipNames"].append(oldValue)
                         if key=="captains":
                             print("captain update")
@@ -373,6 +376,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     async def fakeTagDBScanner(self):
         if self.bot.application_id != 975858537223847936:
             try:
+                print("Scanning For Fake Tags")
                 def find_route(data2, route_no, key):
                     return list(filter(lambda y:route_no in y.get(key), data2))
                 data=lists.readFakeTags()
@@ -398,7 +402,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                     ships = find_route(jsondata, tag, "name")
                     #print(ships)
                     for ship in ships:
-                        print(ship)
+                        #print(ship)
                         shipHex=str(ship["hex_code"].replace("{","").replace("}",""))
                         if shipHex not in hexcodes:
                             hexcodes.append(shipHex)
@@ -432,7 +436,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                                     data["fakeTaggedShips"][submittedtarget]["formerShipNames"].append(name)
                                     namesUpdatedCount+=1
                                     shipsOldNames.append(name)
-                                    print(name)
+                                    #print(name)
                             foundNames.append(f'Submission ID: {data["fakeTaggedShips"][submittedtarget]["submissionId"]}; List Of Alt Names Found: {shipsOldNames}')
                 lists.setFakeTags(data)
                 print(f"Scan Complete, Total Number Of Names Found: {namesUpdatedCount}")

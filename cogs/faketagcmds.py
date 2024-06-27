@@ -56,7 +56,6 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             def find_route(data2, route_no):
                 return list(filter(lambda y: y.get("hexcode") == str(route_no), data2))
             matchingHexs=find_route(data["fakeTaggedShips"],hexcode)
-            print(matchingHexs)
             if len(matchingHexs)>=1:
                 submId=matchingHexs[0]["submissionId"]
                 #submId=data["fakeTaggedShips"][matchingHexs[0]]["submissionId"]
@@ -377,6 +376,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     async def fakeTagDBScanner(self):
         if self.bot.application_id != 975858537223847936:
             try:
+                print("Scanning For Fake Tags")
                 def find_route(data2, route_no, key):
                     return list(filter(lambda y:route_no in y.get(key), data2))
                 data=lists.readFakeTags()
@@ -402,7 +402,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                     ships = find_route(jsondata, tag, "name")
                     #print(ships)
                     for ship in ships:
-                        print(ship)
+                        #print(ship)
                         shipHex=str(ship["hex_code"].replace("{","").replace("}",""))
                         if shipHex not in hexcodes:
                             hexcodes.append(shipHex)
@@ -436,7 +436,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                                     data["fakeTaggedShips"][submittedtarget]["formerShipNames"].append(name)
                                     namesUpdatedCount+=1
                                     shipsOldNames.append(name)
-                                    print(name)
+                                    #print(name)
                             foundNames.append(f'Submission ID: {data["fakeTaggedShips"][submittedtarget]["submissionId"]}; List Of Alt Names Found: {shipsOldNames}')
                 lists.setFakeTags(data)
                 print(f"Scan Complete, Total Number Of Names Found: {namesUpdatedCount}")

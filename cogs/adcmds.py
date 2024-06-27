@@ -36,28 +36,50 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   #@commands.has_role('Developer')
   async def banuser(self,ctx,user,*,reason=None):
     if ctx.message.author.id in developers:
+      try:
+        user=int(user)
+      except:
+        return "Not A Valid Integer"
       keya = "all"
       keyb = "ban"
       gid=str(ctx.message.guild.id)
-      data = dumps(lists.readdataE()[keyb])
+      data = dumps(lists.readdataE())
+      print(type(user))
+      if type(user) is discord.Member:
+            baseUser=user
+            user=user.id
+            #name=user.display
+      else:
+        user=user
       if str(user) in banned:
         await ctx.send(f'The User With An Id Of {user} Is Already In The Ban List')
-      elif type(user) != int:
-        await ctx.send(f"Error! User `{user}` is not an integer, and therefore not an ID!")
       elif type(user)==int:
+        #print("int")
         data = lists.readdataE()
         banlt=data
         #await ctx.send(banlt)
         banlt["ban"].append(str(user))
+        #print(banlt)
         #await ctx.send(banlt)
         other=lists.readother()
-        userObject=await self.bot.fetch_user(user)
+        #print(1)
         tz = pytz.timezone('America/New_York')
-        date=datetime.now(tz)
-        other["banInfo"].update({str(gid):{"reason":reason,"name":userObject.name,"banDate":date}})
+        #print(tz)
+        date=datetime.datetime.today()
+        #print(date)
+        try:
+          userObject=await self.bot.fetch_user(int(user))
+          #print(userObject)
+          other["banInfo"].update({str(userObject.id):{"reason":reason,"name":userObject.name,"banDate":date}})
+        except:
+          #print("other")
+          other["banInfo"].update({str(user):{"reason":reason,"name":None,"banDate":date}})
         lists.setdataE(banlt)
         await ctx.send(f'The User With A User Id Of {user} has been BANNED from using New Light')
         lists.bannedlist()
+        banned=banlt["ban"]
+      elif type(user) != int:
+        await ctx.send(f"Error! User `{user}` is not an integer, and therefore not an ID!")
       else:
         await ctx.send("Unknown Error!")
     else:
@@ -68,9 +90,9 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
     if ctx.message.author.id in developers:
       if str(user_id) not in banned:
         await ctx.send(f'The User With An ID Of {user_id} Is Not In The Banned List.')
-      elif type(user_id)!=int:
+      elif type(user_id)==int:
         await ctx.send(f"User ID `{user_id}` isn't and integer! It needs to be an integer!")
-      elif str(user_id) in banned and type(user_id)==int:
+      elif str(user_id) in banned and type(user_id)==str:
         data = lists.readdataE()
         banlt=data
         #await ctx.send(banlt)
@@ -97,7 +119,10 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         guild=await self.bot.fetch_guild(gid)
         tz = pytz.timezone('America/New_York')
         date=datetime.now(tz)
-        other["banInfo"].update({str(gid):{"reason":reason,"name":guild.name,"banDate":date}})
+        try:
+          other["banInfo"].update({str(gid):{"reason":reason,"name":guild.name,"banDate":date}})
+        except:
+          other["banInfo"].update({str(gid):{"reason":reason,"name":None,"banDate":date}})
         lists.setother(other)
         lists.setdataE(data)
         lists.bannedguilds()
@@ -133,12 +158,12 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         other=lists.readother()["banInfo"]
         ctnt=""
         for x in data["ban"]:
-          print(x)
+          #print(x)
           try:
             ctnt=ctnt+"\n-"+str(x)+f" ; User Name: `{other[str(x)]['name']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)]['date']}"
           except Exception as e:
             await ctx.send(e)
-          print(ctnt)
+          #print(ctnt)
         await ctx.send(f'Banned Users:\n{ctnt}')
       elif opt=="guilds":
         data=lists.readdataE()
@@ -325,7 +350,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   @tasks.loop(hours=1)
   async def syncBanlists(self):
     lists.bannedlist()
-    lists.bannedGuilds()
+    lists.bannedguilds()
     
 async def setup(bot: commands.Bot):
     await bot.add_cog(AdCmds(bot))

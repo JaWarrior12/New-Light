@@ -191,6 +191,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     #print("Started Serverconfig Slash")
     chk = lists.slashcheckperms(interaction.guild_id,interaction.user.id)
     if chk == True:
+      print("Slash Command: Server Config")
+      print(f"Guild ID: {interaction.guild_id}; Guild Name: {interaction.guild.name}")
+      print(f"User ID: {interaction.user.id}; User Name: {interaction.user.global_name}")
       val = 0
       val=input
       print(option.value)

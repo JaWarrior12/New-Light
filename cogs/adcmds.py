@@ -112,7 +112,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   @commands.command(name="banguild",help="Bans A Server From Using New Light")
   async def banguild(self,ctx,gid,*,reason=None):
     if ctx.message.author.id in developers:
-      if type(gid)==int:
+      if type(gid)==str:
         data=lists.readdataE()
         data["banguilds"].append(int(gid))
         other=lists.readother()

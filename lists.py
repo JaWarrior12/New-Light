@@ -294,7 +294,7 @@ def itemNameToID(item):
   elif str(i)=="item_launcher":
     name="item_launcher"
     id=243
-  elif str(i)=="rc":
+  elif str(i)=="rc" or str(i)=="cannon":
     name="rc"
     id=226
   elif str(i)=="burst":

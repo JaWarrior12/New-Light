@@ -266,7 +266,8 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
           else:
             continue
         print("Exchange Rates Updated")
-      except:
+      except Exception as e:
+        print(e)
         print("Error")
 
 async def setup(bot: commands.Bot):

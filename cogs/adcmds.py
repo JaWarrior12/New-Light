@@ -2,6 +2,7 @@ import os
 import discord
 import time
 import pytz
+import sys
 import datetime
 from datetime import time as DT_time
 from typing import List
@@ -65,15 +66,15 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         #print(1)
         tz = pytz.timezone('America/New_York')
         #print(tz)
-        date=datetime.datetime.today()
+        date=f"{datetime.datetime.now(tz).month}-{datetime.datetime.now(tz).day}-{datetime.datetime.now(tz).year}"
         #print(date)
         try:
           userObject=await self.bot.fetch_user(int(user))
           #print(userObject)
-          other["banInfo"].update({str(userObject.id):{"reason":reason,"name":userObject.name,"banDate":date}})
+          other["banInfo"].update({str(userObject.id):{"reason":reason,"userName":userObject.name,"banDate":date}})
         except:
           #print("other")
-          other["banInfo"].update({str(user):{"reason":reason,"name":None,"banDate":date}})
+          other["banInfo"].update({str(user):{"reason":reason,"userName":None,"banDate":date}})
         lists.setdataE(banlt)
         await ctx.send(f'The User With A User Id Of {user} has been BANNED from using New Light')
         lists.bannedlist()
@@ -116,14 +117,18 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         data=lists.readdataE()
         data["banguilds"].append(int(gid))
         other=lists.readother()
-        guild=await self.bot.fetch_guild(gid)
         tz = pytz.timezone('America/New_York')
-        date=datetime.now(tz)
+        date=date=f"{datetime.datetime.now(tz).month}-{datetime.datetime.now(tz).day}-{datetime.datetime.now(tz).year}"
         try:
-          other["banInfo"].update({str(gid):{"reason":reason,"name":guild.name,"banDate":date}})
+          guild=await self.bot.fetch_guild(gid)
+          other["banInfo"].update({str(gid):{"reason":reason,"guildName":guild.name,"banDate":date}})
         except:
-          other["banInfo"].update({str(gid):{"reason":reason,"name":None,"banDate":date}})
-        lists.setother(other)
+          other["banInfo"].update({str(gid):{"reason":reason,"guildName":None,"banDate":date}})
+        #print(other)
+        try:
+          lists.setother(other)
+        except Exception as e:
+          pass
         lists.setdataE(data)
         lists.bannedguilds()
         await ctx.send(f"Banned Guild With ID:{gid}")
@@ -160,17 +165,44 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         for x in data["ban"]:
           #print(x)
           try:
-            ctnt=ctnt+"\n-"+str(x)+f" ; User Name: `{other[str(x)]['name']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)]['date']}"
+            ctnt=ctnt+"\n- "+str(x)+f" ; User Name: `{other[str(x)]['userName']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)]['date']}"
           except Exception as e:
             await ctx.send(e)
           #print(ctnt)
         await ctx.send(f'Banned Users:\n{ctnt}')
       elif opt=="guilds":
-        data=lists.readdataE()
-        ctnt=""
-        for x in data["banguilds"]:
-          ctnt=ctnt+"\n-"+str(x)+f" ; User Name: `{other[str(x)]['name']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)['banDate']]}"
-        await ctx.send(f'Banned Guilds:\n{ctnt}')
+        try:
+          data=lists.readdataE()
+          other=lists.readother()["banInfo"]
+          ctnt=""
+          guilds=[]
+          for x in other.keys():
+            if "guildName" in other[str(x)].keys():
+              if int(x) in data["banguilds"]:
+                guilds.append(int(x))
+          for y in guilds:
+            guildData="\n-"+f" {str(y)} ; Guild Name: `{other[str(y)]['guildName']}` ; Ban Reason: `{other[str(y)]['reason']}` ; Ban Date: {other[str(y)]['banDate']}"
+            ctnt=ctnt+guildData
+          await ctx.send(f'Banned Guilds:\n{ctnt}')
+        except Exception as e:
+          print(e)
+          e_type, e_object, e_traceback = sys.exc_info()
+
+          e_filename = os.path.split(
+              e_traceback.tb_frame.f_code.co_filename
+          )[1]
+
+          e_message = str(e)
+
+          e_line_number = e_traceback.tb_lineno
+
+          print(f'exception type: {e_type}')
+
+          print(f'exception filename: {e_filename}')
+
+          print(f'exception line number: {e_line_number}')
+
+          print(f'exception message: {e_message}')
       else:
         await ctx.send("I don't know what you want me to list.")
     else:

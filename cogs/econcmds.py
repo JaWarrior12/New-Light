@@ -34,7 +34,7 @@ tmes=tme(hour=0,minute=30,tzinfo=utc)
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    if self.bot.application_id == 975858537223847936:
+    if bot.application_id==975858537223847936:
       self.exchangeRatesUpdater.start()
   def cog_unload(self):
     if self.bot.application_id == 975858537223847936:
@@ -192,12 +192,12 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
             break
     else:
       await ctx.send("Error")
-      
+
   global tmes
   @tasks.loop(time=tmes)
   #@commands.command(name="ert")
   async def exchangeRatesUpdater(self):
-    if self.bot.user.id==975858537223847936:
+    if self.bot.application_id==975858537223847936:
       try:
         print("Updating Exchange Rates")
         myguild = self.bot.get_guild(1031900634741473280)
@@ -266,7 +266,8 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
           else:
             continue
         print("Exchange Rates Updated")
-      except:
+      except Exception as e:
+        print(e)
         print("Error")
 
 async def setup(bot: commands.Bot):

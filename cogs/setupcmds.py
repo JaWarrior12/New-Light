@@ -34,7 +34,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact jawarrior about completing server setup.")
   #@commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
-  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0,verbal=False):
+  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0,verbal=False,nonverProof=False):
       servers=lists.readdataE()
       if str(ctx.message.guild.id) not in servers.keys():
         await ctx.send("Started Server Setup")
@@ -191,6 +191,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     #print("Started Serverconfig Slash")
     chk = lists.slashcheckperms(interaction.guild_id,interaction.user.id)
     if chk == True:
+      print("Slash Command: Server Config")
+      print(f"Guild ID: {interaction.guild_id}; Guild Name: {interaction.guild.name}")
+      print(f"User ID: {interaction.user.id}; User Name: {interaction.user.global_name}")
       val = 0
       val=input
       print(option.value)

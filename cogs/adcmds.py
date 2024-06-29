@@ -99,6 +99,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         #await ctx.send(banlt)
         banlt["ban"].remove(str(user_id))
         other=lists.readother()
+        await ctx.send(f"User Ban Info: {other["banInfo"][str(user_id)]}")
         other["banInfo"].pop(str(user_id))
         lists.setother(other)
         #await ctx.send(banlt)
@@ -140,18 +141,25 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   @commands.command(name="unbanguild",help="Unbans A Server From Using New Light")
   async def unbanguild(self,ctx,gid,*,reason=None):
     if ctx.message.author.id in developers:
-      if type(gid)!=int:
-        data=lists.readdataE()
-        data["banguilds"].remove(int(gid))
-        lists.setdataE(data)
-        other=lists.readother()
-        guild=await self.bot.fetch_guild(gid)
-        other["banInfo"].pop(str(gid))
-        lists.setother(other)
-        lists.bannedguilds()
-        await ctx.send(f"UnBanned Guild With ID:{gid}")
-      else:
-        await ctx.send(f"Guild ID `{gid}` isn't an integer! It Needs to be an integer!")
+      try:
+        if type(gid)!=int:
+          data=lists.readdataE()
+          data["banguilds"].remove(int(gid))
+          other=lists.readother()
+          try:
+            guild=await self.bot.fetch_guild(gid)
+          except:
+            pass
+          await ctx.send(f"Guild Ban Info: {other["banInfo"][str(gid)]}")
+          other["banInfo"].pop(str(gid))
+          lists.setother(other)
+          lists.setdataE(data)
+          lists.bannedguilds()
+          await ctx.send(f"UnBanned Guild With ID:{gid}")
+        else:
+          await ctx.send(f"Guild ID `{gid}` isn't an integer! It Needs to be an integer!")
+      except Exception as e:
+        print(e)
     else:
       await ctx.send("Not A Dev")
 

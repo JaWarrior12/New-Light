@@ -297,12 +297,21 @@ def itemNameToID(item):
   elif str(i)=="rc" or str(i)=="cannon":
     name="rc"
     id=226
-  elif str(i)=="burst":
-    name="burst"
+  elif str(i)=="burst" or str(i)=="burst_cannon":
+    name="burst_cannon"
     id=228
-  elif str(i)=="auto":
-    name="auto"
+  elif str(i)=="auto" or str(i)=="machine" or str(i)=="machine_cannon":
+    name="machine_cannon"
     id=229
+  elif str(i)=="acute" or str(i)=="acute_cannon":
+    name="acute_cannon"
+    id=263
+  elif str(i)=="msu" or str(i)=="munitions_supply_unit":
+    name="munitions_supply_unit"
+    id=264
+  elif str(i)=="obtuse" or str(i)=="obtuse_cannon":
+    name="obtuse_cannon"
+    id=265
   elif str(i)=="loader":
     name="loader"
     id=252

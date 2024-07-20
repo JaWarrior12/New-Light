@@ -80,6 +80,13 @@ def bals():
 def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
 
+def readFile(file):
+  return loads(open(f'../NLDB/{file}.json', 'r').read())
+
+def setFile(file,data):
+    with open(f"../NLDB/{file}.json", "w") as f:
+        f.write(dumps(data))
+
 def getToken(id):
   data=loads(open('../NLDB/secrets.json', 'r').read())
   token=data[str(id)]

@@ -194,11 +194,13 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       await ctx.send("Error")
 
-  @commands.command(name="detailedTransferSearch",hidden=False,aliases=['dts','dsearch','detailed'],disabled=True)
+  @commands.command(name="detailedTransferSearch",hidden=False,aliases=['dts','dsearch','detailed'],disabled=False)
   async def detailedTransferSearch(self,ctx,version,year,month,day,hex_code,extra_key="hex_code"):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
+      log_file_name=None
+      logFile=None
       try:
         jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/log.json.gz')
         shipData = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/ships.json.gz')
@@ -266,7 +268,10 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
         print(f'exception line number: {e_line_number}')
 
         print(f'exception message: {e_message}')
-
+      if log_file_name != None:
+        message=f"Daily Transfer Report For Ship {hex_code}; Date: {datetime.now()}"
+        await ctx.send(message,file=discord.File(log_file_name))
+        os.remove(log_file_name)
     else:
       await ctx.send("Error")
 

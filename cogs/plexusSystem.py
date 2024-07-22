@@ -1,3 +1,4 @@
+from multiprocessing.spawn import old_main_modules
 import os, discord, sys
 from aiohttp import DataQueue
 import time as timea
@@ -93,53 +94,101 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
     PlexusReportChannel = await PlexusServer.fetch_channel(PLEXUS_CHANNEL_ID)
     print(PlexusReportChannel)
     try:
-      jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
-      shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+      jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/log.json.gz')
+      shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/ships.json.gz')
       log_file_name=f"Plexus_Daily_Transfers.txt"
+      shipTotals={}
       for ship in shipsToLoop:
+        oldHexcode=ship
+        shipTotals.update({oldHexcode:{}})
         hexcode="{"+ship+"}"
         def find_route(data, route_no):
           return list(filter(lambda x: x.get("src") == route_no, data))
         route = find_route(jsondata,hexcode)
-        url = "https://pub.drednot.io/test/econ/item_schema.json"
+        url = "https://pub.drednot.io/prod/econ/item_schema.json"
         itemSchema = loads(requests.get(url).content)
         def findItemName(itemId):
           return list(filter(lambda x: x.get('id') == itemId, itemSchema))
         def shipNameLookup(hex):
           return list(filter(lambda x: x.get('hex_code') == hex, shipData))
         items={}
-        for log in route:
-          itemName=findItemName(log["item"])[0]["name"]
-          if itemName not in list(items.keys()):
-            items.update({itemName:0})
+        for logA in route:
+          destShip=logA["dst"].replace("{","").replace("}","")
+          #print(destShip)
+          if destShip not in list(items.keys()):
+            items.update({destShip:{}})
+        #print(items)
         for logB in route:
-          itemName=findItemName(logB["item"])[0]["name"]
-          items[itemName]+=logB["count"]
+          destShip=logB["dst"].replace("{","").replace("}","")
+          itemName=str(findItemName(logB["item"])[0]["name"])
+          #print(list(items[destShip].keys()))
+          items.update({destShip:{str(itemName):0}})
+        #print(items)
+        for logC in route:
+          destShip=logC["dst"].replace("{","").replace("}","")
+          itemName=findItemName(logC["item"])[0]["name"]
+          #print(destShip)
+          #print(itemName)
+          #print(logC)
+          if itemName not in list(items[destShip].keys()):
+            items.update({destShip:{str(itemName):0}})
+          items[destShip][str(itemName)]+=logC["count"]
         #print(route)
         #print(items)
-        with open(log_file_name, "a", encoding="utf-8") as logFile:
-          for x in route:
-            timeConversion=datetime.fromtimestamp(x["time"]).strftime('%c')
-            if x["serv"]==0:
-              serverConversion="US"
-            elif x["serv"]==1:
-              serverConversion="EU"
-            elif x["serv"]==2:
-              serverConversion="AS"
-            else:
-              serverConversion="??"
-            itemNameConversion=findItemName(int(x["item"]))
-            srcShipConversion=shipNameLookup(x["src"].replace("{","").replace("}",""))[0]
-            srcShipHex="{"+srcShipConversion["hex_code"]+"}"
-            srcShipConversion={"name":srcShipConversion["name"],"hex_code":srcShipHex}
-            #print(srcShipConversion)
-            if x["dst"]=="killed":
-              dstShipConversion={"name":"Destroyed","hex_code":""}
-            else:
-              dstShipConversion=shipNameLookup(x["dst"].replace("{","").replace("}",""))[0]
-              dstShipHex="{"+dstShipConversion["hex_code"]+"}"
-              dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
-            logFile.write(f"{serverConversion} {timeConversion} UTC {x["zone"]} {srcShipConversion["name"]} {srcShipConversion["hex_code"]} sent {x["count"]} {findItemName(x["item"])[0]["name"]} to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+        def individualLogs():
+          with open(log_file_name, "a", encoding="utf-8") as logFile:
+            for x in route:
+              timeConversion=datetime.fromtimestamp(x["time"]).strftime('%c')
+              if x["serv"]==0:
+                serverConversion="US"
+              elif x["serv"]==1:
+                serverConversion="EU"
+              elif x["serv"]==2:
+                serverConversion="AS"
+              else:
+                serverConversion="??"
+              itemNameConversion=findItemName(int(x["item"]))
+              srcShipConversion=shipNameLookup(x["src"].replace("{","").replace("}",""))[0]
+              srcShipHex="{"+srcShipConversion["hex_code"]+"}"
+              srcShipConversion={"name":srcShipConversion["name"],"hex_code":srcShipHex}
+              #print(srcShipConversion)
+              if x["dst"]=="killed":
+                dstShipConversion={"name":"Destroyed","hex_code":""}
+              else:
+                dstShipConversion=shipNameLookup(x["dst"].replace("{","").replace("}",""))[0]
+                dstShipHex="{"+dstShipConversion["hex_code"]+"}"
+                dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
+              logFile.write(f"{serverConversion} {timeConversion} UTC {x["zone"]} {srcShipConversion["name"]} {srcShipConversion["hex_code"]} sent {x["count"]} {findItemName(x["item"])[0]["name"]} to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+        shipTotals.update({oldHexcode:items})
+      #print(items)
+      #print(shipTotals)
+      shipTotalsKeys=list(shipTotals.keys())
+      with open(log_file_name, "a", encoding="utf-8") as logFile:
+        for hex in shipTotalsKeys:
+          shipLogs=shipTotals[hex]
+          #print(hex)
+          #print(len(list(shipTotals[hex].keys())))
+          #print(list(shipTotals[hex].keys()))
+          if len(list(shipTotals[hex].keys()))==0:
+            logFile.write(f"{hex} transfered no items \n")
+          else:
+            for dest in shipLogs:
+              #print(dest)
+              destTotals=shipTotals[hex][dest]
+              #print(destTotals)
+              srcShipConversion=shipNameLookup(hex)[0]
+              srcShipHex="{"+srcShipConversion["hex_code"]+"}"
+              srcShipConversion={"name":srcShipConversion["name"],"hex_code":srcShipHex}
+              #print(srcShipConversion)
+              if dest=="killed":
+                dstShipConversion={"name":"killed","hex_code":""}
+              else:
+                dstShipConversion=shipNameLookup(dest)[0]
+                dstShipHex="{"+dstShipConversion["hex_code"]+"}"
+                dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
+              for item in destTotals:
+                itemCount = shipTotals[hex][dest][item]
+                logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} sent {itemCount} {item} to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
     except Exception as e:
       print(e)
       e_type, e_object, e_traceback = sys.exc_info()

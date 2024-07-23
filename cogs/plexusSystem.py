@@ -37,7 +37,7 @@ PLEXUS_CHANNEL_ID = 1045129470287294504 #NLD Server dev-bot-commands channel ID
 
 #tz = pytz.timezone('America/New_York')
 utc=timezone.utc
-tmes=tme(hour=0,minute=20,tzinfo=utc)
+tmes=tme(hour=0,minute=30,tzinfo=utc)
 
 def readPS():
     return loads(open('.../NLDB/plexusSystems.json', 'r').read())

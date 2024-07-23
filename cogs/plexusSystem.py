@@ -96,6 +96,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
     try:
       jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/log.json.gz')
       shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/ships.json.gz')
+      altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-2}/ships.json.gz')
       log_file_name=f"Plexus_Daily_Transfers.txt"
       shipTotals={}
       receiveTotals={}
@@ -116,6 +117,8 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
           return list(filter(lambda x: x.get('id') == itemId, itemSchema))
         def shipNameLookup(hex):
           return list(filter(lambda x: x.get('hex_code') == hex, shipData))
+        def altShipNameLookup(hex):
+          return list(filter(lambda x: x.get('hex_code') == hex, altShipData))
         items={}
         destItems={}
         #Logs A,B,C Are For Receiving
@@ -170,19 +173,38 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
         #StateVar is 0 or 1, 0==Send/shipTotals, 1==Receive/receiveTotals
         with open(log_file_name, "a+", encoding="utf-8") as logFile:
           if sum(1 for _ in logFile)==0:
-            logFile.write(f"--\/--{sectionTitle}--\/--\n")
+            logFile.write(f"--\\/--{sectionTitle}--\\/--\n")
           else:
             logFile.write(f"\n\n--\/--{sectionTitle}--\/--\n")
           shipTotalsKeys=list(sourceDict.keys())
           for hex in shipTotalsKeys:
             shipLogs=sourceDict[hex]
-            #print(hex)
             #print(len(list(shipTotals[hex].keys())))
             #print(list(shipTotals[hex].keys()))
             if len(list(sourceDict[hex].keys()))==0 and stateVar==0:
-              logFile.write(f"{hex} transfered no items \n")
+              hexCode=hex
+              ShipConversion=shipNameLookup(hexCode)
+              altShipConversion=altShipNameLookup(hexCode)
+              #print(ShipConversion)
+              if len(ShipConversion)>0:
+                logFile.write(f"{ShipConversion[0]["name"]} ({ShipConversion[0]["hex_code"]}) transfered no items \n")
+              else:
+                if len(altShipConversion)>0:
+                  logFile.write(f"{altShipConversion[0]["name"]} ({altShipConversion[0]["hex_code"]}) transfered no items \n")
+                else:
+                  logFile.write(f"{hex} transfered no items \n")
             if len(list(sourceDict[hex].keys()))==0 and stateVar==1:
-              logFile.write(f"{hex} recieved no items \n")
+              hexCode=hex
+              ShipConversion=shipNameLookup(hexCode)
+              altShipConversion=altShipNameLookup(hexCode)
+              #print(ShipConversion)
+              if len(ShipConversion)>0:
+                logFile.write(f"{ShipConversion[0]["name"]} ({ShipConversion[0]["hex_code"]}) received no items \n")
+              else:
+                if len(altShipConversion)>0:
+                  logFile.write(f"{altShipConversion[0]["name"]} ({altShipConversion[0]["hex_code"]}) received no items \n")
+                else:
+                  logFile.write(f"{hex} received no items \n")
             else:
               for dest in shipLogs:
                 if stateVar==0:
@@ -200,11 +222,11 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
                     dstShipHex="{"+dstShipConversion["hex_code"]+"}"
                     dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
                 elif stateVar==1:
-                  print(f'dest=={dest}')
-                  print(f'hex=={hex}')
-                  print(f'sourceDict=={sourceDict}')
+                  #print(f'dest=={dest}')
+                  #print(f'hex=={hex}')
+                  #print(f'sourceDict=={sourceDict}')
                   destTotals=sourceDict[hex][dest]
-                  print(destTotals)
+                  #print(destTotals)
                   if hex=="killed":
                     srcShipConversion={"name":hex,"hex_code":""}
                   else:

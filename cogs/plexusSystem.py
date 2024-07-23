@@ -90,9 +90,9 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
       month=datetime.today().month
       day=datetime.today().day
     PlexusServer = self.bot.get_guild(PLEXUS_SERVER_ID)
-    print(PlexusServer)
+    #print(PlexusServer)
     PlexusReportChannel = await PlexusServer.fetch_channel(PLEXUS_CHANNEL_ID)
-    print(PlexusReportChannel)
+    #print(PlexusReportChannel)
     try:
       jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/log.json.gz')
       shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/ships.json.gz')
@@ -209,7 +209,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
 
       print(f'exception message: {e_message}')
     if log_file_name != None:
-      message=f"Plexus Daily Transfer Report For {datetime.now()}"
+      message=f"Plexus Daily Transfer Report For {datetime.now(pytz.UTC)}"
       await PlexusReportChannel.send(message,file=discord.File(log_file_name))
       os.remove(log_file_name)
     print("Plexus Daily Transfer Report Script Finished")

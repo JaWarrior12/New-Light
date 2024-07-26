@@ -47,7 +47,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #await lists.logmajor(self,ctx,msg=str(uid))
         default = {}
         defaultb=[]
-        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0,"verbal":verbal,"nonverProof":nonverProof}
+        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0,"verbal":verbal,"nonverProof":nonverProof,"trackLogChannel":0,"logFiltersNonShips":True}
         defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"cannon":0,"burst_cannon":0,"machine_cannon":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
         data = lists.bals()
         data[gid]=dict(defaultd)
@@ -185,7 +185,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Member Role",value="memrole"),
       app_commands.Choice(name="Store Member Balances? (Yes/No)",value="storebal"),
       app_commands.Choice(name="Member List Channel",value="memchan"),
-      app_commands.Choice(name="Verify Distribution Logs?",value="verbal")
+      app_commands.Choice(name="Verify Distribution Logs?",value="verbal"),
+      app_commands.Choice(name="Track Log Channel",value="trackLogChannel"),
+      app_commands.Choice(name="Track Log Filters Out Non Ship Entries?",value="logFiltersNonShips")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     #print("Started Serverconfig Slash")
@@ -201,7 +203,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         val=str(input)
       elif option.value=="clanPercent":
         val=float(input)
-      elif option=="verbal":
+      elif option in ["verbal","logFiltersNonShips"]:
         val=bool(input)
       elif option.value == "storebal":
         val=str(input.lower())
@@ -224,7 +226,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=str(input)
         elif option=="clanPercent":
           val=float(input)
-        elif option=="verbal":
+        elif option in ["verbal","logFiltersNonShips"]:
           val=bool(input)
         elif option == "storebal":
           val=str(input.lower())
@@ -260,6 +262,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           e.add_field(name="Member Channel",value=ctx.guild.get_channel(data[gid]["memchan"]).mention,inline=True)
           e.add_field(name="Member Role",value=ctx.guild.get_role(data[gid]["memrole"]).mention,inline=True)
           e.add_field(name="Member List Message",value=ctx.guild.get_channel(data[gid]["memchan"]).get_partial_message(data[gid]["memmsg"]).jump_url,inline=True)
+          e.add_field(name="Track Log Channel",value=ctx.guild.get_channel(data[gid]["trackLogChannel"]).mention,inline=True)
+          e.add_field(name="Track Log Filters Non Ship Entries?",value=ctx.guild.get_channel(data[gid]["logFiltersNonShips"]),inline=True)
           await ctx.send(embed=e)
         except KeyError:
           await ctx.send(f"KeyError: Guild {gid} cannot be found.")

@@ -164,6 +164,10 @@ def clearserver(id):
     if gid in data.keys():
       data.pop(gid)
       setdataE(data)
+    data=readFile("plexusSystems")
+    if gid in data.keys():
+      data.pop(gid)
+      setFile("plexusSystems",data)
     data=readother()
     if gid in data["defaultdist"].keys():
       data["defaultdist"].pop(gid)

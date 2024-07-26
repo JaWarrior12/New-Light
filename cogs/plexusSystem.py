@@ -72,6 +72,37 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
       await self.runDailyTransferReport(self,year,month,day)
     else:
       await ctx.send("This is a DEVELOPER ONLY command.")
+
+  @commands.command(name="updateTrackList",aliases=["utl"],help="Add or Remove a ship from the track list; also can display the current trck list. Functions :add/remove/list")
+  @commands.check_any(is_plexus_server())
+  async def updateTrackList(self,ctx,function,hex=None):
+    chk = lists.checkperms(ctx)
+    if chk:
+      data = lists.readFile("plexusSystems")
+      if function.lower() == "add":
+        hex=hex.upper()
+        if hex not in data[str(ctx.guild.id)]['trackList'] and hex != None:
+          data[str(ctx.guild.id)]['trackList'].append(hex)
+          await ctx.send(f"Added {hex} to the track list.")
+          lists.setFile("plexusSystems",data)
+        else:
+          await ctx.send(f"Hex {hex} is already in the track list.")
+      elif function.lower() == "remove":
+        hex=hex.upper()
+        if hex in data[str(ctx.guild.id)]['trackList']:
+          data[str(ctx.guild.id)]['trackList'].remove(hex)
+          await ctx.send(f"Removed {hex} from the track list.")
+          lists.setFile("plexusSystems",data)
+        else:
+          await ctx.send(f"Hex {hex} was not found in the track list.")
+      elif function.lower() == "list":
+        await ctx.send(f"{ctx.guild.name} Track List")
+        trackListMsg=""
+        for ship in data[str(ctx.guild.id)]['trackList']:
+          trackListMsg = trackListMsg+"\n- "+ship
+        await ctx.send(trackListMsg)
+      else:
+        await ctx.send(f"Sorry, {function} is not a valid function for this command. Valid Functions: Add/List/Remove")
   
   @tasks.loop(time=tmes)
   async def runDailyTransferReport_TimerLoop(self):
@@ -82,7 +113,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
     print("Starting Plexus Daily Transfer Report Script")
     data = lists.readFile("plexusSystems")
     #print(data)
-    shipsToLoop=data["clanShips"]
+    shipsToLoop=data["trackList"]
     log_file_name=None
     logFile=None
     if year is None:

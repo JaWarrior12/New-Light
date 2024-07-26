@@ -230,7 +230,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
                     logFile.write(f"{altShipConversion[0]["name"]} ({altShipConversion[0]["hex_code"]}) transfered no items \n")
                   else:
                     logFile.write(f"{hex} transfered no items \n")
-              if len(list(sourceDict[hex].keys()))==0 and stateVar==1:
+              elif len(list(sourceDict[hex].keys()))==0 and stateVar==1:
                 hexCode=hex
                 ShipConversion=shipNameLookup(hexCode)
                 altShipConversion=altShipNameLookup(hexCode)
@@ -254,6 +254,8 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
                     #print(srcShipConversion)
                     if dest=="killed":
                       dstShipConversion={"name":"killed","hex_code":""}
+                    elif "hurt" in dest:
+                      dstShipConversion={"name":"hurt","hex_code":""}
                     else:
                       dstShipConversion=shipNameLookup(dest)[0]
                       dstShipHex="{"+dstShipConversion["hex_code"]+"}"

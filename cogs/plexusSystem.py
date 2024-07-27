@@ -52,15 +52,15 @@ def setPS(data):
 class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For Plexus"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    self.runDailyTransferReport_TimerLoop.start()
-    #if bot.application_id != 975858537223847936:
-      #self.verifyschedule.start()
+    #self.runDailyTransferReport_TimerLoop.start()
+    if bot.application_id != 975858537223847936:
+      self.runDailyTransferReport_TimerLoop.start()
         #pass
   def cog_unload(self):
     self.runDailyTransferReport_TimerLoop.cancel()
-    #if self.bot.application_id != 975858537223847936:
+    if self.bot.application_id != 975858537223847936:
       #pass
-      #self.verifyschedule.cancel()
+      self.runDailyTransferReport_TimerLoop.cancel()
     #else:
     #pass
   

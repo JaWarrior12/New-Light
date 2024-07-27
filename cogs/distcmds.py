@@ -306,7 +306,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
             for x in items:
               inputv.update({str(x):0})
           else:
-            inputv = {"flux":0,"loader":0,"rc":0,"pusher":0}
+            inputv = {"flux":0,"loader":0,"cannon":0,"pusher":0}
           data[gid][str(memvar)]=dict(inputv)
           lists.setdata(data)
           e = discord.Embed(title="Member Added")

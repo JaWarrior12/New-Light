@@ -19,6 +19,7 @@ banned = 0 #[948934984088035408,975761604975153233]
 developers = [949451462151376948,722703947638505556,930284432634556496]
 bgids=0
 
+DEV_SERVER_ID = 1031900634741473280
 #Authorized Based On Clan
 #Self ID=974045822167679087
 
@@ -78,6 +79,13 @@ def bals():
 
 def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
+
+def readFile(file):
+  return loads(open(f'../NLDB/{file}.json', 'r').read())
+
+def setFile(file,data):
+    with open(f"../NLDB/{file}.json", "w") as f:
+        f.write(dumps(data))
 
 def getToken(id):
   data=loads(open('../NLDB/secrets.json', 'r').read())
@@ -156,6 +164,10 @@ def clearserver(id):
     if gid in data.keys():
       data.pop(gid)
       setdataE(data)
+    data=readFile("plexusSystems")
+    if gid in data.keys():
+      data.pop(gid)
+      setFile("plexusSystems",data)
     data=readother()
     if gid in data["defaultdist"].keys():
       data["defaultdist"].pop(gid)
@@ -295,14 +307,23 @@ def itemNameToID(item):
     name="item_launcher"
     id=243
   elif str(i)=="rc" or str(i)=="cannon":
-    name="rc"
+    name="cannon"
     id=226
-  elif str(i)=="burst":
-    name="burst"
+  elif str(i)=="burst" or str(i)=="burst_cannon":
+    name="burst_cannon"
     id=228
-  elif str(i)=="auto":
-    name="auto"
+  elif str(i)=="auto" or str(i)=="machine" or str(i)=="machine_cannon":
+    name="machine_cannon"
     id=229
+  elif str(i)=="acute" or str(i)=="acute_cannon":
+    name="acute_cannon"
+    id=263
+  elif str(i)=="msu" or str(i)=="munitions_supply_unit":
+    name="munitions_supply_unit"
+    id=264
+  elif str(i)=="obtuse" or str(i)=="obtuse_cannon":
+    name="obtuse_cannon"
+    id=265
   elif str(i)=="loader":
     name="loader"
     id=252

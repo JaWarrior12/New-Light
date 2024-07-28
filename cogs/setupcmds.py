@@ -32,7 +32,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         return ctx.guild is not None and ctx.guild.owner_id == ctx.author.id or ctx.author.id in lists.developers
     return commands.check(predicate)
 
-  @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact jawarrior about completing server setup.")
+  @commands.command(name="setupserver",aliases=["setup","serversetup"],brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact jawarrior about completing server setup.")
   #@commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
   async def setupsrvr(self,ctx):
@@ -68,6 +68,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           banlt = lists.readdataE()
           banlt[gid]["auth"].append(str(uid))
           lists.setdataE(banlt)
+          data = lists.readFile("plexusSystems")
+          data[gid]={"trackList":[]}
+          lists.setFile("plexusSystems",data)
           await ctx.send("Server Setup Succesfully!")
           #await server.create_role(name="QuickPing")
           #await ctx.send("QuickPing Role Created")

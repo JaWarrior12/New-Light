@@ -53,12 +53,12 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     #self.runDailyTransferReport_TimerLoop.start()
-    if bot.application_id != 975858537223847936:
+    if bot.application_id == 975858537223847936:
       self.runDailyTransferReport_TimerLoop.start()
         #pass
   def cog_unload(self):
     self.runDailyTransferReport_TimerLoop.cancel()
-    if self.bot.application_id != 975858537223847936:
+    if self.bot.application_id == 975858537223847936:
       #pass
       self.runDailyTransferReport_TimerLoop.cancel()
     #else:

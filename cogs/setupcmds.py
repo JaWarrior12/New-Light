@@ -1,4 +1,5 @@
 import os
+import sys
 import discord
 import time
 import pytz
@@ -34,42 +35,62 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   @commands.command(name="setupserver",brief="Setup For Your Server (Servr Owner Only)",help="Sets Up Databases and Configs For Your Server. ONLY RUN THIS ONCE!!! Administrator Permissions are required to run this command. It automaticlly adds the person who ran the command to the authorized users list. Ping Channel is for the NL Ping Webpage, simply insert the CHANNEL ID of your Battle Links channel.\ndistroChannel is the ID of your distribution channel.\nclanPercent is the percent of flux from each distro log that goes to the clan. Must be the server owner to run this, if the server owner is unavailable you can contact jawarrior about completing server setup.")
   #@commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
-  async def setupsrvr(self,ctx,pingChannel=0,distroChannel=0,clanPercent=0,distShip=None,memRole=0,storebals="no",memchan=0,verbal=False,nonverProof=False):
+  async def setupsrvr(self,ctx):
       servers=lists.readdataE()
       if str(ctx.message.guild.id) not in servers.keys():
-        await ctx.send("Started Server Setup")
-        msg = None
-        #lists.logback(ctx,msg)
-        msgb = "a b"
-        pc=int(pingChannel)
-        gid = ctx.message.guild.id
-        uid = ctx.message.author.id
-        #await lists.logmajor(self,ctx,msg=str(uid))
-        default = {}
-        defaultb=[]
-        defaultc={"auth":[str(uid)],"pingchan":pc,"distchan":int(distroChannel),"clanPercent":float(clanPercent),"distship":str(distShip),"memrole":memRole,"storebal":storebals,"name":str(ctx.message.guild.name),"memchan":memchan,"memmsg":0,"verbal":verbal,"nonverProof":nonverProof,"trackLogChannel":0,"logFiltersNonShips":True}
-        defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"cannon":0,"burst_cannon":0,"machine_cannon":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
-        data = lists.bals()
-        data[gid]=dict(defaultd)
-        lists.setdata(data)
-        data = lists.readdataB()
-        data[gid]=defaultb
-        lists.setdataB(data)
-        data = lists.readdataC()
-        data[gid]=default
-        lists.setdataC(data)
-        data = lists.readdataD()
-        data[gid]=dict(default)
-        lists.setdataD(data)
-        data = lists.readdataE()
-        data[gid]=dict(defaultc)
-        lists.setdataE(data)
-        banlt = lists.readdataE()
-        banlt[gid]["auth"].append(str(uid))
-        lists.setdataE(banlt)
-        await ctx.send("Server Setup Succesfully!")
-        #await server.create_role(name="QuickPing")
-        #await ctx.send("QuickPing Role Created")
+        try:
+          await ctx.send("Started Server Setup")
+          msg = None
+          #lists.logback(ctx,msg)
+          msgb = "a b"
+          gid = ctx.message.guild.id
+          uid = ctx.message.author.id
+          #await lists.logmajor(self,ctx,msg=str(uid))
+          default = {}
+          defaultb=[]
+          defaultc={"auth":[str(uid)],"pingchan":0,"distchan":0,"clanPercent":0,"distship":0,"memrole":0,"storebal":"no","name":str(ctx.message.guild.name),"memchan":0,"memmsg":0,"verbal":False,"nonverProof":False,"trackLogChannel":0,"logFiltersNonShips":True}
+          defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"cannon":0,"burst_cannon":0,"machine_cannon":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
+          data = lists.bals()
+          data[gid]=dict(defaultd)
+          lists.setdata(data)
+          data = lists.readdataB()
+          data[gid]=defaultb
+          lists.setdataB(data)
+          data = lists.readdataC()
+          data[gid]=default
+          lists.setdataC(data)
+          data = lists.readdataD()
+          data[gid]=dict(default)
+          lists.setdataD(data)
+          data = lists.readdataE()
+          data[gid]=dict(defaultc)
+          lists.setdataE(data)
+          banlt = lists.readdataE()
+          banlt[gid]["auth"].append(str(uid))
+          lists.setdataE(banlt)
+          await ctx.send("Server Setup Succesfully!")
+          #await server.create_role(name="QuickPing")
+          #await ctx.send("QuickPing Role Created")
+        except Exception as e:
+          print(e)
+          e_type, e_object, e_traceback = sys.exc_info()
+
+          e_filename = os.path.split(
+              e_traceback.tb_frame.f_code.co_filename
+          )[1]
+
+          e_message = str(e)
+
+          e_line_number = e_traceback.tb_lineno
+
+          print(f'exception type: {e_type}')
+
+          print(f'exception filename: {e_filename}')
+
+          print(f'exception line number: {e_line_number}')
+
+          print(f'exception message: {e_message}')
+          await ctx.send("Server Setup Succesfully!")
       else:
         await ctx.send("Server already setup.")
 

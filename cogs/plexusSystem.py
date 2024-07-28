@@ -314,7 +314,12 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
 
         print(f'exception message: {e_message}')
       if log_file_name != None:
-        message=f"Plexus Daily Transfer Report For {datetime.now(pytz.UTC)}"
+        def yesterday(frmt='%Y-%m-%d', string=True):
+          return (datetime.now(pytz.UTC) - timedelta(days=1)).strftime('%Y-%m-%d')
+        if year == None:
+          message=f"{PlexusServer.name} Daily Transfer Report For {yesterday()}"
+        else:
+          message=f"{PlexusServer.name} Daily Transfer Report For {int(year)-1}_{int(month)-1}_{int(day)-1}"
         await PlexusReportChannel.send(message,file=discord.File(log_file_name))
         os.remove(log_file_name)
     print("Plexus Daily Transfer Report Script Finished")

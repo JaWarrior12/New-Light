@@ -127,9 +127,9 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
         month=datetime.today().month
         day=datetime.today().day
       PlexusServer = self.bot.get_guild(int(key))
-      #print(PlexusServer)
+      print(PlexusServer)
       PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
-      #print(PlexusReportChannel)
+      print(PlexusReportChannel)
       try:
         jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/log.json.gz')
         shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/ships.json.gz')

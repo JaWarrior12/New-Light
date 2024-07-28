@@ -131,9 +131,9 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
       PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
       print(PlexusReportChannel)
       try:
-        jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/log.json.gz')
-        shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/ships.json.gz')
-        altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-2}/ships.json.gz')
+        jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day-1)}/log.json.gz')
+        shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day-1)}/ships.json.gz')
+        altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)-1}/ships.json.gz')
         log_file_name=f"Plexus_Daily_Transfers.txt"
         shipTotals={}
         receiveTotals={}
@@ -314,7 +314,12 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
 
         print(f'exception message: {e_message}')
       if log_file_name != None:
-        message=f"Plexus Daily Transfer Report For {datetime.now(pytz.UTC)}"
+        def yesterday(frmt='%Y-%m-%d', string=True):
+          return (datetime.now(pytz.UTC) - timedelta(days=1)).strftime('%Y-%m-%d')
+        if year == None:
+          message=f"{PlexusServer.name} Daily Transfer Report For {datetime.now(pytz.UTC)}"
+        else:
+          message=f"{PlexusServer.name} Daily Transfer Report For {int(year)}_{int(month)}_{int(day)}"
         await PlexusReportChannel.send(message,file=discord.File(log_file_name))
         os.remove(log_file_name)
     print("Plexus Daily Transfer Report Script Finished")

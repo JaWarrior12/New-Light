@@ -40,7 +40,7 @@ NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master"
 
 #tz = pytz.timezone('America/New_York')
 utc=timezone.utc
-tmes=tme(hour=0,minute=25,tzinfo=utc)
+tmes=tme(hour=0,minute=10,tzinfo=utc)
 
 def readPS():
     return loads(open('.../NLDB/plexusSystems.json', 'r').read())
@@ -52,13 +52,14 @@ def setPS(data):
 class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For Plexus"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    #self.runDailyTransferReport_TimerLoop.start()
-    if bot.application_id == 975858537223847936:
+    #self.runDailyTransferReport_TimerLoop.start
+    #print(self.bot.application_id)
+    if self.bot.application_id == 974045822167679087:
       self.runDailyTransferReport_TimerLoop.start()
-        #pass
+      print("start trackLog loop")
+      #pass
   def cog_unload(self):
-    self.runDailyTransferReport_TimerLoop.cancel()
-    if self.bot.application_id == 975858537223847936:
+    if self.bot.application_id == 974045822167679087:
       #pass
       self.runDailyTransferReport_TimerLoop.cancel()
     #else:
@@ -66,7 +67,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   
   def is_plexus_server():
     def predicate(ctx):
-        return ctx.guild is not None and ctx.guild.id in ALLOWED_SERVERS or ctx.author.id in lists.developers
+        return ctx.guild is not None or ctx.author.id in lists.developers #and ctx.guild.id in ALLOWED_SERVERS
     return commands.check(predicate)
   
   @commands.command(name="testRDTR",help="Tests the runDailyTransferReport script.")
@@ -109,6 +110,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   
   @tasks.loop(time=tmes)
   async def runDailyTransferReport_TimerLoop(self):
+    print("Running Daily trackLog Loop!")
     await self.runDailyTransferReport(self,None,None,None)
   
   @staticmethod

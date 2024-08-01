@@ -298,6 +298,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   async def appid(self,ctx):
     if ctx.message.author.id in developers:
       await ctx.send(self.bot.application_id)
+      await ctx.send(self.bot.user.id)
     else:
       pass
 

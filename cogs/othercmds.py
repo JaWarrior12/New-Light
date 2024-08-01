@@ -87,7 +87,7 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
   async def pingpage(self,ctx):
     await ctx.send("New Light Ping Page: https://new-light-discord-bot.jawarrior.repl.co")
 
-  @commands.command(name="whois",help="Gets Clans A Member Is In")
+  @commands.command(name="whois",help="Gets Clans A Member Is In",hidden=True,disabled=True)
   async def whois(self,ctx,member:discord.Member):
     #print(1)
     shargids=member.mutual_guilds
@@ -99,7 +99,7 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
       pass
     await ctx.send(embed=e)
 
-  @commands.command(name="event",help="Calls The Swiss Army Event Timer")
+  @commands.command(name="event",help="Calls The Swiss Army Event Timer",disabled=True,hidden=True)
   async def saftimer(self,ctx):\
     #link: https://swiss-website.floofyjpeg.repl.co/timers/xanniAPIpass1')
     r = requests.get(f'https://google.com')

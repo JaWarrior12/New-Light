@@ -40,7 +40,7 @@ NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master"
 
 #tz = pytz.timezone('America/New_York')
 utc=timezone.utc
-tmes=tme(hour=0,minute=25,tzinfo=utc)
+tmes=tme(hour=0,minute=10,tzinfo=utc)
 
 def readPS():
     return loads(open('.../NLDB/plexusSystems.json', 'r').read())
@@ -53,12 +53,12 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     #self.runDailyTransferReport_TimerLoop.start()
-    if bot.application_id == 975858537223847936:
+    if bot.application_id == 974045822167679087:
       self.runDailyTransferReport_TimerLoop.start()
         #pass
   def cog_unload(self):
     self.runDailyTransferReport_TimerLoop.cancel()
-    if self.bot.application_id == 975858537223847936:
+    if self.bot.application_id == 974045822167679087:
       #pass
       self.runDailyTransferReport_TimerLoop.cancel()
     #else:

@@ -71,9 +71,9 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
     return commands.check(predicate)
   
   @commands.command(name="testRDTR",help="Tests the runDailyTransferReport script.")
-  async def testRDTR(self,ctx,year=None,month=None,day=None):
+  async def testRDTR(self,ctx,servers="dev",year=None,month=None,day=None):
     if ctx.message.author.id in developers:
-      await self.runDailyTransferReport(self,year,month,day)
+      await self.runDailyTransferReport(self,servers,year,month,day)
     else:
       await ctx.send("This is a DEVELOPER ONLY command.")
 
@@ -111,23 +111,30 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   @tasks.loop(time=tmes)
   async def runDailyTransferReport_TimerLoop(self):
     print("Running Daily trackLog Loop!")
-    await self.runDailyTransferReport(self,None,None,None)
+    await self.runDailyTransferReport(self,"all",None,None,None)
   
   @staticmethod
-  async def runDailyTransferReport(self,year=None,month=None,day=None):
+  async def runDailyTransferReport(self,servers="all",year=None,month=None,day=None):
     print("Starting Plexus Daily Transfer Report Script")
     data = lists.readFile("plexusSystems")
     configs=lists.readdataE()
     #print(data)
-    for key in list(data.keys()):
+    serversList=list(data.keys())
+    if servers=="dev":
+      serversList=["1031900634741473280"]
+    elif servers=="all":
+      pass
+    for key in serversList:
       logChannel=configs[str(key)]["trackLogChannel"]
       shipsToLoop=data[str(key)]["trackList"]
       log_file_name=None
       logFile=None
+      today=datetime.now(pytz.UTC)
+      #print(today)
       if year is None:
-        year=datetime.today().year
-        month=datetime.today().month
-        day=datetime.today().day
+        year=today.year
+        month=today.month
+        day=today.day
       PlexusServer = self.bot.get_guild(int(key))
       print(PlexusServer)
       PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
@@ -289,8 +296,9 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
                     if stateVar==0:
                       logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} sent {itemCount} {item} to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
                     elif stateVar==1:
-                      if srcShipConversion["name"] in NON_SHIP_ENTRIES or dstShipConversion["name"] in NON_SHIP_ENTRIES and configs[str(key)]["logFiltersNonShips"]:
+                      if (srcShipConversion["name"] in NON_SHIP_ENTRIES or dstShipConversion["name"] in NON_SHIP_ENTRIES) and configs[str(key)]["logFiltersNonShips"]:
                         #print("NON_SHIP_ENTITY")
+                        #print(configs[str(key)]["logFiltersNonShips"])
                         pass
                       else:
                         logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} received {itemCount} {item} from {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")

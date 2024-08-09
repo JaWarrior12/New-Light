@@ -81,6 +81,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   @commands.check_any(is_plexus_server())
   async def updateTrackList(self,ctx,function,hex=None):
     chk = lists.checkperms(ctx)
+    hex=hex.replace("<","").replace(">","")
     if chk:
       data = lists.readFile("plexusSystems")
       if function.lower() == "add":
@@ -111,10 +112,10 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   @tasks.loop(time=tmes)
   async def runDailyTransferReport_TimerLoop(self):
     print("Running Daily trackLog Loop!")
-    await self.runDailyTransferReport(self,"all",None,None,None)
+    await self.runDailyTransferReport(self,None,None,None,None)
   
   @staticmethod
-  async def runDailyTransferReport(self,servers="all",year=None,month=None,day=None):
+  async def runDailyTransferReport(self,servers=None,year=None,month=None,day=None):
     print("Starting Plexus Daily Transfer Report Script")
     data = lists.readFile("plexusSystems")
     configs=lists.readdataE()
@@ -122,8 +123,10 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
     serversList=list(data.keys())
     if servers=="dev":
       serversList=["1031900634741473280"]
-    elif servers=="all":
+    elif servers==None:
       pass
+    else:
+      serversList=servers.split(",")
     for key in serversList:
       logChannel=configs[str(key)]["trackLogChannel"]
       shipsToLoop=data[str(key)]["trackList"]
@@ -186,8 +189,10 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
             #print(destShip)
             #print(itemName)
             #print(logC)
-            if itemName not in list(items[destShip].keys()):
-              items.update({destShip:{str(itemName):0}})
+            itemList=list(items[destShip].keys())
+            #print(itemList)
+            if itemName not in itemList:
+              items[destShip].update({str(itemName):0})
             items[destShip][str(itemName)]+=logC["count"]
 
           #Logs D,E,F Are For Receiving Logs
@@ -210,7 +215,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
             #print(itemName)
             #print(logC)
             if itemName not in list(destItems[destShip].keys()):
-              destItems.update({destShip:{str(itemName):0}})
+              destItems[destShip].update({str(itemName):0})
             destItems[destShip][str(itemName)]+=logF["count"]
           shipTotals.update({oldHexcode:items})
           receiveTotals.update({oldHexcode:destItems})

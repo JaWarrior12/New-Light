@@ -107,20 +107,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       ctx.send("Not A Dev")
 
-  @commands.Cog.listener()
-  async def on_disconnect():
-    print("disconnect listener activated")
-    lists.logdown()
-    print("disconnect logged")
-
-  @commands.Cog.listener()
-  async def on_reconnect():
-    print("Reconnected")
-    lists.logdown()
-
-  @commands.Cog.listener()
-  async def on_connect():
-    print("Connected")
   #Reload Commands
   @commands.command(name='reload',aliases=['rl'],brief="Reloads All Cogs",help="Reloads All or one cog(s). Args: <all/cogs.Cog>")
   async def reload(self, ctx, cog=None):

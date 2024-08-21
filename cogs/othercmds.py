@@ -75,14 +75,6 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
   async def invitehelp(self,ctx):
     await ctx.send("Setup Guide: https://github.com/JaWarrior12/New-Light/wiki/Setup-Guide")
 
-  @commands.Cog.listener()
-  async def on_disconnect():
-    try:
-      lists.logdown()
-    except KeyError as e:
-      print(e.args[0])
-      lists.logdown()
-
   @commands.command(name="pingpage",aliases=["pinger","ppage","p"],brief="Link to WebPing Page",help="Sends the link to New Light Remote WebPing Page")
   async def pingpage(self,ctx):
     await ctx.send("New Light Ping Page: https://new-light-discord-bot.jawarrior.repl.co")

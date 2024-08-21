@@ -8,3 +8,6 @@ cogs/__pycache__
 main.py
 .replit
 replit.nix
+#Ignore the logging file
+discord.log
+discord.log.*

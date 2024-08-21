@@ -81,7 +81,8 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   @commands.check_any(is_plexus_server())
   async def updateTrackList(self,ctx,function,hex=None):
     chk = lists.checkperms(ctx)
-    hex=hex.replace("<","").replace(">","")
+    if hex != None:
+      hex=hex.replace("<","").replace(">","")
     if chk:
       data = lists.readFile("plexusSystems")
       if function.lower() == "add":

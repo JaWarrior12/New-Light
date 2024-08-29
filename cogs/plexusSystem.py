@@ -124,6 +124,8 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
     serversList=list(data.keys())
     if servers=="dev":
       serversList=["1031900634741473280"]
+    elif servers=="all":
+      pass
     elif servers==None:
       pass
     else:

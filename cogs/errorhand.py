@@ -169,7 +169,7 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
         elif isinstance(error,commands.UnexpectedQuoteError):
           await ctx.send(f"A quote mark is missing! Quote: {error.quote}")
 
-        elif isinstance(error,commands.InvalidEndOfQuoteStringError):
+        elif isinstance(error,commands.InvalidEndOfQuotedStringError):
           await ctx.send(f"A quote has been closed incorrectly! Incorrect Character: {error.char}")
 
         elif isinstance(error,commands.ExpectedClosingQuoteError):

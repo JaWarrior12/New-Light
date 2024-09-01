@@ -362,7 +362,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                   rnkord.append(groles.index(roleb))
         gidranks=ctx.message.guild.roles
         rnkord.sort(reverse=True)
-        print(rnkord)
+        #print(rnkord)
         for x in rnkord:
           rle=gidranks[x].id
           pos=rnkord.index(x)
@@ -391,7 +391,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #print(f"ranks == {ranks}")
         for x in ranks:
           rmlistIndex=ranks.index(x)
-          def tempStop():
+          def mlcOld():
             rle=ctx.message.guild.get_role(x)
             if rle.id==memrole.id:
               pass
@@ -407,7 +407,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                 mems.remove(us)
               else:
                 pass
-          async def tempNew(ctnt,rle,x):
+          async def mlcNew(ctnt,x):
             rle=ctx.message.guild.get_role(x)
             if rle.id==memrole.id:
               pass
@@ -426,7 +426,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                 else:
                   pass
             return ctnt
-          ctnt = await tempNew(ctnt,rle,x)
+          ctnt = await mlcNew(ctnt,x)
         await nmesg.edit(content=ctnt)
         await ctx.send(f"Member List Created: {nmesg.jump_url}")
     else:
@@ -510,7 +510,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                   rnkord.append(groles.index(roleb))
         gidranks=guild.roles
         rnkord.sort(reverse=True)
-        print(f'rnkord == {rnkord}')
+        #print(f'rnkord == {rnkord}')
         for x in rnkord:
           rle=gidranks[x].id
           pos=rnkord.index(x)

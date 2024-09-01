@@ -445,7 +445,13 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @staticmethod
   async def updatememlist(self):
+    print("Starting MemList Update")
     for g in self.bot.guilds:
+      data=lists.readdataE()
+      if g.id in list(data.keys()):
+        pass
+      else:
+        continue
       if lists.readdataE()[str(g.id)]["memchan"]==0:
         pass
       elif lists.readdataE()[str(g.id)]["memrole"]==0:
@@ -575,6 +581,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
               return ctnt
             ctnt = await tempNew(ctnt,rle,x)
           await nmesg.edit(content=ctnt)
+    print("MemList Update Complete")
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(SetupCmds(bot))

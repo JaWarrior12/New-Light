@@ -448,7 +448,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     print("Starting MemList Update")
     for g in self.bot.guilds:
       data=lists.readdataE()
-      if g.id in list(data.keys()):
+      if str(g.id) in list(data.keys()):
         pass
       else:
         continue

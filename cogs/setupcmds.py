@@ -300,6 +300,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @commands.command(name="memberlistconfig",aliases=["mlc"],brief="Setup member list.",help="Setup member list, n!mlc (LR)",hidden=False,disabled=False)
   async def mlc(self,ctx):
+    FILTERED_ROLES=["admin"]
     if lists.checkperms(ctx)==True:
       if lists.readdataE()[str(ctx.message.guild.id)]["memchan"]==0:
         await ctx.send("Member List Channel Not Configured, Please Use /serverconfig to desigante your member channel.")
@@ -340,6 +341,17 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
               #print(rnk)
               if roleb.name=="@everyone":
                 pass
+              elif roleb.name in FILTERED_ROLES:
+                roleIndex=-2
+                def getNextRole(roleIndex):
+                  rid2=roles[roleIndex].id
+                  rolec=ctx.message.guild.get_role(rid2)
+                  if rolec.name in FILTERED_ROLES:
+                    getNextRole(roleIndex-1)
+                  else:
+                    global roleb
+                    roleb=ctx.message.guild.get_role(rid2)
+                getNextRole(roleIndex)
               else:
                 if groles.index(roleb) in rnkord:
                   pass
@@ -404,6 +416,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         elif lists.readdataE()[str(g.id)]["memrole"]==0:
           pass
         else:
+          FILTERED_ROLES=["admin"]
           #print("Member Updated")
           gid=str(g.id)
           guild=self.bot.get_guild(g.id)
@@ -431,12 +444,24 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                 #print(f'Role Pos:{roles.index(role)}')
                 inx=roles.index(role)+1
                 #print(f'Index:{inx}')
-                rid=roles[inx].id
+                rid=roles[-1].id
+                #print(rid)
                 roleb=guild.get_role(rid)
-                #print(roleb)
+                #print(f'Roleb: {roleb}')
                 #print(rnk)
                 if roleb.name=="@everyone":
                   pass
+                elif roleb.name in FILTERED_ROLES:
+                  roleIndex=-2
+                  def getNextRole(roleIndex):
+                    rid2=roles[roleIndex].id
+                    rolec=guild.get_role(rid2)
+                    if rolec.name in FILTERED_ROLES:
+                      getNextRole(roleIndex-1)
+                    else:
+                      global roleb
+                      roleb=guild.get_role(rid2)
+                  getNextRole(roleIndex)
                 else:
                   if groles.index(roleb) in rnkord:
                     pass

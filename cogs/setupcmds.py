@@ -412,22 +412,21 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             rle=ctx.message.guild.get_role(x)
             if rle.id==memrole.id:
               pass
-            elif any([x.mention in ctnt for x in rle.members]):
+            elif any([x.mention in ctnt2 for x in rle.members]):
               pass
             elif len(rle.members)>=1:
               ctnt2=ctnt2+"\n\n∙"+rle.mention+" ("+str(len(rle.members))+") :"
             else:
               pass
-            for tier in rmlist:
-              for mem in tier:
-                us=await ctx.messageguild.fetch_member(mem)
+              for mem in rle.members:
+                us=await ctx.message.guild.fetch_member(mem.id)
                 if rle in us.roles and ctnt2.find(us.mention)==-1 and memrole in us.roles:
                   ctnt2=ctnt2+"\n--"+us.mention
-                  tier.remove(us.id)
                 else:
                   pass
+            #print(ctnt2)
             return ctnt2
-          ctnt = await mlcNew(x)
+          ctnt = ctnt + await mlcNew(x)
         await nmesg.edit(content=ctnt)
         await ctx.send(f"Member List Created: {nmesg.jump_url}")
     else:
@@ -574,16 +573,16 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                 ctnt2=ctnt2+"\n\n∙"+rle.mention+" ("+str(len(rle.members))+") :"
               else:
                 pass
-              for tier in rmlist:
-                for mem in tier:
-                  us=await guild.fetch_member(mem)
+              for mem in rle.members:
+                  us=await guild.fetch_member(mem.id)
                   if rle in us.roles and ctnt2.find(us.mention)==-1 and memrole in us.roles:
                     ctnt2=ctnt2+"\n--"+us.mention
-                    tier.remove(us.id)
+                    #rle.members.remove(mem)
                   else:
                     pass
-                return ctnt2
-            ctnt = await tempNew(x)
+              #print(ctnt2)
+              return ctnt2
+            ctnt = ctnt + await tempNew(x)
           await nmesg.edit(content=ctnt)
     #print("MemList Update Complete")
 

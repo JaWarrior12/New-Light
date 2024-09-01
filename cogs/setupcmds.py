@@ -363,28 +363,28 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         gidranks=ctx.message.guild.roles
         rnkord.sort(reverse=True)
         #print(rnkord)
+        checkedMems=[]
         for x in rnkord:
           rle=gidranks[x].id
           pos=rnkord.index(x)
           ranks.insert(pos,rle)
-        #print(rnkord)
-        #print(ranks)
-        rmlist=[]
-        mems=list(ctx.message.guild.members)
-        #print(mems)
-        for r in ranks:
-          rmlistb=[]
-          for mem in mems:
-            #print(mem)
-            rolesb=mem.roles
-            for rolec in rolesb:
-              #print(roleb)
-              #print(r)
-              if rolec.id==r:
-                rmlistb.append(mem.id)
-              else:
-                pass
-          rmlist.append(rmlistb)
+          rmlist=[]
+          mems=list(ctx.message.guild.members)
+          #print(mems)
+          for r in ranks:
+            rmlistb=[]
+            for mem in mems:
+              #print(mem)
+              rolesb=mem.roles
+              for roleb in rolesb:
+                #print(roleb)
+                #print(r)
+                if roleb.id==r and mem.id not in checkedMems:
+                  rmlistb.append(mem.id)
+                  checkedMems.append(mem.id)
+                else:
+                  pass
+            rmlist.append(rmlistb)
         #await ctx.send(rmlist)
         #await ctx.send(ranks)
         ctnt=""
@@ -445,7 +445,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @staticmethod
   async def updatememlist(self):
-    print("Starting MemList Update")
+    #print("Starting MemList Update")
     for g in self.bot.guilds:
       data=lists.readdataE()
       if str(g.id) in list(data.keys()):
@@ -517,6 +517,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         gidranks=guild.roles
         rnkord.sort(reverse=True)
         #print(f'rnkord == {rnkord}')
+        checkedMems=[]
         for x in rnkord:
           rle=gidranks[x].id
           pos=rnkord.index(x)
@@ -532,8 +533,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
               for roleb in rolesb:
                 #print(roleb)
                 #print(r)
-                if roleb.id==r:
+                if roleb.id==r and mem.id not in checkedMems:
                   rmlistb.append(mem.id)
+                  checkedMems.append(mem.id)
                 else:
                   pass
             rmlist.append(rmlistb)
@@ -560,7 +562,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                   mems.remove(us)
                 else:
                   pass
-            async def tempNew(ctnt,rle,x):
+            async def tempNew(ctnt,x):
               rle=guild.get_role(x)
               if rle.id==memrole.id:
                 pass
@@ -579,9 +581,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                   else:
                     pass
               return ctnt
-            ctnt = await tempNew(ctnt,rle,x)
+            ctnt = await tempNew(ctnt,x)
           await nmesg.edit(content=ctnt)
-    print("MemList Update Complete")
+    #print("MemList Update Complete")
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(SetupCmds(bot))

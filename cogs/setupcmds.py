@@ -474,6 +474,11 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                     else:
                       global roleb
                       roleb=guild.get_role(rid2)
+                      if groles.index(roleb) in rnkord:
+                        pass
+                      else:
+                        #ranks.append(rnk)
+                        rnkord.append(groles.index(roleb))
                   getNextRole(roleIndex)
                 else:
                   if groles.index(roleb) in rnkord:

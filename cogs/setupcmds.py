@@ -407,26 +407,27 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                 mems.remove(us)
               else:
                 pass
-          async def mlcNew(ctnt,x):
+          async def mlcNew(x):
+            ctnt2=""
             rle=ctx.message.guild.get_role(x)
             if rle.id==memrole.id:
               pass
             elif any([x.mention in ctnt for x in rle.members]):
               pass
             elif len(rle.members)>=1:
-              ctnt=ctnt+"\n\n∙"+rle.mention+" ("+str(len(rle.members))+") :"
+              ctnt2=ctnt2+"\n\n∙"+rle.mention+" ("+str(len(rle.members))+") :"
             else:
               pass
             for tier in rmlist:
               for mem in tier:
                 us=await ctx.messageguild.fetch_member(mem)
-                if rle in us.roles and ctnt.find(us.mention)==-1 and memrole in us.roles:
-                  ctnt=ctnt+"\n--"+us.mention
+                if rle in us.roles and ctnt2.find(us.mention)==-1 and memrole in us.roles:
+                  ctnt2=ctnt2+"\n--"+us.mention
                   tier.remove(us.id)
                 else:
                   pass
-            return ctnt
-          ctnt = await mlcNew(ctnt,x)
+            return ctnt2
+          ctnt = await mlcNew(x)
         await nmesg.edit(content=ctnt)
         await ctx.send(f"Member List Created: {nmesg.jump_url}")
     else:
@@ -562,26 +563,27 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                   mems.remove(us)
                 else:
                   pass
-            async def tempNew(ctnt,x):
+            async def tempNew(x):
+              ctnt2=""
               rle=guild.get_role(x)
               if rle.id==memrole.id:
                 pass
-              elif any([x.mention in ctnt for x in rle.members]):
+              elif any([x.mention in ctnt2 for x in rle.members]):
                 pass
               elif len(rle.members)>=1:
-                ctnt=ctnt+"\n\n∙"+rle.mention+" ("+str(len(rle.members))+") :"
+                ctnt2=ctnt2+"\n\n∙"+rle.mention+" ("+str(len(rle.members))+") :"
               else:
                 pass
               for tier in rmlist:
                 for mem in tier:
                   us=await guild.fetch_member(mem)
-                  if rle in us.roles and ctnt.find(us.mention)==-1 and memrole in us.roles:
-                    ctnt=ctnt+"\n--"+us.mention
+                  if rle in us.roles and ctnt2.find(us.mention)==-1 and memrole in us.roles:
+                    ctnt2=ctnt2+"\n--"+us.mention
                     tier.remove(us.id)
                   else:
                     pass
-              return ctnt
-            ctnt = await tempNew(ctnt,x)
+                return ctnt2
+            ctnt = await tempNew(x)
           await nmesg.edit(content=ctnt)
     #print("MemList Update Complete")
 

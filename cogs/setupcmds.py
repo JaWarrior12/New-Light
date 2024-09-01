@@ -429,7 +429,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         elif lists.readdataE()[str(g.id)]["memrole"]==0:
           pass
         else:
-          FILTERED_ROLES=["admin"]
+          FILTERED_ROLES=["admin","Founder / Damage control"]
           #print("Member Updated")
           gid=str(g.id)
           guild=self.bot.get_guild(g.id)

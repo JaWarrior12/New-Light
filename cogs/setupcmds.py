@@ -481,7 +481,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                     rnkord.append(groles.index(roleb))
           gidranks=guild.roles
           rnkord.sort(reverse=True)
-          #print(rnkord)
+          print(rnkord)
+          print(ranks)
           for x in rnkord:
             rle=gidranks[x].id
             pos=rnkord.index(x)

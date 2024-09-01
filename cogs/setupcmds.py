@@ -1,5 +1,7 @@
+from ast import alias
 import os
 import sys
+from click import command
 import discord
 import time
 import pytz
@@ -21,11 +23,11 @@ developers=lists.developers
 class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    self.updatememlist.start()
+    self.runUpdateMemList.start()
     #self.my_console=Console(bot)
   def cog_unload(self):
     #print(1)
-    self.updatememlist.cancel()
+    self.runUpdateMemList.cancel()
 
   def is_guild_owner():
     def predicate(ctx):
@@ -408,6 +410,15 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       await ctx.send("Not authorized to use leadership commands in this server")
 
   @tasks.loop(hours=1)
+  async def runUpdateMemList(self):
+    await self.updateMemList()
+
+  @commands.command(name="devRunUpdateMemList",aliases=["devRUML"],help="Forces a memberlist update without creating a new message")
+  async def devRunUpdateMemList(self,ctx):
+    if ctx.author.id in developers:
+      await self.updateMemList()
+
+  @staticmethod
   async def updatememlist(self):
     try:
       for g in self.bot.guilds:

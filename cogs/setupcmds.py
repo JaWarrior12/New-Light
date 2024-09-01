@@ -411,12 +411,12 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @tasks.loop(hours=1)
   async def runUpdateMemList(self):
-    await self.updateMemList()
+    await self.updatememlist()
 
   @commands.command(name="devRunUpdateMemList",aliases=["devRUML"],help="Forces a memberlist update without creating a new message")
   async def devRunUpdateMemList(self,ctx):
     if ctx.author.id in developers:
-      await self.updateMemList()
+      await self.updatememlist()
 
   @staticmethod
   async def updatememlist(self):

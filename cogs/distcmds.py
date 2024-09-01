@@ -687,7 +687,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
   @commands.Cog.listener()
   async def on_message(self,msg):
     condat=lists.readdataE()
-    if int(msg.channel.id)==condat[str(msg.guild.id)]["distchan"]:
+    if (int(msg.guild.id) in list(condat.keys())) and (int(msg.channel.id)==int(condat[str(msg.guild.id)]["distchan"])):
       cnt=msg.content
       attatchmentCheck=len(msg.attachments)
       pts=cnt.split("\n")

@@ -488,8 +488,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                     rnkord.append(groles.index(roleb))
           gidranks=guild.roles
           rnkord.sort(reverse=True)
-          print(rnkord)
-          print(ranks)
+          print(f'rnkord == {rnkord}')
           for x in rnkord:
             rle=gidranks[x].id
             pos=rnkord.index(x)
@@ -513,6 +512,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             #await ctx.send(rmlist)
             #await ctx.send(ranks)
             ctnt=""
+            print(f"ranks == {ranks}")
             for x in ranks:
               rle=guild.get_role(x)
               if rle.id==memrole.id:

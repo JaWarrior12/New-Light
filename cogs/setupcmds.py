@@ -67,9 +67,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           data = lists.readdataE()
           data[gid]=dict(defaultc)
           lists.setdataE(data)
-          banlt = lists.readdataE()
-          banlt.update({gid:{"auth":[str(uid)]}})
-          lists.setdataE(banlt)
+          #banlt = lists.readdataE()
+          #banlt.update({gid:{"auth":[str(uid)]}})
+          #lists.setdataE(banlt)
           data = lists.readFile("plexusSystems")
           data[gid]={"trackList":[]}
           lists.setFile("plexusSystems",data)

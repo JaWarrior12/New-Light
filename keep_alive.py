@@ -42,6 +42,8 @@ def home():
   form = SimpleForm()
   return render_template('index.html',form=form)
 
+filename=""
+
 @app.route('/datafiles/<string:file>/<string:passkey>')
 def jsondat(file,passkey=0):
   if passkey=="1498657841136236":

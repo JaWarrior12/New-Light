@@ -233,7 +233,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
             if sum(1 for _ in logFile)==0:
               logFile.write(f"--\\/--{sectionTitle}--\\/--\n")
             else:
-              logFile.write(f"\n\n--\/--{sectionTitle}--\/--\n")
+              logFile.write(f"\n\n--\\/--{sectionTitle}--\\/--\n")
             shipTotalsKeys=list(sourceDict.keys())
             for hex in shipTotalsKeys:
               shipLogs=sourceDict[hex]

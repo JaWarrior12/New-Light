@@ -656,6 +656,10 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
   @tasks.loop(time=tmes)
   async def verifyschedule(self):
     await self.verifyDistroLogs(self)
+  
+  @verifyschedule.before_loop
+  async def before_task_starts(self):
+      await self.wait_until_ready()
 
   @commands.command(name="forceDistroVerification",aliases=["fdl"],brief="Force Runs Distribution Verification Log Quene")
   async def forceDistroVerification(self,ctx):

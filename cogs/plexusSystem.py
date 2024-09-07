@@ -114,6 +114,10 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   async def runDailyTransferReport_TimerLoop(self):
     print("Running Daily trackLog Loop!")
     await self.runDailyTransferReport(self,None,None,None,None)
+
+  @runDailyTransferReport_TimerLoop.before_loop
+  async def before_task_starts(self):
+      await self.wait_until_ready()
   
   @staticmethod
   async def runDailyTransferReport(self,servers=None,year=None,month=None,day=None):

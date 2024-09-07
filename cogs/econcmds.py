@@ -280,77 +280,77 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
   #@commands.command(name="ert")
   async def exchangeRatesUpdater(self):
     if self.bot.application_id==975858537223847936:
-      try:
-        print("Updating Exchange Rates")
-        myguild = self.bot.get_guild(1031900634741473280)
-        mychannel = await myguild.fetch_channel(1150474219021410357)
-        threads=mychannel.threads
-        year=datetime.today().year
-        month=datetime.today().month
-        day=datetime.today().day
-        alldat = requests.get(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{(int(day)-1)}/summary.json').json()
-        #alldat = requests.get(f'https://pub.drednot.io/prod/econ/2023_9_1/summary.json').json()
-        data=alldat["items_held"]
-        datab=alldat["items_moved"]
-        keys=list(data.keys())
-        flux=float(data["5"])
-        tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,123,162,164,226,228,229,263,264,265,234,242,243,246,252,253,256,257,258,305,306,307]
-        for x in keys:
-          if int(x) in tracked:
-            if x == "5":
-              continue
-            else:
-              item=float(data[x])
-              #ib=float(datab[x])
-              rate=(flux/item)*0.5
-              divrate=(float(rate)*float(4))*0.5
-              ratefinal="%.2f" % round(rate, 2)
-              divfinal="%.5f" % round(divrate, 5)
-              #rb=(flux/ib)*0.5
-              #db=(float(rate)*float(16))*0.5
-              #rbf="%.2f" % round(rb, 2)
-              #dbf="%.2f" % round(db, 2)
-              #avgrt=(float(ratefinal)+float(rbf))/float(2)
-              #fxrt="%.2f" % round(avgrt, 2)
-              #avgdv=(float(divfinal)+float(dbf))/float(2)
-              #fxdv="%.2f" % round(avgdv, 2)
-              itemname=lists.itemNameById(int(x))
-              def find_route(lst, route_no):
-                found=[]
-                for z in lst:
-                  if z.name==route_no:
-                    found.append(z)
-                return found
-              thd=find_route(threads,itemname)
-              if len(thd)==0:
-                await mychannel.create_thread(name=itemname,content=f'Exchange Rate For {itemname}')
-                await asyncio.sleep(0.1)
-                upmc=await myguild.fetch_channel(1150474219021410357)
-                newthread=upmc.get_thread(upmc.last_message_id)
-                #with requests.get(f"https://drednot.io/img/{itemname}", stream=True) as r:
-                await newthread.send(content=f"Rate : `{ratefinal}`;\nDivRate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`")
-              else:
-                thrd=mychannel.get_thread(thd[0].id)
-                cm = [message async for message in thrd.history(limit=2)]
-                cntnt=cm[0].content
-                cntnt=cntnt.replace("`","").replace("\n","")
-                ctnt=cntnt.split(";")
-                oldrate=(ctnt[0].split(":"))
-                olddiv=(ctnt[1].split(":"))
-                ratechange=float(ratefinal)-float(oldrate[1])
-                divchange=float(divfinal)-float(olddiv[1])
-                await thrd.purge(limit=1)
-                #print(len(f"Rate : `{ratefinal}`;\nDiv Rate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`\n\nChange:\n-Rate Change: `{ratechange}`\n-DivRate Change: `{divchange}`\nYesterday's Rates:\n-Yesterday's Rate: `{float(oldrate[1])}`\n-Yesterday's DivRate: `{float(olddiv[1])}`"))
-                try:
-                  await thrd.send(f"Rate : `{ratefinal}`;\nDiv Rate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`\n\nChange:\n-Rate Change: `{ratechange}`\n-DivRate Change: `{divchange}`\n\nYesterday's Rates:\n-Yesterday's Rate: `{float(oldrate[1])}`\n-Yesterday's DivRate: `{float(olddiv[1])}`")
-                except:
-                  print("Error")
-          else:
+      print("Updating Exchange Rates")
+      myguild = self.bot.get_guild(1031900634741473280)
+      mychannel = await myguild.fetch_channel(1150474219021410357)
+      threads=mychannel.threads
+      year=datetime.today().year
+      month=datetime.today().month
+      day=datetime.today().day
+      alldat = requests.get(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{(int(day)-1)}/summary.json').json()
+      #alldat = requests.get(f'https://pub.drednot.io/prod/econ/2023_9_1/summary.json').json()
+      data=alldat["items_held"]
+      datab=alldat["items_moved"]
+      keys=list(data.keys())
+      flux=float(data["5"])
+      tracked=[1,2,3,4,5,51,53,55,56,102,104,108,109,110,111,112,113,114,115,116,120,122,123,162,164,226,228,229,263,264,265,234,242,243,246,252,253,256,257,258,305,306,307]
+      for x in keys:
+        if int(x) in tracked:
+          if x == "5":
             continue
-        print("Exchange Rates Updated")
-      except Exception as e:
-        print(e)
-        print("Error")
+          else:
+            item=float(data[x])
+            #ib=float(datab[x])
+            rate=(flux/item)*0.5
+            divrate=(float(rate)*float(4))*0.5
+            ratefinal="%.2f" % round(rate, 2)
+            divfinal="%.5f" % round(divrate, 5)
+            #rb=(flux/ib)*0.5
+            #db=(float(rate)*float(16))*0.5
+            #rbf="%.2f" % round(rb, 2)
+            #dbf="%.2f" % round(db, 2)
+            #avgrt=(float(ratefinal)+float(rbf))/float(2)
+            #fxrt="%.2f" % round(avgrt, 2)
+            #avgdv=(float(divfinal)+float(dbf))/float(2)
+            #fxdv="%.2f" % round(avgdv, 2)
+            itemname=lists.itemNameById(int(x))
+            def find_route(lst, route_no):
+              found=[]
+              for z in lst:
+                if z.name==route_no:
+                  found.append(z)
+              return found
+            thd=find_route(threads,itemname)
+            if len(thd)==0:
+              await mychannel.create_thread(name=itemname,content=f'Exchange Rate For {itemname}')
+              await asyncio.sleep(0.1)
+              upmc=await myguild.fetch_channel(1150474219021410357)
+              newthread=upmc.get_thread(upmc.last_message_id)
+              #with requests.get(f"https://drednot.io/img/{itemname}", stream=True) as r:
+              await newthread.send(content=f"Rate : `{ratefinal}`;\nDivRate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`")
+            else:
+              thrd=mychannel.get_thread(thd[0].id)
+              cm = [message async for message in thrd.history(limit=2)]
+              cntnt=cm[0].content
+              cntnt=cntnt.replace("`","").replace("\n","")
+              ctnt=cntnt.split(";")
+              oldrate=(ctnt[0].split(":"))
+              olddiv=(ctnt[1].split(":"))
+              ratechange=float(ratefinal)-float(oldrate[1])
+              divchange=float(divfinal)-float(olddiv[1])
+              await thrd.purge(limit=1)
+              #print(len(f"Rate : `{ratefinal}`;\nDiv Rate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`\n\nChange:\n-Rate Change: `{ratechange}`\n-DivRate Change: `{divchange}`\nYesterday's Rates:\n-Yesterday's Rate: `{float(oldrate[1])}`\n-Yesterday's DivRate: `{float(olddiv[1])}`"))
+              try:
+                await thrd.send(f"Rate : `{ratefinal}`;\nDiv Rate : `{divfinal}`;\nName: `{itemname}`;\nId : `{int(x)}`;\nDate : `{datetime.today()}`\n\nChange:\n-Rate Change: `{ratechange}`\n-DivRate Change: `{divchange}`\n\nYesterday's Rates:\n-Yesterday's Rate: `{float(oldrate[1])}`\n-Yesterday's DivRate: `{float(olddiv[1])}`")
+              except:
+                print("Error")
+        else:
+          continue
+      print("Exchange Rates Updated")
+      
+  @exchangeRatesUpdater.before_loop
+  async def before_task_starts(self):
+      await self.wait_until_ready()
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(EconCmds(bot))

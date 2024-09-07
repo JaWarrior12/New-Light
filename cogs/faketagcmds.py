@@ -464,5 +464,9 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
 
                 print(f'exception message: {e_message}')
 
+    @fakeTagDBScanner.before_loop
+    async def before_task_starts(self):
+      await self.wait_until_ready()
+
 async def setup(bot: commands.Bot):
   await bot.add_cog(FakeTagCmds(bot))

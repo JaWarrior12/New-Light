@@ -44,7 +44,7 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
         data["cmdmetrics"]["developer"]=int(new)
         lists.setother(data)
       else:
-        lists.logback(ctx,ctx.message.content)
+        #lists.logback(ctx,ctx.message.content)
         guild=ctx.guild.id
         data=lists.readother()
         new=int(data["cmdcnt"])+1

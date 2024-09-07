@@ -1,5 +1,6 @@
 from ast import alias
 import os
+from pdb import run
 import sys
 from click import command
 import discord
@@ -67,9 +68,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           data = lists.readdataE()
           data[gid]=dict(defaultc)
           lists.setdataE(data)
-          banlt = lists.readdataE()
-          banlt.update({gid:{"auth":[str(uid)]}})
-          lists.setdataE(banlt)
+          #banlt = lists.readdataE()
+          #banlt.update({gid:{"auth":[str(uid)]}})
+          #lists.setdataE(banlt)
           data = lists.readFile("plexusSystems")
           data[gid]={"trackList":[]}
           lists.setFile("plexusSystems",data)
@@ -435,6 +436,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   @tasks.loop(hours=1)
   async def runUpdateMemList(self):
     await self.updatememlist(self)
+
+  @runUpdateMemList.before_loop
+  async def before_task_starts(self):
+      await self.wait_until_ready()
 
   @commands.command(name="devRunUpdateMemList",aliases=["devRUML"],help="Forces a memberlist update without creating a new message")
   async def devRunUpdateMemList(self,ctx):

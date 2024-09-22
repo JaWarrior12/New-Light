@@ -38,6 +38,14 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     #print(1)
     self.backupdaily.cancel()
 
+  @commands.command(name="forceClose",brief="Force Closes Bot Connection")
+  async def forceClose(self,ctx):
+    if ctx.message.author.id in developers:
+      await ctx.send("Closing Bot...")
+      await self.bot.close()
+    else:
+      pass
+
   @commands.command(name='shutdown',brief="Shuts down and restarts New Light", help="Shuts Down and Restarts New Light. Args: None")
   async def shutdown(self,ctx,msg=None):
     if ctx.message.author.id in developers:
@@ -51,8 +59,8 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       print('Backing Up Data')
       print('Shutting Down')
       await ctx.send('Shutting Down New Light')
-      startup()
       await self.bot.close()
+      await startup()
       #await main.bot.logout()
     else:
       print(ctx.message.author.id)

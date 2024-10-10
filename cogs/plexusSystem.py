@@ -53,13 +53,13 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     #self.runDailyTransferReport_TimerLoop.start
-    #print(self.bot.application_id)
-    if self.bot.application_id == 974045822167679087:
+    #print(self.bot.user.id)
+    if self.bot.user.id == 974045822167679087:
       self.runDailyTransferReport_TimerLoop.start()
       print("start trackLog loop")
       #pass
   def cog_unload(self):
-    if self.bot.application_id == 974045822167679087:
+    if self.bot.user.id == 974045822167679087:
       #pass
       self.runDailyTransferReport_TimerLoop.cancel()
     #else:
@@ -153,7 +153,7 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
         jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
         shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
         altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
-        log_file_name=f"Plexus_Daily_Transfers.txt"
+        log_file_name=f"{PlexusServer.name}_Daily_Transfers.txt"
         shipTotals={}
         receiveTotals={}
         for ship in shipsToLoop:

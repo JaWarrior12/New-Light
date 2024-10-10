@@ -2,10 +2,11 @@ import time
 import pytz
 import datetime
 import os, discord
+import asyncio
 from discord.ext import commands
 
-def startup():
-  time.sleep(5)
+async def startup():
+  asyncio.sleep(5)
   print("Starting Back Up")
   os.system('py main.py')
 

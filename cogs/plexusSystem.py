@@ -49,7 +49,7 @@ def setPS(data):
     with open(".../NLDB/plexusSystems.json", "w") as f:
         f.write(dumps(data))
 
-class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For Plexus"):
+class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands For The Daily Transfer/Track Logs System"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     #self.runDailyTransferReport_TimerLoop.start

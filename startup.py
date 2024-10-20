@@ -6,7 +6,7 @@ import asyncio
 from discord.ext import commands
 
 async def startup():
-  asyncio.sleep(5)
+  #await asyncio.sleep(5)
   print("Starting Back Up")
   os.system('py main.py')
 

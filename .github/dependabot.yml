@@ -11,6 +11,10 @@ updates:
       interval: "weekly"
       timezone: "America/New_York"
       day: "sunday"
+    labels: 
+      - "branch: main/production"
+      - "PR type: dependencies"
+
   - package-ecosystem: "pip" # See documentation for possible values
     directory: "/" # Location of package manifests
     "target-branch": "Development"
@@ -19,4 +23,5 @@ updates:
       timezone: "America/New_York"
       day: "sunday"
     labels: 
-      - "development"
+      - "branch: development"
+      - "PR type: dependencies"

@@ -37,6 +37,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   #@commands.has_role('Developer')
   async def banuser(self,ctx,user,*,reason=None):
     if ctx.message.author.id in developers:
+      global banned
       try:
         user=int(user)
       except:
@@ -44,8 +45,9 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       keya = "all"
       keyb = "ban"
       gid=str(ctx.message.guild.id)
+      lists.bannedlist()
       data = dumps(lists.readdataE())
-      print(type(user))
+      #print(type(user))
       if type(user) is discord.Member:
             baseUser=user
             user=user.id
@@ -75,6 +77,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         except:
           #print("other")
           other["banInfo"].update({str(user):{"reason":reason,"userName":None,"banDate":date}})
+        lists.setother(other)
         lists.setdataE(banlt)
         await ctx.send(f'The User With A User Id Of {user} has been BANNED from using New Light')
         lists.bannedlist()
@@ -89,6 +92,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   @commands.command(name="unban",hidden=False,help="Unbans A User From Using New Light")
   async def unban(self,ctx,user_id):
     if ctx.message.author.id in developers:
+      lists.bannedlist()
       if str(user_id) not in banned:
         await ctx.send(f'The User With An ID Of {user_id} Is Not In The Banned List.')
       elif type(user_id)==int:
@@ -99,8 +103,8 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         #await ctx.send(banlt)
         banlt["ban"].remove(str(user_id))
         other=lists.readother()
-        await ctx.send(f"User Ban Info: {other["banInfo"][str(user_id)]}")
-        other["banInfo"].pop(str(user_id))
+        #await ctx.send(f"User Ban Info: {other["banInfo"][str(user_id)]}")
+        #other["banInfo"].pop(str(user_id))
         lists.setother(other)
         #await ctx.send(banlt)
         lists.setdataE(banlt)
@@ -143,6 +147,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
     if ctx.message.author.id in developers:
       try:
         if type(gid)!=int:
+          lists.bannedguilds()
           data=lists.readdataE()
           data["banguilds"].remove(int(gid))
           other=lists.readother()
@@ -173,10 +178,13 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         for x in data["ban"]:
           #print(x)
           try:
-            ctnt=ctnt+"\n- "+str(x)+f" ; User Name: `{other[str(x)]['userName']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)]['date']}"
+            if "userName" in list(other[str(x)].keys()):
+              ctnt=ctnt+"\n- "+str(x)+f" ; User Name: `{other[str(x)]['userName']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)]['banDate']}"
+            else:
+              pass
           except Exception as e:
-            await ctx.send(e)
-          #print(ctnt)
+            print(e)
+            #print(ctnt)
         await ctx.send(f'Banned Users:\n{ctnt}')
       elif opt=="guilds":
         try:

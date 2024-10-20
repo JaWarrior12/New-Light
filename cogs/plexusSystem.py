@@ -53,13 +53,13 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     #self.runDailyTransferReport_TimerLoop.start
-    #print(self.bot.application_id)
-    if self.bot.application_id == 974045822167679087:
+    #print(self.bot.user.id)
+    if self.bot.user.id == 974045822167679087:
       self.runDailyTransferReport_TimerLoop.start()
       print("start trackLog loop")
       #pass
   def cog_unload(self):
-    if self.bot.application_id == 974045822167679087:
+    if self.bot.user.id == 974045822167679087:
       #pass
       self.runDailyTransferReport_TimerLoop.cancel()
     #else:
@@ -115,9 +115,9 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
     print("Running Daily trackLog Loop!")
     await self.runDailyTransferReport(self,None,None,None,None)
 
-  @runDailyTransferReport_TimerLoop.before_loop
-  async def before_task_starts(self):
-      await self.wait_until_ready()
+  #@runDailyTransferReport_TimerLoop.before_loop
+  #async def before_task_starts(self):
+      #await self.wait_until_ready()
   
   @staticmethod
   async def runDailyTransferReport(self,servers=None,year=None,month=None,day=None):
@@ -131,29 +131,29 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
     elif servers=="all":
       pass
     elif servers==None:
-      pass
+      serversList=[guild.id for guild in self.bot.guilds]
     else:
       serversList=servers.split(",")
     for key in serversList:
-      logChannel=configs[str(key)]["trackLogChannel"]
-      shipsToLoop=data[str(key)]["trackList"]
-      log_file_name=None
-      logFile=None
-      today=datetime.now(pytz.UTC)
-      #print(today)
-      if year is None:
-        year=today.year
-        month=today.month
-        day=today.day
-      PlexusServer = self.bot.get_guild(int(key))
-      print(PlexusServer)
-      PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
-      print(PlexusReportChannel)
       try:
+        logChannel=configs[str(key)]["trackLogChannel"]
+        shipsToLoop=data[str(key)]["trackList"]
+        log_file_name=None
+        logFile=None
+        today=datetime.now(pytz.UTC)
+        #print(today)
+        if year is None:
+          year=today.year
+          month=today.month
+          day=today.day
+        PlexusServer = self.bot.get_guild(int(key))
+        print(PlexusServer)
+        PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
+        print(PlexusReportChannel)
         jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
         shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
         altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
-        log_file_name=f"Plexus_Daily_Transfers.txt"
+        log_file_name=f"{PlexusServer.name}_Daily_Transfers.txt"
         shipTotals={}
         receiveTotals={}
         for ship in shipsToLoop:
@@ -316,34 +316,18 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
                         logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} received {itemCount} {item} from {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
         writeToFile(shipTotals,"Transfer Send Logs",0)
         writeToFile(receiveTotals,"Transfer Receive Logs",1)
+        if log_file_name != None:
+          def yesterday(frmt='%Y-%m-%d', string=True):
+            return (datetime.now(pytz.UTC) - timedelta(days=1)).strftime('%Y-%m-%d')
+          if year == None:
+            message=f"{PlexusServer.name} Daily Transfer Report For {datetime.now(pytz.UTC)}"
+          else:
+            message=f"{PlexusServer.name} Daily Transfer Report For {int(year)}_{int(month)}_{int(day)}"
+          await PlexusReportChannel.send(message,file=discord.File(log_file_name))
+          os.remove(log_file_name)
       except Exception as e:
         print(e)
-        e_type, e_object, e_traceback = sys.exc_info()
-
-        e_filename = os.path.split(
-            e_traceback.tb_frame.f_code.co_filename
-        )[1]
-
-        e_message = str(e)
-
-        e_line_number = e_traceback.tb_lineno
-
-        print(f'exception type: {e_type}')
-
-        print(f'exception filename: {e_filename}')
-
-        print(f'exception line number: {e_line_number}')
-
-        print(f'exception message: {e_message}')
-      if log_file_name != None:
-        def yesterday(frmt='%Y-%m-%d', string=True):
-          return (datetime.now(pytz.UTC) - timedelta(days=1)).strftime('%Y-%m-%d')
-        if year == None:
-          message=f"{PlexusServer.name} Daily Transfer Report For {datetime.now(pytz.UTC)}"
-        else:
-          message=f"{PlexusServer.name} Daily Transfer Report For {int(year)}_{int(month)}_{int(day)}"
-        await PlexusReportChannel.send(message,file=discord.File(log_file_name))
-        os.remove(log_file_name)
+        continue
     print("Plexus Daily Transfer Report Script Finished")
   
 async def setup(bot: commands.Bot):

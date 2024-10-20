@@ -30,10 +30,10 @@ tmes=tme(hour=1,minute=0,tzinfo=utc)
 class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="Access The Fake Tag Database, New Light's in-house fake tagged ship tracker."):
     def __init__(self, bot: commands.Bot):
         self.bot=bot
-        if bot.application_id != 975858537223847936:
+        if self.bot.user.id != 975858537223847936:
             self.fakeTagDBScanner.start()
     def cog_unload(self):
-        if self.bot.application_id != 975858537223847936:
+        if self.bot.user.id != 975858537223847936:
             self.fakeTagDBScanner.cancel()
         else:
             pass

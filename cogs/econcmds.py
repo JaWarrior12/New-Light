@@ -35,10 +35,10 @@ tmes=tme(hour=0,minute=30,tzinfo=utc)
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    if self.bot.application_id==975858537223847936:
+    if self.bot.user.id==975858537223847936:
       self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    if self.bot.application_id == 975858537223847936:
+    if self.bot.user.id == 975858537223847936:
       self.exchangeRatesUpdater.cancel()
     else:
       pass
@@ -347,10 +347,6 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
         else:
           continue
       print("Exchange Rates Updated")
-      
-  @exchangeRatesUpdater.before_loop
-  async def before_task_starts(self):
-      await self.wait_until_ready()
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(EconCmds(bot))

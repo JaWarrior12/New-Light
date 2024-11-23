@@ -24,11 +24,13 @@ developers=lists.developers
 class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    self.runUpdateMemList.start()
+    if self.bot.user.id == 974045822167679087:
+      self.runUpdateMemList.start()
     #self.my_console=Console(bot)
   def cog_unload(self):
     #print(1)
-    self.runUpdateMemList.cancel()
+    if self.bot.user.id == 974045822167679087:
+      self.runUpdateMemList.cancel()
 
   def is_guild_owner():
     def predicate(ctx):

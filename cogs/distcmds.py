@@ -1,5 +1,5 @@
 import os, discord
-from aiohttp import DataQueue
+#from aiohttp import DataQueue
 import time as timea
 import traceback
 import asyncio

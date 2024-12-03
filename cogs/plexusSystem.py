@@ -1,7 +1,6 @@
-from multiprocessing.spawn import old_main_modules
+#from multiprocessing.spawn import old_main_modules
 import os, discord, sys
-import re
-from aiohttp import DataQueue
+#from aiohttp import DataQueue
 import time as timea
 import traceback
 import asyncio

@@ -475,7 +475,8 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
                 await newthread.send(thirdCut)
             else:
               thrd=PlexusReportChannel.get_thread(thd[0].id)
-              await thrd.purge(limit=5)
+              messageCount=int(thrd.message_count)
+              await thrd.purge(limit=messageCount-1)
               #try:
               await thrd.send(fullString)
               if len(secondCut) > 1:

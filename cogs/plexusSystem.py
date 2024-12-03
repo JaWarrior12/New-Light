@@ -41,6 +41,8 @@ NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master"
 #tz = pytz.timezone('America/New_York')
 utc=timezone.utc
 tmes=tme(hour=0,minute=10,tzinfo=utc)
+tmes2=tme(hour=0,minute=35,tzinfo=utc)
+
 
 def readPS():
     return loads(open('.../NLDB/plexusSystems.json', 'r').read())
@@ -49,19 +51,21 @@ def setPS(data):
     with open(".../NLDB/plexusSystems.json", "w") as f:
         f.write(dumps(data))
 
-class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For Plexus"):
+class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands For The Daily Transfer/Track Logs System"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     #self.runDailyTransferReport_TimerLoop.start
     #print(self.bot.user.id)
     if self.bot.user.id == 974045822167679087:
       self.runDailyTransferReport_TimerLoop.start()
+      self.runDailyInventoryReport_TimerLoop.start()
       print("start trackLog loop")
       #pass
   def cog_unload(self):
     if self.bot.user.id == 974045822167679087:
       #pass
       self.runDailyTransferReport_TimerLoop.cancel()
+      self.runDailyInventoryReport_TimerLoop.cancel()
     #else:
     #pass
   
@@ -74,6 +78,13 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
   async def testRDTR(self,ctx,servers="dev",year=None,month=None,day=None):
     if ctx.message.author.id in developers:
       await self.runDailyTransferReport(self,servers,year,month,day)
+    else:
+      await ctx.send("This is a DEVELOPER ONLY command.")
+
+  @commands.command(name="testRDIR",help="Tests the runDailyInventoryReport script.")
+  async def testRDIR(self,ctx,servers="dev",year=None,month=None,day=None):
+    if ctx.message.author.id in developers:
+      await self.runDailyInventoryReport(self,servers,year,month,day)
     else:
       await ctx.send("This is a DEVELOPER ONLY command.")
 
@@ -147,9 +158,9 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
           month=today.month
           day=today.day
         PlexusServer = self.bot.get_guild(int(key))
-        print(PlexusServer)
+        #print(PlexusServer)
         PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
-        print(PlexusReportChannel)
+        #print(PlexusReportChannel)
         jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
         shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
         altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
@@ -329,6 +340,172 @@ class PlexusCmds(commands.Cog, name="Plexus Commands",description="Commands For 
         print(e)
         continue
     print("Plexus Daily Transfer Report Script Finished")
+  
+  @commands.command(name="updateInventoryList",aliases=["uil"],help="Add or Remove a ship from the inventory list; also can display the current trck list. Functions :add/remove/list")
+  @commands.check_any(is_plexus_server())
+  async def updateInvntoryList(self,ctx,function,hex=None):
+    chk = lists.checkperms(ctx)
+    if hex != None:
+      hex=hex.replace("<","").replace(">","")
+    if chk:
+      data = lists.readFile("plexusSystems")
+      if function.lower() == "add":
+        hex=hex.upper()
+        if hex not in data[str(ctx.guild.id)]['inventoryList'] and hex != None:
+          data[str(ctx.guild.id)]['inventoryList'].append(hex)
+          await ctx.send(f"Added {hex} to the inventory list.")
+          lists.setFile("plexusSystems",data)
+        else:
+          await ctx.send(f"Hex {hex} is already in the inventory list.")
+      elif function.lower() == "remove":
+        hex=hex.upper()
+        if hex in data[str(ctx.guild.id)]['inventoryList']:
+          data[str(ctx.guild.id)]['inventoryList'].remove(hex)
+          await ctx.send(f"Removed {hex} from the inventory list.")
+          lists.setFile("plexusSystems",data)
+        else:
+          await ctx.send(f"Hex {hex} was not found in the inventory list.")
+      elif function.lower() == "list":
+        await ctx.send(f"{ctx.guild.name} Inventory List")
+        trackListMsg=""
+        for ship in data[str(ctx.guild.id)]['inventoryList']:
+          trackListMsg = trackListMsg+"\n- "+ship
+        await ctx.send(trackListMsg)
+      else:
+        await ctx.send(f"Sorry, {function} is not a valid function for this command. Valid Functions: Add/List/Remove")
+
+  @tasks.loop(time=tmes2)
+  async def runDailyInventoryReport_TimerLoop(self):
+    print("Running Daily Inventory Loop!")
+    await self.runDailyInventoryReport(self,None,None,None)
+  
+  @staticmethod
+  async def runDailyInventoryReport(self,servers=None,year=None,month=None,day=None):
+    print("Starting Plexus Daily Inventory Report Script")
+    today=datetime.now(pytz.UTC)
+    #print(today)
+    if year is None:
+      year=today.year
+      month=today.month
+      day=today.day
+    data = lists.readFile("plexusSystems")
+    configs=lists.readdataE()
+    #print(data)
+    dumpData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+    def find_ship(data, route_no):
+      return list(filter(lambda x: x.get("hex_code") == route_no, data))
+    url = "https://pub.drednot.io/prod/econ/item_schema.json"
+    itemSchema = loads(requests.get(url).content)
+    def findItemName(itemId):
+      return list(filter(lambda x: x.get('id') == itemId, itemSchema))
+    serversList=list(data.keys())
+    if servers=="dev":
+      serversList=["1031900634741473280"]
+    elif servers=="all":
+      pass
+    elif servers==None:
+      serversList=[guild.id for guild in self.bot.guilds]
+    else:
+      serversList=servers.split(",")
+    for key in serversList:
+      try:
+        logChannel=configs[str(key)]["inventoryLogChannel"]
+        shipsToLoop=data[str(key)]["inventoryList"]
+        log_file_name=None
+        logFile=None
+        today=datetime.now(pytz.UTC)
+        #print(today)
+        if year is None:
+          year=today.year
+          month=today.month
+          day=today.day
+        PlexusServer = self.bot.get_guild(int(key))
+        #print(PlexusServer)
+        PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
+        #print(PlexusReportChannel)
+        threads=PlexusReportChannel.threads
+        for ship in shipsToLoop:
+          shipData=find_ship(dumpData,ship)
+          if len(shipData)>0:
+            shipHex=ship
+            shipName=shipData[0]["name"]
+            shipColor=shipData[0]["color"]
+            shipItems=shipData[0]["items"]
+            itemNames=[]
+            itemCounts=[]
+            for item in list(shipItems.keys()):
+              itemName=findItemName(int(item))
+              itemNames.append(itemName[0]["name"])
+              itemCount=shipItems[item]
+              itemCounts.append(itemCount)
+            textString=""
+            secondCut=""
+            thirdCut=""
+            for obj in itemNames:
+              index=itemNames.index(obj)
+              nextItem=f" - Item: `{obj}`; Count: `{itemCounts[index]}`\n"
+              textStringLen=len(textString)
+              nextItemLen=len(nextItem)
+              if (textStringLen+nextItemLen) < 1930:
+                textString+=nextItem
+              else:
+                secondCutLen=len(secondCut)
+                if (secondCutLen+nextItemLen) < 1930:
+                  secondCut+=nextItem
+                else:
+                    thirdCut+=nextItem
+            fullString=f"# Inventory of {shipName} ({shipHex})\nLast Update: {month}/{day}/{year}\n{textString}"
+            #print(len(fullString))
+            def find_thread(lst, route_no):
+              found=[]
+              for z in lst:
+                if z.name==route_no:
+                  found.append(z)
+              return found
+            thd=find_thread(threads,shipHex)
+            if len(thd)==0:
+              await PlexusReportChannel.create_thread(name=shipHex,content=f'Inventory Of `{shipName} ({shipHex})`')
+              await asyncio.sleep(0.1)
+              upmc=await PlexusServer.fetch_channel(logChannel)
+              newthread=upmc.get_thread(upmc.last_message_id)
+              await newthread.send(fullString)
+              if len(secondCut) > 1:
+                await newthread.send(secondCut)
+              if len(thirdCut) > 1:
+                await newthread.send(thirdCut)
+            else:
+              thrd=PlexusReportChannel.get_thread(thd[0].id)
+              await thrd.purge(limit=5)
+              #try:
+              await thrd.send(fullString)
+              if len(secondCut) > 1:
+                await thrd.send(secondCut)
+              if len(thirdCut) > 1:
+                await thrd.send(thirdCut)
+              #except:
+                #print("error")
+          else:
+            continue
+      except Exception as e:
+        print(e)
+        e_type, e_object, e_traceback = sys.exc_info()
+
+        e_filename = os.path.split(
+            e_traceback.tb_frame.f_code.co_filename
+        )[1]
+
+        e_message = str(e)
+
+        e_line_number = e_traceback.tb_lineno
+
+        print(f'exception type: {e_type}')
+
+        print(f'exception filename: {e_filename}')
+
+        print(f'exception line number: {e_line_number}')
+
+        print(f'exception message: {e_message}')
+    print("Plexus Daily Inventory Report Script Finished")
   
 async def setup(bot: commands.Bot):
     await bot.add_cog(PlexusCmds(bot))

@@ -24,11 +24,13 @@ developers=lists.developers
 class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    self.runUpdateMemList.start()
+    if self.bot.user.id == 974045822167679087:
+      self.runUpdateMemList.start()
     #self.my_console=Console(bot)
   def cog_unload(self):
     #print(1)
-    self.runUpdateMemList.cancel()
+    if self.bot.user.id == 974045822167679087:
+      self.runUpdateMemList.cancel()
 
   def is_guild_owner():
     def predicate(ctx):
@@ -51,7 +53,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           #await lists.logmajor(self,ctx,msg=str(uid))
           default = {}
           defaultb=[]
-          defaultc={"auth":[str(uid)],"pingchan":0,"distchan":0,"clanPercent":0,"distship":0,"memrole":0,"storebal":"no","name":str(ctx.message.guild.name),"memchan":0,"memmsg":0,"verbal":False,"nonverProof":False,"trackLogChannel":0,"logFiltersNonShips":True}
+          defaultc={"auth":[str(uid)],"pingchan":0,"distchan":0,"clanPercent":0,"distship":0,"memrole":0,"storebal":"no","name":str(ctx.message.guild.name),"memchan":0,"memmsg":0,"verbal":False,"nonverProof":False,"trackLogChannel":0,"logFiltersNonShips":True,"inventoryLogChannel":0}
           defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"cannon":0,"burst_cannon":0,"machine_cannon":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
           data = lists.bals()
           data[gid]=dict(defaultd)
@@ -72,7 +74,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           #banlt.update({gid:{"auth":[str(uid)]}})
           #lists.setdataE(banlt)
           data = lists.readFile("plexusSystems")
-          data[gid]={"trackList":[]}
+          data[gid]={"trackList":[],"inventoryList":[]}
           lists.setFile("plexusSystems",data)
           await ctx.send("Server Setup Succesfully!")
           #await server.create_role(name="QuickPing")
@@ -214,7 +216,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Member List Channel",value="memchan"),
       app_commands.Choice(name="Verify Distribution Logs?",value="verbal"),
       app_commands.Choice(name="Track Log Channel",value="trackLogChannel"),
-      app_commands.Choice(name="Track Log Filters Out Non Ship Entries?",value="logFiltersNonShips")
+      app_commands.Choice(name="Track Log Filters Out Non Ship Entries?",value="logFiltersNonShips"),
+      app_commands.Choice(name="Inventory Log Channel",value="inventoryLogChannel")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     #print("Started Serverconfig Slash")
@@ -291,6 +294,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           e.add_field(name="Member List Message",value=ctx.guild.get_channel(data[gid]["memchan"]).get_partial_message(data[gid]["memmsg"]).jump_url,inline=True)
           e.add_field(name="Track Log Channel",value=ctx.guild.get_channel(data[gid]["trackLogChannel"]).mention,inline=True)
           e.add_field(name="Track Log Filters Non Ship Entries?",value=ctx.guild.get_channel(data[gid]["logFiltersNonShips"]),inline=True)
+          e.add_field(name="Inventory Log Channel",value=ctx.guild.get_channel(data[gid]["inventoryLogChannel"]),inline=True)
           await ctx.send(embed=e)
         except KeyError:
           await ctx.send(f"KeyError: Guild {gid} cannot be found.")

@@ -20,7 +20,7 @@ from json import loads, dumps
 from startup import startup
 
 # Googletrans Translator Library
-from googletrans import Translator
+#from googletrans import Translator
 
 #Lists
 import lists
@@ -45,7 +45,7 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
     
     @commands.command(name="translate", aliases=["tr"])
     async def translate(self, ctx, text):
-        translator = Translator()
+        translator = None#Translator()
         response=translator.translate(text, dest="en")
         print(response)
         await ctx.send(None)

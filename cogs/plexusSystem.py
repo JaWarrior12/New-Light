@@ -341,6 +341,39 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
         print(e)
         continue
     print("Plexus Daily Transfer Report Script Finished")
+  
+  @commands.command(name="updateInventoryList",aliases=["uil"],help="Add or Remove a ship from the inventory list; also can display the current trck list. Functions :add/remove/list")
+  @commands.check_any(is_plexus_server())
+  async def updateInvntoryList(self,ctx,function,hex=None):
+    chk = lists.checkperms(ctx)
+    if hex != None:
+      hex=hex.replace("<","").replace(">","")
+    if chk:
+      data = lists.readFile("plexusSystems")
+      if function.lower() == "add":
+        hex=hex.upper()
+        if hex not in data[str(ctx.guild.id)]['inventoryList'] and hex != None:
+          data[str(ctx.guild.id)]['inventoryList'].append(hex)
+          await ctx.send(f"Added {hex} to the inventory list.")
+          lists.setFile("plexusSystems",data)
+        else:
+          await ctx.send(f"Hex {hex} is already in the inventory list.")
+      elif function.lower() == "remove":
+        hex=hex.upper()
+        if hex in data[str(ctx.guild.id)]['inventoryList']:
+          data[str(ctx.guild.id)]['inventoryList'].remove(hex)
+          await ctx.send(f"Removed {hex} from the inventory list.")
+          lists.setFile("plexusSystems",data)
+        else:
+          await ctx.send(f"Hex {hex} was not found in the inventory list.")
+      elif function.lower() == "list":
+        await ctx.send(f"{ctx.guild.name} Inventory List")
+        trackListMsg=""
+        for ship in data[str(ctx.guild.id)]['inventoryList']:
+          trackListMsg = trackListMsg+"\n- "+ship
+        await ctx.send(trackListMsg)
+      else:
+        await ctx.send(f"Sorry, {function} is not a valid function for this command. Valid Functions: Add/List/Remove")
 
   @tasks.loop(time=tmes2)
   async def runDailyInventoryReport_TimerLoop(self):

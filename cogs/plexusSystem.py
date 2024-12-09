@@ -1,7 +1,6 @@
-from multiprocessing.spawn import old_main_modules
+#from multiprocessing.spawn import old_main_modules
 import os, discord, sys
-import re
-from aiohttp import DataQueue
+#from aiohttp import DataQueue
 import time as timea
 import traceback
 import asyncio
@@ -476,7 +475,8 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
                 await newthread.send(thirdCut)
             else:
               thrd=PlexusReportChannel.get_thread(thd[0].id)
-              await thrd.purge(limit=5)
+              messageCount=int(thrd.message_count)
+              await thrd.purge(limit=messageCount-1)
               #try:
               await thrd.send(fullString)
               if len(secondCut) > 1:

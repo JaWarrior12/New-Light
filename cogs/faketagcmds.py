@@ -31,10 +31,12 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     def __init__(self, bot: commands.Bot):
         self.bot=bot
         if self.bot.user.id != 975858537223847936:
-            self.fakeTagDBScanner.start()
+            #self.fakeTagDBScanner.start()
+            pass
     def cog_unload(self):
         if self.bot.user.id != 975858537223847936:
-            self.fakeTagDBScanner.cancel()
+            #self.fakeTagDBScanner.cancel()
+            pass
         else:
             pass
 

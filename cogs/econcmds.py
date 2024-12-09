@@ -32,6 +32,9 @@ developers = lists.developers
 utc=timezone.utc
 tmes=tme(hour=0,minute=30,tzinfo=utc)
 
+DATE_GAP_CAP=30
+SHIP_WEB_CAP=3
+
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
@@ -153,12 +156,10 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send("Error")
 
   @commands.command(name="searchhexcode",hidden=False,aliases=['shex','hex','hexcode'],help="This searches either the ships or log file for all entries containing the provided HEX CODE!\n -Command Formart: n!searchhexcode <version> <year> <monthnumber> <day> <file (ships/log)> <hex_code (CASE SENSITVE)>.\n -The HEX CODE is a ships hex code in Dredark.\n -The EXTRA_KEY is for calling data from log.json, enter src or dst depending on if you want the source or destination, EXTRA_KEY is only if you pick the log file.\n -LOG_COUNT is for log.json only, it is how many items you want, as the logs could be upwards of 200+, in TEST SERVER the log can be 1,000+ items.")
-  async def searchhexcode(self,ctx,version,year,month,day,file,hex_code,extra_key="hex_code",log_count="none"):
+  async def searchhexcode(self,ctx,version,year,mont,day,file,hex_code,extra_key="hex_code",log_count="none"):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
-      msgb = version + " " + year + " " + month  + " " + day + " " + file + " " + hex_code +" "+ extra_key+" "+log_count
-      #lists.logback(ctx,msgb)
       jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/{file}.json.gz')
       if file == "log":
         hexcode="{"+hex_code+"}"
@@ -195,83 +196,98 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send("Error")
 
   @commands.command(name="detailedTransferSearch",hidden=False,aliases=['dts','dsearch','detailed'],disabled=False)
-  async def detailedTransferSearch(self,ctx,version,year,month,day,hex_code,extra_key="hex_code"):
+  async def detailedTransferSearch(self,ctx,version,startYear,startMonth,startDay,endYEar,endMonth,endDay,hex_code,extra_key="hex_code"):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
-      log_file_name=None
+      log_file_name=f"{hex_code}_{extra_key}_transfers.txt"
       logFile=None
-      try:
-        jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/log.json.gz')
-        shipData = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/ships.json.gz')
-        log_file_name=f"{hex_code}_{extra_key}_transfers.txt"
-        #if file == "log":
-        hexcode="{"+hex_code+"}"
-        def find_route(data, route_no):
-          return list(filter(lambda x: x.get(extra_key) == route_no, data))
-        route = find_route(jsondata,hexcode)
-        url = "https://pub.drednot.io/test/econ/item_schema.json"
-        itemSchema = loads(requests.get(url).content)
-        def findItemName(itemId):
-          return list(filter(lambda x: x.get('id') == itemId, itemSchema))
-        def shipNameLookup(hex):
-          return list(filter(lambda x: x.get('hex_code') == hex, shipData))
-        items={}
-        for log in route:
-          itemName=findItemName(log["item"])[0]["name"]
-          if itemName not in list(items.keys()):
-            items.update({itemName:0})
-        for logB in route:
-          itemName=findItemName(logB["item"])[0]["name"]
-          items[itemName]+=logB["count"]
-        #print(route)
-        #print(items)
-        with open(log_file_name, "a", encoding="utf-8") as logFile:
-          for x in route:
-            timeConversion=datetime.fromtimestamp(x["time"]).strftime('%c')
-            if x["serv"]==0:
-              serverConversion="US"
-            elif x["serv"]==1:
-              serverConversion="EU"
-            elif x["serv"]==2:
-              serverConversion="AS"
-            else:
-              serverConversion="??"
-            itemNameConversion=findItemName(int(x["item"]))
-            srcShipConversion=shipNameLookup(x["src"].replace("{","").replace("}",""))[0]
-            srcShipHex="{"+srcShipConversion["hex_code"]+"}"
-            srcShipConversion={"name":srcShipConversion["name"],"hex_code":srcShipHex}
-            #print(srcShipConversion)
-            if x["dst"]=="killed":
-              dstShipConversion={"name":"Destroyed","hex_code":""}
-            else:
-              dstShipConversion=shipNameLookup(x["dst"].replace("{","").replace("}",""))[0]
-              dstShipHex="{"+dstShipConversion["hex_code"]+"}"
-              dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
-            logFile.write(f"{serverConversion} {timeConversion} UTC {x["zone"]} {srcShipConversion["name"]} {srcShipConversion["hex_code"]} sent {x["count"]} {findItemName(x["item"])[0]["name"]} to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
-      except Exception as e:
-        print(e)
-        e_type, e_object, e_traceback = sys.exc_info()
-
-        e_filename = os.path.split(
-            e_traceback.tb_frame.f_code.co_filename
-        )[1]
-
-        e_message = str(e)
-
-        e_line_number = e_traceback.tb_lineno
-
-        print(f'exception type: {e_type}')
-
-        print(f'exception filename: {e_filename}')
-
-        print(f'exception line number: {e_line_number}')
-
-        print(f'exception message: {e_message}')
-      if log_file_name != None:
-        message=f"Daily Transfer Report For Ship {hex_code}; Date: {datetime.now()}"
-        await ctx.send(message,file=discord.File(log_file_name))
-        os.remove(log_file_name)
+      startDate=datetime(startYear,startMonth,startDay)
+      endDate=datetime(endYEar,endMonth,endDay)
+      delta=startDate-endDate
+      if int(delta.days) > 30:
+        return ctx.send(f"Sorry, the maximum amount of days that can be searched is `30`. You attempted to search `{int(delta.days)}` days. Your search was `{abs(delta-DATE_GAP_CAP)}` over the limit.")
+      else:
+        dates_to_scan=[]
+        for i in range(delta.days + 1):
+          day = start_date + timedelta(days=i)
+          dates_to_scan.append(day)
+        try:
+          for date in dates_to_scan:
+            splitDate=date.split("-")
+            year=int(splitDate[0])
+            month=int(splitDate[1])
+            day=int(splitDate[2])
+            jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/log.json.gz')
+            shipData = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/ships.json.gz')
+            #if file == "log":
+            hexcode="{"+hex_code+"}"
+            def find_route(data, route_no):
+              return list(filter(lambda x: x.get(extra_key) == route_no, data))
+            route = find_route(jsondata,hexcode)
+            url = "https://pub.drednot.io/test/econ/item_schema.json"
+            itemSchema = loads(requests.get(url).content)
+            def findItemName(itemId):
+              return list(filter(lambda x: x.get('id') == itemId, itemSchema))
+            def shipNameLookup(hex):
+              return list(filter(lambda x: x.get('hex_code') == hex, shipData))
+            items={}
+            for log in route:
+              itemName=findItemName(log["item"])[0]["name"]
+              if itemName not in list(items.keys()):
+                items.update({itemName:0})
+            for logB in route:
+              itemName=findItemName(logB["item"])[0]["name"]
+              items[itemName]+=logB["count"]
+            #print(route)
+            #print(items)
+            with open(log_file_name, "a", encoding="utf-8") as logFile:
+              for x in route:
+                timeConversion=datetime.fromtimestamp(x["time"]).strftime('%c')
+                if x["serv"]==0:
+                  serverConversion="US"
+                elif x["serv"]==1:
+                  serverConversion="EU"
+                elif x["serv"]==2:
+                  serverConversion="AS"
+                else:
+                  serverConversion="??"
+                itemNameConversion=findItemName(int(x["item"]))
+                srcShipConversion=shipNameLookup(x["src"].replace("{","").replace("}",""))[0]
+                srcShipHex="{"+srcShipConversion["hex_code"]+"}"
+                srcShipConversion={"name":srcShipConversion["name"],"hex_code":srcShipHex}
+                #print(srcShipConversion)
+                if x["dst"]=="killed":
+                  dstShipConversion={"name":"Destroyed","hex_code":""}
+                else:
+                  dstShipConversion=shipNameLookup(x["dst"].replace("{","").replace("}",""))[0]
+                  dstShipHex="{"+dstShipConversion["hex_code"]+"}"
+                  dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
+                logFile.write(f"Date (YYYY-MM-DD): {year}-{month}-{day}\n")
+                logFile.write(f"{serverConversion} {timeConversion} UTC {x["zone"]} {srcShipConversion["name"]} {srcShipConversion["hex_code"]} sent {x["count"]} {findItemName(x["item"])[0]["name"]} to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+          except Exception as e:
+            print(e)
+            e_type, e_object, e_traceback = sys.exc_info()
+    
+            e_filename = os.path.split(
+                e_traceback.tb_frame.f_code.co_filename
+            )[1]
+    
+            e_message = str(e)
+    
+            e_line_number = e_traceback.tb_lineno
+    
+            print(f'exception type: {e_type}')
+    
+            print(f'exception filename: {e_filename}')
+    
+            print(f'exception line number: {e_line_number}')
+    
+            print(f'exception message: {e_message}')
+        if log_file_name != None:
+          message=f"Daily Transfer Report For Ship {hex_code}; Date: {datetime.now()}"
+          await ctx.send(message,file=discord.File(log_file_name))
+          os.remove(log_file_name)
     else:
       await ctx.send("Error")
 

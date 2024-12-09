@@ -46,43 +46,6 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
   
-  @commands.command(name='readecon',brief='Test Command for devs.',hidden=True,help="Testing Command For Dredark Econ Data Dumps!")
-  @commands.has_role('Developer')
-  async def econdump(self,ctx,msg):
-    #msgparts, datax = msg.split(" ")
-    await ctx.send("Hi")
-    #response = requests.get("https://pub.drednot.io/test/econ/2022_11_13/log.json.gz")#,params={'q': 'requests+language:python'})
-    #data = response.content
-    #json_response = response.json()
-    #repository = json_response[0]
-    #await ctx.send(repository)
-    #with gzip.open(data, 'rb') as f:
-      #file_content = f.read(33)
-      #json_resb = file_content.json
-      #repository = json_resb[0 
-    jsondata = lists.get_gzipped_json("https://pub.drednot.io/test/econ/2022_11_18/log.json.gz")
-    await ctx.send(len(jsondata))
-    await ctx.send(jsondata[int(msg)])
-    #for i, line in enumerate(data.split('\n')):
-      #await ctx.send(f'{i}   {line}')
-
-  @commands.command(name="econitemsnew",help="This will call from the Dredark Public Economy Data Dumps. This command only handles the items_new key. \n -Command Format: n!econdata VERSION YEAR MONTHNUMBER DAY KEYS; \n-VERSION is test or prod (main server); \n-The DATE formating for November 13th, 2022 is as follows: n!econdata 2022 11 13; \n-KEY FORMATING: The key you input is for what item will be called from, this is a value from 0->30; \n-Formatting Keys: To format search keys you must use data provided by Cogg at https://drednot.io/c/coder-docs in the Econ Dumps item;",aliases=['ecin','ecnewitems','eitemsnew'])
-  async def econitemsnew(self,ctx,version,year,monthnumber,day,keys):
-    if str(ctx.message.author.id) in banned:
-      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
-      return False
-    elif str(ctx.message.author.id) not in banned:
-      msgb = version + " " + year + " " + monthnumber  + " " + day + " " + keys
-      #lists.logback(ctx,msgb)
-      #keyparts, datax = keys.split(" ")
-      response = requests.get(f'https://pub.drednot.io/{version}/econ/{int(year)}_{int(monthnumber)}_{int(day)}/summary.json',params={'q': 'requests+language:python'})
-      json_response = response.json()
-      repository = json_response["items_new"][int(keys)]
-      await ctx.send(repository)
-    else:
-      await ctx.send("I Had An Error Checking My Banned User List, Please Try Running The Command Again.")
-      return False
-
   @commands.command(name="itemschema",help="This searches the item_schema.json file for the provided item_id Format: n!itemschema 1, ex: n!itemschema id 1 returns the entry for Iron because Iron's Item ID is 1.")
   async def itemschema(self,ctx,target_item):
     if str(ctx.message.author.id) in banned:
@@ -107,50 +70,6 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       await ctx.send("I Had An Error Checking My Banned User List, Please Try Running The Command Again.")
       return False
-
-  @commands.command(name="econdata",help="Calls data from one of the following keys: count_ships/count_logs/items_held/items_moved")
-  async def econdata(self,ctx,version,year,monthnumber,day,key):
-    if str(ctx.message.author.id) in banned:
-      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
-    elif str(ctx.message.author.id) not in banned:
-      msgb = version + " " + year + " " + monthnumber  + " " + day + " " + key
-      #lists.logback(ctx,msgb)
-      response = requests.get(f'https://pub.drednot.io/{version}/econ/{int(year)}_{int(monthnumber)}_{int(day)}/summary.json',params={'q': 'requests+language:python'})
-      json_response = response.json()
-      repository = json_response[key]
-      await ctx.send(repository)
-    else:
-      await ctx.send("I Had An Error Checking My Banned User List, Please Try Running The Command Again.")
-      return False
-
-  @commands.command(name="readlogs",help="Reads the log file from the Dred Public Econ Dumps. \nFormatting:\n -Version is test or prod(main server)\n -Year,MonthNumber,Day follow date formatting (2022_11(month,november)_13(day)\n -Key is a number 1-50000 to start (acutal max will be provided once yiu run the command so you can run again with real data.")
-  async def readligs(self,ctx,version,year,monthnumber,day,key):
-    if str(ctx.message.author.id) in banned:
-      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
-    elif str(ctx.message.author.id) not in banned:
-      msgb = version + " " + year + " " + monthnumber  + " " + day + " " + key
-      #lists.logback(ctx,msgb)
-      jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{monthnumber}_{day}/log.json.gz')
-      await ctx.send(len(jsondata))
-      await ctx.send(jsondata[int(key)])
-    else:
-      await ctx.send("Error")
-
-  @commands.command(name="readships",help="Reads the ships file from the Dred Public Econ Dumps. \nFormatting:\n -Version is test or prod(main server)\n -Year,MonthNumber,Day follow date formatting (2022 11(month,november) 13(day)\n -key is name or hex_code\n -value is the value that goes with the key. IE: ship name or hexcode")
-  async def readships(self,ctx,version,year,monthnumber,day,key,value):
-    if str(ctx.message.author.id) in banned:
-      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
-    elif str(ctx.message.author.id) not in banned:
-      msgb = version + " " + year + " " + monthnumber  + " " + day + " " + key
-      #lists.logback(ctx,msgb)
-      jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{monthnumber}_{day}/ships.json.gz')
-      def find_route(data, route_no):
-        return list(filter(lambda x: x.get(key) == route_no, data))
-      route = find_route(jsondata,value)
-      for x in route:
-        await ctx.send(x)
-    else:
-      await ctx.send("Error")
 
   @commands.command(name="searchhexcode",hidden=False,aliases=['shex','hex','hexcode'],help="This searches either the ships or log file for all entries containing the provided HEX CODE!\n -Command Formart: n!searchhexcode <version> <year> <monthnumber> <day> <file (ships/log)> <hex_code (CASE SENSITVE)>.\n -The HEX CODE is a ships hex code in Dredark.\n -The EXTRA_KEY is for calling data from log.json, enter src or dst depending on if you want the source or destination, EXTRA_KEY is only if you pick the log file.\n -LOG_COUNT is for log.json only, it is how many items you want, as the logs could be upwards of 200+, in TEST SERVER the log can be 1,000+ items.")
   async def searchhexcode(self,ctx,version,year,month,day,file,hex_code,extra_key="hex_code",log_count="none"):

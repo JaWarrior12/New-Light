@@ -421,7 +421,10 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
           day=today.day
         PlexusServer = self.bot.get_guild(int(key))
         #print(PlexusServer)
-        PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
+        try:
+          PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
+        except:
+          continue
         #print(PlexusReportChannel)
         threads=PlexusReportChannel.threads
         for ship in shipsToLoop:
@@ -438,9 +441,8 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
               itemNames.append(itemName[0]["name"])
               itemCount=shipItems[item]
               itemCounts.append(itemCount)
+            cuts=[]
             textString=""
-            secondCut=""
-            thirdCut=""
             for obj in itemNames:
               index=itemNames.index(obj)
               nextItem=f" - Item: `{obj}`; Count: `{itemCounts[index]}`\n"
@@ -449,12 +451,10 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
               if (textStringLen+nextItemLen) < 1930:
                 textString+=nextItem
               else:
-                secondCutLen=len(secondCut)
-                if (secondCutLen+nextItemLen) < 1930:
-                  secondCut+=nextItem
-                else:
-                    thirdCut+=nextItem
-            fullString=f"# Inventory of {shipName} ({shipHex})\nLast Update: {month}/{day}/{year}\n{textString}"
+                cuts.append(textString)
+                textString=""
+            cuts.append(textString)
+            fullString=f"# Inventory of {shipName} ({shipHex})\nLast Update: {month}/{day}/{year}\n"
             #print(len(fullString))
             def find_thread(lst, route_no):
               found=[]
@@ -469,20 +469,22 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
               upmc=await PlexusServer.fetch_channel(logChannel)
               newthread=upmc.get_thread(upmc.last_message_id)
               await newthread.send(fullString)
-              if len(secondCut) > 1:
-                await newthread.send(secondCut)
-              if len(thirdCut) > 1:
-                await newthread.send(thirdCut)
+              for cut in cuts:
+                await newthread.send(cut)
             else:
               thrd=PlexusReportChannel.get_thread(thd[0].id)
-              messageCount=int(thrd.message_count)
-              await thrd.purge(limit=messageCount-1)
+              messageCount=int(thrd.message_count)-1
+              try:
+                await thrd.purge(limit=int(messageCount))
+              except Exception as e:
+                pass
               #try:
               await thrd.send(fullString)
-              if len(secondCut) > 1:
-                await thrd.send(secondCut)
-              if len(thirdCut) > 1:
-                await thrd.send(thirdCut)
+              for cut in cuts:
+                if len(cut) > 0:
+                  await thrd.send(cut)
+                else:
+                  break
               #except:
                 #print("error")
           else:

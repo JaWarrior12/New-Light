@@ -24,6 +24,9 @@ DEV_SERVER_ID = 1031900634741473280
 #Self ID=974045822167679087
 
 
+#CONSTANTS
+NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master","Shield Helper","Red Sniper",'Yellow Hunter',"The Lazer Enthusiast","The Coward","Orange Fool","Yellow Mine Guard","block - iron mine","bot - zombie tank","giant rubber ball","bot - zombie","block - vault","block - flux node","bot - zombie hunter","bot - zombie boss","block - treasure diamond"]
+
 #Defs
 def readdata():
     return loads(open('../NLDB/distribution.json', 'r').read())

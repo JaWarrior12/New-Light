@@ -35,8 +35,7 @@ PLEXUS_SERVER_ID = 1031900634741473280 #NLD Server ID
 PLEXUS_CHANNEL_ID = 1045129470287294504 #NLD Server dev-bot-commands channel ID
 ALLOWED_SERVERS = [1070759679543750697,1031900634741473280]
 
-NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master","Shield Helper","Red Sniper",'Yellow Hunter',"The Lazer Enthusiast","The Coward","Orange Fool","Yellow Mine Guard","block - iron mine","bot - zombie tank","giant rubber ball","bot - zombie","block - vault","block - flux node","bot - zombie hunter","bot - zombie boss","block - treasure diamond"]
-
+NON_SHIP_ENTRIES=lists.NON_SHIP_ENTRIES
 
 #tz = pytz.timezone('America/New_York')
 utc=timezone.utc

@@ -116,7 +116,6 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send("Error")
 
   @commands.command(name="detailedTransferSearch",hidden=False,aliases=['dts','dsearch','detailed'],disabled=False)
-  @commands.cooldown(5, 60, commands.BucketType.default)
   async def detailedTransferSearch(self,ctx,version,startYear,startMonth,startDay,endYear,endMonth,endDay,hex_code,extra_key="hex_code"):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')

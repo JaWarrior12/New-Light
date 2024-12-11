@@ -21,9 +21,6 @@ import lists
 banned=lists.banned
 developers=lists.developers
 
-FILTERED_ROLES=["Founder / Damage control"]
-CONTAINS_ROLE_FILTER=["admin","administrator","administration","perms","moderation","moderator"]
-
 class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
@@ -351,12 +348,12 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
               #print(rnk)
               if roleb.name=="@everyone":
                 pass
-              elif roleb.name in FILTERED_ROLES or any(i in roleb.name for i in CONTAINS_ROLE_FILTER):
+              elif roleb.name in FILTERED_ROLES:
                 roleIndex=-2
                 def getNextRole(roleIndex):
                   rid2=roles[roleIndex].id
                   rolec=ctx.message.guild.get_role(rid2)
-                  if rolec.name in FILTERED_ROLES or any(i in rolec.name for i in CONTAINS_ROLE_FILTER):
+                  if rolec.name in FILTERED_ROLES:
                     getNextRole(roleIndex-1)
                   else:
                     global roleb
@@ -470,6 +467,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         elif lists.readdataE()[str(g.id)]["memrole"]==0:
           pass
         else:
+          FILTERED_ROLES=["admin","Founder / Damage control"]
           #print("Member Updated")
           gid=str(g.id)
           guild=self.bot.get_guild(g.id)
@@ -504,12 +502,12 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                 #print(rnk)
                 if roleb.name=="@everyone":
                   pass
-                elif roleb.name in FILTERED_ROLES or any(i in roleb.name for i in CONTAINS_ROLE_FILTER):
+                elif roleb.name in FILTERED_ROLES:
                   roleIndex=-2
                   def getNextRole(roleIndex):
                     rid2=roles[roleIndex].id
                     rolec=guild.get_role(rid2)
-                    if rolec.name in FILTERED_ROLES or any(i in rolec.name for i in CONTAINS_ROLE_FILTER):
+                    if rolec.name in FILTERED_ROLES:
                       getNextRole(roleIndex-1)
                     else:
                       global roleb

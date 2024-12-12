@@ -475,7 +475,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @tasks.loop(hours=1)
   async def runUpdateMemList(self):
-    await self.updatememlist(self,"all")
+    await self.updatememlist(self,None)
 
   #@runUpdateMemList.before_loop
   #async def before_task_starts(self):
@@ -497,7 +497,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     elif servers=="all":
       pass
     elif servers==None:
-      serversList=[guild.id for guild in self.bot.guilds]
+      serversList=[guild for guild in self.bot.guilds]
     else:
       splitList=servers.split(",")
       serversList=[self.bot.get_guild(int(gldid)) for gldid in splitList]

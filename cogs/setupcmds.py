@@ -442,24 +442,37 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @tasks.loop(hours=1)
   async def runUpdateMemList(self):
-    await self.updatememlist(self)
+    await self.updatememlist(self,"all")
 
   #@runUpdateMemList.before_loop
   #async def before_task_starts(self):
       #await self.wait_until_ready()
 
   @commands.command(name="devRunUpdateMemList",aliases=["devRUML"],help="Forces a memberlist update without creating a new message")
-  async def devRunUpdateMemList(self,ctx):
+  async def devRunUpdateMemList(self,ctx,servers="dev"):
     if ctx.author.id in developers:
       await ctx.send("Starting MemList Update")
-      await self.updatememlist(self)
+      await self.updatememlist(self,servers)
       await ctx.send("MemList Update Complete")
 
   @staticmethod
-  async def updatememlist(self):
+  async def updatememlist(self,servers):
     #print("Starting MemList Update")
-    for g in self.bot.guilds:
+    serversList=[]
+    if servers=="dev":
+      serversList=[self.bot.get_guild(1031900634741473280)]
+    elif servers=="all":
+      pass
+    elif servers==None:
+      serversList=[guild.id for guild in self.bot.guilds]
+    else:
+      splitList=servers.split(",")
+      serversList=[self.bot.get_guild(int(gldid)) for gldid in splitList]
+      #print(serversList)
+    for g in serversList:
       try:
+        cuts=[]
+        ctnt3=""
         data=lists.readdataE()
         if str(g.id) in list(data.keys()):
           pass
@@ -477,10 +490,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           data=lists.readdataE()
           memchan=lists.readdataE()[str(guild.id)]["memchan"]
           channel=await guild.fetch_channel(int(memchan))
-          nmesg=await channel.fetch_message(int(data[str(guild.id)]["memmsg"]))
+          #nmesg=await channel.fetch_message(int(data[str(guild.id)]["memmsg"]))
           groles=guild.roles
           #message=await channel.fetch_message(nmesg)
-          data[str(guild.id)]["memmsg"]=int(nmesg.id)
+          #data[str(guild.id)]["memmsg"]=int(nmesg.id)
           lists.setdataE(data)
           memrole=guild.get_role(int(data[gid]["memrole"]))
           ranks=[]
@@ -594,8 +607,34 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                       pass
                 #print(ctnt2)
                 return ctnt2
-              ctnt = ctnt + await tempNew(x)
-            await nmesg.edit(content=ctnt)
+              nextBit=await tempNew(x)
+              if int(len(ctnt) + len(nextBit)) < 1930:
+                ctnt = ctnt + nextBit
+              else:
+                cuts.append(ctnt)
+                ctnt=nextBit
+          nextItem=ctnt
+          #print(len(ctnt))
+          ctnt3Len=len(ctnt3)
+          nextItemLen=len(nextItem)
+          #print(f"ctnt3Len={ctnt3Len}; nextItemLen={nextItemLen}")
+          if int(ctnt3Len+nextItemLen) < 1930:
+            ctnt3+=nextItem
+            #print("continue")
+          else:
+            cuts.append(ctnt3)
+            ctnt3=""
+            #print("cut")
+            #await nmesg.edit(content=ctnt)
+        cuts.append(ctnt3)
+        try:
+          await channel.purge()
+        except:
+          pass
+        #print(cuts)
+        for cut in cuts:
+          if len(cut)>0:
+            await channel.send(cut,silent=True)
       except Exception as e:
         print(e)
         continue

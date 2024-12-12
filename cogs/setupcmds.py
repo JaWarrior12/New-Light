@@ -634,7 +634,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         #print(cuts)
         for cut in cuts:
           if len(cut)>0:
-            await channel.send(cut,silent=True)
+            mesg=await channel.send("temp")
+            await mesg.edit(content=cut)
       except Exception as e:
         print(e)
         continue

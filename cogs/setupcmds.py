@@ -2,7 +2,7 @@ from ast import alias
 import os
 from pdb import run
 import sys
-from click import command
+#from click import command
 import discord
 import time
 import pytz

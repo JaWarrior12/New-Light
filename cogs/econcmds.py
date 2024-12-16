@@ -32,8 +32,15 @@ developers = lists.developers
 utc=timezone.utc
 tmes=tme(hour=0,minute=30,tzinfo=utc)
 
-DATE_GAP_CAP=30
-SHIP_WEB_CAP=3
+# Max Run Time (MRT) Constants
+MRT_BASE=5 # Minutes
+MRT_MULTIPLIER=60 # Multiplier to get to proper unit. Scnds->Scnds is 1, Scnds->Mins is 60, Scnds->Hrs 3600 (NEVER USE THIS!!!!)
+MAX_RUN_TIME=MRT_BASE*MRT_MULTIPLIER
+MRT_UNIT="Minutes" # What Unit MAX_RUN_TIME Is In
+
+DATE_GAP_CAP=365 # Original: 30
+SHIP_WEB_CAP=3 # Original: 3
+
 NON_SHIP_ENTRIES=lists.NON_SHIP_ENTRIES
 
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
@@ -121,14 +128,15 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
+      startTime=time.time()
       log_file_name=f"{hex_code}_{extra_key}_transfers.txt"
       logFile=None
       itemInfo={}
       startDate=datetime(int(startYear),int(startMonth),int(startDay))
       endDate=datetime(int(endYear),int(endMonth),int(endDay))
       delta=endDate-startDate
-      if int(delta.days) > 30:
-        return ctx.send(f"Sorry, the maximum amount of days that can be searched is `30`. You attempted to search `{int(delta.days)}` days. Your search was `{abs(delta-DATE_GAP_CAP)}` over the limit.")
+      if int(delta.days) > DATE_GAP_CAP:
+        return ctx.send(f"Sorry, the maximum amount of days that can be searched is `{DATE_GAP_CAP}`. You attempted to search `{int(delta.days)}` days. Your search was `{abs(delta-DATE_GAP_CAP)}` over the limit.")
       else:
         await ctx.send("Collecting Data! This may take a minute or so...")
         dates_to_scan=[]
@@ -138,7 +146,12 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
         try:
           shipTotals={}
           receiveTotals={}
+          currRunTime=abs(time.time()-startTime)
           for date in dates_to_scan:
+            if currRunTime > MAX_RUN_TIME:
+              await ctx.send(f"Sorry, There Is A MAX RUN TIME of {MAX_RUN_TIME} {MRT_UNIT}(s). This Run has exceeded that limity by {abs(currRunTime-MAX_RUN_TIME} {MRT_UNIT}(s). Please tyr again with a shorter search range.")
+              await ctx.send("Search Ended. Search Results Will be Sent Incomplete.
+              break
             year=int(date.year)
             month=int(date.month)
             day=int(date.day)

@@ -76,9 +76,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           #banlt = lists.readdataE()
           #banlt.update({gid:{"auth":[str(uid)]}})
           #lists.setdataE(banlt)
-          data = lists.readFile("plexusSystems")
+          data = lists.readFile("dailyReportsConfig")
           data[gid]={"trackList":[],"inventoryList":[]}
-          lists.setFile("plexusSystems",data)
+          lists.setFile("dailyReportsConfig",data)
           await ctx.send("Server Setup Succesfully!")
           #await server.create_role(name="QuickPing")
           #await ctx.send("QuickPing Role Created")

@@ -224,7 +224,7 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           await ctx.send(f"You are not authorized to use leadership commands in {ctx.guild.name}")
 
   @commands.command(name='balance',brief="Calls a user's balance.",help="Calls a member's balance. Just ping the user in the command. Format: n!balance @user")
-  async def getuserloot(self,ctx,member):
+  async def getuserloot(self,ctx,member=None):
     if str(ctx.message.author.id) not in banned:
       data = None
       #chk = lists.checkperms(ctx)
@@ -241,6 +241,11 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
         memName=member
         memAv=None
         memMen=member
+      elif member==None:
+        memvar=ctx.message.author
+        memName-ctx.message.author.display_name
+        memAv=ctx.message.author.display_avatar
+        memMen=ctx.message.author.mention
       else:
         try:
           member=await commands.MemberConverter().convert(ctx,member)

@@ -19,8 +19,9 @@ from discord import Member
 from json import loads, dumps
 from startup import startup
 
-# Googletrans Translator Library
+# Translator Library
 #from googletrans import Translator
+from deep_translator import GoogleTranslator
 
 #Lists
 import lists
@@ -45,10 +46,9 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
     
     @commands.command(name="translate", aliases=["tr"])
     async def translate(self, ctx, text):
-        translator = None#Translator()
-        response=translator.translate(text, dest="en")
-        print(response)
-        await ctx.send(None)
+        translator = GoogleTranslator(source='auto', target='russian')
+        response=translator.translate(text=text)
+        await ctx.send(response)
     
 
 async def setup(bot: commands.Bot):

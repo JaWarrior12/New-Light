@@ -399,6 +399,34 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   async def syncBanlists(self):
     lists.bannedlist()
     lists.bannedguilds()
+
+  @commands.command(name="remoteServerSettings",aliases=["rss","remoteChange"],help="Allows remote management of a server's settings by the developer.")
+  async def remoteServerSettings(self,ctx,guildID,option,*,input):
+    if ctx.message.author.id in developers:
+      guild=self.bot.get_guild(int(guildID))
+      val = 0
+      val=input
+      if option == "distship":
+        val=str(input)
+      elif option=="clanPercent":
+        val=float(input)
+      elif option in ["verbal","logFiltersNonShips"]:
+        val=bool(input)
+      elif option == "storebal":
+        val=str(input.lower())
+      else:
+        val=int(input)
+      opt=option
+      print(opt)          
+      data=lists.readdataE()
+      prevVal=data[str(guild.id)][opt]
+      data[str(guild.id)][opt]=val
+      lists.setdataE(data)
+      await ctx.send(f'Changed {(option)} in `{guild.name} ({guild.id})` from {prevVal} to {val}')
+      guildOwner=guild.owner
+      await guild.Owner.send(f'{ctx.message.author.name} has remotely changed {(option)} in `{guild.name} ({guild.id})` from {prevVal} to {val}')
+    else:
+      await ctx.send("Sorry, only developers can use this command.")
     
 async def setup(bot: commands.Bot):
     await bot.add_cog(AdCmds(bot))

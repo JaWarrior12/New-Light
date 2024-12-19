@@ -436,17 +436,17 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       outputFile=None
       try:
         with open(outputFileName, "a+", encoding="utf-8") as outputFile:
-          outputFile.write(f"# Server: {guild.name} ({guild.id})")
+          outputFile.write(f"# Server: {guild.name} ({guild.id})\n")
           for channel in guild.channels:
-            outputFile.write(f"- Channel: {channel.name} ({channel.id})")
-            permsList=[perm for perm in channel.permissions_for(self.bot)]
+            outputFile.write(f"- Channel: {channel.name} ({channel.id})\n")
+            permsList=[perm for perm in channel.permissions_for(guild.get_member(self.bot.application_id))]
             for perm in permsList:
-              outputFile.write(f" - Permission: `{perm[0]}`; Value: `{perm[1]}`")
+              outputFile.write(f" - Permission: `{perm[0]}`; Value: `{perm[1]}`\n")
         await ctx.send(f"{guild.name} Perms List:",file=discord.File(outputFileName))
         os.remove(outputFileName)
-      except:
+      except Exception as e:
+        print(e)
         os.remove(outputFileName)
-
     else:
       await ctx.send("Sorry, only developers can use this command.")
 

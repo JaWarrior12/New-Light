@@ -442,6 +442,8 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
             permsList=[perm for perm in channel.permissions_for(self.bot)]
             for perm in permsList:
               outputFile.write(f" - Permission: `{perm[0]}`; Value: `{perm[1]}`")
+        await ctx.send(f"{guild.name} Perms List:",file=discord.File(outputFileName))
+        os.remove(outputFileName)
       except:
         os.remove(outputFileName)
 

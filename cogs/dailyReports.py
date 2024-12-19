@@ -473,10 +473,10 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
             else:
               thrd=ServerReportsChannel.get_thread(thd[0].id)
               messageCount=int(thrd.message_count)-1
-              try:
-                await thrd.purge(limit=int(messageCount))
-              except Exception as e:
-                pass
+              #try:
+                #await thrd.purge(limit=int(messageCount))
+              #except Exception as e:
+                #pass
               #try:
               await thrd.send(fullString)
               for cut in cuts:

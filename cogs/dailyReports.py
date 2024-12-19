@@ -31,8 +31,8 @@ DEV_SERVER_ID = lists.DEV_SERVER_ID
 
 #PLEXUS_SERVER_ID = 1070759679543750697 #Actual Plexus Server ID
 #PLEXUS_CHANNEL_ID = 1264242324482031707 #Actual Plexus Reports Channel ID
-PLEXUS_SERVER_ID = 1031900634741473280 #NLD Server ID
-PLEXUS_CHANNEL_ID = 1045129470287294504 #NLD Server dev-bot-commands channel ID
+NLD_SERVER_ID = 1031900634741473280 #NLD Server ID
+NLD_CHANNEL_ID = 1045129470287294504 #NLD Server dev-bot-commands channel ID
 ALLOWED_SERVERS = [1070759679543750697,1031900634741473280]
 
 NON_SHIP_ENTRIES=lists.NON_SHIP_ENTRIES
@@ -50,7 +50,7 @@ def setPS(data):
     with open(".../NLDB/plexusSystems.json", "w") as f:
         f.write(dumps(data))
 
-class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands For The Daily Transfer/Track Logs System"):
+class DailyReports(commands.Cog, name="Daily Reports System",description="Commands For The Daily Reports System"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     #self.runDailyTransferReport_TimerLoop.start
@@ -68,7 +68,7 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
     #else:
     #pass
   
-  def is_plexus_server():
+  def is_allowed_server():
     def predicate(ctx):
         return ctx.guild is not None or ctx.author.id in lists.developers #and ctx.guild.id in ALLOWED_SERVERS
     return commands.check(predicate)
@@ -88,19 +88,19 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
       await ctx.send("This is a DEVELOPER ONLY command.")
 
   @commands.command(name="updateTrackList",aliases=["utl"],help="Add or Remove a ship from the track list; also can display the current trck list. Functions :add/remove/list")
-  @commands.check_any(is_plexus_server())
+  @commands.check_any(is_allowed_server())
   async def updateTrackList(self,ctx,function,hex=None):
     chk = lists.checkperms(ctx)
     if hex != None:
       hex=hex.replace("<","").replace(">","")
     if chk:
-      data = lists.readFile("plexusSystems")
+      data = lists.readFile("dailyReportsConfig")
       if function.lower() == "add":
         hex=hex.upper()
         if hex not in data[str(ctx.guild.id)]['trackList'] and hex != None:
           data[str(ctx.guild.id)]['trackList'].append(hex)
           await ctx.send(f"Added {hex} to the track list.")
-          lists.setFile("plexusSystems",data)
+          lists.setFile("dailyReportsConfig",data)
         else:
           await ctx.send(f"Hex {hex} is already in the track list.")
       elif function.lower() == "remove":
@@ -108,7 +108,7 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
         if hex in data[str(ctx.guild.id)]['trackList']:
           data[str(ctx.guild.id)]['trackList'].remove(hex)
           await ctx.send(f"Removed {hex} from the track list.")
-          lists.setFile("plexusSystems",data)
+          lists.setFile("dailyReportsConfig",data)
         else:
           await ctx.send(f"Hex {hex} was not found in the track list.")
       elif function.lower() == "list":
@@ -131,8 +131,8 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
   
   @staticmethod
   async def runDailyTransferReport(self,servers=None,year=None,month=None,day=None):
-    print("Starting Plexus Daily Transfer Report Script")
-    data = lists.readFile("plexusSystems")
+    print("Starting Daily Transfer Report Script")
+    data = lists.readFile("dailyReportsConfig")
     configs=lists.readdataE()
     #print(data)
     serversList=list(data.keys())
@@ -156,14 +156,14 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
           year=today.year
           month=today.month
           day=today.day
-        PlexusServer = self.bot.get_guild(int(key))
+        CurrentServer = self.bot.get_guild(int(key))
         #print(PlexusServer)
-        PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
+        ServerReportsChannel = await CurrentServer.fetch_channel(int(logChannel))
         #print(PlexusReportChannel)
         jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
         shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
         altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
-        log_file_name=f"{PlexusServer.name}_Daily_Transfers.txt"
+        log_file_name=f"{CurrentServer.name}_Daily_Transfers.txt"
         shipTotals={}
         receiveTotals={}
         for ship in shipsToLoop:
@@ -330,30 +330,30 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
           def yesterday(frmt='%Y-%m-%d', string=True):
             return (datetime.now(pytz.UTC) - timedelta(days=1)).strftime('%Y-%m-%d')
           if year == None:
-            message=f"{PlexusServer.name} Daily Transfer Report For {datetime.now(pytz.UTC)}"
+            message=f"{CurrentServer.name} Daily Transfer Report For {datetime.now(pytz.UTC)}"
           else:
-            message=f"{PlexusServer.name} Daily Transfer Report For {int(year)}_{int(month)}_{int(day)}"
-          await PlexusReportChannel.send(message,file=discord.File(log_file_name))
+            message=f"{CurrentServer.name} Daily Transfer Report For {int(year)}_{int(month)}_{int(day)}"
+          await ServerReportsChannel.send(message,file=discord.File(log_file_name))
           os.remove(log_file_name)
       except Exception as e:
         print(e)
         continue
-    print("Plexus Daily Transfer Report Script Finished")
+    print("Daily Transfer Report Script Finished")
   
   @commands.command(name="updateInventoryList",aliases=["uil"],help="Add or Remove a ship from the inventory list; also can display the current trck list. Functions :add/remove/list")
-  @commands.check_any(is_plexus_server())
+  @commands.check_any(is_allowed_server())
   async def updateInvntoryList(self,ctx,function,hex=None):
     chk = lists.checkperms(ctx)
     if hex != None:
       hex=hex.replace("<","").replace(">","")
     if chk:
-      data = lists.readFile("plexusSystems")
+      data = lists.readFile("dailyReportsConfig")
       if function.lower() == "add":
         hex=hex.upper()
         if hex not in data[str(ctx.guild.id)]['inventoryList'] and hex != None:
           data[str(ctx.guild.id)]['inventoryList'].append(hex)
           await ctx.send(f"Added {hex} to the inventory list.")
-          lists.setFile("plexusSystems",data)
+          lists.setFile("dailyReportsConfig",data)
         else:
           await ctx.send(f"Hex {hex} is already in the inventory list.")
       elif function.lower() == "remove":
@@ -361,7 +361,7 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
         if hex in data[str(ctx.guild.id)]['inventoryList']:
           data[str(ctx.guild.id)]['inventoryList'].remove(hex)
           await ctx.send(f"Removed {hex} from the inventory list.")
-          lists.setFile("plexusSystems",data)
+          lists.setFile("dailyReportsConfig",data)
         else:
           await ctx.send(f"Hex {hex} was not found in the inventory list.")
       elif function.lower() == "list":
@@ -380,14 +380,14 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
   
   @staticmethod
   async def runDailyInventoryReport(self,servers=None,year=None,month=None,day=None):
-    print("Starting Plexus Daily Inventory Report Script")
+    print("Starting Daily Inventory Report Script")
     today=datetime.now(pytz.UTC)
     #print(today)
     if year is None:
       year=today.year
       month=today.month
       day=today.day
-    data = lists.readFile("plexusSystems")
+    data = lists.readFile("dailyReportsConfig")
     configs=lists.readdataE()
     #print(data)
     dumpData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
@@ -418,14 +418,14 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
           year=today.year
           month=today.month
           day=today.day
-        PlexusServer = self.bot.get_guild(int(key))
+        CurrentServer = self.bot.get_guild(int(key))
         #print(PlexusServer)
         try:
-          PlexusReportChannel = await PlexusServer.fetch_channel(int(logChannel))
+          ServerReportsChannel = await CurrentServer.fetch_channel(int(logChannel))
         except:
           continue
         #print(PlexusReportChannel)
-        threads=PlexusReportChannel.threads
+        threads=ServerReportsChannel.threads
         for ship in shipsToLoop:
           shipData=find_ship(dumpData,ship)
           if len(shipData)>0:
@@ -463,15 +463,15 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
               return found
             thd=find_thread(threads,shipHex)
             if len(thd)==0:
-              await PlexusReportChannel.create_thread(name=shipHex,content=f'Inventory Of `{shipName} ({shipHex})`')
+              await ServerReportsChannel.create_thread(name=shipHex,content=f'Inventory Of `{shipName} ({shipHex})`')
               await asyncio.sleep(0.1)
-              upmc=await PlexusServer.fetch_channel(logChannel)
+              upmc=await CurrentServer.fetch_channel(logChannel)
               newthread=upmc.get_thread(upmc.last_message_id)
               await newthread.send(fullString)
               for cut in cuts:
                 await newthread.send(cut)
             else:
-              thrd=PlexusReportChannel.get_thread(thd[0].id)
+              thrd=ServerReportsChannel.get_thread(thd[0].id)
               messageCount=int(thrd.message_count)-1
               try:
                 await thrd.purge(limit=int(messageCount))
@@ -507,10 +507,10 @@ class PlexusCmds(commands.Cog, name="Daily Transfer Logs",description="Commands 
         print(f'exception line number: {e_line_number}')
 
         print(f'exception message: {e_message}')
-    print("Plexus Daily Inventory Report Script Finished")
+    print("Daily Inventory Report Script Finished")
   
 async def setup(bot: commands.Bot):
-    await bot.add_cog(PlexusCmds(bot))
+    await bot.add_cog(DailyReports(bot))
 
 def individualLogs(log_file_name,route,findItemName,shipNameLookup):
   with open(log_file_name, "a", encoding="utf-8") as logFile:

@@ -670,7 +670,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             mesg=await channel.send("temp")
             await mesg.edit(content=cut)
       except Exception as e:
-        print(e)
+        #print(e)
         continue
     #print("MemList Update Complete")
 

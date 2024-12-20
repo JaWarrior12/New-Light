@@ -79,6 +79,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           data = lists.readFile("dailyReportsConfig")
           data[gid]={"trackList":[],"inventoryList":[]}
           lists.setFile("dailyReportsConfig",data)
+          data = lists.readFile("translationConfid")
+          data[gid]={"langChannels":[]}
+          lists.setFile("translationConfig",data)
           await ctx.send("Server Setup Succesfully!")
           #await server.create_role(name="QuickPing")
           #await ctx.send("QuickPing Role Created")

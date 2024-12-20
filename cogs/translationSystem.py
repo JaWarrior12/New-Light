@@ -49,6 +49,22 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         translator = GoogleTranslator(source='auto', target='russian')
         response=translator.translate(text=text)
         await ctx.send(response)
+
+    @commands.Cog.listener()
+    async def on_message(self,message):
+        if message.guild!=None:
+            translator = GoogleTranslator(source='auto', target='russian')
+            server=message.guild
+            data=lists.readFile("translationConfig")
+            langChannels=data[str(server.id)]["langChannels"]
+            for channel in langChannels:
+                chanID=channel[0]
+                targetLang=channel[1]
+                targetChan=server.get_channel(chanID)
+                translator.target=str(targetLang)
+                response=translator.translate(text=message.content)
+                await targetChan.send(response,embeds=message.embeds,files=message.attachments)
+
     
 
 async def setup(bot: commands.Bot):

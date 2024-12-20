@@ -50,7 +50,7 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         response=translator.translate(text=text)
         await ctx.send(response)
 
-    @commands.command(name="configTranslate",aliases=["cr","configT"],help="Settings manager for all translation settings. `targetLang` MUST be the 2 letter language code!! Valid keys: list, add (Add channel), remove (Remove Channel), modify (Modify CHANNEL)")
+    @commands.command(name="configTranslate",aliases=["cr","configT"],help="Settings manager for all translation settings. `targetLang` MUST be the 2 letter language code!! When modifying a channel's settings, a value of `None`(Case Sensitive) will mark a setting that is not changed. Valid keys: list, add (Add channel), remove (Remove Channel), modify (Modify CHANNEL)")
     async def configTranslate(self,ctx,option,channel=None,targetLang=None,onBool=None):
         if str(ctx.message.author.id) not in banned:
             chk = lists.checkperms(ctx)
@@ -84,10 +84,51 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                         pass
                     else:
                         return await ctx.send(f"Sorry, {targetLang} is not a valid input. Please provide the 2 letter language code for your target language.")
-                    data[str(server.id)]["langChannels"].append([chanID,targetLang,True])
+                    data[str(server.id)]["langChannels"].append([int(chanID),targetLang,True])
                     lists.setFile("translationConfig",data)
                     await ctx.send(f"{chanMen} has been added to Auto-Translate for the target language {targetLang}")
-
+                elif option=="remove":
+                    chanID=None
+                    chaneName=None
+                    chanMen=None
+                    if type(channel)==discord.GuildChannel:
+                        chanID=channel.id
+                        chanName=channel.name
+                        chanMen=channel.mention
+                    elif type(channel)==int:
+                        chanID=channel
+                        chanName=server.get_channel(chanID).name
+                        chanMen=server.get_channel(chanID).mention
+                    else:
+                        return await ctx.send(f"Sorry, {channel} is not a valid input. Please mention your target channel or use the channel's ID.")
+                    indexToRemove=None
+                    for chan in data[str(server.id)]["langChannels"]:
+                        if chan[0]==int(chanID):
+                            indexToRemove = data[str(server.id)]["langChannels"].index(chan)
+                    data[str(server.id)]["langChannels"].pop(indexToRemove)
+                    lists.setFile("translationConfig",data)
+                elif option=="modiy":
+                    chanID=None
+                    chaneName=None
+                    chanMen=None
+                    if type(channel)==discord.GuildChannel:
+                        chanID=channel.id
+                        chanName=channel.name
+                        chanMen=channel.mention
+                    elif type(channel)==int:
+                        chanID=channel
+                        chanName=server.get_channel(chanID).name
+                        chanMen=server.get_channel(chanID).mentionss
+                    index=None
+                    for chan in data[str(server.id)]["langChannels"]:
+                        if chan[0]==int(chanID):
+                            indexToRemove = data[str(server.id)]["langChannels"].index(chan)
+                    if targetLang.lower()!="none" and len(targetLang)==2:
+                        data[str(server.id)]["langChannels"][index][1]=targetLang
+                    if onBool.lower()!="none":
+                        data[str(server.id)]["langChannels"][index][2]=bool(onBool)
+                else:
+                    await ctx.send(f"Sorry, `{option}` is not a Valid Option. Valid Options: `add`, `remove`, `list`, `modify`.")
             else:
                 await ctx.send("Sorry, only authorized leaders can use this command.")
         else:
@@ -104,7 +145,7 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                 chanID=channel[0]
                 targetLang=channel[1]
                 targetChanBool=channel[2]
-                if targetChanBool:
+                if targetChanBool and (message.channel.id!=chanID):
                     targetChan=server.get_channel(chanID)
                     translator.target=str(targetLang)
                     response=translator.translate(text=message.content)

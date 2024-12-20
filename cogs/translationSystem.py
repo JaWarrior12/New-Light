@@ -50,15 +50,15 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         response=translator.translate(text=text)
         await ctx.send(response)
 
-    @commands.command(name="configTranslate",aliases=["cr","configT"],help="Settings manager for all translation settings. When managing globals, `channel` and `targetLang` are to be ignored. `targetLang` MUST be the 2 letter language code!! Valid keys: list, change (Change global setting), add (Add channel), remove (Remove Channel), modify (Modify CHANNEL)")
-    async def configTranslate(self,ctx,option,value=None,targetLang=None):
+    @commands.command(name="configTranslate",aliases=["cr","configT"],help="Settings manager for all translation settings. `targetLang` MUST be the 2 letter language code!! Valid keys: list, add (Add channel), remove (Remove Channel), modify (Modify CHANNEL)")
+    async def configTranslate(self,ctx,option,channel=None,targetLang=None,onBool=None):
         if str(ctx.message.author.id) not in banned:
             chk = lists.checkperms(ctx)
             if chk == True:
                 data=lists.readFile("translationConfig")
                 if option=="list":
                     e = discord.Embed(title="Translation Configuration Settings For "+ctx.message.guild.name)
-                    e.add_field(name="Translation Active?",value=data[str(ctx.message.guild.id)]["translationBool"],inline=False)
+                    e.add_field(name="Translation Active?",value=lists.readdataE()[str(ctx.message.guild.id)]["translationBool"],inline=False)
                     for item in data[str(ctx.message.guild.id)]["langChannels"]:
                         e.add_field(name="Channel Name",value=ctx.guild.get_channel(item[0]).name,inline=True)
                         e.add_field(name="Channel Mention",value=ctx.guild.get_channel(item[0]).mention,inline=True)
@@ -66,7 +66,28 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                         e.add_field(name="Target Language",value=item[1],inline=True)
                         e.add_field(name="Channel Actively Translated To?",value=item[3],inline=True)
                     await ctx.send(embed=e)
-                elif option=="change":
+                elif option=="add":
+                    chanID=None
+                    chaneName=None
+                    chanMen=None
+                    if type(channel)==discord.GuildChannel:
+                        chanID=channel.id
+                        chanName=channel.name
+                        chanMen=channel.mention
+                    elif type(channel)==int:
+                        chanID=channel
+                        chanName=server.get_channel(chanID).name
+                        chanMen=server.get_channel(chanID).mention
+                    else:
+                        return await ctx.send(f"Sorry, {channel} is not a valid input. Please mention your target channel or use the channel's ID.")
+                    if len(targetLang)==2:
+                        pass
+                    else:
+                        return await ctx.send(f"Sorry, {targetLang} is not a valid input. Please provide the 2 letter language code for your target language.")
+                    data[str(server.id)]["langChannels"].append([chanID,targetLang,True])
+                    lists.setFile("translationConfig",data)
+                    await ctx.send(f"{chanMen} has been added to Auto-Translate for the target language {targetLang}")
+
             else:
                 await ctx.send("Sorry, only authorized leaders can use this command.")
         else:
@@ -76,7 +97,7 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
     async def on_message(self,message):
         server=message.guild
         data=lists.readFile("translationConfig")
-        if message.guild!=None and data[str(server.id)]["translationBool"]:
+        if message.guild!=None and lists.readdataE()[str(server.id)]["translationBool"]:
             translator = GoogleTranslator(source='auto', target='russian')
             langChannels=data[str(server.id)]["langChannels"]
             for channel in langChannels:

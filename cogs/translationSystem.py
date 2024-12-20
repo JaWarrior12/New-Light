@@ -60,11 +60,14 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
             for channel in langChannels:
                 chanID=channel[0]
                 targetLang=channel[1]
-                targetChan=server.get_channel(chanID)
-                translator.target=str(targetLang)
-                response=translator.translate(text=message.content)
-                await targetChan.send(response,embeds=message.embeds,files=message.attachments)
-
+                targetChanBool=channel[2]
+                if targetChanBool:
+                    targetChan=server.get_channel(chanID)
+                    translator.target=str(targetLang)
+                    response=translator.translate(text=message.content)
+                    await targetChan.send(response,embeds=message.embeds,files=message.attachments)
+                else:
+                    continue
     
 
 async def setup(bot: commands.Bot):

@@ -80,7 +80,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           data[gid]={"trackList":[],"inventoryList":[]}
           lists.setFile("dailyReportsConfig",data)
           data = lists.readFile("translationConfid")
-          data[gid]={"langChannels":[]}
+          data[gid]={"translationBool":False,"langChannels":[]}
           lists.setFile("translationConfig",data)
           await ctx.send("Server Setup Succesfully!")
           #await server.create_role(name="QuickPing")

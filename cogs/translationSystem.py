@@ -52,10 +52,10 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
 
     @commands.Cog.listener()
     async def on_message(self,message):
-        if message.guild!=None:
+        server=message.guild
+        data=lists.readFile("translationConfig")
+        if message.guild!=None and data[str(server.id)]["translationBool"]:
             translator = GoogleTranslator(source='auto', target='russian')
-            server=message.guild
-            data=lists.readFile("translationConfig")
             langChannels=data[str(server.id)]["langChannels"]
             for channel in langChannels:
                 chanID=channel[0]

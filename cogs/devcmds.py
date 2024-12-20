@@ -296,7 +296,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     else:
       pass
 
-  @commands.command(name="addNewKey",aliases=["ank","newkey"],help="Adds new keys to a database. Easy addition of new settings.")
+  @commands.command(name="addNewKey",aliases=["ank","newkey"],help="Adds new keys to a database. Easy addition of new settings. Ignored Key list is separated by spaces/")
   async def addNewKey(self,ctx,fileName,newKey,*,ignoredKeys):
     if ctx.message.author.id in developers:
       ignoredKeyList=ignoredKeys.split(" ")

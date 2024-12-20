@@ -146,6 +146,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
         try:
           shipTotals={}
           receiveTotals={}
+          shipNames={str(hex_code):[]}
           currRunTime=abs(time.time()-startTime)
           for date in dates_to_scan:
             if currRunTime > MAX_RUN_TIME:
@@ -263,9 +264,17 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                     #print(ShipConversion)
                     if len(ShipConversion)>0:
                       logFile.write(f"{ShipConversion[0]["name"]} ({ShipConversion[0]["hex_code"]}) received no items \n")
+                      if ShipConversion[0]["hex_code"] not in list(shipNames.keys()):
+                        shipNames.update({ShipConversion[0]["hex_code"]:f'`{ShipConversion[0]["name"]}`'})
+                      elif ShipConversion[0]["hex_code"] in list(shipNames.keys()):
+                        shipNames[ShipConversion[0]["hex_code"]].append(f'`{ShipConversion[0]["name"]}`')
                     else:
                       if len(altShipConversion)>0:
                         logFile.write(f"{altShipConversion[0]["name"]} ({altShipConversion[0]["hex_code"]}) received no items \n")
+                        if altShipConversion[0]["hex_code"] not in list(shipNames.keys()):
+                          shipNames.update({altShipConversion[0]["hex_code"]:f'`{altShipConversion[0]["name"]}`'})
+                        elif altShipConversion[0]["hex_code"] in list(shipNames.keys()):
+                          shipNames[altShipConversion[0]["hex_code"]].append(f'`{altShipConversion[0]["name"]}`')
                       else:
                         logFile.write(f"{hex} received no items \n")
                   else:
@@ -312,6 +321,10 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                         itemCount = sourceDict[hex][dest][item]
                         if stateVar==0:
                           logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} sent {itemCount} {item} to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+                          if srcShipConversion[0]["hex_code"] not in list(shipNames.keys()):
+                            shipNames.update({srcShipConversion[0]["hex_code"]:f'`{srcShipConversion[0]["name"]}`'})
+                          elif srcShipConversion[0]["hex_code"] in list(shipNames.keys()):
+                            shipNames[srcShipConversion[0]["hex_code"]].append(f'`{srcShipConversion[0]["name"]}`')
                         elif stateVar==1:
                           if (srcShipConversion["name"] in NON_SHIP_ENTRIES or dstShipConversion["name"] in NON_SHIP_ENTRIES):
                             #print("NON_SHIP_ENTITY")
@@ -319,10 +332,16 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                             pass
                           else:
                             logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} received {itemCount} {item} from {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+                            if srcShipConversion[0]["hex_code"] not in list(shipNames.keys()):
+                              shipNames.update({srcShipConversion[0]["hex_code"]:f'`{srcShipConversion[0]["name"]}`'})
+                            elif srcShipConversion[0]["hex_code"] in list(shipNames.keys()):
+                              shipNames[srcShipConversion[0]["hex_code"]].append(f'`{srcShipConversion[0]["name"]}`')
             with open(log_file_name, "a", encoding="utf-8") as logFile:
               logFile.write(f"Date (YYYY-MM-DD): {year}-{month}-{day}\n")
             writeToFile(shipTotals,"Transfer Send Logs",0)
             writeToFile(receiveTotals,"Transfer Receive Logs",1)
+          for ship in list(shipNames.keys()):
+            logFile.write(f"* Names Used By {shipNames[ship][-1]} ({ship}) During Search Range: {shipNames[ship]}")
         except Exception as e:
           print(e)
           e_type, e_object, e_traceback = sys.exc_info()

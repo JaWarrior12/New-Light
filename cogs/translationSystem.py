@@ -44,9 +44,9 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         if self.bot.application_id == 974045822167679087:
             pass
     
-    @commands.command(name="translate", aliases=["tr"])
-    async def translate(self, ctx, text):
-        translator = GoogleTranslator(source='auto', target='russian')
+    @commands.command(name="translate", aliases=["tr"],help="Translates a piece of text. targetLang must be the 2 letter language code, OR the name of the language properly spelled.")
+    async def translate(self, ctx, targetLang, text):
+        translator = GoogleTranslator(source='auto', target=targetLang.lower())
         response=translator.translate(text=text)
         await ctx.send(response)
 

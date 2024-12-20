@@ -50,6 +50,28 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         response=translator.translate(text=text)
         await ctx.send(response)
 
+    @commands.command(name="configTranslate",aliases=["cr","configT"],help="Settings manager for all translation settings. When managing globals, `channel` and `targetLang` are to be ignored. `targetLang` MUST be the 2 letter language code!! Valid keys: list, change (Change global setting), add (Add channel), remove (Remove Channel), modify (Modify CHANNEL)")
+    async def configTranslate(self,ctx,option,value=None,targetLang=None):
+        if str(ctx.message.author.id) not in banned:
+            chk = lists.checkperms(ctx)
+            if chk == True:
+                data=lists.readFile("translationConfig")
+                if option=="list":
+                    e = discord.Embed(title="Translation Configuration Settings For "+ctx.message.guild.name)
+                    e.add_field(name="Translation Active?",value=data[str(ctx.message.guild.id)]["translationBool"],inline=False)
+                    for item in data[str(ctx.message.guild.id)]["langChannels"]:
+                        e.add_field(name="Channel Name",value=ctx.guild.get_channel(item[0]).name,inline=True)
+                        e.add_field(name="Channel Mention",value=ctx.guild.get_channel(item[0]).mention,inline=True)
+                        e.add_field(name="Channel ID",value=item[0],inline=True)
+                        e.add_field(name="Target Language",value=item[1],inline=True)
+                        e.add_field(name="Channel Actively Translated To?",value=item[3],inline=True)
+                    await ctx.send(embed=e)
+                elif option=="change":
+            else:
+                await ctx.send("Sorry, only authorized leaders can use this command.")
+        else:
+            await ctx.send("Sorry, You are banned from using New Light. Contact JaWarrior if you believe this to be a mistake.")
+
     @commands.Cog.listener()
     async def on_message(self,message):
         server=message.guild

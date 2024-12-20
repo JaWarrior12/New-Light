@@ -56,7 +56,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           #await lists.logmajor(self,ctx,msg=str(uid))
           default = {}
           defaultb=[]
-          defaultc={"auth":[str(uid)],"pingchan":0,"distchan":0,"clanPercent":0,"distship":0,"memrole":0,"storebal":"no","name":str(ctx.message.guild.name),"memchan":0,"memmsg":0,"verbal":False,"nonverProof":False,"trackLogChannel":0,"logFiltersNonShips":True,"inventoryLogChannel":0}
+          defaultc={"auth":[str(uid)],"pingchan":0,"distchan":0,"clanPercent":0,"distship":0,"memrole":0,"storebal":"no","name":str(ctx.message.guild.name),"memchan":0,"memmsg":0,"verbal":False,"nonverProof":False,"trackLogChannel":0,"logFiltersNonShips":True,"inventoryLogChannel":0,"translationBool":False}
           defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"cannon":0,"burst_cannon":0,"machine_cannon":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
           data = lists.bals()
           data[gid]=dict(defaultd)
@@ -79,6 +79,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           data = lists.readFile("dailyReportsConfig")
           data[gid]={"trackList":[],"inventoryList":[]}
           lists.setFile("dailyReportsConfig",data)
+          data = lists.readFile("translationConfid")
+          data[gid]={"langChannels":[]}
+          lists.setFile("translationConfig",data)
           await ctx.send("Server Setup Succesfully!")
           #await server.create_role(name="QuickPing")
           #await ctx.send("QuickPing Role Created")
@@ -220,7 +223,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       app_commands.Choice(name="Verify Distribution Logs?",value="verbal"),
       app_commands.Choice(name="Track Log Channel",value="trackLogChannel"),
       app_commands.Choice(name="Track Log Filters Out Non Ship Entries?",value="logFiltersNonShips"),
-      app_commands.Choice(name="Inventory Log Channel",value="inventoryLogChannel")
+      app_commands.Choice(name="Inventory Log Channel",value="inventoryLogChannel"),
+      app_commands.Choice(name="Auto-Translate Enabled?",value="translationBool")
     ])
   async def servconfig(self,interaction: discord.Interaction,option: app_commands.Choice[str],input:str):
     #print("Started Serverconfig Slash")
@@ -236,7 +240,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         val=str(input)
       elif option.value=="clanPercent":
         val=float(input)
-      elif option in ["verbal","logFiltersNonShips"]:
+      elif option in ["verbal","logFiltersNonShips","translationBool"]:
         val=bool(input)
       elif option.value == "storebal":
         val=str(input.lower())
@@ -249,7 +253,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await interaction.response.send_message("You are not authorized to manage server configuration settings.")
 
-  @commands.command(name="serverconfigalt",description="Server Config Command (LR)",help="Server Config Command, Use n!confighelp for a list of what the values mean.\nOptions: distship;\n-clanPercent;\n-storebal;\n-distchan;\n-pingchan;\n-memrole;\n-memchan")
+  @commands.command(name="serverconfigalt",description="Server Config Command (LR)",help="Server Config Command, Use n!confighelp for a list of what the values mean.\nOptions: https://github.com/JaWarrior12/New-Light/wiki/Setup-Guide#config-settings")
   async def serverconfigalt(self,ctx,option,*,input):
       chk = lists.checkperms(ctx)
       if chk == True:
@@ -259,7 +263,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=str(input)
         elif option=="clanPercent":
           val=float(input)
-        elif option in ["verbal","logFiltersNonShips"]:
+        elif option in ["verbal","logFiltersNonShips","translationBool"]:
           val=bool(input)
         elif option == "storebal":
           val=str(input.lower())
@@ -298,6 +302,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           e.add_field(name="Track Log Channel",value=ctx.guild.get_channel(data[gid]["trackLogChannel"]).mention,inline=True)
           e.add_field(name="Track Log Filters Non Ship Entries?",value=ctx.guild.get_channel(data[gid]["logFiltersNonShips"]),inline=True)
           e.add_field(name="Inventory Log Channel",value=ctx.guild.get_channel(data[gid]["inventoryLogChannel"]),inline=True)
+          e.add_field(name="Auto-Translation Active?",value=ctx.guild.get_channel(data[gid]["translationBool"]),inline=True)
           await ctx.send(embed=e)
         except KeyError:
           await ctx.send(f"KeyError: Guild {gid} cannot be found.")

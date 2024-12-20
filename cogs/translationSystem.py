@@ -149,7 +149,11 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                     targetChan=server.get_channel(chanID)
                     translator.target=str(targetLang)
                     response=translator.translate(text=message.content)
-                    await targetChan.send(response,embeds=message.embeds,files=message.attachments)
+                    if message.reference is not None:
+                        fullText=f"Replying to {message.reference.author,mention}: {response}" 
+                        await targetChan.send(fullText,embeds=message.embeds,files=message.attachments,silent=True,stickers=message.stickers)
+                    else:
+                        await targetChan.send(response,embeds=message.embeds,files=message.attachments,silent=True,stickers=message.stickers)
                 else:
                     continue
     

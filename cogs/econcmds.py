@@ -149,8 +149,8 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
           currRunTime=abs(time.time()-startTime)
           for date in dates_to_scan:
             if currRunTime > MAX_RUN_TIME:
-              await ctx.send(f"Sorry, There Is A MAX RUN TIME of {MAX_RUN_TIME} {MRT_UNIT}(s). This Run has exceeded that limity by {abs(currRunTime-MAX_RUN_TIME} {MRT_UNIT}(s). Please tyr again with a shorter search range.")
-              await ctx.send("Search Ended. Search Results Will be Sent Incomplete.
+              await ctx.send(f"Sorry, There Is A MAX RUN TIME of {MAX_RUN_TIME} {MRT_UNIT}(s). This Run has exceeded that limity by {abs(currRunTime-MAX_RUN_TIME)} {MRT_UNIT}(s). Please tyr again with a shorter search range.")
+              await ctx.send("Search Ended. Search Results Will be Sent Incomplete.")
               break
             year=int(date.year)
             month=int(date.month)

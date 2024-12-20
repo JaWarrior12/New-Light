@@ -489,7 +489,7 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
           else:
             continue
       except Exception as e:
-        print(e)
+        #print(e)
         e_type, e_object, e_traceback = sys.exc_info()
 
         e_filename = os.path.split(
@@ -500,14 +500,15 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
 
         e_line_number = e_traceback.tb_lineno
 
-        print(f'exception type: {e_type}')
+        #print(f'exception type: {e_type}')
 
-        print(f'exception filename: {e_filename}')
+        #print(f'exception filename: {e_filename}')
 
-        print(f'exception line number: {e_line_number}')
+        #print(f'exception line number: {e_line_number}')
 
-        print(f'exception message: {e_message}')
-    print("Daily Inventory Report Script Finished")
+        #print(f'exception message: {e_message}')
+        pass
+    print("Plexus Daily Inventory Report Script Finished")
   
 async def setup(bot: commands.Bot):
     await bot.add_cog(DailyReports(bot))

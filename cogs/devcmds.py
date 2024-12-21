@@ -23,7 +23,7 @@ import lists
 banned = lists.banned
 developers = lists.developers
 
-
+DEFAULT_IGNORED_KEYS=["ban","banguilds","banInfo","pinglinks","defaultdist","verifyTimes","cmdmetrics","alloweditems"]
 #client = discord.Client()
 
 utc=timezone.utc
@@ -295,6 +295,22 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       await ctx.send(self.bot.user.id)
     else:
       pass
+
+  @commands.command(name="addNewKey",aliases=["ank","newkey"],help="Adds new keys to a database. Easy addition of new settings. Ignored Key list is separated by spaces/")
+  async def addNewKey(self,ctx,fileName,newKey,*,ignoredKeys):
+    if ctx.message.author.id in developers:
+      ignoredKeyList=ignoredKeys.split(" ")
+      fullIgnoredKeyList=DEFAULT_IGNORED_KEYS+ignoredKeyList
+      file=lists.readFile(fileName)
+      for key in list(file.keys()):
+        if key in fullIgnoredKeyList:
+          pass
+        else:
+          if type(file[key]) is dict:
+            file[key].update({str(newKey):None})
+      lists.setFile(fileName,file)
+    else:
+      await ctx.send("Developer Only Command")
 
   @tasks.loop(time=times)
   async def backupdaily(self):

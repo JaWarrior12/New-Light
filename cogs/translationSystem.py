@@ -154,7 +154,7 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         #print(message.author.bot)
         #print(message)
         #print(message.attachments)
-        if message.author.bot:
+        if message.author.bot or self.bot.user.id==975858537223847936:
             return
         if message.guild!=None and lists.readdataE()[str(server.id)]["translationBool"]:
             if int(message.channel.id) in data[str(server.id)]["langChanIDs"]:
@@ -180,7 +180,8 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                             response=translator.translate(text=message.content)
                             if message.reference is not None:
                                 fullText=f"Replying to {message.reference.resolved.author.mention}: {response}" 
-                                await targetChan.send(fullText,embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
+                                sentMsg=await targetChan.send("Translating Reply...",silent=True)
+                                await sentMsg.edit(fullText,embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
                             else:
                                 await targetChan.send(response,embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
                         else:

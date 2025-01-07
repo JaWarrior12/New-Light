@@ -262,7 +262,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                     altShipConversion=altShipNameLookup(hexCode)
                     #print(ShipConversion)
                     if len(ShipConversion)>0:
-                      print(shipNames)#[ShipConversion[0]["hex_code"]])
+                      #print(shipNames)#[ShipConversion[0]["hex_code"]])
                       logFile.write(f"{ShipConversion[0]["hex_code"]} ({ShipConversion[0]["hex_code"]}) received no items \n")
                       if ShipConversion[0]["hex_code"] not in list(shipNames.keys()):
                         shipNames.update({ShipConversion[0]["hex_code"]:[ShipConversion[0]["name"]]})
@@ -271,7 +271,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                           shipNames[ShipConversion[0]["hex_code"]].append(ShipConversion[0]["name"])
                     else:
                       if len(altShipConversion)>0:
-                        print(shipNames)#[ShipConversion[0]["hex_code"]])
+                        #print(shipNames)#[ShipConversion[0]["hex_code"]])
                         logFile.write(f"{altShipConversion[0]["name"]} ({altShipConversion[0]["hex_code"]}) received no items \n")
                         if altShipConversion[0]["hex_code"] not in list(shipNames.keys()):
                           shipNames.update({altShipConversion[0]["hex_code"]:[altShipConversion[0]["name"]]})
@@ -378,7 +378,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
         with open(log_file_name, "a", encoding="utf-8") as logFile:
             for ship in list(shipNames.keys()):
               if len(shipNames[ship])>0:
-                logFile.write(f"* Names Used By {shipNames[ship][-1]} ({ship}) During Search Range: {shipNames[ship]}")
+                logFile.write(f"\n- Names Used By {shipNames[ship][-1]} ({ship}) During Search Range: {shipNames[ship]}")
         if logFile != None:
           message=f"Historic Transfer Report For Ship {hex_code}; Start Date: {startDate}, End Date: {endDate}; Period: {delta}"
           await ctx.send(message,file=discord.File(log_file_name))

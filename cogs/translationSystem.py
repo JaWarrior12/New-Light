@@ -177,15 +177,17 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                         if targetChanBool and (message.channel.id!=chanID):
                             targetChan=server.get_channel(chanID)
                             translator.target=str(targetLang)
-                            response=translator.translate(text=message.content)
+                            #response=translator.translate(text=message.content)
                             if message.reference is not None:
                                 fullText=f"From {message.author.mention}: \nReplying to {message.reference.resolved.author.mention}: {response}" 
+                                response=translator.translate(text=fullText)
                                 sentMsg=await targetChan.send("Translating Reply...",embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
-                                await sentMsg.edit(content=fullText)
+                                await sentMsg.edit(content=response)
                             else:
-                                fullText=f"From {message.author.mention}: {response}" 
+                                fullText=f"From {message.author.mention}: {message.content}"
+                                response=translator.translate(text=fullText)
                                 sentMsg=await targetChan.send("Translating Reply...",embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
-                                await sentMsg.edit(content=fullText)
+                                await sentMsg.edit(content=response)
                         else:
                             pass
                 except Exception as e:

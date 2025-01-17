@@ -179,7 +179,7 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                             translator.target=str(targetLang)
                             #response=translator.translate(text=message.content)
                             if message.reference is not None:
-                                fullText=f"From {message.author.mention}: \nReplying to {message.reference.resolved.author.mention}: {response}" 
+                                fullText=f"From {message.author.mention}: \nReplying to {message.reference.resolved.author.mention}: {message.content}" 
                                 response=translator.translate(text=fullText)
                                 sentMsg=await targetChan.send("Translating Reply...",embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
                                 await sentMsg.edit(content=response)

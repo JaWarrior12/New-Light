@@ -499,9 +499,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     serversList=[]
     if servers=="dev":
       serversList=[self.bot.get_guild(1031900634741473280)]
-    elif servers=="all":
+    elif servers=="DNU":
       pass
-    elif servers==None:
+    elif servers=="all":
       serversList=[guild for guild in self.bot.guilds]
     else:
       splitList=servers.split(",")
@@ -649,7 +649,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
               if int(len(ctnt) + len(nextBit)) < 1930:
                 ctnt = ctnt + nextBit
               else:
-                cuts.append(ctnt)
+                if ctnt not in cuts:
+                  cuts.append(ctnt)
                 ctnt=nextBit
           nextItem=ctnt
           #print(len(ctnt))
@@ -660,26 +661,23 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             ctnt3+=nextItem
             #print("continue")
           else:
-            cuts.append(ctnt3)
+            if ctnt3 not in cuts:
+              cuts.append(ctnt3)
             ctnt3=""
             #print("cut")
             #await nmesg.edit(content=ctnt)
-        cuts.append(ctnt3)
+        if ctnt3 not in cuts:
+          cuts.append(ctnt3)
         try:
           await channel.purge()
         except:
           pass
         #print(cuts)
-        cutCout=0
         for cut in cuts:
           if len(cut)>0:
             mesg=await channel.send("temp")
-            if cutCout==0 and len(cuts)==1:
-              cut+=f"\n Total Member Count: `{len(memrole.members)}` \nMember List Updated: `{datetime.datetime.now()}`"
-            elif cutCout>=(len(cuts)-1):
-              cut+=f"\n Total Member Count: `{len(memrole.members)}` \nMember List Updated: `{datetime.datetime.now()}`"
             await mesg.edit(content=cut)
-          cutCout+=1
+        await channel.send(f"\n Total Member Count: `{len(memrole.members)}` \nMember List Updated: `{datetime.datetime.now()}`")
       except Exception as e:
         #print(e)
         continue

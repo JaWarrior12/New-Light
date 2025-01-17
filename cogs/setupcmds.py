@@ -670,10 +670,16 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         except:
           pass
         #print(cuts)
+        cutCout=0
         for cut in cuts:
           if len(cut)>0:
             mesg=await channel.send("temp")
+            if cutCout==0 and len(cuts)==1:
+              cut+=f"\n Total Member Count: `{len(memrole.members)}` \nMember List Updated: `{datetime.datetime.now()}`"
+            elif cutCout>=(len(cuts)-1):
+              cut+=f"\n Total Member Count: `{len(memrole.members)}` \nMember List Updated: `{datetime.datetime.now()}`"
             await mesg.edit(content=cut)
+          cutCout+=1
       except Exception as e:
         #print(e)
         continue

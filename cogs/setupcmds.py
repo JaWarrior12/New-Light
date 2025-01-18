@@ -669,7 +669,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         if ctnt3 not in cuts:
           cuts.append(ctnt3)
         try:
-          await channel.purge()
+          #wait channel.purge()
+          amount=100
+          await channel.purge(limit=amount, check=lambda message: message.author == self.bot.user)
         except:
           pass
         #print(cuts)

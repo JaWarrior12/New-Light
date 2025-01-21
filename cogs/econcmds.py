@@ -59,6 +59,12 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
         return ctx.author.id in lists.developers #and ctx.guild.id in ALLOWED_SERVERS
     return commands.check(predicate)
 
+  async def is_dm(ctx, arg):
+    def predicate(ctx):
+        return isinstance(ctx.channel, discord.channel.DMChannel)
+    return commands.check(predicate)
+
+
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
   
@@ -87,7 +93,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       await ctx.send("I Had An Error Checking My Banned User List, Please Try Running The Command Again.")
       return False
 
-  @commands.command(name="searchhexcode",hidden=False,aliases=['shex','hex','hexcode'],help="This searches either the ships or log file for all entries containing the provided HEX CODE!\n -Command Formart: n!searchhexcode <version> <year> <monthnumber> <day> <file (ships/log)> <hex_code (CASE SENSITVE)>.\n -The HEX CODE is a ships hex code in Dredark.\n -The EXTRA_KEY is for calling data from log.json, enter src or dst depending on if you want the source or destination, EXTRA_KEY is only if you pick the log file.\n -LOG_COUNT is for log.json only, it is how many items you want, as the logs could be upwards of 200+, in TEST SERVER the log can be 1,000+ items.")
+  @commands.command(name="searchhexcode",hidden=False,aliases=['shex','hex','hexcode'],help="Note: If you want a transfer log, use `detailedTransferSearch`. This searches either the ships or log file for all entries containing the provided HEX CODE!\n -Command Formart: n!searchhexcode <version> <year> <monthnumber> <day> <file (ships/log)> <hex_code (CASE SENSITVE)>.\n -The HEX CODE is a ships hex code in Dredark.\n -The EXTRA_KEY is for calling data from log.json, enter src or dst depending on if you want the source or destination, EXTRA_KEY is only if you pick the log file.\n -LOG_COUNT is for log.json only, it is how many items you want, as the logs could be upwards of 200+, in TEST SERVER the log can be 1,000+ items.")
   async def searchhexcode(self,ctx,version,year,month,day,file,hex_code,extra_key="hex_code",log_count="none"):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
@@ -127,7 +133,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       await ctx.send("Error")
 
-  @commands.command(name="detailedTransferSearch",hidden=False,aliases=['dts','dsearch','detailed'],disabled=False)
+  @commands.command(name="detailedTransferSearch",help="This command returns all source/destination transfers from a given ship between provided dates.",hidden=False,aliases=['dts','dsearch','detailed'],disabled=False)
   @commands.cooldown(5, 60, commands.BucketType.default)
   async def detailedTransferSearch(self,ctx,version,startYear,startMonth,startDay,endYear,endMonth,endDay,hex_code):
     if str(ctx.message.author.id) in banned:
@@ -434,7 +440,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
           if saveList.lower() in["true","yes","on","1","True"]:
             data=lists.readFile("shipLists")
             if username not in list(data["users"].keys()):
-              data["users"].update({username:{"discordID":userDiscordID,"owned":ownedShips,"capped":cappedShips}})
+              data["users"].update({username:{"discordID":userDiscordID,"whitelist":[],"owned":ownedShips,"capped":cappedShips}})
             else:
               for ship in ownedShips.items():
                 if ship not in list(data["users"][username]["owned"].items()):
@@ -445,6 +451,67 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                   ship=ship[1]
                   data["users"][username]["capped"].update({ship["hex_code"]:ship})
             lists.setFile("shipLists",data)
+        except Exception as e:
+          print(e)
+      else:
+        await ctx.send("Please Attach A File To Read.")
+    else:
+      await ctx.send("Error")
+
+  @commands.command(name="submitShipList",aliases=["ssl"],help="Allows a user to submit their ship list privately, and whitelist who can use it.",hidden=True)
+  @commands.check_any(is_allowed())
+  async def submitShipList(self,ctx,onlyOwned="True",*,whitelist):
+    if str(ctx.message.author.id) in banned:
+      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
+    elif str(ctx.message.author.id) not in banned:
+      username=ctx.message.author.name
+      userDiscordID=ctx.message.author.id
+      realWhitelist=[]
+      for item in whitelist.split(","):
+        item=item.strip
+      log_file_name=f"{username}_shiplist.txt"
+      logFile=None
+      if len(ctx.message.attachments) >=1:
+        shiplist_file=ctx.message.attachments[0]
+        ownedShips={}
+        cappedShips={}
+        listData=await shiplist_file.read()
+        ships=loads(listData)["ships"]
+        for hex in ships.items():
+          ship=hex[1]
+          if ship["owned"]==True:
+            ownedShips.update({ship["hex_code"]:ship})
+          if (ship["saved"]==True and ship["owned"]==False) and onlyOwned.lower() in ["false","no","off","0","False"]:
+            cappedShips.update({ship["hex_code"]:ship})
+        with open(log_file_name, "a", encoding="utf-8") as logFile:
+          if len(ownedShips)>0:
+            logFile.write(f"--\\/--Owned Ships--\\/--\n")
+            for ship in ownedShips.items():
+              ship=ship[1]
+              logFile.write(f" - {ship['team_name']} ({ship['hex_code']})\n")
+          if len(cappedShips)>0 and onlyOwned.lower() in ["false","no","off","0","False"]:
+            logFile.write(f"\n\n--\\/--Captain On Ships--\\/--\n")
+            for ship in cappedShips.items():
+              ship=ship[1]
+              logFile.write(f" - {ship['team_name']} ({ship['hex_code']})\n")
+        if logFile != None:
+          message=f"Ship List For {username}"
+          await ctx.send(message,file=discord.File(log_file_name))
+          os.remove(log_file_name)
+        try:
+          data=lists.readFile("shipLists")
+          if username not in list(data["users"].keys()):
+            data["users"].update({username:{"discordID":userDiscordID,"whitelist":[],"owned":ownedShips,"capped":cappedShips}})
+          else:
+            for ship in ownedShips.items():
+              if ship not in list(data["users"][username]["owned"].items()):
+                ship=ship[1]
+                data["users"][username]["owned"].update({ship["hex_code"]:ship})
+            for ship in cappedShips.items():
+              if ship not in list(data["users"][username]["capped"].items()):
+                ship=ship[1]
+                data["users"][username]["capped"].update({ship["hex_code"]:ship})
+          lists.setFile("shipLists",data)
         except Exception as e:
           print(e)
       else:

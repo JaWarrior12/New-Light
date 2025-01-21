@@ -133,9 +133,9 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       await ctx.send("Error")
 
-  @commands.command(name="detailedTransferSearch",help="This command returns all source/destination transfers from a given ship between provided dates.",hidden=False,aliases=['dts','dsearch','detailed'],disabled=False)
+  @commands.command(name="detailedTransferSearch",help="This command returns all source/destination transfers from a given ship between provided dates. Filter Options: normal (only ships), all (Includes bots/terrain)",hidden=False,aliases=['dts','dsearch','detailed'],disabled=False)
   @commands.cooldown(5, 60, commands.BucketType.default)
-  async def detailedTransferSearch(self,ctx,version,startYear,startMonth,startDay,endYear,endMonth,endDay,hex_code):
+  async def detailedTransferSearch(self,ctx,version,startYear,startMonth,startDay,endYear,endMonth,endDay,hex_code,filter):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
@@ -352,6 +352,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                               shipNames[srcShipConversion["hex_code"]].append(srcShipConversion["name"])
                         elif stateVar==2:
                           if (srcShipConversion["name"] in NON_SHIP_ENTRIES or dstShipConversion["name"] in NON_SHIP_ENTRIES):
+                            if filter
                             #print("NON_SHIP_ENTITY")
                             #print(configs[str(key)]["logFiltersNonShips"])
                             pass

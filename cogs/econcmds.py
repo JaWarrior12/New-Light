@@ -194,7 +194,8 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
               return list(filter(lambda x: x.get('hex_code') == hex, altShipData))
             items={}
             destItems={}
-            #Logs A,B,C Are For Receiving
+            sourceHurtItems={}
+            #Logs A,B,C Are For Sending
             for logA in route:
               destShip=logA["dst"].replace("{","").replace("}","")
               #print(destShip)
@@ -245,7 +246,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
             receiveTotals.update({oldHexcode:destItems})
             #print(receiveTotals)
             def writeToFile(sourceDict,sectionTitle,stateVar):
-              #StateVar is 1 or 2, 1==Send/shipTotals, 2==Receive/receiveTotals
+              #StateVar is 1 or 2. 1==Send/shipTotals, 2==Receive/receiveTotals
               with open(log_file_name, "a+", encoding="utf-8") as logFile:
                 if sum(1 for _ in logFile)==0:
                   logFile.write(f"--\\/--{sectionTitle}--\\/--\n")

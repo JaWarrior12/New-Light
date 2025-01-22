@@ -472,7 +472,8 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       userDiscordID=ctx.message.author.id
       realWhitelist=[]
       for item in whitelist.split(","):
-        item=item.strip
+        item=item.strip(" ")
+        realWhitelist.append(item)
       log_file_name=f"{username}_shiplist.txt"
       logFile=None
       if len(ctx.message.attachments) >=1:
@@ -515,6 +516,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
               if ship not in list(data["users"][username]["capped"].items()):
                 ship=ship[1]
                 data["users"][username]["capped"].update({ship["hex_code"]:ship})
+          data["users"][username]["whitelist"]=realWhitelist
           lists.setFile("shipLists",data)
         except Exception as e:
           print(e)

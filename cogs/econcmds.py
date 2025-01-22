@@ -54,6 +54,16 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     else:
       pass
 
+  def is_allowed():
+    def predicate(ctx):
+      return ctx.author.id in lists.developers #and ctx.guild.id in ALLOWED_SERVERS
+    return commands.check(predicate)
+
+  def is_dm(ctx, arg):
+    def predicate(ctx):
+        return isinstance(ctx.channel, discord.channel.DMChannel)
+    return commands.check(predicate)
+
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
   
@@ -383,6 +393,67 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
           message=f"Historic Transfer Report For Ship {hex_code}; Start Date: {startDate}, End Date: {endDate}; Period: {delta}"
           await ctx.send(message,file=discord.File(log_file_name))
           os.remove(log_file_name)
+    else:
+      await ctx.send("Error")
+
+  @commands.command(name="readShiplist",aliases=["rsl"],help="This command reads the shiplist file provided and returns a formatted list of all ships that are owned and/or cap on.",hidden=True)
+  @commands.check_any(is_allowed())
+  async def readShiplist(self,ctx,onlyOwned="True",saveList="False",userDiscordID=None,*,username=None):
+    if str(ctx.message.author.id) in banned:
+      await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
+    elif str(ctx.message.author.id) not in banned:
+      if username==None:
+        return await ctx.send("Please Provide The Username Attached To The Shiplist.")
+      if userDiscordID==None:
+        return await ctx.send("Please Provide The Discord ID Of The User.")
+      log_file_name=f"{username}_shiplist.txt"
+      logFile=None
+      if len(ctx.message.attachments) >=1:
+        shiplist_file=ctx.message.attachments[0]
+        ownedShips={}
+        cappedShips={}
+        listData=await shiplist_file.read()
+        ships=loads(listData)["ships"]
+        for hex in ships.items():
+          ship=hex[1]
+          if ship["owned"]==True:
+            ownedShips.update({ship["hex_code"]:ship})
+          if (ship["saved"]==True and ship["owned"]==False) and onlyOwned.lower() in ["false","no","off","0","False"]:
+            cappedShips.update({ship["hex_code"]:ship})
+        with open(log_file_name, "a", encoding="utf-8") as logFile:
+          if len(ownedShips)>0:
+            logFile.write(f"--\\/--Owned Ships--\\/--\n")
+            for ship in ownedShips.items():
+              ship=ship[1]
+              logFile.write(f" - {ship['team_name']} ({ship['hex_code']})\n")
+          if len(cappedShips)>0 and onlyOwned.lower() in ["false","no","off","0","False"]:
+            logFile.write(f"\n\n--\\/--Captain On Ships--\\/--\n")
+            for ship in cappedShips.items():
+              ship=ship[1]
+              logFile.write(f" - {ship['team_name']} ({ship['hex_code']})\n")
+        if logFile != None:
+          message=f"Ship List For {username}"
+          await ctx.send(message,file=discord.File(log_file_name))
+          os.remove(log_file_name)
+        try:
+          if saveList.lower() in["true","yes","on","1","True"]:
+            data=lists.readFile("shipLists")
+            if username not in list(data["users"].keys()):
+              data["users"].update({username:{"discordID":userDiscordID,"whitelist":[],"owned":ownedShips,"capped":cappedShips}})
+            else:
+              for ship in ownedShips.items():
+                if ship not in list(data["users"][username]["owned"].items()):
+                  ship=ship[1]
+                  data["users"][username]["owned"].update({ship["hex_code"]:ship})
+              for ship in cappedShips.items():
+                if ship not in list(data["users"][username]["capped"].items()):
+                  ship=ship[1]
+                  data["users"][username]["capped"].update({ship["hex_code"]:ship})
+            lists.setFile("shipLists",data)
+        except Exception as e:
+          print(e)
+      else:
+        await ctx.send("Please Attach A File To Read.")
     else:
       await ctx.send("Error")
 

@@ -671,7 +671,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         try:
          #await channel.purge()
           amount=100
-          await channel.purge(limit=amount, check=lambda message: message.author == self.bot.user)
+          await channel.purge(limit=amount, check=lambda message: message.author == self.bot.user, reason="Member List Update")
         except:
           pass
         #print(cuts)

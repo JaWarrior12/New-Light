@@ -478,7 +478,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send("Not authorized to use leadership commands in this server")
 
-  @tasks.loop(hours=1)
+  @tasks.loop(hours=4)
   async def runUpdateMemList(self):
     await self.updatememlist(self,None)
 

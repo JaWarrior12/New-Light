@@ -5,7 +5,6 @@ import pytz
 import datetime
 from datetime import time
 from datetime import timezone
-#from keep_alive import keep_alive
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord import app_commands
@@ -24,7 +23,6 @@ banned = lists.banned
 developers = lists.developers
 
 DEFAULT_IGNORED_KEYS=["ban","banguilds","banInfo","pinglinks","defaultdist","verifyTimes","cmdmetrics","alloweditems"]
-#client = discord.Client()
 
 utc=timezone.utc
 times=time(hour=0,minute=20,tzinfo=utc)
@@ -33,9 +31,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   def __init__(self, bot: commands.Bot):
     self.bot = bot
     self.backupdaily.start()
-    #self.my_console=Console(bot)
   def cog_unload(self):
-    #print(1)
     self.backupdaily.cancel()
 
   @commands.command(name="forceClose",brief="Force Closes Bot Connection")
@@ -49,7 +45,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   @commands.command(name='shutdown',brief="Shuts down and restarts New Light", help="Shuts Down and Restarts New Light. Args: None")
   async def shutdown(self,ctx,msg=None):
     if ctx.message.author.id in developers:
-      #lists.logback(ctx,msg)
       sdm = "NEW LIGHT Is Shutting Down Now And Will Be Back Online Shortly."
       #channel = ctx.get_channel(974078794065403924)
       #await ctx.send("Published message: " + sdm)
@@ -69,7 +64,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   @commands.command(name='backup', brief="Backs up New Light to the reseve databases", help="Backs up New Light's Databases. Args: None")
   async def backups(self,ctx,*,msg=None):
     if ctx.message.author.id in developers:
-      #lists.logback(ctx,msg)
       print('Backing Up')
       await ctx.send('Backing Up Data')
       backup(ctx)
@@ -87,9 +81,8 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       await ctx.send("You are not a developer and CANNOT run this command.")
   
   @commands.command(name='lockdown', brief="Locks down a channel, preventing guests from chatting", help="Licks down a channel and prevents guests from chatting. Args: None", hidden=True,disabled=True)
-#@commands.has_permissions(manage_channels = True)
+  #@commands.has_permissions(manage_channels = True)
   async def lockdown(self,ctx,*,msg=None):
-    #lists.logback(ctx,msg)
     if ctx.message.author.id in developers:
       await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
       await ctx.send( ctx.channel.mention + " ***is now in lockdown.***")
@@ -97,7 +90,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       await ctx.send(f'<@{ctx.message.author.id}> You Are NOT A Developer And CANNOT Lockdown Channels')
 
   @commands.command(name='unlock', brief='Unlocks A Channel', help="Unlocks a channel. Args: None", hidden=True,disabled=True)
-#@commands.has_permissions(manage_channels=True)
+  #@commands.has_permissions(manage_channels=True)
   async def unlock(self,ctx):
     if ctx.message.author.id in developers:
       await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
@@ -109,8 +102,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   async def addrole(self,ctx, role: discord.Role, member: discord.Member=None):
     if ctx.message.author.id in developers:
       member = member or ctx.message.author
-      print(member)
-      print(role)
       await member.add_roles(role)
     else:
       ctx.send("Not A Dev")
@@ -121,7 +112,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
     #lists.logback(ctx,cog)
     if ctx.message.author.id in developers:
       extensions = self.bot.extensions
-      if cog == 'all':
+      if cog.lower() == "all":
         for extension in extensions:
           await self.bot.unload_extension(cog)
           await self.bot.load_extension(cog)
@@ -137,7 +128,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   
   @commands.command(name="unload", aliases=['ul'],brief="Unloads A Cog", help="Unloads a Cog. Args: <cogs.Cog>") 
   async def unload(self, ctx, cog=None):
-    #lists.logback(ctx,cog)
     if ctx.message.author.id in developers:
       extensions = self.bot.extensions
       if cog not in extensions:
@@ -151,7 +141,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   
   @commands.command(name="load",brief="Loads A Cog",help="Loads a cog. Args: <cogs.Cog>")
   async def load(self, ctx, cog=None):
-    #lists.logback(ctx,cog)
     if ctx.message.author.id in developers:
       try:
         await self.bot.load_extension(cog)
@@ -163,7 +152,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   
   @commands.command(name="listcogs", aliases=['lc'],brief="Lists All Cogs",help="Lists all cogs. Args: No e")
   async def listcogs(self, ctx, msg=None):
-    #lists.logback(ctx,msg)
     if ctx.message.author.id in developers:
       base_string = "```css\n"  # Gives some styling to the list (on pc side)
       base_string += "\n".join([str(cog) for cog in self.bot.extensions])
@@ -217,7 +205,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
   @commands.command(name='scanguilds', brief='Scans For Joined Guilds & Updates Internal List.', help="Scans For Joined Guilds & Updates Internal List.")
   async def memchan(self, ctx):
     if ctx.message.author.id in developers:
-      oth=lists.readother()
+      oth=lists.readFile("other")
       guilds=oth["guilds"]
       gids=oth["guild_IDs"]
       jdgids=[]
@@ -232,19 +220,18 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
           oth["cmdmetrics"].update({str(guild.id):0})
         guilds.update({guild.name:{"guild_id":guild.id,"owner_name":guild.owner.name,"owner_id":guild.owner.id}})
         if guild.id in gids and guild.id not in jdgids:
-          #guilds.pop(guild.name)
           pass
       oth["guilds"]=guilds
-      lists.setother(oth)
+      lists.setFile("other",oth)
     else:
       await ctx.send("You are not a developer and CANNOT run this command.")
 
   @commands.command(name="clearpinglinks",aliases=["cpl"],description="Clears Ping Links",help="Clears Ping Links")
   async def clearpinglinks(self,ctx):
     if ctx.message.author.id in developers:
-      data=lists.readother()
+      data=lists.readFile("other")
       data["pinglinks"].clear()
-      lists.setother(data)
+      lists.setFile("other",data)
       await ctx.send("Cleared Ping Links")
     else:
       await ctx.send("Not A Dev")
@@ -258,7 +245,6 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
           cmds.append(x.name)
         await ctx.send(cmds)
       elif metric=="tree":
-        #await ctx.send(self.bot.tree_cls)
         await ctx.send(f'\n\n{self.bot.tree}')
       elif metric=="params":
         appinfo=discord.AppInfo.install_params#.AppInstallParams.scopes
@@ -266,7 +252,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
         perms=discord.AppInstallParams.permissions
         await ctx.send(f'AppInfo:{appinfo}\nScopes:{scopes}\nPermissions:{perms}')
       elif metric=="cmdcnt":
-        data=lists.readother()
+        data=lists.readFile("other")
         await ctx.send(f'Commands Sent Count:{int(data["cmdcnt"])}')
       elif metric=="guilds":
         glist=self.bot.guilds
@@ -276,7 +262,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
           gls=gls+"\n -"+str(x.name)
         await ctx.send(f"Number Of Guilds I'm In: {glen}!\nList Of Guilds I'm In: {gls}")
       elif metric=="cmdtotdat":
-        data=lists.readother()["cmdmetrics"]
+        data=lists.readFile("other")["cmdmetrics"]
         e = discord.Embed(title="Command Metrics")
         for x in list(data.keys()):
           e.add_field(name=str(x),value=data[x],inline=True)

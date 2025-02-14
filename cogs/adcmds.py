@@ -6,7 +6,6 @@ import sys
 import datetime
 from datetime import time as DT_time
 from typing import List
-#from keep_alive import keep_alive
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord import Member
@@ -46,8 +45,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       keyb = "ban"
       gid=str(ctx.message.guild.id)
       lists.bannedlist()
-      data = dumps(lists.readdataE())
-      #print(type(user))
+      data = dumps(lists.readFile("config"))
       if type(user) is discord.Member:
             baseUser=user
             user=user.id
@@ -57,28 +55,19 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       if str(user) in banned:
         await ctx.send(f'The User With An Id Of {user} Is Already In The Ban List')
       elif type(user)==int:
-        #print("int")
-        data = lists.readdataE()
+        data = lists.readFile("config")
         banlt=data
-        #await ctx.send(banlt)
         banlt["ban"].append(str(user))
-        #print(banlt)
-        #await ctx.send(banlt)
-        other=lists.readother()
-        #print(1)
+        other=lists.readFile("other")
         tz = pytz.timezone('America/New_York')
-        #print(tz)
         date=f"{datetime.datetime.now(tz).month}-{datetime.datetime.now(tz).day}-{datetime.datetime.now(tz).year}"
-        #print(date)
         try:
           userObject=await self.bot.fetch_user(int(user))
-          #print(userObject)
           other["banInfo"].update({str(userObject.id):{"reason":reason,"userName":userObject.name,"banDate":date}})
         except:
-          #print("other")
           other["banInfo"].update({str(user):{"reason":reason,"userName":None,"banDate":date}})
-        lists.setother(other)
-        lists.setdataE(banlt)
+        lists.setFile("other",other)
+        lists.setFile("config",banlt)
         await ctx.send(f'The User With A User Id Of {user} has been BANNED from using New Light')
         lists.bannedlist()
         banned=banlt["ban"]
@@ -98,16 +87,12 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       elif type(user_id)==int:
         await ctx.send(f"User ID `{user_id}` isn't and integer! It needs to be an integer!")
       elif str(user_id) in banned and type(user_id)==str:
-        data = lists.readdataE()
+        data = lists.readFile("config")
         banlt=data
-        #await ctx.send(banlt)
         banlt["ban"].remove(str(user_id))
-        other=lists.readother()
-        #await ctx.send(f"User Ban Info: {other["banInfo"][str(user_id)]}")
-        #other["banInfo"].pop(str(user_id))
-        lists.setother(other)
-        #await ctx.send(banlt)
-        lists.setdataE(banlt)
+        other=lists.readFile("other")
+        lists.setFile("other",other)
+        lists.setFile("config",banlt)
         lists.bannedlist()
         await ctx.send(f'The User With An ID Of {user_id} Has Been Unbanned From Using New Light')
       else:
@@ -148,17 +133,17 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       try:
         if type(gid)!=int:
           lists.bannedguilds()
-          data=lists.readdataE()
+          data=lists.readFile("config")
           data["banguilds"].remove(int(gid))
-          other=lists.readother()
+          other=lists.readFile("other")
           try:
             guild=await self.bot.fetch_guild(gid)
           except:
             pass
           await ctx.send(f"Guild Ban Info: {other["banInfo"][str(gid)]}")
           other["banInfo"].pop(str(gid))
-          lists.setother(other)
-          lists.setdataE(data)
+          lists.setFile("other",other)
+          lists.setFile("config",data)
           lists.bannedguilds()
           await ctx.send(f"UnBanned Guild With ID:{gid}")
         else:
@@ -172,11 +157,10 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   async def  banlist(self,ctx,opt):
     if ctx.message.author.id in developers:
       if opt=="users":
-        data=lists.readdataE()
-        other=lists.readother()["banInfo"]
+        data=lists.readFile("config")
+        other=lists.readFile("other")["banInfo"]
         ctnt=""
         for x in data["ban"]:
-          #print(x)
           try:
             if "userName" in list(other[str(x)].keys()):
               ctnt=ctnt+"\n- "+str(x)+f" ; User Name: `{other[str(x)]['userName']}` ; Ban Reason: `{other[str(x)]['reason']}` ; Ban Date: {other[str(x)]['banDate']}"
@@ -184,12 +168,11 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
               pass
           except Exception as e:
             print(e)
-            #print(ctnt)
         await ctx.send(f'Banned Users:\n{ctnt}')
       elif opt=="guilds":
         try:
-          data=lists.readdataE()
-          other=lists.readother()["banInfo"]
+          data=lists.readFile("config")
+          other=lists.readFile("other")["banInfo"]
           ctnt=""
           guilds=[]
           for x in other.keys():
@@ -201,24 +184,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
             ctnt=ctnt+guildData
           await ctx.send(f'Banned Guilds:\n{ctnt}')
         except Exception as e:
-          print(e)
-          e_type, e_object, e_traceback = sys.exc_info()
-
-          e_filename = os.path.split(
-              e_traceback.tb_frame.f_code.co_filename
-          )[1]
-
-          e_message = str(e)
-
-          e_line_number = e_traceback.tb_lineno
-
-          print(f'exception type: {e_type}')
-
-          print(f'exception filename: {e_filename}')
-
-          print(f'exception line number: {e_line_number}')
-
-          print(f'exception message: {e_message}')
+          pass
       else:
         await ctx.send("I don't know what you want me to list.")
     else:
@@ -227,12 +193,10 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   @commands.command(name="deauth",hidden=False,help="Remotely Deauthorizes a user in a server.")
   async def deauth(self,ctx,guild,user):
     if ctx.message.author.id in developers:
-      data=lists.readdataE()
-      authlt=data#[str(guild)]["auth"]
-      #await ctx.send(authlt)
+      data=lists.readFile("config")
+      authlt=data
       authlt[str(guild)]["auth"].remove(str(user))
-      #await ctx.send(authlt)
-      lists.setdataE(authlt)
+      lists.setFile("config",authlt)
       await ctx.send(f'User With An ID Of {user} has been deauthorized in the guild with an id of {guild}.')
     else:
       await ctx.send("You are not a developer and cannot use this command.")
@@ -245,12 +209,10 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       if str(user) in data:
         await ctx.send(f'The User With An Id Of {user} Is Already In The Ban List')
       else:
-        data = lists.readdataE()
+        data = lists.readFile("config")
         banlt=data
-        #await ctx.send(banlt)
         banlt[gid]["auth"].append(str(user))
-        #await ctx.send(banlt)
-        lists.setdataE(banlt)
+        lists.setFile("config",banlt)
         await ctx.send(f'The User With A User Id Of {user} has been Authorized.')
     else:
       await ctx.send("You are not a developer and cannot use this command.")
@@ -286,28 +248,28 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       await guild.system_channel.send(f'My Developer Has Ordered Me To Clear The Data For Your Server. Reason: {reason}. Please DM JaWarrior#1305 if you have any questions. You can also join my development server: https://discord.gg/zcGYBcfhwX')
       channel_id = channel.id
       gid=str(id)
-      data=lists.readdata()
+      data=lists.readFile("distribution")
       data.pop(gid)
-      lists.setdata(data)
+      lists.setFile("distribution",data)
       gid=str(id)
-      data=lists.readdataB()
+      data=lists.readFile("relations")
       data.pop(gid)
-      lists.setdataB(data)
+      lists.setFile("relations",data)
       gid=str(id)
-      data=lists.readdataC()
+      data=lists.readFile("quickping")
       data.pop(gid)
-      lists.setdataC(data)
+      lists.setFile("quickping",data)
       gid=str(id)
-      data=lists.readdataD()
+      data=lists.readFile("designs")
       data.pop(gid)
-      lists.setdataD(data)
+      lists.setFile("designs",data)
       gid=str(id)
-      data=lists.readdataE()
+      data=lists.readFile("config")
       data.pop(gid)
-      lists.setdataE(data)
-      data=lists.readother()
+      lists.setFile("config",data)
+      data=lists.readFile("other")
       data["defaultdist"].pop(gid)
-      lists.setother(data)
+      lists.setFile("other",data)
       await ctx.send(f'The server with an ID of {gid} has been removed from my databases.')
     else:
       await ctx.send("You are not a developer and cannot use this command.")
@@ -319,7 +281,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
       myguilds=[]
       for y in self.bot.guilds:
         myguilds.append(str(y.id))
-      kys=list(lists.readdataE().keys())
+      kys=list(lists.readFile("config").keys())
       myguilds.append("ban")
       myguilds.append("banguilds")
       kys=kys
@@ -339,7 +301,7 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
   @commands.command(name="authedus",hidden=False,help="Lists Authorized Users in a guild")
   async def authedus(self,ctx,guild=None):
     if ctx.message.author.id in developers:
-      data=lists.readdataE()
+      data=lists.readFile("config")
       if guild==None:
         await ctx.send(data)
       elif guild!=None:
@@ -418,10 +380,10 @@ class AdCmds(commands.Cog, name="Dev Admin Tools", description="New Light Develo
         val=int(input)
       opt=option
       print(opt)          
-      data=lists.readdataE()
+      data=lists.readFile("config")
       prevVal=data[str(guild.id)][opt]
       data[str(guild.id)][opt]=val
-      lists.setdataE(data)
+      lists.setFile("config",data)
       await ctx.send(f'Changed {(option)} in `{guild.name} ({guild.id})` from {prevVal} to {val}')
       guildOwner=guild.owner
       await guild.Owner.send(f'{ctx.message.author.name} has remotely changed {(option)} in `{guild.name} ({guild.id})` from {prevVal} to {val}')

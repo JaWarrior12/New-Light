@@ -3,7 +3,6 @@ import discord
 import time
 import pytz
 import datetime 
-#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
@@ -28,12 +27,11 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
     design=design.lower()
     if str(ctx.message.author.id) not in banned:
       gid = str(ctx.message.guild.id)
-      data=lists.readdataD()
+      data=lists.readFile("designs")
       if int(ctx.message.author.id) == data[gid][str(design)]["Designer"]:
         try:
           data[gid][design][item] = str(value)
-          lists.setdataD(data)
-          #lists.logback(ctx,msg)
+          lists.setFile("designs",data)
           await ctx.send(f'Now {design} has a {value} value of {value}.')
         except KeyError:
           await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')
@@ -49,7 +47,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
     if str(ctx.message.author.id) not in banned:
       try:
         gid = str(ctx.message.guild.id)
-        msgparts, data = msg.split(" "), lists.readdataD()
+        msgparts, data = msg.split(" "), lists.readFile("designs")
         auth = ctx.message.author.id
         try:
           img = ctx.message.attachments[0]
@@ -57,12 +55,9 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         except:
           img=None
           img2=None
-        #print(img2)
         default = {"Designer":int(auth),"Image":None}
         data[gid].update({design:default})
-        #print(data)
-        lists.setdataD(data)
-        #lists.logback(ctx,design)
+        lists.setFile("designs",data)
         await ctx.send(f'Added {design} to the Database')
       except KeyError as e:
         print(e)
@@ -72,15 +67,14 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
   
   @commands.command(name='deldes', brief="Deletes A Design From The Ship Design Database", help="Deletes a ship from the ship design database. Args: <ShipName>")
   async def deldes(self,ctx, *, design):
-    data = lists.readdataD()
+    data = lists.readFile("designs")
     gid = str(ctx.message.guild.id)
     design=design.lower()
     if str(ctx.message.author.id) not in banned:
       if int(ctx.message.author.id) == data[gid][str(design)]["Designer"]:
         try:
           del data[gid][design]
-          lists.setdataD(data)
-          #lists.logback(ctx,design)
+          lists.setFile("designs",data)
           await ctx.send(f'Deleted {design} from the Database')
         except KeyError:
           await ctx.send(f'KeyError! {design} does not exist in my database! Please use n!design all if you would like to call all designs or n!design list for a list of design names.')
@@ -97,7 +91,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
         print(design)
         if design=="list designs":
           gid = str(ctx.message.guild.id)
-          data=lists.readdataD()
+          data=lists.readFile("designs")
           k=discord.Embed(title="Design List")
           for x in data[gid]:
             k.add_field(name="Design Name",value=x)
@@ -105,8 +99,7 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
           await ctx.send(embed=k)
         else:
           gid = str(ctx.message.guild.id)
-          data=lists.readdataD()
-          #lists.logback(ctx,design)
+          data=lists.readFile("designs")
           e = discord.Embed(title=design)
           e.set_image(url=str(data[gid][design]["Image"]))
           e.add_field(name="Designer",value=f'<@{data[gid][design]["Designer"]}>',inline=True)
@@ -115,7 +108,6 @@ class DesCmds(commands.Cog, name="Ship Design Database Commands",description="Sh
           keylist.remove("Image")
           for key in keylist:
             e.add_field(name=str(key),value=data[gid][design][str(key)],inline=True)
-        #tz = pytz.timezone('America/New_York')
           await ctx.send(embed=e)
       except KeyError:
         await ctx.send(f'KeyError! {design} does not exist in my database! Please use n!design all if you would like to call all designs or n!design list for a list of design names.')

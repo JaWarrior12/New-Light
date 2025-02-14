@@ -2,12 +2,10 @@ from ast import alias
 import os
 from pdb import run
 import sys
-#from click import command
 import discord
 import time
 import pytz
 import datetime
-#from keep_alive import keep_alive
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord import app_commands
@@ -29,9 +27,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     self.bot = bot
     if self.bot.user.id == 974045822167679087:
       self.runUpdateMemList.start()
-    #self.my_console=Console(bot)
   def cog_unload(self):
-    #print(1)
     if self.bot.user.id == 974045822167679087:
       self.runUpdateMemList.cancel()
 
@@ -49,33 +45,28 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         try:
           await ctx.send("Started Server Setup")
           msg = None
-          #lists.logback(ctx,msg)
           msgb = "a b"
           gid = ctx.message.guild.id
           uid = ctx.message.author.id
-          #await lists.logmajor(self,ctx,msg=str(uid))
           default = {}
           defaultb=[]
           defaultc={"auth":[str(uid)],"pingchan":0,"distchan":0,"clanPercent":0,"distship":0,"memrole":0,"storebal":"no","name":str(ctx.message.guild.name),"memchan":0,"memmsg":0,"verbal":False,"nonverProof":False,"trackLogChannel":0,"logFiltersNonShips":True,"inventoryLogChannel":0,"translationBool":False}
           defaultd={"clan":{"flux":0,"iron":0,"explosive":0,"cannon":0,"burst_cannon":0,"machine_cannon":0,"loader":0,"pusher":0,"rubber":0,"handheld":0,"ice":0,"item_launcher":0,"rcd":0}}
-          data = lists.bals()
+          data = lists.readFile("distribution")
           data[gid]=dict(defaultd)
-          lists.setdata(data)
-          data = lists.readdataB()
+          lists.setFile("distribution",data)
+          data = lists.readFile("relations")
           data[gid]=defaultb
-          lists.setdataB(data)
-          data = lists.readdataC()
+          lists.setFile("relations",data)
+          data = lists.readFile("quickping")
           data[gid]=default
-          lists.setdataC(data)
-          data = lists.readdataD()
+          lists.setFile("quickping",data)
+          data = lists.readFile("designs")
           data[gid]=dict(default)
-          lists.setdataD(data)
-          data = lists.readdataE()
+          lists.setFile("designs",data)
+          data = lists.readFile("config")
           data[gid]=dict(defaultc)
-          lists.setdataE(data)
-          #banlt = lists.readdataE()
-          #banlt.update({gid:{"auth":[str(uid)]}})
-          #lists.setdataE(banlt)
+          lists.setFile("config",data)
           data = lists.readFile("dailyReportsConfig")
           data[gid]={"trackList":[],"inventoryList":[]}
           lists.setFile("dailyReportsConfig",data)
@@ -87,23 +78,6 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           #await ctx.send("QuickPing Role Created")
         except Exception as e:
           print(e)
-          e_type, e_object, e_traceback = sys.exc_info()
-
-          e_filename = os.path.split(
-              e_traceback.tb_frame.f_code.co_filename
-          )[1]
-
-          e_message = str(e)
-
-          e_line_number = e_traceback.tb_lineno
-
-          print(f'exception type: {e_type}')
-
-          print(f'exception filename: {e_filename}')
-
-          print(f'exception line number: {e_line_number}')
-
-          print(f'exception message: {e_message}')
           await ctx.send("Server Setup Succesfully!")
       else:
         await ctx.send("Server already setup.")
@@ -115,20 +89,16 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
       if chk == True:
-        #await lists.logmajor(ctx,user)
-        #lists.logmajor(self,ctx,user)
         gid=str(ctx.message.guild.id)
         key="auth"
-        data = dumps(lists.readdataE()[gid][key])
+        data = dumps(lists.readFile("config")[gid][key])
         if str(user.id) in data:
           await ctx.send(f'{user.mention} Is Already Authorized')
         else:
-          data = lists.readdataE()
+          data = lists.readFile("config")
           banlt=data
-          #await ctx.send(banlt)
           banlt[gid]["auth"].append(str(user.id))
-          #await ctx.send(banlt)
-          lists.setdataE(banlt)
+          lists.setFile("config",banlt)
           await ctx.send(f'{user.mention} has been authorized to use Leadership Commands in the server {ctx.message.guild.name} by {ctx.message.author.name}')
           myguild = ctx.guild
           channel = myguild.get_channel(1037788623015268444)
@@ -155,20 +125,16 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     if str(ctx.message.author.id) not in banned:
       chk = lists.checkperms(ctx)
       if chk == True:
-        #await lists.logmajor(ctx,user)
-        #lists.logmajor(self,ctx,user)
         gid=str(ctx.message.guild.id)
         key="auth"
-        data = dumps(lists.readdataE()[gid][key])
+        data = dumps(lists.readFile("config")[gid][key])
         if str(user) not in data:
           await ctx.send(f'{user.mention} Is Not Authorized')
         else:
-          data = lists.readdataE()
+          data = lists.readFile("config")
           banlt=data
-          #await ctx.send(banlt)
           banlt[gid]["auth"].remove(str(user.id))
-          #await ctx.send(banlt)
-          lists.setdataE(banlt)
+          lists.setFile("config",banlt)
           await ctx.send(f'{user.mention} has been DEAUTHORIZED to use Leadership Commands in the server {ctx.message.guild.name} by {ctx.message.author.name}')
           myguild = ctx.guild
           channel = myguild.get_channel(1037788623015268444)
@@ -196,8 +162,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       msgb = str(msg)
       chk = lists.checkperms(ctx)
       gid = str(ctx.message.guild.id)
-      #lists.logback(ctx,msgb)
-      list=lists.readdataE()
+      list=lists.readFile("config")
       if chk == True:
         for mem in list[str(ctx.message.guild.id)]["auth"]:
           member=ctx.message.guild.get_member(int(mem))
@@ -208,7 +173,6 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   @commands.command(name="confighelp",help="Description of ServerConfig Settings")
   async def conhelp(self,ctx):
     await ctx.send("Please See The Wiki Page: https://github.com/JaWarrior12/New-Light/wiki/Setup-Guide#config-settings")
-    #await ctx.send("Server Settings\n-Ping Channel (pingchan)==Channel ID Of Server's Battle Links Channel\n-Distribution Channel (distchan)==Channel ID Of Server's Distro Logging Channel\n-Clan Percent (clanPercent)==What Percent Of Items In Logs Go To The Clan\n-Clan Storage (distship)==HexCode Of Clan Storage\n-Member Role (memrole)==ID Of Member Role\n-Store Member Balances? (membal)==Will You Store Member Balances In CLAN STORAGE Or Distribute Right After Missions? (Yes/No)\nMember List Channel (memchan)== Member List Channel\nVerify Distribution Logs? (verbal)==Controls What Setting The Automated Distribution Logger Runs (Yes/No)")
 
   @app_commands.command(name="serverconfig",description="Server Config (LR), n!confighelp for help")
   #@app_commands.checks.has_permissions(administrator=True)
@@ -246,9 +210,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         val=str(input.lower())
       else:
         val=int(input)
-      data=lists.readdataE()
+      data=lists.readFile("config")
       data[str(interaction.guild_id)][str(option.value)]=val
-      lists.setdataE(data)
+      lists.setFile("config",data)
       await interaction.response.send_message(f'Changed {option.name} to {val}')
     else:
       await interaction.response.send_message("You are not authorized to manage server configuration settings.")
@@ -271,9 +235,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=int(input)
         opt=option
         print(opt)          
-        data=lists.readdataE()
+        data=lists.readFile("config")
         data[str(ctx.message.guild.id)][opt]=val
-        lists.setdataE(data)
+        lists.setFile("config",data)
         await ctx.send(f'Changed {(option)} to {val}')
 
   @commands.command(name='serversettings',brief="Lists Server Settings.",help="Lists The Configuration Settings Of The Server")
@@ -282,13 +246,10 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       data = None
       chk = lists.checkperms(ctx)
       gid = str(ctx.message.guild.id)
-      #lists.logback(ctx,member)
       if chk == True:
-        data = lists.readdataE()
+        data = lists.readFile("config")
         try:
           e = discord.Embed(title="Configuration Settings For "+ctx.message.guild.name)
-          #for x in data[gid].keys():
-            #e.add_field(name=x,value=data[gid][x],inline=True)
           e.add_field(name="Verify Logs?",value=data[gid]["verbal"],inline=True)
           e.add_field(name="Store Member Balances?",value=data[gid]["storebal"],inline=True)
           e.add_field(name="Require Proof When Not Using Distro Log Verification?",value=data[gid]["nonverProof"],inline=True)
@@ -317,9 +278,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   async def mlc(self,ctx):
     FILTERED_ROLES=["admin"]
     if lists.checkperms(ctx)==True:
-      if lists.readdataE()[str(ctx.message.guild.id)]["memchan"]==0:
+      if lists.readFile("config")[str(ctx.message.guild.id)]["memchan"]==0:
         await ctx.send("Member List Channel Not Configured, Please Use /serverconfig to desigante your member channel.")
-      if lists.readdataE()[str(ctx.message.guild.id)]["memrole"]==0:
+      if lists.readFile("config")[str(ctx.message.guild.id)]["memrole"]==0:
         await ctx.send("Member Role Not Configured, Please use /serverconfig to designate your member role.")
       else:
         gid=str(ctx.message.guild.id)
@@ -328,13 +289,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send("Not authorized to use leadership commands in this server")
 
-  @tasks.loop(hours=4)
+  @tasks.loop(hours=6)
   async def runUpdateMemList(self):
     await self.updatememlist(self,"all")
-
-  #@runUpdateMemList.before_loop
-  #async def before_task_starts(self):
-      #await self.wait_until_ready()
 
   @commands.command(name="devRunUpdateMemList",aliases=["devRUML"],help="Forces a memberlist update without creating a new message")
   async def devRunUpdateMemList(self,ctx,servers="dev"):
@@ -345,7 +302,6 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
   @staticmethod
   async def updatememlist(self,servers):
-    #print("Starting MemList Update")
     serversList=[]
     if servers=="dev":
       serversList=[self.bot.get_guild(1031900634741473280)]
@@ -356,53 +312,39 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       splitList=servers.split(",")
       serversList=[self.bot.get_guild(int(gldid)) for gldid in splitList]
-      #print(serversList)
     for g in serversList:
       try:
         cuts=[]
         ctnt3=""
-        data=lists.readdataE()
+        data=lists.readFile("config")
         if str(g.id) in list(data.keys()):
           pass
         else:
           continue
-        if lists.readdataE()[str(g.id)]["memchan"]==0:
+        if lists.readFile("config")[str(g.id)]["memchan"]==0:
           pass
-        elif lists.readdataE()[str(g.id)]["memrole"]==0:
+        elif lists.readFile("config")[str(g.id)]["memrole"]==0:
           pass
         else:
-          #print("Member Updated")
           gid=str(g.id)
           guild=self.bot.get_guild(g.id)
-          #print(guild.name)
-          data=lists.readdataE()
-          memchan=lists.readdataE()[str(guild.id)]["memchan"]
+          data=lists.readFile("config")
+          memchan=lists.readFile("config")[str(guild.id)]["memchan"]
           channel=await guild.fetch_channel(int(memchan))
-          #nmesg=await channel.fetch_message(int(data[str(guild.id)]["memmsg"]))
           groles=guild.roles
-          #message=await channel.fetch_message(nmesg)
-          #data[str(guild.id)]["memmsg"]=int(nmesg.id)
-          lists.setdataE(data)
+          lists.setFile("config",data)
           memrole=guild.get_role(int(data[gid]["memrole"]))
           ranks=[]
           rnkord=[]
           for x in guild.members:
-            #print(x.display_name)
-            #print(x.roles)
             roles=x.roles
-            #print(roles)
             lstrle=roles[-1]
             inx=0
             for role in roles:
               if role.id==memrole.id:
-                #print(f'Role Pos:{roles.index(role)}')
                 inx=roles.index(role)+1
-                #print(f'Index:{inx}')
                 rid=roles[-1].id
-                #print(rid)
                 roleb=guild.get_role(rid)
-                #print(f'Roleb: {roleb}')
-                #print(rnk)
                 if roleb.name=="@everyone":
                   pass
                 elif roleb.name in FILTERED_ROLES or any(i in roleb.name for i in CONTAINS_ROLE_FILTER):
@@ -418,18 +360,15 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                       if groles.index(roleb) in rnkord:
                         pass
                       else:
-                        #ranks.append(rnk)
                         rnkord.append(groles.index(roleb))
                   getNextRole(roleIndex)
                 else:
                   if groles.index(roleb) in rnkord:
                     pass
                   else:
-                    #ranks.append(rnk)
                     rnkord.append(groles.index(roleb))
           gidranks=guild.roles
           rnkord.sort(reverse=True)
-          #print(f'rnkord == {rnkord}')
           checkedMems=[]
           for x in rnkord:
             rle=gidranks[x].id
@@ -437,26 +376,18 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             ranks.insert(pos,rle)
             rmlist=[]
             mems=list(guild.members)
-            #print(mems)
             for r in ranks:
               rmlistb=[]
               for mem in mems:
-                #print(mem)
                 rolesb=mem.roles
                 for roleb in rolesb:
-                  #print(roleb)
-                  #print(r)
                   if roleb.id==r and mem.id not in checkedMems:
                     rmlistb.append(mem.id)
                     checkedMems.append(mem.id)
                   else:
                     pass
               rmlist.append(rmlistb)
-            #print(f'rmlist == {rmlist}')
-            #await ctx.send(rmlist)
-            #await ctx.send(ranks)
             ctnt=""
-            #print(f"ranks == {ranks}")
             for x in ranks:
               rmlistIndex=ranks.index(x)
               def tempStop():
@@ -490,10 +421,8 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                     us=await guild.fetch_member(mem.id)
                     if rle in us.roles and ctnt2.find(us.mention)==-1 and memrole in us.roles:
                       ctnt2=ctnt2+"\n--"+us.mention
-                      #rle.members.remove(mem)
                     else:
                       pass
-                #print(ctnt2)
                 return ctnt2
               nextBit=await tempNew(x)
               if int(len(ctnt) + len(nextBit)) < 1930:
@@ -503,19 +432,14 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                   cuts.append(ctnt)
                 ctnt=nextBit
           nextItem=ctnt
-          #print(len(ctnt))
           ctnt3Len=len(ctnt3)
           nextItemLen=len(nextItem)
-          #print(f"ctnt3Len={ctnt3Len}; nextItemLen={nextItemLen}")
           if int(ctnt3Len+nextItemLen) < 1930:
             ctnt3+=nextItem
-            #print("continue")
           else:
             if ctnt3 not in cuts:
               cuts.append(ctnt3)
             ctnt3=""
-            #print("cut")
-            #await nmesg.edit(content=ctnt)
         if ctnt3 not in cuts:
           cuts.append(ctnt3)
         try:
@@ -524,16 +448,13 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           await channel.purge(limit=amount, check=lambda message: message.author == self.bot.user, reason="Member List Update")
         except:
           pass
-        #print(cuts)
         for cut in cuts:
           if len(cut)>0:
             mesg=await channel.send("temp")
             await mesg.edit(content=cut)
         await channel.send(f"\n Total Member Count: `{len(memrole.members)}` \nMember List Updated: `{datetime.datetime.now()}`")
       except Exception as e:
-        #print(e)
         continue
-    #print("MemList Update Complete")
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(SetupCmds(bot))

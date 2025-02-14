@@ -4,7 +4,6 @@ from os import system
 import time
 import pytz
 from datetime import datetime, timezone
-#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
@@ -12,17 +11,10 @@ from discord import app_commands
 from discord.ext.commands import has_permissions, MissingPermissions
 from json import loads, dumps
 import requests
-#import BeautifulSoup
-#from backup import backup
-#from startup import startup
 
 #Lists
 import lists
 
-#import tk
-#tk.window()
-#Auth For Leadership Commands
-#authorized = lists.authorized
 banned = lists.banned
 developers = lists.developers
 
@@ -48,53 +40,29 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
   @commands.command(name="wiki",help="Link To Github Wiki")
   async def wiki(self,ctx):
     await ctx.send("Wiki: https://github.com/JaWarrior12/New-Light/wiki")
-  @commands.command(name="listtest",hidden=True)
-  #@commands.has_role('Developer')
-  async def listtesting(self,ctx):
-    if ctx.message.author.id in developers:
-      key = "lt"
-      mylist = []
-      data = dumps(lists.readother()['lt']).replace("[","").replace("]","").replace(' ',"").replace("'","").replace('"',"")
-      print(data)
-      mylist = list(data)
-      await ctx.send(mylist)
-      key=","
-      for x in mylist:
-        print(x)
-        if x == ",":
-          mylist.remove(x)
-          await ctx.send(f'Removed {x}')
-          await ctx.send(mylist)
-          continue
-      await ctx.send(mylist)
-      await ctx.send(type(mylist))
-      await ctx.send(mylist)
 
 
   @commands.command(name="invitehelp",help="This command DMs you information on inviting New Light to your server. Format: n!invitehelp @Yourself",disabled=False,hidden=False)
   async def invitehelp(self,ctx):
     await ctx.send("Setup Guide: https://github.com/JaWarrior12/New-Light/wiki/Setup-Guide")
 
-  @commands.command(name="pingpage",aliases=["pinger","ppage","p"],brief="Link to WebPing Page",help="Sends the link to New Light Remote WebPing Page")
+  @commands.command(name="pingpage",aliases=["pinger","ppage","p"],brief="Link to WebPing Page",help="Sends the link to New Light Remote WebPing Page",disabled=True,hidden=True)
   async def pingpage(self,ctx):
     await ctx.send("New Light Ping Page: https://new-light-discord-bot.jawarrior.repl.co")
 
   @commands.command(name="whois",help="Gets Clans A Member Is In",hidden=True,disabled=True)
   async def whois(self,ctx,member:discord.Member):
-    #print(1)
     shargids=member.mutual_guilds
     e=discord.Embed(title=f"Servers {member.name} Shares With New Light")
     e.set_thumbnail(url=member.display_avatar)
     for x in shargids:
       e.add_field(name=x,value=member.dispaly_name,inline=True)
-      #await ctx.send(x)
       pass
     await ctx.send(embed=e)
 
   @commands.command(name="event",help="Calls The Swiss Army Event Timer",disabled=True,hidden=True)
-  async def saftimer(self,ctx):\
-    #link: https://swiss-website.floofyjpeg.repl.co/timers/xanniAPIpass1')
-    r = requests.get(f'https://google.com')
+  async def saftimer(self,ctx):
+    r = requests.get("link here")
     tdat=r.json()
     e=discord.Embed(title=f"Swiss Army Event Timer")
     e.add_field(name="",value=tdat["us"],inline=False)
@@ -102,16 +70,8 @@ class OtherCmds(commands.Cog, name="Other Commands",description="Extra Commands 
     e.add_field(name="",value=tdat["asia"],inline=False)
     await ctx.send(embed=e)
 
-  #@commands.command(name="date",help="Fetches Current Date In UTC Or Converts A Date From Given Timezone To UTC")
-    #pass
-
 async def setup(bot: commands.Bot):
   await bot.add_cog(OtherCmds(bot))
 
-
-async def hey(link):
-  myguild = bots.get_guild(1031900634741473280)
-  channel = myguild.get_channel(1037788623015268444)
-  await channel.send(f'{link}')
 
   

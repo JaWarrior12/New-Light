@@ -28,58 +28,6 @@ DEV_SERVER_ID = 1031900634741473280
 NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master","Shield Helper","Red Sniper",'Yellow Hunter',"The Lazer Enthusiast","The Coward","Orange Fool","Yellow Mine Guard","block - iron mine","bot - zombie tank","giant rubber ball","bot - zombie","block - vault","block - flux node","bot - zombie hunter","bot - zombie boss","block - treasure diamond"]
 
 #Defs
-def readdata():
-    return loads(open('../NLDB/distribution.json', 'r').read())
-
-def setdata(data):
-    with open("../NLDB/distribution.json", "w") as f:
-        f.write(dumps(data))
-
-def readdataB():
-    return loads(open("../NLDB/relations.json","r").read())
-
-def setdataB(dataB):
-    with open("../NLDB/relations.json", "w") as g:
-        g.write(dumps(dataB))
-
-def readdataC():
-    return loads(open('../NLDB/quickping.json', 'r').read())
-
-def setdataC(dataC):
-    with open("../NLDB/quickping.json", "w") as g:
-        g.write(dumps(dataC))
-
-def readdataD():
-    return loads(open('../NLDB/designs.json', 'r').read())
-
-def setdataD(dataD):
-    with open("../NLDB/designs.json", "w") as g:
-        g.write(dumps(dataD))
-      
-def readdataE():
-    return loads(open('../NLDB/config.json', 'r').read())
-
-def setdataE(datae):
-    with open("../NLDB/config.json", "w") as h:
-        h.write(dumps(datae))
-
-def readother():
-    return loads(open('../NLDB/other.json', 'r').read())
-
-def setother(datah):
-    with open("../NLDB/other.json", "w") as f:
-        f.write(dumps(datah))
-
-def readFakeTags():
-    return loads(open('../NLDB/faketagdb.json', 'r').read())
-
-def setFakeTags(datah):
-    with open("../NLDB/faketagdb.json", "w") as f:
-        f.write(dumps(datah))
-
-def bals():
-    return loads(open('../NLDB/distribution.json', 'r').read())
-
 def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
 
@@ -102,7 +50,7 @@ mylist = 0
 def bannedlist():
   keyb=str("ban")
   global mylist
-  mylist = dumps(readdataE()[keyb])
+  mylist = dumps(readFile("config")[keyb])
   global banned
   banned = mylist
 
@@ -110,7 +58,7 @@ glist = 0
 def bannedguilds():
   keyb=str("banguilds")
   global glist
-  glist = dumps(readdataE()[keyb])
+  glist = dumps(readFile("config")[keyb])
   global bgids
   bgids = glist
 
@@ -147,42 +95,40 @@ def logdown():
 def clearserver(id):
   try:
     gid=str(id)
-    data=bals()
+    data=readFile("distribution")
     if gid in data.keys():
       data.pop(gid)
-      setdata(data)
-    data=readdataB()
+      setFile("distribution",data)
+    data=readFile("relations")
     if gid in data.keys():
       data.pop(gid)
-      setdataB(data)
-    data=readdataC()
+      setFile("relations",data)
+    data=readFile("quickping")
     if gid in data.keys():
       data.pop(gid)
-      setdataC(data)
-    data=readdataD()
+      setFile("quickping",data)
+    data=readFile("designs")
     if gid in data.keys():
       data.pop(gid)
-      setdataD(data)
-    data=readdataE()
+      setFile("designs",data)
+    data=readFile("config")
     if gid in data.keys():
       data.pop(gid)
-      setdataE(data)
+      setFile("config",data)
     data=readFile("plexusSystems")
     if gid in data.keys():
       data.pop(gid)
       setFile("plexusSystems",data)
-    data=readother()
+    data=readFile("other")
     if gid in data["defaultdist"].keys():
       data["defaultdist"].pop(gid)
-      setother(data)
-    data=readother()
+      setFile("other",data)
     if gid in data["guild_IDs"].keys():
       data["guild_IDs"].pop(gid)
-      setother(data)
-    data=readother()
+      setFile("other",data)
     if gid in data["cmdmetrics"].keys():
       data["cmdmetrics"].pop(gid)
-      setother(data)
+      setFile("other",data)
   except:
     pass
 
@@ -195,12 +141,12 @@ async def logmajor(bot,ctx,msg):
   await channel.send(f'<@{930284432634556496}> !MAJOR EVENT! Command Run: {ctx.invoked_With}. Command Run At {ct} by {ctx.message.author.name} (User Id: {ctx.message.author.id}) in server {ctx.message.guild.name} (Server ID:{ctx.message.guild.id}. The Command Contained The Following Data: {msg}.')
 
 def gidlist(self):
-  data=readother()
+  data=readFile("other")
   for server in self.guilds:
     gn=str(server.name)
     gid=int(server.id)
     data["guild"].append({"name":gn,"id":gid})
-  setother(data)
+  setFile("other",data)
     
     
     
@@ -209,7 +155,7 @@ def checkperms(ctx):
   gid = str(ctx.message.guild.id)
   uid = str(ctx.message.author.id)
   keya="auth"
-  autho = readdataE()[gid]["auth"]
+  autho = readFile("config")[gid]["auth"]
   if str(uid) not in banned:
     if str(uid) in autho:
       return True
@@ -227,7 +173,7 @@ def checkperms(ctx):
 def slashcheckperms(gidd,uidd):
   gid=str(gidd)
   uid=str(uidd)
-  autho = readdataE()[gid]["auth"]
+  autho = readFile("config")[gid]["auth"]
   if str(uid) not in banned:
     if str(uid) in autho:
       return True
@@ -255,7 +201,7 @@ async def checkguild(bot,guild):
     await mychannel.send(embed=e)
     await mychannel.send(f'Guild Name: {guild}')
     await mychannel.send(f'Guild Id: {guild.id}')
-    await guild.leave
+    await guild.leave()
 
 def lognewguild(stamp,msg,guild):
   with open("Backups/disconnectlogs.txt", "a+") as o:
@@ -564,25 +510,25 @@ def itemNameById(item):
 
 def clrserver(id):
   gid=str(id)
-  data=readdata()
+  data=readFile("distribution")
   data.pop(gid)
-  setdata(data)
+  setFile("distribution",data)
   gid=str(id)
-  data=readdataB()
+  data=readFile("relations")
   data.pop(gid)
-  setdataB(data)
+  setFile("relations",data)
   gid=str(id)
-  data=readdataC()
+  data=readFile("quickping")
   data.pop(gid)
-  setdataC(data)
+  setFile("quickping",data)
   gid=str(id)
-  data=readdataD()
+  data=readFile("designs")
   data.pop(gid)
-  setdataD(data)
+  setFile("designs",data)
   gid=str(id)
-  data=readdataE()
+  data=readFile("config")
   data.pop(gid)
-  setdataE(data)
-  data=readother()
+  setFile("config",data)
+  data=readFile("other")
   data["defaultdist"].pop(gid)
-  setother(data)
+  setFile("other",data)

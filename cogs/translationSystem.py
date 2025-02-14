@@ -9,12 +9,10 @@ import pytz
 import datetime
 from datetime import datetime, timedelta, timezone
 from datetime import time as tme
-#from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Timer
 import urllib.request
 import requests
 import gzip
-#from keep_alive import keep_alive
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord import Member

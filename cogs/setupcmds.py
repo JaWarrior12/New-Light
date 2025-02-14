@@ -285,7 +285,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       else:
         gid=str(ctx.message.guild.id)
         await self.updatememlist(self,gid)
-        await ctx.send(f"Member List Created: {nmesg.jump_url}")
+        await ctx.send(f"Member List Created")
     else:
       await ctx.send("Not authorized to use leadership commands in this server")
 

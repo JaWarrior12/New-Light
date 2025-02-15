@@ -152,7 +152,7 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         #print(message.author.bot)
         #print(message)
         #print(message.attachments)
-        if (message.author.bot or message.webhook_id) or or self.bot.user.id==975858537223847936:
+        if (message.author.bot or message.webhook_id) or self.bot.user.id==975858537223847936:
             return
         if message.guild!=None and lists.readdataE()[str(server.id)]["translationBool"]:
             if int(message.channel.id) in data[str(server.id)]["langChanIDs"]:

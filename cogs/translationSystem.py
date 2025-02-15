@@ -154,11 +154,13 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         #print(message.author.bot)
         #print(message)
         #print(message.attachments)
+        #print(bool(message.webhook_id))
         #print(message.webhook_id)
-        #print(bool(int(message.webhook_id)>0))
-        if message.author.bot or bool(int(message.webhook_id)>0):
-            return
-        if message.guild!=None and lists.readdataE()[str(server.id)]["translationBool"]:
+        if message.author.bot:
+            return None
+        elif bool(message.webhook_id):
+            print("Webhook Detected, Ignoring...")
+        elif message.guild!=None and lists.readdataE()[str(server.id)]["translationBool"]:
             if int(message.channel.id) in data[str(server.id)]["langChanIDs"]:
                 translator = GoogleTranslator(source='auto', target='russian')
                 langChannels=data[str(server.id)]["langChannels"]

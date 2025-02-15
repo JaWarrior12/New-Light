@@ -154,8 +154,8 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         #print(message.author.bot)
         #print(message)
         #print(message.attachments)
-        print(message.webhook_id)
-        print(bool(int(message.webhook_id)>0))
+        #print(message.webhook_id)
+        #print(bool(int(message.webhook_id)>0))
         if message.author.bot or bool(int(message.webhook_id)>0):
             return
         if message.guild!=None and lists.readdataE()[str(server.id)]["translationBool"]:

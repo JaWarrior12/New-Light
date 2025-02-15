@@ -277,7 +277,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             val=False
           else:
             return await ctx.send(f"Sorry, {option} is not a valid input. Please use `True` or `False`.")
-      elif option.value == "storebal":
+        elif option.value == "storebal":
           val=str(input.lower())
         else:
           val=int(input)

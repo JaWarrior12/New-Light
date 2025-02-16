@@ -123,7 +123,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
 
   @commands.command(name="detailedTransferSearch",help="This command returns all source/destination transfers from a given ship between provided dates. Filter Options: normal (only ships), all (Includes bots/terrain)",hidden=False,aliases=['dts','dsearch','detailed'],disabled=False)
   @commands.cooldown(5, 60, commands.BucketType.default)
-  async def detailedTransferSearch(self,ctx,version,startYear,startMonth,startDay,endYear,endMonth,endDay,hex_code,filter="normal"):
+  async def detailedTransferSearch(self,ctx,version,startYear,startMonth,startDay,endYear,endMonth,endDay,hex_code,filterVal="normal"):
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID Is In The Banned List and you cannot use New Light. If you think this is an error please contact JaWarrior#6752.')
     elif str(ctx.message.author.id) not in banned:
@@ -311,9 +311,9 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                               shipNames[srcShipConversion["hex_code"]].append(srcShipConversion["name"])
                         elif stateVar==2:
                           if (srcShipConversion["name"] in NON_SHIP_ENTRIES or dstShipConversion["name"] in NON_SHIP_ENTRIES):
-                            if filter == "all":
+                            if filterVal == "all":
                               pass
-                            elif filter == "normal":
+                            elif filterVal == "normal":
                               pass
                           else:
                             logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} received {itemCount} {item} from {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
@@ -328,6 +328,24 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
             writeToFile(receiveTotals,"Transfer Receive Logs",2)
         except Exception as e:
           await ctx.send(f"Error: {e}")
+          print(e)
+          e_type, e_object, e_traceback = sys.exc_info()
+
+          e_filename = os.path.split(
+              e_traceback.tb_frame.f_code.co_filename
+          )[1]
+
+          e_message = str(e)
+
+          e_line_number = e_traceback.tb_lineno
+
+          print(f'exception type: {e_type}')
+
+          print(f'exception filename: {e_filename}')
+
+          print(f'exception line number: {e_line_number}')
+
+          print(f'exception message: {e_message}')
         with open(log_file_name, "a", encoding="utf-8") as logFile:
             for ship in list(shipNames.keys()):
               if len(shipNames[ship])>0:

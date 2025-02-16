@@ -340,7 +340,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       await ctx.send("Not authorized to use leadership commands in this server")
 
-  @tasks.loop(hours=4)
+  @tasks.loop(hours=6)
   async def runUpdateMemList(self):
     await self.updatememlist(self,"all")
 
@@ -370,6 +370,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       serversList=[self.bot.get_guild(int(gldid)) for gldid in splitList]
       #print(serversList)
     for g in serversList:
+      guild=None
       try:
         cuts=[]
         ctnt3=""
@@ -379,9 +380,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         else:
           continue
         if lists.readdataE()[str(g.id)]["memchan"]==0:
-          pass
+          continue
         elif lists.readdataE()[str(g.id)]["memrole"]==0:
-          pass
+          continue
         else:
           #print("Member Updated")
           gid=str(g.id)
@@ -543,6 +544,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             await mesg.edit(content=cut)
         await channel.send(f"\n Total Member Count: `{len(memrole.members)}` \nMember List Updated: `{datetime.datetime.now()}`")
       except Exception as e:
+        print(guild.name)
         print(e)
         e_type, e_object, e_traceback = sys.exc_info()
 

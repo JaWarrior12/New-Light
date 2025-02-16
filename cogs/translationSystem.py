@@ -181,15 +181,16 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                             if message.reference is not None:
                                 fromTransed=translator.translate(text="From")
                                 replyToTransed=translator.translate(text="Replying to")
-                                fullText=f"{fromTransed} {message.author.mention}: \n{replyToTransed} {message.reference.resolved.author.mention}: {message.content}" 
-                                response=translator.translate(text=fullText)
+                                response=translator.translate(text=message.content)
+                                fullText=f"{fromTransed} {message.author.mention}: \n{replyToTransed} {message.reference.resolved.author.mention}: {response}" 
                                 sentMsg=await targetChan.send("Translating Reply...",embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
-                                await sentMsg.edit(content=response)
+                                await sentMsg.edit(content=fullText)
                             else:
-                                fullText=f"From {message.author.mention}: {message.content}"
-                                response=translator.translate(text=fullText)
+                                fromTransed=translator.translate(text="From")
+                                response=translator.translate(text=message.content)
+                                fullText=f"{fromTransed} {message.author.mention}: {response}"
                                 sentMsg=await targetChan.send("Translating Reply...",embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
-                                await sentMsg.edit(content=response)
+                                await sentMsg.edit(content=fullText)
                         else:
                             pass
                 except Exception as e:

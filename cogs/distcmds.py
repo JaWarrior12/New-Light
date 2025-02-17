@@ -364,12 +364,12 @@ class DistCmds(commands.Cog, name="Distribution Commands",description="Loot Dist
           ids = [member.id for member in ctx.guild.members]
           for x in memlist:
             if x == "clan" or x not in ids:
-              cntntlist.append(f'{x} : {lists.readdata()[mesg][str(x)]}')
+              cntntlist.append(f'{x} : {lists.readFile("distribution")[mesg][str(x)]}')
             else:
               usid=x
               guild=self.bot.get_guild(int(ctx.message.guild.id))
               uname=guild.get_member(int(usid))
-              usbal=lists.readdata()[mesg][str(x)]
+              usbal=lists.readFile("distribution")[mesg][str(x)]
               cntntlist.append(f'{uname.name} : {usbal};')
             a=0
           for i in cntntlist:

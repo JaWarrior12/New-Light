@@ -5,6 +5,8 @@ import pytz
 import datetime
 import gzip
 import requests
+import aiohttp
+import asyncio
 #from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
@@ -27,9 +29,16 @@ DEV_SERVER_ID = 1031900634741473280
 #CONSTANTS
 NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master","Shield Helper","Red Sniper",'Yellow Hunter',"The Lazer Enthusiast","The Coward","Orange Fool","Yellow Mine Guard","block - iron mine","bot - zombie tank","giant rubber ball","bot - zombie","block - vault","block - flux node","bot - zombie hunter","bot - zombie boss","block - treasure diamond"]
 
+
 #Defs
 def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
+
+async def get_gzipped_json_aiohttp(session,url):
+  async with session.get(url) as response:
+    file = await response.content.read()
+    return loads(gzip.decompress(file))
+  #return loads(gzip.decompress(session.get(url)))
 
 def readFile(file):
   return loads(open(f'../NLDB/{file}.json', 'r').read())

@@ -3,6 +3,7 @@ import discord
 from os import system
 import time
 import asyncio
+import aiohttp
 import pytz
 import sys
 import datetime 
@@ -157,9 +158,10 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
             month=int(date.month)
             day=int(date.day)
             try:
-              jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/log.json.gz')
-              shipData = lists.get_gzipped_json(f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/ships.json.gz')
-              altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+              async with aiohttp.ClientSession() as session:
+                jsondata = await lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/log.json.gz')
+                shipData = await lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/{version}/econ/{year}_{month}_{day}/ships.json.gz')
+                altShipData = await lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
             except gzip.BadGzipFile:
               continue
             oldHexcode=hex_code
@@ -492,7 +494,8 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       year=datetime.today().year
       month=datetime.today().month
       day=datetime.today().day
-      alldat = requests.get(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{(int(day)-1)}/summary.json').json()
+      async with aiohttp.ClientSession() as session:
+        alldat = await session.get(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{(int(day)-1)}/summary.json').json()
       data=alldat["items_held"]
       datab=alldat["items_moved"]
       keys=list(data.keys())

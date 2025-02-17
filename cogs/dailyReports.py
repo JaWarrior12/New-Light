@@ -1,3 +1,4 @@
+import aiohttp
 import os, discord, sys
 import time as timea
 import traceback
@@ -139,9 +140,11 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
           day=today.day
         CurrentServer = self.bot.get_guild(int(key))
         ServerReportsChannel = await CurrentServer.fetch_channel(int(logChannel))
-        jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
-        shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
-        altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+        async with aiohttp.ClientSession() as session:
+          jsondata = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
+          shipData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+          altShipData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+          itemSchema = loads(session.get("https://pub.drednot.io/prod/econ/item_schema.json").content.read())
         log_file_name=f"{CurrentServer.name}_Daily_Transfers.txt"
         shipTotals={}
         receiveTotals={}
@@ -156,8 +159,6 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
           def find_dest(data, route_no):
             return list(filter(lambda x: x.get("dst") == route_no, data))
           destList = find_dest(jsondata,hexcode)
-          url = "https://pub.drednot.io/prod/econ/item_schema.json"
-          itemSchema = loads(requests.get(url).content)
           def findItemName(itemId):
             return list(filter(lambda x: x.get('id') == itemId, itemSchema))
           def shipNameLookup(hex):
@@ -339,11 +340,11 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
       day=today.day
     data = lists.readFile("dailyReportsConfig")
     configs=lists.readFile("config")
-    dumpData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+    async with aiohttp.ClientSession() as session:
+      dumpData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+      itemSchema = loads(session.get("https://pub.drednot.io/prod/econ/item_schema.json").content.read())
     def find_ship(data, route_no):
       return list(filter(lambda x: x.get("hex_code") == route_no, data))
-    url = "https://pub.drednot.io/prod/econ/item_schema.json"
-    itemSchema = loads(requests.get(url).content)
     def findItemName(itemId):
       return list(filter(lambda x: x.get('id') == itemId, itemSchema))
     serversList=list(data.keys())

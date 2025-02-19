@@ -2,13 +2,11 @@ import os
 import discord 
 import sys
 from random import shuffle
-#from emoji import UNICODE_EMOJI
 import time
 import ast
 import pytz
 import datetime
 from datetime import time as tme
-#from keep_alive import keep_alive
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord import app_commands
@@ -43,7 +41,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     @commands.command(name="FakeTagDBStats",aliases=["ftdbstats"],brief="Stats On The Fake Tag Database")
     async def fakeTagDBStats(self,ctx):
         if str(ctx.message.author.id) not in banned:
-            data=lists.readFakeTags()["fakeTaggedShips"]
+            data=lists.readFile("faketagdb")["fakeTaggedShips"]
             e=discord.Embed(title="Fake Tag Database Stats")
             e.add_field(name="Number Of Ships Currently Tracked",value=len(data),inline=False)
             e.timestamp=datetime.datetime.now()
@@ -54,17 +52,15 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     @commands.command(name="submitFakeTagger",aliases=["sft","addfaketag","submitft"],brief="Add A Fake Tagged Ship To The Database.")
     async def submitFakeTagger(self,ctx,hexcode,actualClansTag,*,shipName): #screenshot: discord.Attachment,
         if str(ctx.message.author.id) not in banned:
-            data=lists.readFakeTags()
+            data=lists.readFile("faketagdb")
             def find_route(data2, route_no):
                 return list(filter(lambda y: y.get("hexcode") == str(route_no), data2))
             matchingHexs=find_route(data["fakeTaggedShips"],hexcode)
             if len(matchingHexs)>=1:
                 submId=matchingHexs[0]["submissionId"]
-                #submId=data["fakeTaggedShips"][matchingHexs[0]]["submissionId"]
                 await ctx.send(f"The Hexcode {hexcode} has already been submitted in the submission with an ID of {submId}")
             else:
                 try:
-                    #await ctx.send(screenshot.url)
                     if len(ctx.message.attachments) >=1:
                         screenshoturl=ctx.message.attachments[0].url
                     else:
@@ -95,7 +91,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                         await ctx.send(embed=e)
                         report={"submissionId":id,"hexcode":hexcode,"shipName":shipName,"screenshot":screenshoturl,"submitterName":ctx.message.author.name,"submitterId":ctx.message.author.id,"actualClansTag":actualClansTag,"submissionDate":date,"owner":None,"captains":[],"dateOfLastUpdate":date,"lastUpdatedBy":None,"formerShipNames":[]}
                         data["fakeTaggedShips"].append(report)
-                        lists.setFakeTags(data)
+                        lists.setFile("faketagdb",data)
                 except Exception as e:
                     await ctx.send(e)
         else:
@@ -106,7 +102,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
         if str(ctx.message.author.id) not in banned:
             validKeys=["submissionId","hexcode","shipName","actualClansTag","submissionDate","dateOfLastUpdate","submitterName","submitterId","screenshot","owner"]
             if key in validKeys:
-                data=lists.readFakeTags()["fakeTaggedShips"]
+                data=lists.readFile("faketagdb")["fakeTaggedShips"]
                 def find_route(datab, route_no):
                     if key in ["submissionId","submitterId"]:
                         return list(filter(lambda y: y.get(key) == int(route_no), datab))
@@ -159,7 +155,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             if key in validKeys:
                 if key=="screenshot":
                     value=ctx.message.attachments[0].url
-                data=lists.readFakeTags()
+                data=lists.readFile("faketagdb")
                 def find_route(data2, route_no):
                     return list(filter(lambda y: y.get("submissionId") == int(route_no), data2))
                 route = find_route(data["fakeTaggedShips"], submissionId)
@@ -226,7 +222,6 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                         e.timestamp=datetime.datetime.now()
                         await ctx.send(embed=e)
                         if key == "screenshot":
-                            #field_index = next(index for (index, f) in enumerate(e.fields) if f.value == value)
                             e.add_field(name=f"Screenshot Was Updated, Old Screenshot URL: {oldValue}",value=oldValue,inline=False)
                         elif key=="captains":
                             value=shipsCaptains
@@ -236,7 +231,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                             field_index = next(index for (index, f) in enumerate(e.fields) if f.value == value)
                             e.insert_field_at(field_index+1,name=f"Previous Value Of {key} (Item Directly Above)",value=oldValue,inline=False)
                         await mychannel.send(embed=e)
-                        lists.setFakeTags(data)
+                        lists.setFile("faketagdb",data)
             else:
                 await ctx.send(f"Sorry, But The Key Must Be One Of The Valid Keys. Valid Key List: {validKeys}")
         else:
@@ -248,7 +243,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             myguild = self.bot.get_guild(1031900634741473280)
             mychannel = myguild.get_channel(1245934187261722624)
             submsMngrRle=myguild.get_role(submsMangrRleId)
-            data=lists.readFakeTags()
+            data=lists.readFile("faketagdb")
             def find_route(data2, route_no):
                 return list(filter(lambda y: y.get("submissionId") == int(route_no), data2))
             route = find_route(data["fakeTaggedShips"], submissionId)
@@ -295,7 +290,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                     await mychannel.send("Restoration Dictonary (If Ever Needed)")
                     await mychannel.send(x)
                     data["fakeTaggedShips"].remove(x)
-                    lists.setFakeTags(data)
+                    lists.setFile("faketagdb",data)
                 else:
                     await ctx.send("Sorry, you need to be a Fake Tag DB Submissions Manager or the original submitter of the submission to be able to delete it.")
         else:
@@ -309,7 +304,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                 myguild = self.bot.get_guild(1031900634741473280)
                 mychannel = myguild.get_channel(1245934187261722624)
                 submsMngrRle=myguild.get_role(submsMangrRleId)
-                data=lists.readFakeTags()
+                data=lists.readFile("faketagdb")
                 if (submsMngrRle in ctx.message.author.roles) or (ctx.message.author.id in developers):
                     restoreData=dict(restorationDict)
                     data["fakeTaggedShips"].append(restoreData)
@@ -340,7 +335,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                     e.add_field(name="List Of Ship's Former Names",value=shipsFormerNames,inline=True)
                     e.add_field(name="Submission Restoration Date",value=date,inline=False)
                     e.add_field(name="Submission Restored By",value=f"{ctx.message.author.mention} ({ctx.message.author.name}/{ctx.message.author.id})",inline=False)
-                    lists.setFakeTags(data)
+                    lists.setFile("faketagdb",data)
                 else:
                     await ctx.send("Sorry, you need to be a Fake Tag DB Submissions Manager or a Developer to be able to restore a submission.")
             except Exception as e:
@@ -352,7 +347,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     @commands.command(name="updateMajorClanList",aliases=["umcl"],brief="Updated List Of Current Major Clans When Scanning For Fake Tags",help="Updated List Of Current Major Clans When Scanning For Fake Tags. Viable Actions: add, remove, list")
     async def updateMajorClanList(self,ctx,action,tag=None,*,name=None):
         if ctx.message.author.id in developers:
-            data=lists.readFakeTags()
+            data=lists.readFile("faketagdb")
             def find_route(data2, route_no):
                 return list(filter(lambda y: y.get("tag") == route_no, data2))
             route = find_route(data["currentMajorClans"], tag)
@@ -362,11 +357,11 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
             elif action=="add":
                 data["currentMajorClans"].append({"name":name,"tag":tag})
                 #await ctx.send(f"Added Clan `{name}` with Tag `{tag}`")
-                lists.setFakeTags(data)
+                lists.setFile("faketagdb",data)
             elif action=="remove":
                 data["currentMajorClans"].remove(route[0])
                 await ctx.send(f"Removed Clan `{route[0]["name"]}` with Tag `{route[0]["tag"]}`")
-                lists.setFakeTags(data)
+                lists.setFile("faketagdb",data)
             else:
                 await ctx.send(f"Action of {action} is not valid. Valid Actions: list, add, remove.")
         else:
@@ -374,14 +369,13 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
 
     global tmes
     @tasks.loop(time=tmes)
-    #@commands.command(name="ftdbscan")
     async def fakeTagDBScanner(self):
         if self.bot.application_id != 975858537223847936:
             try:
                 print("Scanning For Fake Tags")
                 def find_route(data2, route_no, key):
                     return list(filter(lambda y:route_no in y.get(key), data2))
-                data=lists.readFakeTags()
+                data=lists.readFile("faketagdb")
                 def find_route2(data2, route_no, key):
                     return list(filter(lambda y: y.get(key) == route_no, data2))
                 scanDates=data["datesToScan"]
@@ -400,11 +394,8 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                 for x in data["currentMajorClans"]:
                     tags.append(x["tag"])
                 for tag in tags:
-                    #print(tag)
                     ships = find_route(jsondata, tag, "name")
-                    #print(ships)
                     for ship in ships:
-                        #print(ship)
                         shipHex=str(ship["hex_code"].replace("{","").replace("}",""))
                         if shipHex not in hexcodes:
                             hexcodes.append(shipHex)
@@ -417,21 +408,15 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                             except:
                                 continue
                         if shipHex in submittedHexs:
-                            #print(shipHex)
                             targets=find_route2(shipdata, shipHex, "hexcode")
-                            #print(targets)
                             if len(targets)>=1:
                                 targetb=targets[0]
                             else:
                                 continue
                             target=shipdata.index(targetb)
-                            #print(target)
                             subtar1=find_route2(data["fakeTaggedShips"], shipHex, "hexcode")[0]
-                            #print(subtar1)
                             subtar2={"hexcode":subtar1["hexcode"],"names":[subtar1["shipName"]]}
-                            #print(subtar2)
                             submittedtarget=data["fakeTaggedShips"].index(find_route2(data["fakeTaggedShips"], shipHex, "hexcode")[0])
-                            #print(submittedtarget)
                             shipsOldNames=[]
                             for name in shipdata[target]["names"]:
                                 if name not in data["fakeTaggedShips"][submittedtarget]["formerShipNames"] and name != data["fakeTaggedShips"][submittedtarget]["shipName"]:
@@ -440,31 +425,12 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                                     shipsOldNames.append(name)
                                     #print(name)
                             foundNames.append(f'Submission ID: {data["fakeTaggedShips"][submittedtarget]["submissionId"]}; List Of Alt Names Found: {shipsOldNames}')
-                lists.setFakeTags(data)
+                lists.setFile("faketagdb",data)
                 print(f"Scan Complete, Total Number Of Names Found: {namesUpdatedCount}")
                 for entry in foundNames:
                     pass
-                    #await ctx.send(entry)
             except Exception as e:
-                #await ctx.send(e)
-                print(e)
-                e_type, e_object, e_traceback = sys.exc_info()
-
-                e_filename = os.path.split(
-                    e_traceback.tb_frame.f_code.co_filename
-                )[1]
-
-                e_message = str(e)
-
-                e_line_number = e_traceback.tb_lineno
-
-                print(f'exception type: {e_type}')
-
-                print(f'exception filename: {e_filename}')
-
-                print(f'exception line number: {e_line_number}')
-
-                print(f'exception message: {e_message}')
+                pass
 
     @fakeTagDBScanner.before_loop
     async def before_task_starts(self):

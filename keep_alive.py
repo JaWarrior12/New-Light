@@ -23,7 +23,7 @@ app.config.update(
 class SimpleForm(FlaskForm):
   def setchoices():
     opts=[]
-    data=lists.readdataE()
+    data=lists.readFile("config")
     for x in data:
       if x=="ban" or x=="banguilds":
         continue
@@ -67,12 +67,12 @@ def get_provider():
     dpb = request.form["clan"]
     #dp_lower_case #= dp.lower()
     #print(f'{dp}')
-    data = lists.readother()
+    data = lists.readFile("other")
     format=[dpb,dp]
     #print(data)
     data["pinglinks"].append(format)
     #print(data)
-    lists.setother(data)
+    lists.setFile("other",data)
     return render_template('submit.html')
   elif rf=="submit":
     form = SimpleForm()

@@ -5,7 +5,6 @@ import pytz
 import datetime
 import traceback
 import sys
-#from keep_alive import keep_alive
 from discord.ext import commands
 from discord import app_commands
 from discord.utils import get
@@ -38,20 +37,19 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
       pass
     else:
       if ctx.message.author.id in developers: 
-        data=lists.readother()
+        data=lists.readFile("other")
         old=data["cmdmetrics"]["developer"]
         new=int(old)+1
         data["cmdmetrics"]["developer"]=int(new)
-        lists.setother(data)
+        lists.setFile("other",data)
       else:
-        #lists.logback(ctx,ctx.message.content)
         guild=ctx.guild.id
-        data=lists.readother()
+        data=lists.readFile("other")
         new=int(data["cmdcnt"])+1
         data["cmdcnt"]=int(new)
         data["cmdmetrics"]["total"]=data["cmdmetrics"]["total"]+1
         data["cmdmetrics"][str(ctx.guild.id)]=data["cmdmetrics"][str(ctx.guild.id)]+1
-        lists.setother(data)
+        lists.setFile("other",data)
 
   @commands.Cog.listener()
   async def on_command_error(self, ctx, error):
@@ -187,6 +185,7 @@ class ErrorHandling(commands.Cog,description="New Light's Error Handler"):
             # All other Errors not returned come here. And we can just print the default TraceBack.
             print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+            #await ctx.send(f"Unhandled ERROR! Please Screenshot and Send to JaWarrior.\n\nTraceback:`{traceback}`")
 
   @commands.Cog.listener()
   async def on_app_command_error(self, interaction: discord.Interaction, error: discord.app_commands.AppCommandError):

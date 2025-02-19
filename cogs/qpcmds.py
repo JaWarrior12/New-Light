@@ -3,7 +3,6 @@ import discord
 import time
 import pytz
 import datetime 
-#from keep_alive import keep_alive
 from discord.ext import commands
 from discord.utils import get
 from discord import Member
@@ -30,8 +29,7 @@ class QPCmds(commands.Cog, name="QuickPing Commands",description="QuickPing Syst
       try:
         shipnameb=shipname.lower()
         gid = str(ctx.message.guild.id)
-        #lists.logback(ctx,shipname)
-        await ctx.send(dumps(lists.readdataC()[gid][shipnameb]).replace('{','').replace('}', '').replace('"', ''))
+        await ctx.send(dumps(lists.readFile("quickping")[gid][shipnameb]).replace('{','').replace('}', '').replace('"', ''))
       except KeyError:
         await ctx.send(f'KeyError: {shipname} Is not in the quickping database. Either {shipname} has not been entered into the list by a member or it is listed under a different key. Fixes: Capitalize the first letter (slugger -> Slugger), Use an abbreviation (Gamking Sniper 1 -> GKS1), or remove spaces in the name (Destruction Awaits You -> DestructionAwaitsYou). The solution could be a mix of the provided fixes.')
     else:
@@ -48,17 +46,15 @@ class QPCmds(commands.Cog, name="QuickPing Commands",description="QuickPing Syst
   async def quickpingadd(self, ctx, *, msg):
     if str(ctx.message.author.id) not in banned:
       gid = str(ctx.message.guild.id)
-      msgparts, data = msg.split(" "), lists.readdataC()
+      msgparts, data = msg.split(" "), lists.readFile("quickping")
       ping = "@here"
       link=msgparts[1]
       linkb=link.lower()
       print(linkb)
       pinger = ping + linkb
       data[gid][linkb]=str(pinger)
-      lists.setdataC(data)
-      #lists.logback(ctx,msg)
+      lists.setFile("quickping",data)
       await ctx.send(f'Added {msgparts[1]} with a link of {msgparts[0]} to the QuickPing database.')
-    #await ctx.send(dumps(readdataC()[msg]).replace('{','').replace('}', '').replace('"', ''))
     else:
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
   
@@ -74,13 +70,12 @@ class QPCmds(commands.Cog, name="QuickPing Commands",description="QuickPing Syst
     if str(ctx.message.author.id) in banned:
       await ctx.send('Your ID is in the Banned List, you are not allowed to use New Light. If you belive this to be an error please DM JaWarrior#6752')
     elif str(ctx.message.author.id) not in banned:
-      #lists.logback(ctx,ship)
       gid = str(ctx.message.guild.id)
       name=str(ship).lower()
-      data=lists.readdataC()
+      data=lists.readFile("quickping")
       del data[gid][name]
       try:
-        lists.setdataC(data)
+        lists.setFile("quickping",data)
         await ctx.send(f'Removed {ship} from the QuickPing list in {ctx.message.guild.name}')
       except KeyError:
         await ctx.send(f'KeyError: The command had a KeyError, due to the complexity of this command the value causing the error cannot be given.')

@@ -1,6 +1,5 @@
-#from multiprocessing.spawn import old_main_modules
+import aiohttp
 import os, discord, sys
-#from aiohttp import DataQueue
 import time as timea
 import traceback
 import asyncio
@@ -8,18 +7,15 @@ import pytz
 import datetime
 from datetime import datetime, timedelta, timezone
 from datetime import time as tme
-#from apscheduler.schedulers.background import BackgroundScheduler
 from threading import Timer
 import urllib.request
 import requests
 import gzip
-#from keep_alive import keep_alive
 from discord.ext import commands, tasks
 from discord.utils import get
 from discord import Member
 from json import loads, dumps
 from startup import startup
-#from dpyConsole import Console
 
 #Lists
 import lists
@@ -29,8 +25,6 @@ banned = lists.banned
 developers = lists.developers
 DEV_SERVER_ID = lists.DEV_SERVER_ID 
 
-#PLEXUS_SERVER_ID = 1070759679543750697 #Actual Plexus Server ID
-#PLEXUS_CHANNEL_ID = 1264242324482031707 #Actual Plexus Reports Channel ID
 NLD_SERVER_ID = 1031900634741473280 #NLD Server ID
 NLD_CHANNEL_ID = 1045129470287294504 #NLD Server dev-bot-commands channel ID
 ALLOWED_SERVERS = [1070759679543750697,1031900634741473280]
@@ -53,20 +47,14 @@ def setPS(data):
 class DailyReports(commands.Cog, name="Daily Reports System",description="Commands For The Daily Reports System"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    #self.runDailyTransferReport_TimerLoop.start
-    #print(self.bot.user.id)
     if self.bot.user.id == 974045822167679087:
       self.runDailyTransferReport_TimerLoop.start()
       self.runDailyInventoryReport_TimerLoop.start()
       print("start trackLog loop")
-      #pass
   def cog_unload(self):
     if self.bot.user.id == 974045822167679087:
-      #pass
       self.runDailyTransferReport_TimerLoop.cancel()
       self.runDailyInventoryReport_TimerLoop.cancel()
-    #else:
-    #pass
   
   def is_allowed_server():
     def predicate(ctx):
@@ -124,17 +112,12 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
   async def runDailyTransferReport_TimerLoop(self):
     print("Running Daily trackLog Loop!")
     await self.runDailyTransferReport(self,None,None,None,None)
-
-  #@runDailyTransferReport_TimerLoop.before_loop
-  #async def before_task_starts(self):
-      #await self.wait_until_ready()
   
   @staticmethod
   async def runDailyTransferReport(self,servers=None,year=None,month=None,day=None):
     print("Starting Daily Transfer Report Script")
     data = lists.readFile("dailyReportsConfig")
-    configs=lists.readdataE()
-    #print(data)
+    configs=lists.readFile("config")
     serversList=list(data.keys())
     if servers=="dev":
       serversList=["1031900634741473280"]
@@ -151,18 +134,17 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
         log_file_name=None
         logFile=None
         today=datetime.now(pytz.UTC)
-        #print(today)
         if year is None:
           year=today.year
           month=today.month
           day=today.day
         CurrentServer = self.bot.get_guild(int(key))
-        #print(PlexusServer)
         ServerReportsChannel = await CurrentServer.fetch_channel(int(logChannel))
-        #print(PlexusReportChannel)
-        jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
-        shipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
-        altShipData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+        async with aiohttp.ClientSession() as session:
+          jsondata = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
+          shipData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+          altShipData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+          itemSchema = loads(session.get("https://pub.drednot.io/prod/econ/item_schema.json").content.read())
         log_file_name=f"{CurrentServer.name}_Daily_Transfers.txt"
         shipTotals={}
         receiveTotals={}
@@ -177,8 +159,6 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
           def find_dest(data, route_no):
             return list(filter(lambda x: x.get("dst") == route_no, data))
           destList = find_dest(jsondata,hexcode)
-          url = "https://pub.drednot.io/prod/econ/item_schema.json"
-          itemSchema = loads(requests.get(url).content)
           def findItemName(itemId):
             return list(filter(lambda x: x.get('id') == itemId, itemSchema))
           def shipNameLookup(hex):
@@ -190,24 +170,16 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
           #Logs A,B,C Are For Receiving
           for logA in route:
             destShip=logA["dst"].replace("{","").replace("}","")
-            #print(destShip)
             if destShip not in list(items.keys()):
               items.update({destShip:{}})
-          #print(items)
           for logB in route:
             destShip=logB["dst"].replace("{","").replace("}","")
             itemName=str(findItemName(logB["item"])[0]["name"])
-            #print(list(items[destShip].keys()))
             items.update({destShip:{str(itemName):0}})
-          #print(items)
           for logC in route:
             destShip=logC["dst"].replace("{","").replace("}","")
             itemName=findItemName(logC["item"])[0]["name"]
-            #print(destShip)
-            #print(itemName)
-            #print(logC)
             itemList=list(items[destShip].keys())
-            #print(itemList)
             if itemName not in itemList:
               items[destShip].update({str(itemName):0})
             items[destShip][str(itemName)]+=logC["count"]
@@ -215,28 +187,20 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
           #Logs D,E,F Are For Receiving Logs
           for logD in destList:
             destShip=logD["src"].replace("{","").replace("}","")
-            #print(destShip)
             if destShip not in list(destItems.keys()):
               destItems.update({destShip:{}})
-          #print(items)
           for logE in destList:
             destShip=logE["src"].replace("{","").replace("}","")
             itemName=str(findItemName(logE["item"])[0]["name"])
-            #print(list(items[destShip].keys()))
             destItems.update({destShip:{str(itemName):0}})
-          #print(items)
           for logF in destList:
             destShip=logF["src"].replace("{","").replace("}","")
             itemName=findItemName(logF["item"])[0]["name"]
-            #print(destShip)
-            #print(itemName)
-            #print(logC)
             if itemName not in list(destItems[destShip].keys()):
               destItems[destShip].update({str(itemName):0})
             destItems[destShip][str(itemName)]+=logF["count"]
           shipTotals.update({oldHexcode:items})
           receiveTotals.update({oldHexcode:destItems})
-          #print(receiveTotals)
         def writeToFile(sourceDict,sectionTitle,stateVar):
           #StateVar is 0 or 1, 0==Send/shipTotals, 1==Receive/receiveTotals
           with open(log_file_name, "a+", encoding="utf-8") as logFile:
@@ -247,13 +211,10 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
             shipTotalsKeys=list(sourceDict.keys())
             for hex in shipTotalsKeys:
               shipLogs=sourceDict[hex]
-              #print(len(list(shipTotals[hex].keys())))
-              #print(list(shipTotals[hex].keys()))
               if len(list(sourceDict[hex].keys()))==0 and stateVar==0:
                 hexCode=hex
                 ShipConversion=shipNameLookup(hexCode)
                 altShipConversion=altShipNameLookup(hexCode)
-                #print(ShipConversion)
                 if len(ShipConversion)>0:
                   logFile.write(f"{ShipConversion[0]["name"]} ({ShipConversion[0]["hex_code"]}) transfered no items \n")
                 else:
@@ -265,7 +226,6 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
                 hexCode=hex
                 ShipConversion=shipNameLookup(hexCode)
                 altShipConversion=altShipNameLookup(hexCode)
-                #print(ShipConversion)
                 if len(ShipConversion)>0:
                   logFile.write(f"{ShipConversion[0]["name"]} ({ShipConversion[0]["hex_code"]}) received no items \n")
                 else:
@@ -276,13 +236,10 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
               else:
                 for dest in shipLogs:
                   if stateVar==0:
-                    #print(dest)
                     destTotals=sourceDict[hex][dest]
-                    #print(destTotals)
                     srcShipConversion=shipNameLookup(hex)[0]
                     srcShipHex="{"+srcShipConversion["hex_code"]+"}"
                     srcShipConversion={"name":srcShipConversion["name"],"hex_code":srcShipHex}
-                    #print(srcShipConversion)
                     if dest=="killed":
                       dstShipConversion={"name":"killed","hex_code":""}
                     elif "hurt" in dest:
@@ -292,18 +249,13 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
                       dstShipHex="{"+dstShipConversion["hex_code"]+"}"
                       dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
                   elif stateVar==1:
-                    #print(f'dest=={dest}')
-                    #print(f'hex=={hex}')
-                    #print(f'sourceDict=={sourceDict}')
                     destTotals=sourceDict[hex][dest]
-                    #print(destTotals)
                     if hex=="killed":
                       srcShipConversion={"name":hex,"hex_code":""}
                     else:
                       srcShipConversion=shipNameLookup(hex)[0]
                       srcShipHex="{"+srcShipConversion["hex_code"]+"}"
                       srcShipConversion={"name":srcShipConversion["name"],"hex_code":srcShipHex}
-                    #print(srcShipConversion)
                     if dest=="killed":
                       dstShipConversion={"name":dest,"hex_code":""}
                     else:
@@ -382,19 +334,17 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
   async def runDailyInventoryReport(self,servers=None,year=None,month=None,day=None):
     print("Starting Daily Inventory Report Script")
     today=datetime.now(pytz.UTC)
-    #print(today)
     if year is None:
       year=today.year
       month=today.month
       day=today.day
     data = lists.readFile("dailyReportsConfig")
-    configs=lists.readdataE()
-    #print(data)
-    dumpData = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+    configs=lists.readFile("config")
+    async with aiohttp.ClientSession() as session:
+      dumpData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+      itemSchema = loads(session.get("https://pub.drednot.io/prod/econ/item_schema.json").content.read())
     def find_ship(data, route_no):
       return list(filter(lambda x: x.get("hex_code") == route_no, data))
-    url = "https://pub.drednot.io/prod/econ/item_schema.json"
-    itemSchema = loads(requests.get(url).content)
     def findItemName(itemId):
       return list(filter(lambda x: x.get('id') == itemId, itemSchema))
     serversList=list(data.keys())
@@ -413,18 +363,15 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
         log_file_name=None
         logFile=None
         today=datetime.now(pytz.UTC)
-        #print(today)
         if year is None:
           year=today.year
           month=today.month
           day=today.day
         CurrentServer = self.bot.get_guild(int(key))
-        #print(PlexusServer)
         try:
           ServerReportsChannel = await CurrentServer.fetch_channel(int(logChannel))
         except:
           continue
-        #print(PlexusReportChannel)
         threads=ServerReportsChannel.threads
         for ship in shipsToLoop:
           shipData=find_ship(dumpData,ship)
@@ -454,7 +401,6 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
                 textString=""
             cuts.append(textString)
             fullString=f"# Inventory of {shipName} ({shipHex})\nLast Update: {month}/{day}/{year}\n"
-            #print(len(fullString))
             def find_thread(lst, route_no):
               found=[]
               for z in lst:
@@ -473,40 +419,15 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
             else:
               thrd=ServerReportsChannel.get_thread(thd[0].id)
               messageCount=int(thrd.message_count)-1
-              #try:
-                #await thrd.purge(limit=int(messageCount))
-              #except Exception as e:
-                #pass
-              #try:
               await thrd.send(fullString)
               for cut in cuts:
                 if len(cut) > 0:
                   await thrd.send(cut)
                 else:
                   break
-              #except:
-                #print("error")
           else:
             continue
       except Exception as e:
-        #print(e)
-        e_type, e_object, e_traceback = sys.exc_info()
-
-        e_filename = os.path.split(
-            e_traceback.tb_frame.f_code.co_filename
-        )[1]
-
-        e_message = str(e)
-
-        e_line_number = e_traceback.tb_lineno
-
-        #print(f'exception type: {e_type}')
-
-        #print(f'exception filename: {e_filename}')
-
-        #print(f'exception line number: {e_line_number}')
-
-        #print(f'exception message: {e_message}')
         pass
     print("Plexus Daily Inventory Report Script Finished")
   

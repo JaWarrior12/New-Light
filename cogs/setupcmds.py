@@ -101,7 +101,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           lists.setFile("config",banlt)
           await ctx.send(f'{user.mention} has been authorized to use Leadership Commands in the server {ctx.message.guild.name} by {ctx.message.author.name}')
           myguild = ctx.guild
-          channel = myguild.get_channel(1037788623015268444)
+          channel = await myguild.get_channel(1037788623015268444)
           e = discord.Embed(title="User Authorized")
           e.add_field(name="Server Name", value=ctx.guild.name, inline=False)
           e.add_field(name="Server ID", value=ctx.guild.id, inline=False)

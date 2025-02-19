@@ -3,6 +3,7 @@ import os, discord, sys
 import time as timea
 import traceback
 import asyncio
+import aiohttp
 import pytz
 import datetime
 from datetime import datetime, timedelta, timezone

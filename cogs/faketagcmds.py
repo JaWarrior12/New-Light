@@ -1,4 +1,5 @@
 import os
+import aiohttp
 import discord 
 import sys
 from random import shuffle
@@ -29,12 +30,12 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
     def __init__(self, bot: commands.Bot):
         self.bot=bot
         if self.bot.user.id != 975858537223847936:
-            #self.fakeTagDBScanner.start()
-            pass
+            self.fakeTagDBScanner.start()
+            #pass
     def cog_unload(self):
         if self.bot.user.id != 975858537223847936:
-            #self.fakeTagDBScanner.cancel()
-            pass
+            self.fakeTagDBScanner.cancel()
+            #pass
         else:
             pass
 
@@ -384,7 +385,8 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                 day=datetime.datetime.today().day
                 namesUpdatedCount=0
                 foundNames=[]
-                jsondata = lists.get_gzipped_json(f'https://pub.drednot.io/prod/econ/{year}_{month}_{day}/ships.json.gz')
+                async with aiohttp.ClientSession() as session:
+                    jsondata = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{year}_{month}_{day}/ships.json.gz')
                 submittedHexs=[]
                 for item in data["fakeTaggedShips"]:
                     submittedHexs.append(item["hexcode"])

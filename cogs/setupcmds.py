@@ -312,6 +312,13 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       await self.updatememlist(self,servers)
       await ctx.send("MemList Update Complete")
 
+  @commands.command(name="forceUpdateMemList",aliases=["fuml"],help="Allows server leadership to force a member list update in the case that it bugs out.")
+  async def forceUpdateMemList(self,ctx):
+    if lists.checkperms(ctx)==True:
+      await ctx.send("Starting Forced MemList Update")
+      await self.updatememlist(self,str(ctx.message.guild.id))
+      await ctx.send("Forced MemList Update Complete")
+
   @staticmethod
   async def updatememlist(self,servers):
     serversList=[]

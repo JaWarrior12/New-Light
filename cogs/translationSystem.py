@@ -152,6 +152,8 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
         #print(message.author.bot)
         #print(message)
         #print(message.attachments)
+        #print(bool(message.webhook_id))
+        #print(message.webhook_id)
         if message.author.bot:
             return None
         elif bool(message.webhook_id):

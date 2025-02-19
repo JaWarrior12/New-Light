@@ -325,6 +325,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       splitList=servers.split(",")
       serversList=[self.bot.get_guild(int(gldid)) for gldid in splitList]
     for g in serversList:
+      guild=None
       try:
         cuts=[]
         ctnt3=""

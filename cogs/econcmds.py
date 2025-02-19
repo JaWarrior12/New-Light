@@ -62,8 +62,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
     def predicate(ctx):
         return isinstance(ctx.channel, discord.channel.DMChannel)
     return commands.check(predicate)
-
-
+  
   def get_gzipped_json(url):
     return loads(gzip.decompress(requests.get(url).content))
   

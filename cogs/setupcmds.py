@@ -312,6 +312,13 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       await self.updatememlist(self,servers)
       await ctx.send("MemList Update Complete")
 
+  @commands.command(name="forceUpdateMemList",aliases=["fuml"],help="Allows server leadership to force a member list update in the case that it bugs out.")
+  async def forceUpdateMemList(self,ctx):
+    if lists.checkperms(ctx)==True:
+      await ctx.send("Starting Forced MemList Update")
+      await self.updatememlist(self,str(ctx.message.guild.id))
+      await ctx.send("Forced MemList Update Complete")
+
   @staticmethod
   async def updatememlist(self,servers):
     serversList=[]
@@ -467,7 +474,25 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
             await mesg.edit(content=cut)
         await channel.send(f"\n Total Member Count: `{len(memrole.members)}` \nMember List Updated: `{datetime.datetime.now()}`")
       except Exception as e:
-        continue
+          #continue
+          print(e)
+          e_type, e_object, e_traceback = sys.exc_info()
+
+          e_filename = os.path.split(
+              e_traceback.tb_frame.f_code.co_filename
+          )[1]
+
+          e_message = str(e)
+
+          e_line_number = e_traceback.tb_lineno
+
+          print(f'exception type: {e_type}')
+
+          print(f'exception filename: {e_filename}')
+
+          print(f'exception line number: {e_line_number}')
+
+          print(f'exception message: {e_message}')
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(SetupCmds(bot))

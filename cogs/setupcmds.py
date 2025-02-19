@@ -101,7 +101,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           lists.setFile("config",banlt)
           await ctx.send(f'{user.mention} has been authorized to use Leadership Commands in the server {ctx.message.guild.name} by {ctx.message.author.name}')
           myguild = ctx.guild
-          channel = myguild.get_channel(1037788623015268444)
+          channel = await myguild.get_channel(1037788623015268444)
           e = discord.Embed(title="User Authorized")
           e.add_field(name="Server Name", value=ctx.guild.name, inline=False)
           e.add_field(name="Server ID", value=ctx.guild.id, inline=False)
@@ -128,7 +128,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         gid=str(ctx.message.guild.id)
         key="auth"
         data = dumps(lists.readFile("config")[gid][key])
-        if str(user) not in data:
+        if str(user.id) not in data:
           await ctx.send(f'{user.mention} Is Not Authorized')
         else:
           data = lists.readFile("config")
@@ -333,6 +333,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
       serversList=[self.bot.get_guild(int(gldid)) for gldid in splitList]
     for g in serversList:
       guild=None
+      channel=None
       try:
         cuts=[]
         ctnt3=""
@@ -342,9 +343,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         else:
           continue
         if lists.readFile("config")[str(g.id)]["memchan"]==0:
-          pass
+          continue
         elif lists.readFile("config")[str(g.id)]["memrole"]==0:
-          pass
+          continue
         else:
           gid=str(g.id)
           guild=self.bot.get_guild(g.id)

@@ -37,7 +37,7 @@ MRT_MULTIPLIER=60 # Multiplier to get to proper unit. Scnds->Scnds is 1, Scnds->
 MAX_RUN_TIME=MRT_BASE*MRT_MULTIPLIER
 MRT_UNIT="Minutes" # What Unit MAX_RUN_TIME Is In
 
-DATE_GAP_CAP=365 # Original: 30
+DATE_GAP_CAP=800 # Original: 30
 SHIP_WEB_CAP=3 # Original: 3
 
 NON_SHIP_ENTRIES=lists.NON_SHIP_ENTRIES
@@ -134,8 +134,9 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
       startDate=datetime(int(startYear),int(startMonth),int(startDay))
       endDate=datetime(int(endYear),int(endMonth),int(endDay))
       delta=endDate-startDate
-      if int(delta.days) > DATE_GAP_CAP:
-        return ctx.send(f"Sorry, the maximum amount of days that can be searched is `{DATE_GAP_CAP}`. You attempted to search `{int(delta.days)}` days. Your search was `{abs(delta-DATE_GAP_CAP)}` over the limit.")
+      if delta.days > timedelta(days=DATE_GAP_CAP).days:
+        pass
+        return ctx.send(f"Sorry, the maximum amount of days that can be searched is `{DATE_GAP_CAP}`. You attempted to search `{delta.days}` days. Your search was `{abs(delta-DATE_GAP_CAP)}` over the limit.")
       else:
         await ctx.send("Collecting Data! This may take a minute or so...")
         dates_to_scan=[]
@@ -313,7 +314,13 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                         elif stateVar==2:
                           if (srcShipConversion["name"] in NON_SHIP_ENTRIES or dstShipConversion["name"] in NON_SHIP_ENTRIES):
                             if filterVal == "all":
-                              pass
+                              #print(f'Src: {srcShipConversion["name"]}; Dst: {dstShipConversion["name"]}')
+                              logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} received {itemCount} {item} from {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+                              if srcShipConversion["hex_code"] not in list(shipNames.keys()):
+                                shipNames.update({srcShipConversion["hex_code"]:[srcShipConversion["name"]]})
+                              elif srcShipConversion["hex_code"] in list(shipNames.keys()):
+                                if srcShipConversion["name"] not in shipNames[srcShipConversion["hex_code"]]:
+                                  shipNames[srcShipConversion["hex_code"]].append(srcShipConversion["name"])
                             elif filterVal == "normal":
                               pass
                           else:

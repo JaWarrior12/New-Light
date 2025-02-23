@@ -386,7 +386,7 @@ class FakeTagCmds(commands.Cog, name="Fake Tag Database Commands",description="A
                 namesUpdatedCount=0
                 foundNames=[]
                 async with aiohttp.ClientSession() as session:
-                    jsondata = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{year}_{month}_{day}/ships.json.gz')
+                    jsondata = await lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{year}_{month}_{day}/ships.json.gz')
                 submittedHexs=[]
                 for item in data["fakeTaggedShips"]:
                     submittedHexs.append(item["hexcode"])

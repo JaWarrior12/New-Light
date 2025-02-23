@@ -141,10 +141,10 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
         CurrentServer = self.bot.get_guild(int(key))
         ServerReportsChannel = await CurrentServer.fetch_channel(int(logChannel))
         async with aiohttp.ClientSession() as session:
-          jsondata = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
-          shipData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
-          altShipData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
-          itemSchema = loads(session.get("https://pub.drednot.io/prod/econ/item_schema.json").content.read())
+          jsondata = await lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/log.json.gz')
+          shipData = await lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+          altShipData = await lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
+          itemSchema = loads(await session.get("https://pub.drednot.io/prod/econ/item_schema.json").content.read())
         log_file_name=f"{CurrentServer.name}_Daily_Transfers.txt"
         shipTotals={}
         receiveTotals={}
@@ -342,7 +342,9 @@ class DailyReports(commands.Cog, name="Daily Reports System",description="Comman
     configs=lists.readFile("config")
     async with aiohttp.ClientSession() as session:
       dumpData = lists.get_gzipped_json_aiohttp(session,f'https://pub.drednot.io/prod/econ/{int(year)}_{int(month)}_{int(day)}/ships.json.gz')
-      itemSchema = loads(session.get("https://pub.drednot.io/prod/econ/item_schema.json").content.read())
+      async with session.get("https://pub.drednot.io/prod/econ/item_schema.json") as response:
+        jsonData = await response.content.read()
+      itemSchema = loads(jsonData)
     def find_ship(data, route_no):
       return list(filter(lambda x: x.get("hex_code") == route_no, data))
     def findItemName(itemId):

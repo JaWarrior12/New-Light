@@ -11,3 +11,5 @@ replit.nix
 #Ignore the logging file
 discord.log
 discord.log.*
+
+.env

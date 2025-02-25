@@ -147,6 +147,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
           hexcode="{"+hex_code+"}"
           shipTotals={}
           receiveTotals={}
+          shipHurtTotals={}
           shipNames={}
           currRunTime=abs(time.time()-startTime)
           for date in dates_to_scan:
@@ -167,12 +168,16 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
             oldHexcode=hex_code
             shipTotals.update({oldHexcode:{}})
             receiveTotals.update({oldHexcode:{}})
+            shipHurtTotals.update({oldHexcode:{}})
             def find_route(data, route_no):
               return list(filter(lambda x: x.get("src") == route_no, data))
             route = find_route(jsondata,hexcode)
             def find_dest(data, route_no):
               return list(filter(lambda x: x.get("dst") == route_no, data))
             destList = find_dest(jsondata,hexcode)
+            def findHurtList(data, hex):
+                return list(filter(lambda x: x.get("src") == f"{hex} hurt", data))
+            hurtList = findHurtList(jsondata,hexcode)
             url = "https://pub.drednot.io/prod/econ/item_schema.json"
             itemSchema = loads(requests.get(url).content)
             def findItemName(itemId):
@@ -216,10 +221,29 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
               if itemName not in list(destItems[destShip].keys()):
                 destItems[destShip].update({str(itemName):0})
               destItems[destShip][str(itemName)]+=logF["count"]
+
+            #Logs G,H,I Are For Ship Hurt Logs
+            for logG in hurtList:
+                destShip=logG["dst"].replace("{","").replace("}","")
+                if destShip not in list(sourceHurtItems.keys()):
+                    sourceHurtItems.update({destShip:{}})
+            for logH in hurtList:
+                destShip=logH["dst"].replace("{","").replace("}","")
+                itemName=str(findItemName(logH["item"])[0]["name"])
+                sourceHurtItems.update({destShip:{str(itemName):0}})
+            for logI in hurtList:
+                destShip=logI["dst"].replace("{","").replace("}","")
+                itemName=findItemName(logI["item"])[0]["name"]
+                itemList=list(sourceHurtItems[destShip].keys())
+                if itemName not in itemList:
+                    sourceHurtItems[destShip].update({str(itemName):0})
+                sourceHurtItems[destShip][str(itemName)]+=logI["count"]
+
             shipTotals.update({oldHexcode:items})
             receiveTotals.update({oldHexcode:destItems})
+            shipHurtTotals.update({oldHexcode:sourceHurtItems})
             def writeToFile(sourceDict,sectionTitle,stateVar):
-              #StateVar is 1 or 2. 1==Send/shipTotals, 2==Receive/receiveTotals
+              #StateVar is 1. 2, or 3. 1==Send/shipTotals, 2==Receive/receiveTotals, 3==Hurt/shipHurtTotals
               with open(log_file_name, "a+", encoding="utf-8") as logFile:
                 if sum(1 for _ in logFile)==0:
                   logFile.write(f"--\\/--{sectionTitle}--\\/--\n")
@@ -260,6 +284,27 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                             shipNames[altShipConversion[0]["hex_code"]].append(altShipConversion[0]["name"])
                       else:
                         logFile.write(f"{hex} received no items \n")
+                  elif len(list(sourceDict[hex].keys()))==0 and stateVar==3:
+                    hexCode=hex
+                    ShipConversion=shipNameLookup(hexCode)
+                    altShipConversion=altShipNameLookup(hexCode)
+                    if len(ShipConversion)>0:
+                      logFile.write(f"{ShipConversion[0]["hex_code"]} ({ShipConversion[0]["hex_code"]}) had no items ejected due to damage \n")
+                      if ShipConversion[0]["hex_code"] not in list(shipNames.keys()):
+                        shipNames.update({ShipConversion[0]["hex_code"]:[ShipConversion[0]["name"]]})
+                      elif ShipConversion[0]["hex_code"] in list(shipNames.keys()):
+                        if ShipConversion[0]["name"] not in shipNames[ShipConversion[0]["hex_code"]]:
+                          shipNames[ShipConversion[0]["hex_code"]].append(ShipConversion[0]["name"])
+                    else:
+                      if len(altShipConversion)>0:
+                        logFile.write(f"{altShipConversion[0]["name"]} ({altShipConversion[0]["hex_code"]}) had no items ejected due to damage \n")
+                        if altShipConversion[0]["hex_code"] not in list(shipNames.keys()):
+                          shipNames.update({altShipConversion[0]["hex_code"]:[altShipConversion[0]["name"]]})
+                        elif altShipConversion[0]["hex_code"] in list(shipNames.keys()):
+                          if altShipConversion[0]["name"] not in shipNames[altShipConversion[0]["hex_code"]]:
+                            shipNames[altShipConversion[0]["hex_code"]].append(altShipConversion[0]["name"])
+                      else:
+                        logFile.write(f"{hex} had no items ejected due to damage \n")
                   else:
                     for dest in shipLogs:
                       if stateVar==1:
@@ -286,6 +331,23 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                           dstShipHex="{"+dstShipConversion["hex_code"]+"}"
                           dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
                       elif stateVar==2:
+                        destTotals=sourceDict[hex][dest]
+                        if hex=="killed":
+                          srcShipConversion={"name":hex,"hex_code":""}
+                        else:
+                          srcShipConversion=shipNameLookup(hex)[0]
+                          srcShipHex="{"+srcShipConversion["hex_code"]+"}"
+                          srcShipConversion={"name":srcShipConversion["name"],"hex_code":srcShipHex}
+                        if dest=="killed":
+                          dstShipConversion={"name":dest,"hex_code":""}
+                        else:
+                          try:
+                            dstShipConversion=shipNameLookup(dest)[0]
+                            dstShipHex="{"+dstShipConversion["hex_code"]+"}"
+                            dstShipConversion={"name":dstShipConversion["name"],"hex_code":dstShipHex}
+                          except:
+                            dstShipConversion={"name":dest,"hex_code":""}
+                      elif stateVar==3:
                         destTotals=sourceDict[hex][dest]
                         if hex=="killed":
                           srcShipConversion={"name":hex,"hex_code":""}
@@ -330,10 +392,19 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                             elif srcShipConversion["hex_code"] in list(shipNames.keys()):
                               if srcShipConversion["name"] not in shipNames[srcShipConversion["hex_code"]]:
                                 shipNames[srcShipConversion["hex_code"]].append(srcShipConversion["name"])
+                        elif stateVar==3:
+                          
+                          logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} ejected {itemCount} {item} due to damage. Items ended up going to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+                          if srcShipConversion["hex_code"] not in list(shipNames.keys()):
+                            shipNames.update({srcShipConversion["hex_code"]:[srcShipConversion["name"]]})
+                          elif srcShipConversion["hex_code"] in list(shipNames.keys()):
+                            if srcShipConversion["name"] not in shipNames[srcShipConversion["hex_code"]]:
+                              shipNames[srcShipConversion["hex_code"]].append(srcShipConversion["name"])
             with open(log_file_name, "a", encoding="utf-8") as logFile:
               logFile.write(f"\nDate (YYYY-MM-DD): {year}-{month}-{day}\n")
             writeToFile(shipTotals,"Transfer Send Logs",1)
             writeToFile(receiveTotals,"Transfer Receive Logs",2)
+            writeToFile(receiveTotals,"Hurt Item Ejection Logs",3)
         except Exception as e:
           await ctx.send(f"Error: {e}")
           print(e)

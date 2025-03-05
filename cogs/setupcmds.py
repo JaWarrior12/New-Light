@@ -235,9 +235,9 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
           val=float(input)
         elif option in ["verbal","logFiltersNonShips","translationBool"]:
           val=False
-          if option.lower() in ["true","yes","on","1","True"]:
+          if input.lower() in ["true","yes","on","1","True"]:
             val=True
-          elif option.lower() in ["false","no","off","0","False"]:
+          elif input.lower() in ["false","no","off","0","False"]:
             val=False
           else:
             return await ctx.send(f"Sorry, {option} is not a valid input. Please use `True` or `False`.")

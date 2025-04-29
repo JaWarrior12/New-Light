@@ -377,7 +377,10 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                           if (srcShipConversion["name"] in NON_SHIP_ENTRIES or dstShipConversion["name"] in NON_SHIP_ENTRIES):
                             if filterVal == "all":
                               #print(f'Src: {srcShipConversion["name"]}; Dst: {dstShipConversion["name"]}')
-                              logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} received {itemCount} {item} from {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+                              if " hurt" in dstShipConversion["hex_code"]:
+                                logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} received {itemCount} {item} from {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
+                              else:
+                                logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} received {itemCount} {item} from {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
                               if srcShipConversion["hex_code"] not in list(shipNames.keys()):
                                 shipNames.update({srcShipConversion["hex_code"]:[srcShipConversion["name"]]})
                               elif srcShipConversion["hex_code"] in list(shipNames.keys()):
@@ -393,7 +396,6 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
                               if srcShipConversion["name"] not in shipNames[srcShipConversion["hex_code"]]:
                                 shipNames[srcShipConversion["hex_code"]].append(srcShipConversion["name"])
                         elif stateVar==3:
-                          
                           logFile.write(f"{srcShipConversion["name"]} {srcShipConversion["hex_code"]} ejected {itemCount} {item} due to damage. Items ended up going to {dstShipConversion["name"]} {dstShipConversion["hex_code"]} \n")
                           if srcShipConversion["hex_code"] not in list(shipNames.keys()):
                             shipNames.update({srcShipConversion["hex_code"]:[srcShipConversion["name"]]})
@@ -404,7 +406,7 @@ class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="A
               logFile.write(f"\nDate (YYYY-MM-DD): {year}-{month}-{day}\n")
             writeToFile(shipTotals,"Transfer Send Logs",1)
             writeToFile(receiveTotals,"Transfer Receive Logs",2)
-            writeToFile(receiveTotals,"Hurt Item Ejection Logs",3)
+            writeToFile(shipHurtTotals,"Hurt Item Ejection Logs",3)
         except Exception as e:
           await ctx.send(f"Error: {e}")
           print(e)

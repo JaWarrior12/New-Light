@@ -40,7 +40,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
   #@commands.has_permissions(administrator=True)
   @commands.check_any(is_guild_owner())
   async def setupsrvr(self,ctx):
-      servers=lists.readdataE()
+      servers=lists.readFile("config")
       if str(ctx.message.guild.id) not in servers.keys():
         try:
           await ctx.send("Started Server Setup")
@@ -211,7 +211,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
         elif option.lower() in ["false","no","off","0","False"]:
           val=False
         else:
-          return await ctx.send(f"Sorry, {option} is not a valid input. Please use `True` or `False`.")
+          return await interaction.response.send_message(f"Sorry, {option} is not a valid input. Please use `True` or `False`.")
       elif option.value == "storebal":
         val=str(input.lower())
       else:

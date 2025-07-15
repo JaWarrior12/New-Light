@@ -177,7 +177,7 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                         targetLang=channel[1]
                         targetChanBool=channel[2]
                         if targetChanBool and (message.channel.id!=chanID):
-                            targetChan=server.get_channel(chanID)
+                            targetChan=await server.fetch_channel(chanID)
                             translator.target=str(targetLang)
                             #response=translator.translate(text=message.content)
                             if message.reference is not None:
@@ -185,13 +185,13 @@ class TranslationSystem(commands.Cog, name="Translation System Commands",descrip
                                 replyToTransed=translator.translate(text="Replying to")
                                 response=translator.translate(text=message.content)
                                 fullText=f"{fromTransed} {message.author.mention}: \n{replyToTransed} {message.reference.resolved.author.mention}: {response}" 
-                                sentMsg=await targetChan.send("Translating Reply...",embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
+                                sentMsg=await targetChan.send("Translating Reply...",silent=True)#,embeds=message.embeds,files=attachments,stickers=message.stickers)
                                 await sentMsg.edit(content=fullText)
                             else:
                                 fromTransed=translator.translate(text="From")
                                 response=translator.translate(text=message.content)
                                 fullText=f"{fromTransed} {message.author.mention}: {response}"
-                                sentMsg=await targetChan.send("Translating Reply...",embeds=message.embeds,files=attachments,silent=True,stickers=message.stickers)
+                                sentMsg=await targetChan.send("Translating Reply...",silent=True)#,embeds=message.embeds,files=attachments,stickers=message.stickers)
                                 await sentMsg.edit(content=fullText)
                         else:
                             pass

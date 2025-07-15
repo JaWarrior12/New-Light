@@ -29,6 +29,7 @@ DEV_SERVER_ID = 1031900634741473280
 #CONSTANTS
 NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master","Shield Helper","Red Sniper",'Yellow Hunter',"The Lazer Enthusiast","The Coward","Orange Fool","Yellow Mine Guard","block - iron mine","bot - zombie tank","giant rubber ball","bot - zombie","block - vault","block - flux node","bot - zombie hunter","bot - zombie boss","block - treasure diamond"]
 
+DB_PATH_STEM = "E:\\Programming_Files\\Discord_Bots\\NLDB"
 
 #Defs
 def get_gzipped_json(url):
@@ -41,18 +42,17 @@ async def get_gzipped_json_aiohttp(session,url):
   #return loads(gzip.decompress(session.get(url)))
 
 def readFile(file):
-  return loads(open(f'../NLDB/{file}.json', 'r').read())
+  return loads(open(f'{DB_PATH_STEM}/{file}.json', 'r').read())
 
 def setFile(file,data):
-    with open(f"../NLDB/{file}.json", "w") as f:
+    with open(f'{DB_PATH_STEM}{file}.json', "w") as f:
         f.write(dumps(data))
 
 def getToken(id):
-  data=loads(open('../NLDB/secrets.json', 'r').read())
+  data=loads(open(f'{DB_PATH_STEM}/secrets.json', 'r').read())
   token=data[str(id)]
   print(token)
   return token
-
      
 #Banned List
 mylist = 0

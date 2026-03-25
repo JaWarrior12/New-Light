@@ -71,6 +71,27 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       print(ctx.message.author.id)
       await ctx.send('ONLY DEVELOPERS ARE ALLOWED TO BACKUP THE BOT!!! YOU ARE NOT A DEVELOPER')
 
+  @commands.command(name='massNotification', help="Sends a mass notification to all NL using server owners")
+  async def massNotification(self, ctx, *, msg=None):
+    if ctx.message.author.id in developers:
+      if msg is None:
+        await ctx.send("Please provide a message to send.")
+        return
+      
+      guilds = self.bot.guilds
+      for guild in guilds:
+        if guild:
+          owner = guild.owner
+          if owner:
+            try:
+              await owner.send(msg)
+              await ctx.send(f"Sent message to {owner.name} in {guild.name}")
+            except discord.Forbidden:
+              await ctx.send(f"Could not send message to {owner.name} in {guild.name}")
+      await ctx.send("Mass notification sent to all server owners.")
+    else:
+      await ctx.send("You are not a developer and CANNOT run this command.")
+  
   @commands.command(name='setuproles', brief='Sets Up A Server To Work With New Light.', help="Sets up a server to work with New Light. Args: None",hidden=True,disabled=True)
   async def setserv(self, ctx, msg):
     if ctx.message.author.id in developers:

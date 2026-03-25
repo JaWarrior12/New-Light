@@ -25,11 +25,12 @@ CONTAINS_ROLE_FILTER=["admin","administrator","administration","perms","moderati
 class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup Commands"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    if self.bot.user.id == 974045822167679087:
-      self.runUpdateMemList.start()
+    #if self.bot.user.id == 974045822167679087:
+    #  self.runUpdateMemList.start()
   def cog_unload(self):
-    if self.bot.user.id == 974045822167679087:
-      self.runUpdateMemList.cancel()
+    pass
+    #if self.bot.user.id == 974045822167679087:
+    #  self.runUpdateMemList.cancel()
 
   def is_guild_owner():
     def predicate(ctx):
@@ -331,6 +332,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
     else:
       splitList=servers.split(",")
       serversList=[self.bot.get_guild(int(gldid)) for gldid in splitList]
+    #print(serversList)
     for g in serversList:
       guild=None
       channel=None
@@ -368,7 +370,7 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
                 roleb=guild.get_role(rid)
                 if roleb.name=="@everyone":
                   pass
-                elif roleb.name in FILTERED_ROLES or any(i in roleb.name for i in CONTAINS_ROLE_FILTER):
+                elif roleb.name in FILTERED_ROLES or any(i in roleb.name for i in CONTAINS_ROLE_FILTER) or any(i in roleb.name for i in lists.COLOR_ROLES):
                   roleIndex=-2
                   def getNextRole(roleIndex):
                     rid2=roles[roleIndex].id
@@ -497,3 +499,6 @@ class SetupCmds(commands.Cog, name="Server Commands",description="Server Setup C
 
 async def setup(bot: commands.Bot):
   await bot.add_cog(SetupCmds(bot))
+
+async def returnListRole(ctx, roles):
+  pass

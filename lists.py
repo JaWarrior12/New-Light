@@ -28,6 +28,7 @@ DEV_SERVER_ID = 1031900634741473280
 
 #CONSTANTS
 NON_SHIP_ENTRIES=["Aqua Shielder","Red Sentry","Blue Rusher","The Shield Master","Shield Helper","Red Sniper",'Yellow Hunter',"The Lazer Enthusiast","The Coward","Orange Fool","Yellow Mine Guard","block - iron mine","bot - zombie tank","giant rubber ball","bot - zombie","block - vault","block - flux node","bot - zombie hunter","bot - zombie boss","block - treasure diamond"]
+COLOR_ROLES=["red","blue","green","yellow","orange","purple","pink","brown","black","white", "teal", "cyan", "magenta", "lime", "maroon", "navy", "olive", "gray", "silver", "gold"]
 
 DB_PATH_STEM = "E:\\Programming_Files\\Discord_Bots\\NLDB"
 

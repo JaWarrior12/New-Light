@@ -2,11 +2,12 @@ import os
 import discord
 import time
 import asyncio
+from flask import ctx
 import pytz
 import re
 import random
 import datetime
-from datetime import time
+from datetime import time as timed
 from datetime import timezone
 from discord.ext import commands, tasks
 from discord.utils import get
@@ -26,18 +27,19 @@ banned = lists.banned
 developers = lists.developers
 
 utc=timezone.utc
-times=time(hour=0,minute=20,tzinfo=utc)
+times=timed(hour=0,minute=20,tzinfo=utc)
 
 # Pinkemic Role System (Color Role Fun)
 PinkemicEnabled = False
 PinkRoleId=1384384321074233434
 INFECTION_CHANCE = 0.05  # 5%
-KEYWORDS = ["pink","purple","brute","alt","67","job","work"]  # Infection keywords
+KEYWORDS = ["pink","purple","brute","alt","job","work","yellow","https"]  # Infection keywords
 STOPWORDS = {
     "the", "and", "you", "that", "this", "with", "have", "for",
     "not", "are", "but", "was", "from", "they", "your"
 }
 WORD_REGEX = r"\b[a-zA-Z]{4,}\b"
+BLACKLISTED_WORDS = ["cureme"]
 
 # Rainbow Role System
 RainbowEnabled = True
@@ -51,7 +53,7 @@ RainbowColors = [
     0x8B00FF   # violet
 ]
 allowed_role_id = 1376827779093495838
-RainbowRoleId=1486388364163809400
+RainbowRoleId=1487128561214296267
 
 class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
     def __init__(self, bot: commands.Bot):
@@ -65,7 +67,7 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
     
 #------------ Pinkedemic Role -----------#
     @commands.Cog.listener()
-    async def on_message(self, msg):
+    async def on_messageq(self, msg):
         if PinkemicEnabled == True:
             try:
                 if msg.author.bot or not msg.guild:
@@ -98,7 +100,6 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
 
                 # 🔥 Roll infection chance
                 chance = data.get("infection_chance", 0.15)
-
                 if random.random() < chance and vectors.get("random", True):
                     role = msg.guild.get_role(1384384321074233434)
 
@@ -106,37 +107,49 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
                     #    await msg.author.add_roles(role, reason="Pinkedemic")
 
                     # Add to list if not already there
-                    if not any(u["id"] == msg.author.id for u in data["pinked"]):
-                        stats["random_infections"] += 1
-                        stats["total_infections"] += 1
-                        with open(f'funny.json', "w") as f:
-                            f.write(dumps(data))
-                        await add_to_pinklist(self, msg.author,"random chance") 
-                        #await send_infection_log(self, msg.author, "random chance")
+                    user_entry = next(
+                        (u for u in data["pinked"] if u["id"] == msg.author.id),
+                        None
+                    )
+                    if user_entry and not user_entry.get("immunity", False):
+                        if not any(u["id"] == msg.author.id for u in data["pinked"]):
+                            stats["random_infections"] += 1
+                            stats["total_infections"] += 1
+                            await add_to_pinklist(self, msg.author, data, "random chance") 
+                            #await send_infection_log(self, msg.author, "random chance")
 
                 # 🔍 Check if message is a reply
-                if msg.reference and msg.reference.resolved and vectors.get("reply", True):
-                    replied_user = msg.reference.resolved.author
+                if msg.reference and vectors.get("reply", True):
+                    replied_message = msg.reference.resolved
+                    if replied_message is None:
+                        replied_message = await msg.channel.fetch_message(msg.reference.message_id)
 
-                    if replied_user.id in pinked_ids:
-                        #print("Spreading infection!")
+                    replied_user = replied_message.author
+                    
+                    user_entry = next(
+                        (u for u in data["pinked"] if u["id"] == replied_user.id),
+                        None
+                    )
+                    if user_entry and not user_entry.get("immunity", False):
+                        if replied_user.id in pinked_ids and random.random() < data.get("reply_chance", 0.75):
+                            #print("Spreading infection!")
 
-                        # Infect the author
-                        if msg.author.id not in pinked_ids:
-                            stats["reply_infections"] += 1
-                            stats["total_infections"] += 1
-                            with open(f'funny.json', "w") as f:
-                                f.write(dumps(data))
-                            await add_to_pinklist(self, msg.author,"reply infection")
+                            # Infect the author
+                            if msg.author.id not in pinked_ids:
+                                stats["reply_infections"] += 1
+                                stats["total_infections"] += 1
+                                #with open(f'funny.json', "w") as f:
+                                #    f.write(dumps(data))
+                                await add_to_pinklist(self, msg.author, data, "reply infection")
 
-                        role = msg.guild.get_role(1384384321074233434)
+                            role = msg.guild.get_role(1384384321074233434)
 
-                        if role and role not in msg.author.roles:
-                            await msg.author.add_roles(role, reason="Pinkedemic")
-                            #await send_infection_log(self, msg.author, "reply infection")
+                            #if role and role not in msg.author.roles:
+                            #    await msg.author.add_roles(role, reason="Pinkedemic")
+                                #await send_infection_log(self, msg.author, "reply infection")
                             
                 # 🔔 Infection via Mention
-                if vectors.get("ping", True) and msg.mentions:
+                if vectors.get("mention", True) and msg.mentions:
                     role = msg.guild.get_role(1384384321074233434)
                     # Get infected user IDs
                     infected_ids = [
@@ -149,48 +162,131 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
                         if mentioned_user.bot:
                             continue
                         # Check if the mentioned user is infected
-                        if mentioned_user.id in infected_ids:
-                            # 🎲 Infection chance (configurable)
-                            if random.random() < data.get("ping_chance", 0.25):
-                                #if role and role not in msg.author.roles:
-                                #    await msg.author.add_roles(role, reason="Pinkedemic (ping infected user)")
-                                # Add to infected list if not already there
-                                if not any(u["id"] == msg.author.id for u in data["pinked"]):
-                                    stats["mention_infections"] = stats.get("mention_infections", 0) + 1
-                                    stats["total_infections"] += 1
-                                    with open(f'funny.json', "w") as f:
-                                        f.write(dumps(data))
-                                    await add_to_pinklist(self, msg.author,"mention infection")
-                                # 📊 Stats tracking (scalable)
-                                break  # prevent multiple infections from one message
-                            
-                # 🌸 Normal infection via keyword
-                if any(keyword.lower() in msg.content for keyword in KEYWORDS) and vectors.get("keyword", True):
-                    role = msg.guild.get_role(1384384321074233434)
+                        user_entry = next(
+                            (u for u in data["pinked"] if u["id"] == mentioned_user.id),
+                        None
+                        )
+                        if user_entry and not user_entry.get("immunity", False):
+                            if mentioned_user.id in infected_ids:
+                                #print("Mention infection triggered!")
+                                # 🎲 Infection chance (configurable)
+                                if random.random() < data.get("mention_chance", 0.75):
+                                    #if role and role not in msg.author.roles:
+                                    #    await msg.author.add_roles(role, reason="Pinkedemic (ping infected user)")
+                                    # Add to infected list if not already there
+                                    if not any((u["id"] if isinstance(u, dict) else u) == msg.author.id
+                                            for u in data["pinked"]
+                                        ):
+                                        stats["mention_infections"] = stats.get("mention_infections", 0) + 1
+                                        stats["total_infections"] += 1
+                                        await add_to_pinklist(self, msg.author, data, "mention infection")
+                                    # 📊 Stats tracking (scalable)
+                                    break  # prevent multiple infections from one message
+                           
+                if vectors.get("keyword", True): 
+                    #print("Checking for keyword infection...")
+                    message = msg.content.lower()
+                    # Normalize infected IDs safely
+                    infected_ids = [
+                        (u["id"] if isinstance(u, dict) else u)
+                        for u in data.get("pinked", [])
+                    ]
 
-                    #if role and role not in msg.author.roles:
-                    #    await msg.author.add_roles(role, reason="Pinkedemic")
+                    already_infected = msg.author.id in infected_ids
+                    
+                    user_entry = next(
+                        (u for u in data["pinked"] if u["id"] == msg.author.id),
+                        None
+                    )
+                    if user_entry and not user_entry.get("immunity", False):
+                        # ----------------------------
+                        # 🔒 HARDCODED KEYWORDS (ALWAYS TRIGGER)
+                        # ----------------------------
 
-                    if msg.author.id not in pinked_ids:
-                        stats["keyword_infections"] += 1
-                        stats["total_infections"] += 1
-                        with open(f'funny.json', "w") as f:
-                            f.write(dumps(data))
-                        await add_to_pinklist(self, msg.author, "keyword infection")
-                        #await send_infection_log(self, msg.author, "keyword infection")
+                        try:
+                            for keyword in KEYWORDS:
+                                if keyword in message and not already_infected:
+                                    #print("Keyword infection triggered!")
+                                    if not any(u["id"] == msg.author.id for u in data["pinked"]):
+                                        stats["keyword_infections"] = stats.get("keyword_infections", 0) + 1
+                                        stats["total_infections"] += 1
+                                        await add_to_pinklist(self, msg.author, data, f"hardcoded: {keyword}")
+                                        break  # prevent multiple keyword infections from one message
+
+                            # ----------------------------
+                            # 🧬 DYNAMIC KEYWORDS
+                            # ----------------------------
+                            if vectors.get("dynamic_keywords", True):
+                                active_keywords = data.get("infection_keywords", {}).get("active", [])
+
+                                for keyword in active_keywords:
+                                    if keyword in message and not already_infected and keyword not in BLACKLISTED_WORDS:
+                                        if not any(u["id"] == msg.author.id for u in data["pinked"]):
+                                            stats["keyword_infections"] = stats.get("keyword_infections", 0) + 1
+                                            stats["total_infections"] += 1
+                                        await add_to_pinklist(self, msg.author, data, f"keyword: {keyword}")
+                                        break  # prevent multiple infections from one message
+                        except Exception as e:
+                            print(f"Error checking keywords: {e}")
+                            import traceback
+                            traceback.print_exc()
+
+                # Ensure structures exist
+                data.setdefault("word_scores", {})
+                data.setdefault("infection_keywords", {
+                    "active": ["pink"],
+                    "history": [],
+                    "threshold": 10,
+                    "max_active": 5
+                })
+
+                # 🔍 Get user entry
+                user_entry = next(
+                    (u for u in data.get("pinked", [])
+                        if isinstance(u, dict) and u.get("id") == msg.author.id),
+                    None
+                )
+
+                # ----------------------------
+                # 🧬 UPDATE WORD SCORES
+                # ----------------------------
+                if user_entry:
+                    words = self.extract_words(msg.content)
+                    self.update_word_scores(data, words, user_entry)
+
+                # ----------------------------
+                # 📉 DECAY
+                # ----------------------------
+                self.decay_word_scores(data)
+
+                # ----------------------------
+                # 🔁 PROMOTE
+                # ----------------------------
+                self.promote_keywords(data)
+
+                # ----------------------------
+                # ☣️ CHECK INFECTION
+                # ----------------------------
+                await self.check_keyword_infection(msg, data)
+
+                # ----------------------------
+                # 💾 SAVE
+                # ----------------------------
+                #with open('funny.json', 'w') as f:
+                #    f.write(dumps(data, indent=4))
 
             except Exception:
                 import traceback
                 traceback.print_exc()
                 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
+    async def on_reaction_addq(self, reaction, user):
         if PinkemicEnabled == True:
             try:
                 if user.bot:
                     return
 
-                data = lists.readFile("funny")
+                data = loads(open(f'funny.json', 'r').read())
 
                 guild = reaction.message.guild
                 if not guild or guild.id != 1070759679543750697:
@@ -209,29 +305,29 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
                 # 🔍 Check if message author is infected
                 infected_ids = [u["id"] if isinstance(u, dict) else u for u in data.get("pinked", [])]
 
-                if reaction.message.author.id in infected_ids:
-                    # 🎲 Infection chance
-                    if random.random() < data.get("reaction_chance", 0.2):
+                user_entry = next(
+                        (u for u in data["pinked"] if u["id"] == reaction.message.author.id),
+                        None
+                    )
+                if user_entry and not user_entry.get("immunity", False):
+                    if reaction.message.author.id in infected_ids:
+                        # 🎲 Infection chance
+                        if random.random() < data.get("reaction_chance", 0.2):
 
-                        #if role not in user.roles:
-                        #    await user.add_roles(role, reason="Pinkedemic")
+                            #if role not in user.roles:
+                            #    await user.add_roles(role, reason="Pinkedemic")
 
-                        if user.id not in infected_ids:
-                            stats["reaction_infections"] = stats.get("reaction_infections", 0) + 1
-                            stats["total_infections"] += 1
-                            with open(f'funny.json', "w") as f:
-                                f.write(dumps(data))
-                            await add_to_pinklist(self, user, "reaction infection")
-                            #send_infection_log(self, user, "reaction infection")
-
-                with open(f'funny.json', "w") as f:
-                    f.write(dumps(data))
+                            if user.id not in infected_ids:
+                                stats["reaction_infections"] = stats.get("reaction_infections", 0) + 1
+                                stats["total_infections"] += 1
+                                await add_to_pinklist(self, user, data, "reaction infection")
+                                #send_infection_log(self, user, "reaction infection")
 
             except Exception as e:
                 print(e)
                 
     @commands.Cog.listener()
-    async def on_member_join(self, member):
+    async def on_member_joinq(self, member):
         try:
             if member.guild.id != 1070759679543750697:
                 return
@@ -246,18 +342,35 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
                 user["id"] if isinstance(user, dict) else user
                 for user in data["pinked"]
             ]
+            
+                # 🔍 Find user entry safely (handles dicts + old ints)
+            user_entry = next(
+                (
+                    u if isinstance(u, dict) else {"id": u, "hidden_carrier": False}
+                    for u in data["pinked"]
+                    if (u["id"] if isinstance(u, dict) else u) == member.id
+                ),
+                None
+            )
+
+            if not user_entry:
+                return
+
+            # 🚫 Skip hidden carriers
+            if user_entry.get("hidden_carrier", False):
+                return
 
             if member.id in infected_ids:
                 role = member.guild.get_role(1384384321074233434)
 
-                if role:
+                if role and not user_entry.get("immunity", False):
                     await member.add_roles(role, reason="Pinkedemic rejoin restore")
 
         except Exception as e:
             print(e)
                     
     @commands.Cog.listener()
-    async def on_member_update(self, before, after):
+    async def on_member_updateq(self, before, after):
         if PinkemicEnabled == True:
             if not after.guild or after.guild.id != 1070759679543750697:
                 return
@@ -266,22 +379,38 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
                 #print(data)
                 if any(user["id"] == after.id for user in data["pinked"]):
 
+                    user_entry = next(
+                        (
+                            u if isinstance(u, dict) else {"id": u, "hidden_carrier": False}
+                            for u in data["pinked"]
+                            if (u["id"] if isinstance(u, dict) else u) == after.id
+                        ),
+                        None
+                    )
+                    
                     role = after.guild.get_role(PinkRoleId)
                     if not role:
                         return
 
                     # 🔑 Only trigger if the role was REMOVED
-                    if role in before.roles and role not in after.roles:
+                    # 🚫 Skip hidden carriers
+                    if user_entry.get("hidden_carrier", False):
+                        return
+
+                    if role in before.roles and role not in after.roles and not user_entry.get("immunity", False):
                         await after.add_roles(role, reason="Pinkedemic")
             except Exception as e:
                 print(e)
             
-    @commands.command(name="cureAll")
+    @commands.command(name="cureAllq")
     async def clearpinked(self, ctx):
         # 🔒 Permission check
-        if not any(r.id == allowed_role_id for r in ctx.author.roles):
-            await ctx.send("You don't have permission.")
+        if ctx.message.author.id not in developers:
+            await ctx.send("You can't use this command.")
             return
+        #if not any(r.id == allowed_role_id for r in ctx.author.roles):
+        #    await ctx.send("You don't have permission.")
+        #    return
         global PinkemicEnabled
         PinkemicEnabled = False # Temporarily
         
@@ -328,11 +457,14 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
         await ctx.send(f"🌸 Pinkedemic cleared! Removed role from {removed_count} users.")
         
     @commands.command()
-    async def infect(self, ctx):
+    async def infectq(self, ctx):
         # 🔒 permission check
-        if not any(r.id == allowed_role_id for r in ctx.author.roles):
-            await ctx.send("You don't have permission.")
+        if ctx.message.author.id not in developers:
+            await ctx.send("You can't use this command.")
             return
+        #if not any(r.id == allowed_role_id for r in ctx.author.roles):
+        #    await ctx.send("You don't have permission.")
+        #    return
 
         role = ctx.guild.get_role(PinkRoleId)
         if not role:
@@ -368,27 +500,30 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
                 data["pinked"] = []
 
             if not any(u["id"] == target.id if isinstance(u, dict) else u == target.id for u in data["pinked"]):
-                await add_to_pinklist(self, target)
-
-                with open(f'funny.json', "w") as f:
-                    f.write(dumps(data))
+                await add_to_pinklist(self, target, data, "Pinkedemic")
 
         except Exception as e:
             print(e)
             await ctx.send("Failed to infect target.")
             
-    @commands.command(name="enablePinkedemic")
-    async def enable_pinkedemic(self, ctx):
-        # 🔒 Permission check
-        if not any(r.id == allowed_role_id for r in ctx.author.roles):
-            await ctx.send("You don't have permission.")
+    @commands.command(name="enablePinkedemicq")
+    async def enable_pinkedemicq(self, ctx):
+        if ctx.message.author.id not in developers:
+            await ctx.send("You can't use this command.")
             return
+        # 🔒 Permission check
+        #if not any(r.id == allowed_role_id for r in ctx.author.roles):
+        #    await ctx.send("You don't have permission.")
+        #    return
         global PinkemicEnabled
         PinkemicEnabled = True
         await ctx.send("Pinkedemic enabled! Spread the pink!")
         
     @commands.command()
-    async def pinkstats(self, ctx):
+    async def pinkstatsq(self, ctx):
+        if ctx.message.author.id not in developers:
+            await ctx.send("You can't use this command.")
+            return
         try:
             data = loads(open(f'funny.json', 'r').read())
             stats = data.get("pink_spread_stats", {})
@@ -424,6 +559,18 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
 
         except Exception as e:
             print(e)
+            
+    @commands.command(name="cureMeq", hidden=True,disabled=True)
+    async def cure_meq(self, ctx):
+        data = loads(open(f'funny.json', 'r').read())
+        if not data["global_cure"].get("cure_enabled", False):
+            await ctx.send("Curing is not currently enabled.")
+            return
+        else:
+            if ctx.guild.id != 1070759679543750697:
+                return
+            await ctx.send("Attempting to cure you...")
+            await cure_user(self, ctx, ctx.author)
     
 #----------------Rainbow Role----------------#
     @commands.command()
@@ -487,12 +634,64 @@ class FunnyStuff(commands.Cog, name="Funnys",description="Hehe funny"):
 
         await ctx.send(f"🌈 Rainbow stopped for {member.mention}")
     
+#--------------------Admin---------------#
+    @commands.command(name="forceinfect")
+    async def force_infect(self, ctx, member: discord.Member):
+        if ctx.message.author.id not in developers:
+            await ctx.send("You don't have permission to use this command.")
+            return
+        try:
+            if member.bot:
+                await ctx.send("❌ Cannot infect bots.")
+                return
+
+            data = loads(open('funny.json', 'r').read())
+
+            # Ensure structures exist
+            data.setdefault("pinked", [])
+            data.setdefault("pink_spread_stats", {})
+
+            # Normalize (VERY important)
+            normalized = []
+            for u in data["pinked"]:
+                if isinstance(u, dict):
+                    normalized.append(u)
+                else:
+                    normalized.append({
+                        "id": u,
+                        "name": "unknown",
+                        "hidden_carrier": False,
+                        "infection_stage": 1,
+                        "immunity": False
+                    })
+            data["pinked"] = normalized
+
+            # Check if already infected
+            if any(u["id"] == member.id for u in data["pinked"]):
+                await ctx.send(f"⚠️ {member.mention} is already infected.")
+                return
+
+            # 📊 Stats
+            stats = data["pink_spread_stats"]
+            stats["forced_infections"] = stats.get("forced_infections", 0) + 1
+            stats["total_infections"] = stats.get("total_infections", 0) + 1
+
+
+            # 🧬 Infect
+            await add_to_pinklist(self, member, data, "forced infection")
+
+            # 🎭 Optional: give role immediately
+            role = ctx.guild.get_role(1384384321074233434)
+            if role and role not in member.roles:
+                await member.add_roles(role, reason="Force infected")
+
+            await ctx.send(f"🦠 {member.mention} has been forcefully infected.")
+
+        except Exception as e:
+            print(e)
+            await ctx.send("❌ Something went wrong.")   
     
-#----------Pinkedemic Keyword Utility---------#
-class KeywordInfection(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        
+#----------Pinkedemic Keyword Utility---------#       
     # ----------------------------
     # 🔍 WORD EXTRACTION
     # ----------------------------
@@ -561,67 +760,11 @@ class KeywordInfection(commands.Cog):
 
         for keyword in active_keywords:
             if keyword in message:
-                await self.add_to_pinklist(msg.author, f"keyword: {keyword}")
+                await add_to_pinklist(self, msg.author, None, f"keyword: {keyword}")
                 return True
 
         return False
 
-    # ----------------------------
-    # 🧠 MAIN LISTENER
-    # ----------------------------
-    @commands.Cog.listener()
-    async def on_message(self, msg):
-        if not msg.guild or msg.author.bot:
-            return
-
-        # 🔄 Load data
-        with open('funny.json', 'r') as f:
-            data = loads(f.read())
-
-        # Ensure structures exist
-        data.setdefault("word_scores", {})
-        data.setdefault("infection_keywords", {
-            "active": ["pink"],
-            "history": [],
-            "threshold": 10,
-            "max_active": 5
-        })
-
-        # 🔍 Get user entry
-        user_entry = next(
-            (u for u in data.get("pinked", [])
-             if isinstance(u, dict) and u.get("id") == msg.author.id),
-            None
-        )
-
-        # ----------------------------
-        # 🧬 UPDATE WORD SCORES
-        # ----------------------------
-        if user_entry:
-            words = self.extract_words(msg.content)
-            self.update_word_scores(data, words, user_entry)
-
-        # ----------------------------
-        # 📉 DECAY
-        # ----------------------------
-        self.decay_word_scores(data)
-
-        # ----------------------------
-        # 🔁 PROMOTE
-        # ----------------------------
-        self.promote_keywords(data)
-
-        # ----------------------------
-        # ☣️ CHECK INFECTION
-        # ----------------------------
-        await self.check_keyword_infection(msg, data)
-
-        # ----------------------------
-        # 💾 SAVE
-        # ----------------------------
-        with open('funny.json', 'w') as f:
-            f.write(dumps(data, indent=4))
-    
 #------------------Utility---------------#
 @staticmethod
 async def send_infection_log(self, user,method):
@@ -633,29 +776,58 @@ async def send_infection_log(self, user,method):
         None
     )
     is_carrier = user_entry.get("hidden_carrier", False)
+    is_immune = user_entry.get("immunity", False)
     if channel:
         # 🧾 Format message
         carrier_text = " (🧬 Carrier)" if is_carrier else ""
-
+        if is_immune:
+            carrier_text += " (🛡️ Immune)"
         await channel.send(
             f"🦠 {user.mention} was infected via **{method}**!{carrier_text}"
         )
         
 @staticmethod
-async def add_to_pinklist(self, user,method):
+async def add_to_pinklist(self, user, data, method):
     """
     Determines if a newly infected user is a hidden carrier based on chance.
     Also adds them to the pinked list with their carrier status.
     """
-    data = loads(open(f'funny.json', 'r').read())
+    if user.id == 974045822167679087:  # Skip if it's the bot itself'
+        return
+    if data is None:
+        data = loads(open(f'funny.json', 'r').read())
     hidden_carrier=False
     guild = self.bot.get_guild(1070759679543750697)
     role = guild.get_role(1384384321074233434)
-    if random.random() < data.get("hidden_carrier_chance", 0.1) and data.get("infection_vectors", {}).get("hidden_carrier", False):
+    vectors = data.get("infection_vectors", {})
+    
+    # 🔍 Find existing user
+    user_entry = next(
+        (u for u in data["pinked"]
+         if (u["id"] if isinstance(u, dict) else u) == user.id),
+        None
+    )
+
+    # ----------------------------
+    # 🛑 DO NOT RE-INFECT
+    # ----------------------------
+    if user_entry:
+        with open('funny.json', "w") as f:
+            dumps(data)
+            f.write(dumps(data))
+        return  # already infected → do nothing
+    
+    immunityChance = data.get("immunity_chance", 0.05)        
+    immunity = False
+    if random.random() < immunityChance and vectors.get("immunity", True):
+        immunity = True
+        data["pink_spread_stats"]["immune"] = data["pink_spread_stats"].get("immune", 0) + 1
+        
+    if random.random() < data.get("hidden_carrier_chance", 0.1) and data.get("infection_vectors", {}).get("hidden_carrier", False) and not immunity:
         hidden_carrier = True
         data["pink_spread_stats"]["hidden_carriers"] = data["pink_spread_stats"].get("hidden_carriers", 0) + 1
     else:
-        if role and role not in user.roles:
+        if role and role not in user.roles and not immunity:
             await user.add_roles(role, reason="Pinkedemic (ping infected user)")
     if "pinked" not in data:
         data["pinked"] = []
@@ -665,13 +837,18 @@ async def add_to_pinklist(self, user,method):
         for u in data["pinked"]
     )
 
+    infectionStage = 1
+    if immunity:
+        infectionStage = 0
+
     # ➕ Add user
     if not exists:
         data["pinked"].append({
             "id": user.id,
             "name": str(user.name),
             "hidden_carrier": hidden_carrier,
-            "infection_stage": 1
+            "infection_stage": infectionStage,
+            "immunity": immunity
         })
 
     # 💾 ALWAYS save
@@ -688,6 +865,8 @@ async def cure_user(self, ctx, user):
     # 🔄 GLOBAL CURE RECHARGE
     # ----------------------------
     cure_data = data.setdefault("global_cure", {
+        "cure_enabled": True,
+        "cure_recharge_enabled": True,
         "current": 5,
         "max": 10,
         "recharge_amount": 1,
@@ -696,11 +875,13 @@ async def cure_user(self, ctx, user):
     })
 
     now = time.time()
+    
+    removeRole=False
 
-    if now - cure_data["last_recharge"] >= cure_data["recharge_interval"]:
+    if now - cure_data["last_recharge"] >= cure_data.get("cure_recharge_enabled", True):
         cycles = int((now - cure_data["last_recharge"]) // cure_data["recharge_interval"])
 
-        if cycles > 0:
+        if cycles > 0 and cure_data["cure_recharge_enabled"]:
             cure_data["current"] = min(
                 cure_data["max"],
                 cure_data["current"] + (cycles * cure_data["recharge_amount"])
@@ -741,8 +922,6 @@ async def cure_user(self, ctx, user):
     # 🧬 TURN INTO CARRIER
     # ----------------------------
     elif roll < failure_chance + carrier_chance:
-        if role and role not in user.roles:
-            await user.add_roles(role, reason="Pinkedemic")
 
         # Remove from infected list
         data["pinked"] = [
@@ -755,25 +934,28 @@ async def cure_user(self, ctx, user):
             "id": user.id,
             "name": str(user.name),
             "hidden_carrier": True,
-            "infection_stage": 1
+            "infection_stage": 1,
+            "immunity": False
         })
 
         result = "💊 The cure seemed to work!"
+        removeRole=True
 
     # ----------------------------
     # 💊 SUCCESSFUL CURE
     # ----------------------------
     else:
-        if role and role in user.roles:
-            await user.remove_roles(role, reason="Pinkedemic")
-
+        removeRole=True
         # Remove from infected list
         data["pinked"] = [
             u for u in data.get("pinked", [])
             if u.get("id") != user.id
         ]
+        
+        if role and role in user.roles:
+            await user.remove_roles(role, reason="Pinkedemic")
 
-        result = "💊 You have been appears to have worked!"
+        result = "💊 You have cure appears to have worked!"
 
     # ----------------------------
     # 📊 SAVE DATA (SAFE)
@@ -781,11 +963,16 @@ async def cure_user(self, ctx, user):
     with open('funny.json', "w") as f:
         f.write(dumps(data, indent=4))
 
+    # Remove role and do it twice because of the re-add loop triggering too fast
+    if removeRole and role and role in user.roles:
+        await user.remove_roles(role, reason="Pinkedemic cure")
+    await asyncio.sleep(1)
+    if removeRole and role and role in user.roles:
+        await user.remove_roles(role, reason="Pinkedemic cure")
     # ----------------------------
     # 📢 RESPONSE
     # ----------------------------
-    await ctx.send(result)
-
+    await ctx.send(result)  
     
 async def setup(bot: commands.Bot):
     await bot.add_cog(FunnyStuff(bot))

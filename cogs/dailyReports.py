@@ -47,14 +47,15 @@ def setPS(data):
 class DailyReports(commands.Cog, name="Daily Reports System",description="Commands For The Daily Reports System"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    if self.bot.user.id == 974045822167679087:
-      self.runDailyTransferReport_TimerLoop.start()
-      self.runDailyInventoryReport_TimerLoop.start()
-      print("start trackLog loop")
+    #if self.bot.user.id == 974045822167679087:
+      #self.runDailyTransferReport_TimerLoop.start()
+      #self.runDailyInventoryReport_TimerLoop.start()
+      #print("start trackLog loop")
   def cog_unload(self):
-    if self.bot.user.id == 974045822167679087:
-      self.runDailyTransferReport_TimerLoop.cancel()
-      self.runDailyInventoryReport_TimerLoop.cancel()
+    pass
+    #if self.bot.user.id == 974045822167679087:
+      #self.runDailyTransferReport_TimerLoop.cancel()
+      #self.runDailyInventoryReport_TimerLoop.cancel()
   
   def is_allowed_server():
     def predicate(ctx):

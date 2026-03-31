@@ -169,7 +169,7 @@ class DevCmds(commands.Cog, name="Developer Commands",description="Developer Onl
       except commands.errors.ExtensionNotFound:
         await ctx.send(f"`{cog}` does not exist!")
     else:
-      ctx.send("Not A Dev")
+      await ctx.send("Not A Dev")
   
   @commands.command(name="listcogs", aliases=['lc'],brief="Lists All Cogs",help="Lists all cogs. Args: No e")
   async def listcogs(self, ctx, msg=None):

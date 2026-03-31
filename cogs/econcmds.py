@@ -45,13 +45,13 @@ NON_SHIP_ENTRIES=lists.NON_SHIP_ENTRIES
 class EconCmds(commands.Cog, name="Dredark Economy Dump Commands",description="All Commands relating to the Econ Dumps"):
   def __init__(self, bot: commands.Bot):
     self.bot = bot
-    if self.bot.user.id==975858537223847936:
-      self.exchangeRatesUpdater.start()
+    #if self.bot.user.id==975858537223847936:
+      #self.exchangeRatesUpdater.start()
   def cog_unload(self):
-    if self.bot.user.id == 975858537223847936:
-      self.exchangeRatesUpdater.cancel()
-    else:
-      pass
+    #if self.bot.user.id == 975858537223847936:
+      #self.exchangeRatesUpdater.cancel()
+    #else:
+    pass
 
   def is_allowed():
     def predicate(ctx):
